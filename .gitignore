@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 ecotraj.Rproj
+src/*.o
+src/*.so
+src/*.dll

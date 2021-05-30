@@ -9,15 +9,13 @@
 \alias{trajectoryLengths2D}
 \alias{trajectoryAngles}
 \alias{trajectoryAngles2D}
-\alias{trajectoryPCoA}
 \alias{trajectoryProjection}
 \alias{trajectoryConvergence}
 \alias{trajectoryDirectionality}
 \alias{centerTrajectories}
 \alias{trajectorySelection}
-\alias{trajectoryPlot}
 \alias{is.metric}
-\title{Community trajectory analysis}
+\title{Ecological trajectory analysis}
 \usage{
 segmentDistances(
   d,
@@ -77,28 +75,6 @@ trajectoryAngles2D(
 
 trajectorySelection(d, sites, selection)
 
-trajectoryPCoA(
-  d,
-  sites,
-  surveys = NULL,
-  selection = NULL,
-  traj.colors = NULL,
-  axes = c(1, 2),
-  survey.labels = FALSE,
-  ...
-)
-
-trajectoryPlot(
-  x,
-  sites,
-  surveys = NULL,
-  selection = NULL,
-  traj.colors = NULL,
-  axes = c(1, 2),
-  survey.labels = FALSE,
-  ...
-)
-
 trajectoryProjection(d, target, trajectory, tol = 1e-06, add = TRUE)
 
 trajectoryConvergence(
@@ -154,16 +130,6 @@ whereas for \code{trajectoryDistances} the available indices are:
 
 \item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
 
-\item{traj.colors}{A vector of colors (one per site). If \code{selection != NULL} the length of the color vector should be equal to the number of sites selected.}
-
-\item{axes}{The pair of principal coordinates to be plotted.}
-
-\item{survey.labels}{A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints}
-
-\item{...}{Additional parameters for function \code{\link{arrows}}.}
-
-\item{x}{A data.frame or matrix where rows are community states and columns are coordinates in an arbitrary space}
-
 \item{target}{An integer vector of the community states to be projected.}
 
 \item{trajectory}{An integer vector of the trajectory onto which target states are to be projected.}
@@ -192,13 +158,9 @@ Function \code{trajectoryLengths2D} returns a data frame with the length of each
 If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 If \code{all = TRUE} lengths are calculated for all segments.
 
-Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
-
 Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned. 
 
 Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
-
-Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
 
 Function \code{trajectoryProjection} returns a data frame with the following columns:
 \itemize{
@@ -218,16 +180,17 @@ Function \code{trajectoryDirectionality} returns a vector with directionality va
 Function \code{centerTrajectory} returns an object of class \code{\link{dist}}.
 }
 \description{
-Community trajectory analysis (CTA) is a framework to analyze community dynamics described as trajectories in a chosen space of community resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
-CTA takes trajectories as objects to be analyzed and compared geometrically. Given a distance matrix between community states, the set of functions for CTA are:
+Ecological trajectory analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
+ETA takes trajectories as objects to be analyzed and compared geometrically.
+}
+\details{
+Given a distance matrix between community states, the set of functions for ETA are:
 \itemize{
 \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and community trajectories, respectively.}
 \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-\item{Function \code{trajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws trajectories in the ordination scatterplot.}
-\item{Function \code{trajectoryPlot} Draws trajectories in a scatterplot corresponding to the input coordinates.}
 \item{Function \code{trajectoryProjection} projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
@@ -235,8 +198,8 @@ CTA takes trajectories as objects to be analyzed and compared geometrically. Giv
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
 \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
 }
-}
-\details{
+
+
 Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
 The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see function \code{is.metric}). 
 All CTA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
@@ -315,7 +278,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 }
 \seealso{
-\code{\link{cmdscale}}
+\code{\link{trajectoryPlot}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

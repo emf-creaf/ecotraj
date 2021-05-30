@@ -1,15 +1,15 @@
-#' Community trajectory analysis
+#' Ecological trajectory analysis
 #' 
-#' Community trajectory analysis (CTA) is a framework to analyze community dynamics described as trajectories in a chosen space of community resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
-#' CTA takes trajectories as objects to be analyzed and compared geometrically. Given a distance matrix between community states, the set of functions for CTA are:
+#' Ecological trajectory analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
+#' ETA takes trajectories as objects to be analyzed and compared geometrically. 
+#' 
+#' Given a distance matrix between community states, the set of functions for ETA are:
 #' \itemize{
 #' \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and community trajectories, respectively.}
 #' \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 #' \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-#' \item{Function \code{trajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws trajectories in the ordination scatterplot.}
-#' \item{Function \code{trajectoryPlot} Draws trajectories in a scatterplot corresponding to the input coordinates.}
 #' \item{Function \code{trajectoryProjection} projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 #' \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
@@ -22,7 +22,7 @@
 #' @encoding UTF-8
 #' @name trajectories
 #' @aliases segmentDistances trajectoryDistances trajectoryLengths trajectoryLengths2D trajectoryAngles trajectoryAngles2D
-#'          trajectoryPCoA trajectoryProjection trajectoryConvergence trajectoryDirectionality 
+#'          trajectoryProjection trajectoryConvergence trajectoryDirectionality 
 #'          centerTrajectories
 #' 
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).
@@ -84,13 +84,9 @@
 #' If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 #' If \code{all = TRUE} lengths are calculated for all segments.
 #' 
-#' Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
-#' 
 #' Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned. 
 #' 
 #' Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
-#' 
-#' Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
 #' 
 #' Function \code{trajectoryProjection} returns a data frame with the following columns:
 #' \itemize{
@@ -119,7 +115,7 @@
 #' 
 #' Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 #' 
-#' @seealso \code{\link{cmdscale}}
+#' @seealso \code{\link{trajectoryPlot}}
 #' 
 #' @examples 
 #' #Description of sites and surveys
@@ -801,100 +797,6 @@ trajectorySelection<-function(d, sites, selection) {
   
   dsel =as.dist(as.matrix(d)[sites %in% selIDs, sites %in% selIDs])
   return(dsel)
-}
-
-#' @rdname trajectories
-#' @param traj.colors A vector of colors (one per site). If \code{selection != NULL} the length of the color vector should be equal to the number of sites selected.
-#' @param survey.labels A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints
-#' @param axes The pair of principal coordinates to be plotted.
-#' @param ... Additional parameters for function \code{\link{arrows}}.
-trajectoryPCoA<-function(d, sites, surveys = NULL, selection = NULL, traj.colors = NULL, axes=c(1,2), 
-                         survey.labels = FALSE, ...) {
-  siteIDs = unique(sites)
-  nsite = length(siteIDs)
-  
-  #Apply site selection
-  
-  if(is.null(selection)) selection = 1:nsite 
-  else {
-    if(is.character(selection)) selection = (siteIDs %in% selection)
-  }
-  selIDs = siteIDs[selection]
-  
-  D2 =as.dist(as.matrix(d)[sites %in% selIDs, sites %in% selIDs])
-  cmd_D2<-cmdscale(D2,eig=TRUE, add=TRUE, k=nrow(as.matrix(D2))-1)
-  
-  x<-cmd_D2$points[,axes[1]]
-  y<-cmd_D2$points[,axes[2]]
-  plot(x,y, type="n", asp=1, xlab=paste0("PCoA ",axes[1]," (", round(100*cmd_D2$eig[axes[1]]/sum(cmd_D2$eig)),"%)"), 
-       ylab=paste0("PCoA ",axes[2]," (", round(100*cmd_D2$eig[axes[2]]/sum(cmd_D2$eig)),"%)"))
-  
-  sitesred = sites[sites %in% selIDs]
-  if(!is.null(surveys)) surveysred = surveys[sites %in% selIDs]
-  else surveysred = NULL
-  #Draw arrows
-  for(i in 1:length(selIDs)) {
-    ind_surv = which(sitesred==selIDs[i])
-    #Surveys may not be in order
-    if(!is.null(surveysred)) ind_surv = ind_surv[order(surveysred[sitesred==selIDs[i]])]
-    for(t in 1:(length(ind_surv)-1)) {
-      niini =ind_surv[t]
-      nifin =ind_surv[t+1]
-      if(!is.null(traj.colors)) arrows(x[niini],y[niini],x[nifin],y[nifin], col = traj.colors[i], ...)
-      else arrows(x[niini],y[niini],x[nifin],y[nifin], ...)
-      if(survey.labels) {
-        text(x[niini],y[niini], labels = ifelse(!is.null(surveysred), surveysred[niini],t), pos = 3)
-        if(t==(length(ind_surv)-1)) {
-          text(x[nifin],y[nifin], labels = ifelse(!is.null(surveysred), surveysred[nifin],t+1), pos = 3)
-        }
-      }
-    }
-  }
-  #Return cmdscale result
-  invisible(cmd_D2)
-}
-
-#' @rdname trajectories
-#' @param x A data.frame or matrix where rows are community states and columns are coordinates in an arbitrary space
-trajectoryPlot<-function(x, sites, surveys = NULL, selection = NULL, traj.colors = NULL, axes=c(1,2), 
-                         survey.labels = FALSE, ...) {
-  siteIDs = unique(sites)
-  nsite = length(siteIDs)
-  
-  #Apply site selection
-  
-  if(is.null(selection)) selection = 1:nsite 
-  else {
-    if(is.character(selection)) selection = (siteIDs %in% selection)
-  }
-  selIDs = siteIDs[selection]
-  
-  xp =x[sites %in% selIDs, axes[1]]
-  yp<-x[sites %in% selIDs,axes[2]]
-  plot(xp,yp, type="n", asp=1, xlab=paste0("Axis ",axes[1]), 
-       ylab=paste0("Axis ",axes[2]))
-  
-  sitesred = sites[sites %in% selIDs]
-  if(!is.null(surveys)) surveysred = surveys[sites %in% selIDs]
-  else surveysred = NULL
-  #Draw arrows
-  for(i in 1:length(selIDs)) {
-    ind_surv = which(sitesred==selIDs[i])
-    #Surveys may not be in order
-    if(!is.null(surveysred)) ind_surv = ind_surv[order(surveysred[sitesred==selIDs[i]])]
-    for(t in 1:(length(ind_surv)-1)) {
-      niini =ind_surv[t]
-      nifin =ind_surv[t+1]
-      if(!is.null(traj.colors)) arrows(xp[niini],yp[niini],xp[nifin],yp[nifin], col = traj.colors[i], ...)
-      else arrows(xp[niini],yp[niini],xp[nifin],yp[nifin], ...)
-      if(survey.labels) {
-        text(xp[niini],yp[niini], labels = ifelse(!is.null(surveysred), surveysred[niini],t), pos = 3)
-        if(t==(length(ind_surv)-1)) {
-          text(xp[nifin],yp[nifin], labels = ifelse(!is.null(surveysred), surveysred[nifin],t+1), pos = 3)
-        }
-      }
-    }
-  }
 }
 
 #' @rdname trajectories

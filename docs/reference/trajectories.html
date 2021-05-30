@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Community trajectory analysis — trajectories • ecotraj</title>
+<title>Ecological trajectory analysis — trajectories • ecotraj</title>
 
 
 <!-- jquery -->
@@ -39,24 +39,9 @@
 
 
 
-<meta property="og:title" content="Community trajectory analysis — trajectories" />
-<meta property="og:description" content="Community trajectory analysis (CTA) is a framework to analyze community dynamics described as trajectories in a chosen space of community resemblance (De Cáceres et al. 2019).
-CTA takes trajectories as objects to be analyzed and compared geometrically. Given a distance matrix between community states, the set of functions for CTA are:
-Functions segmentDistances and trajectoryDistances calculate the distance between pairs of directed segments and community trajectories, respectively.
-Function trajectoryLengths calculates lengths of directed segments and total path lengths of trajectories.
-Function trajectoryLengths2D calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.
-Function trajectoryAngles calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.
-Function trajectoryAngles2D calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.
-Function trajectoryPCoA performs principal coordinates analysis (cmdscale) and draws trajectories in the ordination scatterplot.
-Function trajectoryPlot Draws trajectories in a scatterplot corresponding to the input coordinates.
-Function trajectoryProjection projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.
-Function trajectoryConvergence performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.
-Function trajectorySelection allows selecting the submatrix of distances corresponding to a given subset of trajectories.
-Function trajectoryDirectionality returns (for each trajectory) a statistic that measures directionality of the whole trajectory.
-Function centerTrajectories shifts all trajectories to the center of the compositional space and returns a modified distance matrix.
-Function is.metric checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).
-
-" />
+<meta property="og:title" content="Ecological trajectory analysis — trajectories" />
+<meta property="og:description" content="Ecological trajectory analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De Cáceres et al. 2019).
+ETA takes trajectories as objects to be analyzed and compared geometrically." />
 
 
 
@@ -134,29 +119,14 @@ Function is.metric checks whether the input dissimilarity matrix is metric (i.e.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Community trajectory analysis</h1>
+    <h1>Ecological trajectory analysis</h1>
     
     <div class="hidden name"><code>trajectories.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Community trajectory analysis (CTA) is a framework to analyze community dynamics described as trajectories in a chosen space of community resemblance (De Cáceres et al. 2019).
-CTA takes trajectories as objects to be analyzed and compared geometrically. Given a distance matrix between community states, the set of functions for CTA are:</p><ul>
-<li><p>Functions <code>segmentDistances</code> and <code>trajectoryDistances</code> calculate the distance between pairs of directed segments and community trajectories, respectively.</p></li>
-<li><p>Function <code>trajectoryLengths</code> calculates lengths of directed segments and total path lengths of trajectories.</p></li>
-<li><p>Function <code>trajectoryLengths2D</code> calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.</p></li>
-<li><p>Function <code>trajectoryAngles</code> calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.</p></li>
-<li><p>Function <code>trajectoryAngles2D</code> calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.</p></li>
-<li><p>Function <code>trajectoryPCoA</code> performs principal coordinates analysis (<code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code>) and draws trajectories in the ordination scatterplot.</p></li>
-<li><p>Function <code>trajectoryPlot</code> Draws trajectories in a scatterplot corresponding to the input coordinates.</p></li>
-<li><p>Function <code>trajectoryProjection</code> projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.</p></li>
-<li><p>Function <code>trajectoryConvergence</code> performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.</p></li>
-<li><p>Function <code>trajectorySelection</code> allows selecting the submatrix of distances corresponding to a given subset of trajectories.</p></li>
-<li><p>Function <code>trajectoryDirectionality</code> returns (for each trajectory) a statistic that measures directionality of the whole trajectory.</p></li>
-<li><p>Function <code>centerTrajectories</code> shifts all trajectories to the center of the compositional space and returns a modified distance matrix.</p></li>
-<li><p>Function <code>is.metric</code> checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).</p></li>
-</ul>
-
+    <p>Ecological trajectory analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De Cáceres et al. 2019).
+ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
     </div>
 
     <pre class="usage"><span class='fu'>segmentDistances</span><span class='op'>(</span>
@@ -216,28 +186,6 @@ CTA takes trajectories as objects to be analyzed and compared geometrically. Giv
 <span class='op'>)</span>
 
 <span class='fu'>trajectorySelection</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>sites</span>, <span class='va'>selection</span><span class='op'>)</span>
-
-<span class='fu'>trajectoryPCoA</span><span class='op'>(</span>
-  <span class='va'>d</span>,
-  <span class='va'>sites</span>,
-  surveys <span class='op'>=</span> <span class='cn'>NULL</span>,
-  selection <span class='op'>=</span> <span class='cn'>NULL</span>,
-  traj.colors <span class='op'>=</span> <span class='cn'>NULL</span>,
-  axes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-  survey.labels <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
-
-<span class='fu'>trajectoryPlot</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  <span class='va'>sites</span>,
-  surveys <span class='op'>=</span> <span class='cn'>NULL</span>,
-  selection <span class='op'>=</span> <span class='cn'>NULL</span>,
-  traj.colors <span class='op'>=</span> <span class='cn'>NULL</span>,
-  axes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-  survey.labels <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span>
 
 <span class='fu'>trajectoryProjection</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>target</span>, <span class='va'>trajectory</span>, tol <span class='op'>=</span> <span class='fl'>1e-06</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
@@ -320,26 +268,6 @@ CTA takes trajectories as objects to be analyzed and compared geometrically. Giv
       <td><p>A character vector of sites, a numeric vector of site indices or logical vector of the same length as <code>sites</code>, indicating a subset of site trajectories to be selected.</p></td>
     </tr>
     <tr>
-      <th>traj.colors</th>
-      <td><p>A vector of colors (one per site). If <code>selection != NULL</code> the length of the color vector should be equal to the number of sites selected.</p></td>
-    </tr>
-    <tr>
-      <th>axes</th>
-      <td><p>The pair of principal coordinates to be plotted.</p></td>
-    </tr>
-    <tr>
-      <th>survey.labels</th>
-      <td><p>A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional parameters for function <code><a href='https://rdrr.io/r/graphics/arrows.html'>arrows</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>A data.frame or matrix where rows are community states and columns are coordinates in an arbitrary space</p></td>
-    </tr>
-    <tr>
       <th>target</th>
       <td><p>An integer vector of the community states to be projected.</p></td>
     </tr>
@@ -374,10 +302,8 @@ If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 <p>Function <code>trajectoryLengths2D</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
 If <code>relativeToInitial = TRUE</code> lengths are calculated between the initial survey and all the other surveys.
 If <code>all = TRUE</code> lengths are calculated for all segments.</p>
-<p>Function <code>trajectoryPCoA</code> returns the result of calling <code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code>.</p>
 <p>Function <code>trajectoryAngles</code> returns a data frame with angle values on each trajectory. If <code>stats=TRUE</code>, then the mean, standard deviation and mean resultant length of those angles are also returned.</p>
 <p>Function <code>trajectoryAngles2D</code> returns a data frame with angle values on each trajectory. If <code>betweenSegments=TRUE</code>, then angles are calculated between trajectory segments, alternatively, If <code>betweenSegments=FALSE</code>, angles are calculated considering Y axis as the North (0°).</p>
-<p>Function <code>trajectoryPCoA</code> returns the result of calling <code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code>.</p>
 <p>Function <code>trajectoryProjection</code> returns a data frame with the following columns:</p><ul>
 <li><p><code>distanceToTrajectory</code>: Distances to the trajectory, i.e. rejection (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
 <li><p><code>segment</code>: Segment that includes the projected point (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
@@ -393,7 +319,22 @@ If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 <p>Function <code>centerTrajectory</code> returns an object of class <code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Details of calculations are given in De Cáceres et al (2019). 
+    <p>Given a distance matrix between community states, the set of functions for ETA are:</p><ul>
+<li><p>Functions <code>segmentDistances</code> and <code>trajectoryDistances</code> calculate the distance between pairs of directed segments and community trajectories, respectively.</p></li>
+<li><p>Function <code>trajectoryLengths</code> calculates lengths of directed segments and total path lengths of trajectories.</p></li>
+<li><p>Function <code>trajectoryLengths2D</code> calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.</p></li>
+<li><p>Function <code>trajectoryAngles</code> calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.</p></li>
+<li><p>Function <code>trajectoryAngles2D</code> calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.</p></li>
+<li><p>Function <code>trajectoryProjection</code> projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.</p></li>
+<li><p>Function <code>trajectoryConvergence</code> performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.</p></li>
+<li><p>Function <code>trajectorySelection</code> allows selecting the submatrix of distances corresponding to a given subset of trajectories.</p></li>
+<li><p>Function <code>trajectoryDirectionality</code> returns (for each trajectory) a statistic that measures directionality of the whole trajectory.</p></li>
+<li><p>Function <code>centerTrajectories</code> shifts all trajectories to the center of the compositional space and returns a modified distance matrix.</p></li>
+<li><p>Function <code>is.metric</code> checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).</p></li>
+</ul>
+
+
+<p>Details of calculations are given in De Cáceres et al (2019). 
 The input distance matrix <code>d</code> should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see function <code>is.metric</code>). 
 All CTA functions that require metricity include a parameter '<code>add</code>', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
 If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify <code>d</code> to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see CTA vignette). 
@@ -414,7 +355,7 @@ If <code>betweenSegments = TRUE</code> angles are calculated between segments of
 <p>Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code></p></div>
+    <div class='dont-index'><p><code><a href='trajectoryplots.html'>trajectoryPlot</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Miquel De Cáceres, CREAF</p>
@@ -434,7 +375,7 @@ If <code>betweenSegments = TRUE</code> angles are calculated between segments of
 <span class='va'>xy</span><span class='op'>[</span><span class='fl'>6</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>&lt;-</span><span class='fl'>1</span>
   
 <span class='co'>#Draw trajectories</span>
-<span class='fu'>trajectoryPlot</span><span class='op'>(</span><span class='va'>xy</span>, <span class='va'>sites</span>, <span class='va'>surveys</span>, 
+<span class='fu'><a href='trajectoryplots.html'>trajectoryPlot</a></span><span class='op'>(</span><span class='va'>xy</span>, <span class='va'>sites</span>, <span class='va'>surveys</span>, 
                traj.colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"black"</span>,<span class='st'>"red"</span><span class='op'>)</span>, lwd <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </div><div class='img'><img src='trajectories-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>#Distance matrix</span>
@@ -479,7 +420,7 @@ If <code>betweenSegments = TRUE</code> angles are calculated between segments of
 <span class='va'>surveys</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>=</span> <span class='fl'>3</span>
 <span class='va'>surveys</span><span class='op'>[</span><span class='fl'>6</span><span class='op'>]</span> <span class='op'>=</span> <span class='fl'>2</span>
   
-<span class='fu'>trajectoryPlot</span><span class='op'>(</span><span class='va'>xy</span>, <span class='va'>sites</span>, <span class='va'>surveys</span>, 
+<span class='fu'><a href='trajectoryplots.html'>trajectoryPlot</a></span><span class='op'>(</span><span class='va'>xy</span>, <span class='va'>sites</span>, <span class='va'>surveys</span>, 
                traj.colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"black"</span>,<span class='st'>"red"</span><span class='op'>)</span>, lwd <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>   
 </div><div class='img'><img src='trajectories-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>trajectoryLengths</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>dist</a></span><span class='op'>(</span><span class='va'>xy</span><span class='op'>)</span>, <span class='va'>sites</span>, <span class='va'>surveys</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   S1       S2 Trajectory

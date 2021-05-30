@@ -226,45 +226,37 @@
 <p>In this more complex trajectory, some triangles may not obey the triangle inequality (depending on the simulation). This can be inspected using function <code>is.metric</code>:</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectories.html">is.metric</a></span><span class="op">(</span><span class="va">D</span>, tol<span class="op">=</span><span class="fl">0.0000001</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <p>Deviations from a metric space, if they exist, will be small, so that local transformation of triangles will be very small.</p>
 <p>Local transformations are not possible to display trajectories. When we plot the trajectory using function <code>trajectoryPCoA</code> the global transformation of principal coordinates analysis (PCoA) with negative eigenvalue correction is performed. This is fine to display trajectories, but has problems when measuring angular properties, as we will see.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pcoa</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectories.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, selection<span class="op">=</span><span class="fl">1</span>,length<span class="op">=</span><span class="fl">0.1</span>, axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): zero-length
-## arrow is of indeterminate angle and so skipped</code></pre>
 <p><img src="Transformation_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pcoaD</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">pcoa</span><span class="op">$</span><span class="va">points</span><span class="op">)</span></code></pre></div>
 <p>The trajectory has some twists derived from stochasticity in death and recruitment. Let’s now look at the square root of the Bray-Curtis dissimilarity:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sqrtD</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">D</span><span class="op">)</span>
 <span class="va">pcoaSqrt</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectories.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">sqrtD</span>, <span class="va">sites</span>, <span class="va">surveys</span>, selection<span class="op">=</span><span class="fl">1</span>,length<span class="op">=</span><span class="fl">0.1</span>, axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in cmdscale(D2, eig = TRUE, add = TRUE, k = nrow(as.matrix(D2)) - : only
-## 11 of the first 12 eigenvalues are &gt; 0</code></pre>
-<pre><code>## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): zero-length
-## arrow is of indeterminate angle and so skipped</code></pre>
 <p><img src="Transformation_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Finally, we also transform dissimilarities using metric multidimensional scaling (mMDS), provided by package <code>smacof</code>:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">D</span>, ndim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">Sj</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>, type <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span>
 <span class="va">mmdsD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">conf</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectories.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">conf</span>, <span class="va">sites</span>, <span class="va">surveys</span>, selection<span class="op">=</span><span class="fl">1</span>,length<span class="op">=</span><span class="fl">0.1</span>, axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in arrows(xp[niini], yp[niini], xp[nifin], yp[nifin], ...): zero-length
-## arrow is of indeterminate angle and so skipped</code></pre>
 <p><img src="Transformation_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>While the three plots look different, the differences are not striking (besides rotation issues). We can compare the stress of the global solutions:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/stress0.html">stress0</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">pcoaSqrt</span><span class="op">$</span><span class="va">points</span>, type<span class="op">=</span><span class="st">"interval"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.07432914</code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<pre><code>## [1] 0.05518521</code></pre>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/stress0.html">stress0</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">pcoa</span><span class="op">$</span><span class="va">points</span>, type<span class="op">=</span><span class="st">"interval"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.004033267</code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<pre><code>## [1] 0.0150955</code></pre>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/stress0.html">stress0</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">res</span><span class="op">$</span><span class="va">conf</span>, type<span class="op">=</span><span class="st">"interval"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.01024268</code></pre>
+<pre><code>## [1] 0.01724233</code></pre>
 <p>Where we see that the square root leads to the strongest alteration of original dissimilarities. If we calculate geometric properties we are not limited by ordination plots and we can take into account all dimensions.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">anglesD</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectories.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span>
 <span class="va">anglesSqrtD</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectories.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">sqrtD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span>
 <span class="va">anglesPcoaD</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectories.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">pcoaD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span>
@@ -273,34 +265,34 @@
 <span class="va">df</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">anglesD</span>, <span class="va">anglesSqrtD</span>, <span class="va">anglesPcoaD</span>, <span class="va">anglesmmdsD</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"local"</span>, <span class="st">"global.sqrt"</span>, <span class="st">"global.pcoa"</span>, <span class="st">"global.mmds"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">df</span>,<span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>##              S1-S2  S2-S3  S3-S4  S4-S5 S5-S6 S6-S7 S7-S8  S8-S9 S9-S10 S10-S11
-## local       120.00  75.52  90.00  97.18  0.00  7.14  0.00    NaN    NaN   99.59
-## global.sqrt 120.00 101.78 106.78 104.48 90.00 90.11 89.92    NaN    NaN  106.78
-## global.pcoa 120.00  96.14 100.87 104.01 88.13 74.97 82.93 108.88 100.94  107.05
-## global.mmds 126.98  86.26  88.48  95.99 56.99 33.04 45.37 118.03 104.86   95.62
-##             S11-S12  mean   sd  rho
-## local          0.00 55.05 0.90 0.67
-## global.sqrt   90.00 99.96 0.18 0.98
-## global.pcoa   84.48 97.13 0.22 0.98
-## global.mmds   65.26 83.69 0.50 0.88</code></pre>
+<pre><code>##              S1-S2  S2-S3  S3-S4 S4-S5 S5-S6 S6-S7  S7-S8 S8-S9 S9-S10 S10-S11
+## local        75.52  82.82  71.79  0.00  0.00  0.00 104.48  0.00 120.00   99.59
+## global.sqrt 101.78 104.48 100.18 90.00 90.00 90.00 110.70 90.00 120.00  106.78
+## global.pcoa 105.57 109.50 102.63 92.12 98.26 98.26 115.01 99.88 120.00  111.49
+## global.mmds  93.60 100.11  76.69 37.83 14.47 50.31 113.48 71.01 119.88   99.67
+##             S11-S12   mean   sd  rho
+## local          0.00  50.22 0.88 0.68
+## global.sqrt   90.00  99.42 0.17 0.99
+## global.pcoa  103.07 105.06 0.14 0.99
+## global.mmds   13.36  72.92 0.65 0.81</code></pre>
 <p>The first call to <code>trajectoryAngles</code> with matrix <code>D</code> represents the default strategy of transforming triangles locally, which involves the weakest transformation of all and can be taken as reference. Both the square root and PCoA with negative eigenvalue correction induce a strong transformation of trajectory angles. The global solution of metric MDS leads to angles that are more similar to those of the local transformation strategy.</p>
 <p>If we inspect the overall directionality, the global solution of metric MDS provides a value that is again closer to that of local transformation, compared to PCoA and the square root:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectories.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></code></pre></div>
-<pre><code>##         1 
-## 0.8623431</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<pre><code>##        1 
+## 0.848988</code></pre>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectories.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">sqrtD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></code></pre></div>
-<pre><code>##         1 
-## 0.4828534</code></pre>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<pre><code>##        1 
+## 0.481734</code></pre>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectories.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">pcoaD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##         1 
-## 0.6147034</code></pre>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+## 0.5305668</code></pre>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectories.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">mmdsD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##         1 
-## 0.7447056</code></pre>
+## 0.7363335</code></pre>
 </div>
 <div id="conclusions" class="section level2">
 <h2 class="hasAnchor">

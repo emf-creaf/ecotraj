@@ -1,0 +1,21 @@
+Package: ecotraj
+Type: Package
+Title: Ecological Trajectory Analysis
+Version: 0.0.1
+Date: 2021-05-30
+Authors@R: c(
+	person('Miquel', 'De Cáceres', role=c('aut','cre'),
+	email='miquelcaceres@gmail.com'),
+	person('Anthony', 'Sturbois', role = 'aut'))
+Description: A set of functions to perform ecological trajectory analysis [De Caceres et al. (2019): <doi:10.1002/ecm.1350>].
+Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
+Imports: Kendall, circular
+LinkingTo: Rcpp
+License: GPL (>= 2)
+URL: https://emf-creaf.github.io/ecotraj
+LazyLoad: yes
+Encoding: UTF-8
+NeedsCompilation: yes
+RoxygenNote: 7.1.1
+Suggests: knitr, rmarkdown, RColorBrewer, smacof
+VignetteBuilder: utils, knitr

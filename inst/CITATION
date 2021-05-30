@@ -1,0 +1,18 @@
+citHeader("To cite 'vegclust' package in publications use:")
+
+citEntry(entry="Manual",
+         title = "The management of vegetation classifications with fuzzy clustering",
+         author = "Miquel De Caceres, Xavier Font, Francesc Oliva",
+         journal = "Journal of Vegetation Science",
+         year = "2010",
+         url  = "http://sites.google.com/site/miqueldecaceres/",         
+         textVersion = 
+         paste("De Caceres, M., Font, X., Oliva, F. (2010). ", 
+               "The management of vegetation classifications with fuzzy clustering. ",
+               "Journal of Vegetation Science",
+               ", URL http://sites.google.com/site/miqueldecaceres/",
+               sep=""),
+         )
+
+citFooter("Thank you for using 'vegclust'")
+

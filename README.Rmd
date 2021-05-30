@@ -12,9 +12,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.path = "README-")
 
 Package `ecotraj` is a package providing a framework to assist ecologists in the analysis of temporal changes in ecosystems defined on a chosen multivariate space. It is related to the following publications:
 
-* First presentation of the community trajectory analysis framework: De Cáceres et al. (2019) https://doi.org/10.1002/ecm.1350  
+* First presentation of the community trajectory analysis framework: De Cáceres et al. (2019) (https://doi.org/10.1002/ecm.1350).
 
-* Extension of community trajectory analysis: Sturbois et al. (2021) https://doi.org/10.1016/j.ecolmodel.2020.109400
+* Extension of community trajectory analysis: Sturbois et al. (2021) (https://doi.org/10.1016/j.ecolmodel.2020.109400).
 
 ## Package installation
 

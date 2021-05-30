@@ -1,0 +1,14 @@
+destination: "docs/"
+
+home:
+  links:
+  - text: Package website
+    href: https://emf-creaf.github.io/ecotraj
+    
+reference:
+- title: Ecological Trajectory Analysis
+  desc:  Functions for analysing ecosystem trajectories in chosen multivariate spaces
+  contents:
+  - avoca
+  - starts_with("trajectory")
+  - starts_with("segment")

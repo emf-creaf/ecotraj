@@ -1,7 +1,0 @@
-importFrom("Kendall", "MannKendall")
-importFrom("circular", "circular", "mean.circular", "sd.circular", "rho.circular")
-importFrom(Rcpp, evalCpp)
-useDynLib(ecotraj)
-
-# Export all names
-exportPattern(".")

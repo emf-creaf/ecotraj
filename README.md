@@ -9,10 +9,10 @@ a chosen multivariate space. It is related to the following
 publications:
 
 -   First presentation of the community trajectory analysis framework:
-    De Cáceres et al. (2019) <https://doi.org/10.1002/ecm.1350>
+    De Cáceres et al. (2019) (<https://doi.org/10.1002/ecm.1350>).
 
 -   Extension of community trajectory analysis: Sturbois et al. (2021)
-    <https://doi.org/10.1016/j.ecolmodel.2020.109400>
+    (<https://doi.org/10.1016/j.ecolmodel.2020.109400>).
 
 ## Package installation
 

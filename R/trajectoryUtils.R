@@ -31,7 +31,7 @@
 #' 
 #' Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 #' 
-#' @seealso \code{\link{trajectoryPlot}} \code{\link{trajectoryDistances}}
+#' @seealso \code{\link{trajectoryplots}} \code{\link{trajectorymetrics}}
 #' 
 
 #' @rdname trajectoryutils
@@ -90,6 +90,7 @@ centerTrajectories<-function(d, sites, verbose = FALSE) {
 }
 
 #' @rdname trajectoryutils
+#' @param tol Tolerance value for metricity
 is.metric<-function(d, tol=0.0001) {
   return(.ismetricC(as.matrix(d), tol))
 }

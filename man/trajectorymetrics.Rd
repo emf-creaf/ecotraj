@@ -258,7 +258,7 @@ Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and persp
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.
 }
 \seealso{
-\code{\link{trajectoryPlot}}, \code{\link{trajectoryUtils}}
+\code{\link{trajectoryplots}}, \code{\link{trajectoryutils}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

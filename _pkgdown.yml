@@ -6,9 +6,24 @@ home:
     href: https://emf-creaf.github.io/ecotraj
     
 reference:
-- title: Ecological Trajectory Analysis
-  desc:  Functions for analysing ecosystem trajectories in chosen multivariate spaces
+- title: Datasets
+  desc:  Example datasets
   contents:
   - avoca
-  - starts_with("trajectory")
+  
+- title: Trajectory metrics
+  desc:  Set of functions to calculate trajectory metrics
+  contents:
+  - starts_with("trajectoryDistances")
   - starts_with("segment")
+  
+- title: Trajectory plots
+  desc:  Set of plotting functions
+  contents:
+  - starts_with("trajectoryPlot")
+
+- title: Utility functions
+  desc:  Utility functions for trajectory analysis
+  contents:
+  - starts_with("centerTrajectories")
+

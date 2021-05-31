@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Avoca permanent plot dataset — avoca • ecotraj</title>
+<title>Utility functions for Ecological Trajectory Analysis — trajectoryutils • ecotraj</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,13 @@
 
 
 
-<meta property="og:title" content="Avoca permanent plot dataset — avoca" />
-<meta property="og:description" content="Example dataset with data from 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. 
-The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand.  
-Forests plots are almost monospecific, being the mountain beech (Fuscospora cliffortioides) the main dominant tree species. 
-Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys." />
+<meta property="og:title" content="Utility functions for Ecological Trajectory Analysis — trajectoryutils" />
+<meta property="og:description" content="Given a distance matrix between ecosystem states, the set of functions for ETA are:
+Function trajectorySelection allows selecting the submatrix of distances corresponding to a given subset of trajectories.
+Function centerTrajectories shifts all trajectories to the center of the compositional space and returns a modified distance matrix.
+Function is.metric checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).
+
+" />
 
 
 
@@ -121,37 +123,69 @@ Previously forests consisted of largely mature stands, but some of them were aff
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Avoca permanent plot dataset</h1>
+    <h1>Utility functions for Ecological Trajectory Analysis</h1>
     
-    <div class="hidden name"><code>avoca.Rd</code></div>
+    <div class="hidden name"><code>trajectoryutils.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Example dataset with data from 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. 
-The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand.  
-Forests plots are almost monospecific, being the mountain beech (Fuscospora cliffortioides) the main dominant tree species. 
-Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys.</p>
-    </div>
-
-
-
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    
-<ul>
-<li><p>avoca_strat An object of class <code>stratifiedvegdata</code> (see function <code>stratifyvegdata</code> from package 'vegclust') with structural and compositional data.</p></li>
-<li><p>avoca_sites A vector identifying sampled sites of each element in <code>avoca_strat</code>.</p></li>
-<li><p>avoca_surveys A vector identifying surveys of each element in <code>avoca_strat</code>.</p></li>
+    <p>Given a distance matrix between ecosystem states, the set of functions for ETA are:</p><ul>
+<li><p>Function <code>trajectorySelection</code> allows selecting the submatrix of distances corresponding to a given subset of trajectories.</p></li>
+<li><p>Function <code>centerTrajectories</code> shifts all trajectories to the center of the compositional space and returns a modified distance matrix.</p></li>
+<li><p>Function <code>is.metric</code> checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).</p></li>
 </ul>
 
+    </div>
+
+    <pre class="usage"><span class='fu'>trajectorySelection</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>sites</span>, <span class='va'>selection</span><span class='op'>)</span>
+
+<span class='fu'>centerTrajectories</span><span class='op'>(</span><span class='va'>d</span>, <span class='va'>sites</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='fu'>is.metric</span><span class='op'>(</span><span class='va'>d</span>, tol <span class='op'>=</span> <span class='fl'>1e-04</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>d</th>
+      <td><p>A symmetric <code><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></code> or an object of class <code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code> containing the distance values between pairs of community states (see details).</p></td>
+    </tr>
+    <tr>
+      <th>sites</th>
+      <td><p>A vector indicating the site corresponding to each ecosystem state.</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>A character vector of sites, a numeric vector of site indices or logical vector of the same length as <code>sites</code>, indicating a subset of site trajectories to be selected.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Provides console output informing about process (useful for large dataset).</p></td>
+    </tr>
+    <tr>
+      <th>tol</th>
+      <td><p>Tolerance value for metricity</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Function <code>centerTrajectories</code> and <code>trajectorySelection</code> return an object of class <code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Details of calculations are given in De Cáceres et al (2019). 
+Function <code>centerTrajectories</code> performs centering of trajectories using matrix algebra as explained in Anderson (2017).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Allen, R. B., P. J. Bellingham, and S. K. Wiser. 1999. Immediate damage by an earthquake to a temperate montane forest. Ecology 80:708–714.</p>
-<p>Harcombe, P. A., R. B. Allen, J. A. Wardle, and K. H. Platt. 1998. Spatial and temporal patterns in stand structure, biomass, growth and mortality in a monospecific Nothofagus solandri var. cliffortioides (Hook. f.) Poole forest in New Zealand. Journal of Sustainable Forestry 6:313–343.</p>
-<p>Hurst, J. M., R. B. Allen, D. A. Coomes, and R. P. Duncan. 2011. Size-specific tree mortality varies with neighbourhood crowding and disturbance in a montane Nothofagus forest. PLoS ONE 6.</p>
+    <p>De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R &amp; Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.</p>
+<p>Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='trajectoryplots.html'>trajectoryplots</a></code> <code><a href='trajectorymetrics.html'>trajectorymetrics</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).</p>
+    <p>Miquel De Cáceres, CREAF</p>
+<p>Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

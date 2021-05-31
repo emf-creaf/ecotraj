@@ -22,6 +22,8 @@ is.metric(d, tol = 1e-04)
 \item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
 
 \item{verbose}{Provides console output informing about process (useful for large dataset).}
+
+\item{tol}{Tolerance value for metricity}
 }
 \value{
 Function \code{centerTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
@@ -44,7 +46,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 }
 \seealso{
-\code{\link{trajectoryPlot}} \code{\link{trajectoryDistances}}
+\code{\link{trajectoryplots}} \code{\link{trajectorymetrics}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

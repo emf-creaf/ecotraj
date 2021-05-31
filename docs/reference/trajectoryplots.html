@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Trajectory plots — trajectoryplots" />
-<meta property="og:description" content="Set of plotting functions for Ecosystem Trajectory Analysis:" />
+<meta property="og:description" content="Set of plotting functions for Ecological Trajectory Analysis:" />
 
 
 
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Set of plotting functions for Ecosystem Trajectory Analysis:</p>
+    <p>Set of plotting functions for Ecological Trajectory Analysis:</p>
     </div>
 
     <pre class="usage"><span class='fu'>trajectoryPCoA</span><span class='op'>(</span>
@@ -163,6 +163,10 @@
     <tr>
       <th>surveys</th>
       <td><p>A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).</p></td>
+    </tr>
+    <tr>
+      <th>selection</th>
+      <td><p>A character vector of sites, a numeric vector of site indices or logical vector of the same length as <code>sites</code>, indicating a subset of site trajectories to be selected.</p></td>
     </tr>
     <tr>
       <th>traj.colors</th>
@@ -211,7 +215,7 @@ If parameter '<code>add</code>' is set to FALSE and problems of triangle inequal
 <p>Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='trajectories.html'>trajectoryDistances</a></code>, <code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code></p></div>
+    <div class='dont-index'><p><code><a href='trajectorymetrics.html'>trajectorymetrics</a></code>, <code><a href='trajectoryutils.html'>trajectoryutils</a></code>, <code><a href='https://rdrr.io/r/stats/cmdscale.html'>cmdscale</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Miquel De Cáceres, CREAF</p>

@@ -1,6 +1,6 @@
 #' Trajectory plots
 #' 
-#' Set of plotting functions for Ecosystem Trajectory Analysis:
+#' Set of plotting functions for Ecological Trajectory Analysis:
 #' 
 #' \itemize{
 #' \item{Function \code{trajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws trajectories in the ordination scatterplot.}
@@ -15,6 +15,7 @@
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).
 #' @param sites A vector indicating the site corresponding to each community state.
 #' @param surveys A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).
+#' @param selection A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.
 #' 
 #' @details 
 #' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
@@ -38,7 +39,7 @@
 #' 
 #' Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 #' 
-#' @seealso \code{\link{trajectoryDistances}}, \code{\link{cmdscale}}
+#' @seealso \code{\link{trajectorymetrics}}, \code{\link{trajectoryutils}}, \code{\link{cmdscale}}
 #' 
 #' @examples 
 #' #Description of sites and surveys

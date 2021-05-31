@@ -36,6 +36,8 @@ trajectoryPlot(
 
 \item{surveys}{A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).}
 
+\item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
+
 \item{traj.colors}{A vector of colors (one per site). If \code{selection != NULL} the length of the color vector should be equal to the number of sites selected.}
 
 \item{axes}{The pair of principal coordinates to be plotted.}
@@ -50,7 +52,7 @@ trajectoryPlot(
 Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
 }
 \description{
-Set of plotting functions for Ecosystem Trajectory Analysis:
+Set of plotting functions for Ecological Trajectory Analysis:
 }
 \details{
 \itemize{
@@ -105,7 +107,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 }
 \seealso{
-\code{\link{trajectoryDistances}}, \code{\link{cmdscale}}
+\code{\link{trajectorymetrics}}, \code{\link{trajectoryutils}}, \code{\link{cmdscale}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

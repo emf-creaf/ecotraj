@@ -106,7 +106,7 @@
 #' 
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.
 #' 
-#' @seealso \code{\link{trajectoryPlot}}, \code{\link{trajectoryUtils}} 
+#' @seealso \code{\link{trajectoryplots}}, \code{\link{trajectoryutils}} 
 #' 
 #' @examples 
 #' #Description of sites and surveys

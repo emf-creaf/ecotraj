@@ -6,7 +6,7 @@
 #' Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys.
 #' 
 #' \itemize{
-#'  \item avoca_strat An object of class \code{stratifiedvegdata} (see function \code{\link{stratifyvegdata}}) with structural and compositional data.
+#'  \item avoca_strat An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.
 #'  \item avoca_sites A vector identifying sampled sites of each element in \code{avoca_strat}.
 #'  \item avoca_surveys A vector identifying surveys of each element in \code{avoca_strat}.
 #' }

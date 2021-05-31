@@ -24,6 +24,15 @@ from GitHub as follows:
 devtools::install_github("emf-creaf/ecotraj")
 ```
 
+Additionally, users can have help to run package functions directly as
+package vignettes, by forcing their inclusion in installation:
+
+``` r
+devtools::install_github("emf-creaf/ecotraj", 
+                         build_opts = c("--no-resave-data", "--no-manual"),
+                         build_vignettes = TRUE)
+```
+
 ## References
 
 -   De Cáceres, M., Coll, L., Legendre, P., Allen, R.B., Wiser, S.K.,

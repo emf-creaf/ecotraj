@@ -18,12 +18,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction
 
-### 1.1 What is Ecological Trajectory Analysis
-*Ecological Trajectory Analysis* (ETA) is a framework to analyze ecosystem dynamics described as trajectories in a chosen space of ecosystem resemblance. CTA takes trajectories as objects to be analyzed and compared geometrically. The framework was presented for community ecology in De Cáceres M, Coll L, Legendre P, et al (2019) Trajectory analysis in community ecology. Ecol Monogr 89:e01350. https://doi.org/10.1002/ecm.1350. 
+### 1.1 What is Ecological Trajectory Analysis?
+*Ecological Trajectory Analysis* (ETA) is a framework to analyze ecosystem dynamics described as trajectories in a chosen space of ecosystem resemblance. CTA takes trajectories as objects to be analyzed and compared geometrically. The framework was presented for community ecology in:
 
-Given a distance matrix between ecosystem states and vectors defining sites (i.e. sampling units) and surveys (temporal replications), package **ecotraj** offers a set of functions to perform ETA. 
++ De Cáceres M, Coll L, Legendre P, et al (2019) Trajectory analysis in community ecology. Ecol Monographs 89:e01350. https://doi.org/10.1002/ecm.1350. 
 
-### 1.1 About this vignette
+The framework was then extended with new metrics and visualisation modes in:
+
++ Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400. https://doi.org/10.1016/j.ecolmodel.2020.109400
+
+Procedures of trajectory analysis can be applied to data beyond community data tables. For this reason we now call the framework 'Ecological Trajectory Analysis' and provide a package **ecotraj** that offers a set of functions to calculate metrics and produce plots. 
+
+### 1.2 About this vignette
 
 In this vignette you will learn how to conduct ETA using different package functions. 
 
@@ -42,21 +48,21 @@ library(smacof)
 In this section we describe how to study the trajectories of three sites that have been surveyed four times each. We use a small dataset where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily.
 
 ### 2.1 Trajectory data
-To specify community dynamics, we need three data items: 
+To specify ecosystem dynamics, we need three data items: 
 
-a. A set of community states (i.e. coordinates in a space $\Omega$), described using a distance matrix $d$;
-b. A vector specifying the site (i.e. sampling unit) corresponding to each community state; 
-c. A vector specifying the survey (i.e. time point) corresponding to the sampling of each community state. 
+a. A set of ecosystem states (i.e. coordinates in a space $\Omega$), described using a distance matrix $d$;
+b. A vector specifying the site (i.e. sampling unit) corresponding to each ecosystem state; 
+c. A vector specifying the survey (i.e. time point) corresponding to the sampling of each ecosystem state. 
 
 In CTA, sampling units do not need to be surveyed synchronously nor the same number of times. However, in this example we assume all three sites have been surveyed synchronously four times. 
 
-Let us first define the vectors that describe the site and the survey of each community state:
+Let us first define the vectors that describe the site and the survey of each ecosystem state:
 ```{r}
 #Description of sites and surveys
 sites = c(1,1,1,1,2,2,2,2,3,3,3,3)
 surveys=c(1,2,3,4,1,2,3,4,1,2,3,4)
 ```
-We then define a matrix whose coordinates correspond to the set of community states observed. The number of rows in this matrix has to be equal to the length of vectors `sites` and `surveys`. We assume that the community space $\Omega$ has two dimensions:
+We then define a matrix whose coordinates correspond to the set of ecosystem states observed. The number of rows in this matrix has to be equal to the length of vectors `sites` and `surveys`. We assume that the ecosystem space $\Omega$ has two dimensions:
 ```{r}
 #Raw data table
 xy<-matrix(0, nrow=12, ncol=2)
@@ -76,7 +82,7 @@ xy[9:10,2] <- xy[5:6,2]
 xy[11:12,2]<-c(1.25,1.0)
 cbind(sites,surveys,xy)
 ```
-The matrix of Euclidean distances $d$ between community states in $\Omega$ is then:
+The matrix of Euclidean distances $d$ between ecosystem states in $\Omega$ is then:
 ```{r} 
 #Distance matrix
 D = dist(xy)
@@ -109,7 +115,7 @@ legend("topright", col=c("black","red", "blue"),
        legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
 ```
 
-While `trajectoryPCoA` uses PCoA (also known as classical Multidimensional Scaling) to display trajectories, users can display community trajectories using other ordination techniques such as metric Multidimensional Scaling (mMDS; see function *mds* of package **smacof**) or non-metric MDS (nMDS; see function *metaMDS* in package **vegan** or function *isoMDS* in package **MASS**). Function `trajectoryPlot` will help drawing arrows between segments to represent trajectories on the ordination space given by any of these methods. 
+While `trajectoryPCoA` uses PCoA (also known as classical Multidimensional Scaling) to display trajectories, users can display ecosystem trajectories using other ordination techniques such as metric Multidimensional Scaling (mMDS; see function *mds* of package **smacof**) or non-metric MDS (nMDS; see function *metaMDS* in package **vegan** or function *isoMDS* in package **MASS**). Function `trajectoryPlot` will help drawing arrows between segments to represent trajectories on the ordination space given by any of these methods. 
 
 Functions `trajectoryPCoA`and `trajectoryPlot` allow selecting the subset of trajectories to be displayed, so that the representation can focus on particular pathways (see also function `trajectorySelection`).
 
@@ -121,7 +127,7 @@ trajectoryLengths(D, sites, surveys)
 ```
 
 
-In CTA, angles are measured using triplets of time-ordered community states (a pair of consecutive segments is an example of such triplets). As matrix $\Delta$ may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics (see R package `circular`). Function `trajectoryAngles` allows calculating the angles between consecutive segments:
+In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix $\Delta$ may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics (see R package `circular`). Function `trajectoryAngles` allows calculating the angles between consecutive segments:
 
 ```{r} 
 trajectoryAngles(D, sites, surveys)
@@ -129,7 +135,7 @@ trajectoryAngles(D, sites, surveys)
 
 While site '1' follows a straight pathway, angles are > 0 for trajectories of site '2' and '3', denoting the change in direction. In this case, the same information could be obtained by inspecting the previous plots, but in a case where $\Omega$ has many dimensions, the representation will correspond to a reduced (ordination) space and hence, angles and lengths in the plot will not correspond exactly to those of functions `trajectoryLengths` and `trajectoryAngles`, which take into account the complete $\Omega$ space. 
 
-Angles can be calculated not only for all consecutive segments but for all four triplets of ordered community states, whether of consecutive segments or not (i.e., between points 1-2-3, 1-2-4, 1-3-4 and 2-3-4). This is done by specifying `all=TRUE` in `trajectoryAngles`:
+Angles can be calculated not only for all consecutive segments but for all four triplets of ordered ecosystem states, whether of consecutive segments or not (i.e., between points 1-2-3, 1-2-4, 1-3-4 and 2-3-4). This is done by specifying `all=TRUE` in `trajectoryAngles`:
 
 ```{r} 
 trajectoryAngles(D, sites, surveys, all=TRUE)
@@ -137,7 +143,7 @@ trajectoryAngles(D, sites, surveys, all=TRUE)
 
 The *mean resultant length* of circular statistics (column `rho` of the previous result), which takes values between 0 and 1, can be used to assess the degree of homogeneity of angle values and it will take a value of 1 if all angles are the same. This approach, however, uses only angular information and does not take into account the length of segments. 
 
-To measure the overall directionality of a community trajectory (i.e. if the pathway consistently follows the same direction in $\Omega$ ), we recommend using another statistic that is sensitive to both angles and segment lengths and is implemented in function `trajectoryDirectionality`:
+To measure the overall directionality of a ecosystem trajectory (i.e. if the pathway consistently follows the same direction in $\Omega$ ), we recommend using another statistic that is sensitive to both angles and segment lengths and is implemented in function `trajectoryDirectionality`:
 ```{r} 
 trajectoryDirectionality(D, sites, surveys)
 ```  
@@ -145,7 +151,7 @@ trajectoryDirectionality(D, sites, surveys)
 As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. Note that function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality.
 
 ### 2.4 Relative positions within trajectories
-Community states occupy a position within their trajectory that depends on the total pathway length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the community state. Function `trajectoryProjection` allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:
+Ecosystem states occupy a position within their trajectory that depends on the total pathway length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the ecosystem state. Function `trajectoryProjection` allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:
 
 ```{r} 
 trajectoryProjection(D, 1:4, 1:4)
@@ -156,7 +162,7 @@ If we inspect the relative positions of the points in the trajectory of site '2'
 trajectoryProjection(D, 5:8, 5:8)
 ```
 
-Function `trajectoryProjection` can also be used to **project** arbitrary community states onto a given reference trajectory. For example we can study the projection of third state of the trajectory of site '2' (i.e. state 7) onto the trajectory of site '1' (i.e. states 1 to 4), which happens to be in the half of the trajectory:
+Function `trajectoryProjection` can also be used to **project** arbitrary ecosystem states onto a given reference trajectory. For example we can study the projection of third state of the trajectory of site '2' (i.e. state 7) onto the trajectory of site '1' (i.e. states 1 to 4), which happens to be in the half of the trajectory:
 ```{r} 
 trajectoryProjection(D, 7, 1:4)
 ```  

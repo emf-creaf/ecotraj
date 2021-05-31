@@ -1,9 +1,9 @@
-#' Ecological trajectory analysis
+#' Metrics for Ecological Trajectory Analysis
 #' 
-#' Ecological trajectory analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
+#' Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
 #' ETA takes trajectories as objects to be analyzed and compared geometrically. 
 #' 
-#' Given a distance matrix between community states, the set of functions for ETA are:
+#' Given a distance matrix between community states, the set of functions that provide ETA metrics are:
 #' \itemize{
 #' \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and community trajectories, respectively.}
 #' \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
@@ -12,18 +12,14 @@
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryProjection} projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
-#' \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
 #' \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
-#' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
-#' \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
 #' }
 #'  
 #' 
 #' @encoding UTF-8
-#' @name trajectories
+#' @name trajectorymetrics
 #' @aliases segmentDistances trajectoryDistances trajectoryLengths trajectoryLengths2D trajectoryAngles trajectoryAngles2D
 #'          trajectoryProjection trajectoryConvergence trajectoryDirectionality 
-#'          centerTrajectories
 #' 
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).
 #' @param sites A vector indicating the site corresponding to each community state.
@@ -47,7 +43,7 @@
 #' 
 #' @details 
 #' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
-#' The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see function \code{is.metric}). 
+#' The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}). 
 #' All CTA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
 #' If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see CTA vignette). 
 #' If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, CTA functions may provide missing values in some cases where they should not.
@@ -62,8 +58,6 @@
 #' Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. 
 #' If \code{all = TRUE} angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 #' If \code{betweenSegments = TRUE} angles are calculated between segments of trajectory, otherwise, If \code{betweenSegments = FALSE}, angles are calculated considering Y axis as the North (0°).
-#' 
-#' Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
 #' 
 #' @return Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
 #' 
@@ -103,7 +97,6 @@
 #' 
 #' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
 #' 
-#' Function \code{centerTrajectory} returns an object of class \code{\link{dist}}.
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
@@ -113,9 +106,7 @@
 #' 
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.
 #' 
-#' Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
-#' 
-#' @seealso \code{\link{trajectoryPlot}}
+#' @seealso \code{\link{trajectoryPlot}}, \code{\link{trajectoryUtils}} 
 #' 
 #' @examples 
 #' #Description of sites and surveys
@@ -243,7 +234,7 @@ segmentDistances<-function(d, sites, surveys=NULL, distance.type ="directed-segm
               Dinifin=dinifinsegmat))
 }
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symmetrization = "mean" , add=TRUE, verbose=FALSE) {
   distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff"))
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
@@ -392,7 +383,7 @@ trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symm
   return(dtraj)
 }
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param relativeToInitial Flag to indicate that lengths or angles should be calculated with respect to initial survey.
 #' @param all Flag to indicate that lengths or angles are desired for all segments or for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, length or angles are calculated according to relativeToInitial flag.
 trajectoryLengths<-function(d, sites, surveys=NULL, relativeToInitial = FALSE, all=FALSE, verbose= FALSE) {
@@ -486,7 +477,7 @@ rownames(lengths)<-c(siteIDs)
   return(lengths)
 }
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of community states).
 trajectoryLengths2D<-function(xy,sites,surveys, relativeToInitial=FALSE, all=FALSE, verbose = FALSE) {
   
@@ -510,7 +501,7 @@ surveys<-c(xy_temp$surveys)
   return(trajectoryLengths(D,sites,surveys,relativeToInitial = relativeToInitial, all = all, verbose = verbose))
 }
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param all A flag to indicate that angles are desired for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, angles are calculated for consecutive segments only.
 #' @param stats A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)
 trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitial = FALSE, stats = TRUE, add=TRUE, verbose= FALSE) {
@@ -593,7 +584,7 @@ trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitia
   return(angles)
 }
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param betweenSegments Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.
 trajectoryAngles2D<-function(xy, sites, surveys, relativeToInitial=FALSE, betweenSegments=TRUE) {
   
@@ -782,24 +773,7 @@ trajectoryAngles2D<-function(xy, sites, surveys, relativeToInitial=FALSE, betwee
   }
 }
 
-#' @rdname trajectories
-#' @param selection A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.
-trajectorySelection<-function(d, sites, selection) {
-  siteIDs = unique(sites)
-  nsite = length(siteIDs)
-  
-  #Apply site selection
-  if(is.null(selection)) selection = 1:nsite 
-  else {
-    if(is.character(selection)) selection = (siteIDs %in% selection)
-  }
-  selIDs = siteIDs[selection]
-  
-  dsel =as.dist(as.matrix(d)[sites %in% selIDs, sites %in% selIDs])
-  return(dsel)
-}
-
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param target An integer vector of the community states to be projected.
 #' @param trajectory An integer vector of the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
@@ -857,7 +831,7 @@ trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) 
 }
 
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 #' @param symmetric A logical flag to indicate a symmetric convergence comparison of trajectories.
 trajectoryConvergence<-function(d, sites, surveys = NULL, symmetric = FALSE, add=TRUE, verbose = FALSE){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
@@ -923,7 +897,7 @@ trajectoryConvergence<-function(d, sites, surveys = NULL, symmetric = FALSE, add
 }
 
 
-#' @rdname trajectories
+#' @rdname trajectorymetrics
 trajectoryDirectionality<-function(d, sites, surveys = NULL, add=TRUE, verbose = FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -970,46 +944,4 @@ trajectoryDirectionality<-function(d, sites, surveys = NULL, add=TRUE, verbose =
     }
   }
   return(dir)
-}
-
-#' @rdname trajectories
-centerTrajectories<-function(d, sites, verbose = FALSE) {
-  if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
-
-  Dmat <-as.matrix(d)
-  
-  # Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
-  Amat <- (-0.5)*(Dmat^2)
-  n <- nrow(Dmat)
-  #Identity matrix  
-  I <- diag(n)
-  #Centering matrix
-  One <- matrix(1, n, n)
-  Cmat <- I - (One/n)
-  #Gower matrix
-  G = Cmat %*% Amat %*% Cmat
-  #model matrix
-  df <- data.frame(a = factor(sites))
-  M <- model.matrix(~a,df, contrasts = list(a = "contr.helmert"))
-  #Projection matrix
-  H <- M%*%MASS::ginv(t(M)%*%M)%*%t(M)
-  #Residual G matrix
-  R <- (I-H)%*%G%*%(I-H)
-  #Backtransform to distances
-  dcent<-matrix(0,n,n)
-  for(i in 1:n) {
-    for(j in i:n) {
-      dsq <- (R[i,i]-2*R[i,j]+R[j,j])
-      if(dsq > 0) {
-        dcent[i,j] = sqrt(dsq) #truncate negative squared distances
-        dcent[j,i] = dcent[i,j]
-      }
-    }
-  }
-  return(as.dist(dcent))
-}
-
-#' @rdname trajectories
-is.metric<-function(d, tol=0.0001) {
-  return(.ismetricC(as.matrix(d), tol))
 }

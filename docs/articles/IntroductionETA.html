@@ -108,28 +108,10 @@
 <h3 class="hasAnchor">
 <a href="#about-this-vignette" class="anchor"></a>1.2 About this vignette</h3>
 <p>In this vignette you will learn how to conduct ETA using different package functions.</p>
-<p>First of all, we load <code>ecotraj</code> and other libraries needed in this document:</p>
+<p>First of all, we load <code>ecotraj</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://emf-creaf.github.io/ecotraj">ecotraj</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: Rcpp</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">smacof</span><span class="op">)</span></code></pre></div>
-<pre><code>## Loading required package: plotrix</code></pre>
-<pre><code>## Loading required package: colorspace</code></pre>
-<pre><code>## Loading required package: e1071</code></pre>
-<pre><code>## Registered S3 methods overwritten by 'car':
-##   method                          from
-##   influence.merMod                lme4
-##   cooks.distance.influence.merMod lme4
-##   dfbeta.influence.merMod         lme4
-##   dfbetas.influence.merMod        lme4</code></pre>
-<pre><code>## 
-## Attaching package: 'smacof'</code></pre>
-<pre><code>## The following object is masked from 'package:base':
-## 
-##     transform</code></pre>
 </div>
 </div>
 <div id="simple-example" class="section level2">
@@ -147,12 +129,12 @@
 </ol>
 <p>In CTA, sampling units do not need to be surveyed synchronously nor the same number of times. However, in this example we assume all three sites have been surveyed synchronously four times.</p>
 <p>Let us first define the vectors that describe the site and the survey of each ecosystem state:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Description of sites and surveys</span>
 <span class="va">sites</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span>
 <span class="va">surveys</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>We then define a matrix whose coordinates correspond to the set of ecosystem states observed. The number of rows in this matrix has to be equal to the length of vectors <code>sites</code> and <code>surveys</code>. We assume that the ecosystem space <span class="math inline">\(\Omega\)</span> has two dimensions:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Raw data table</span>
 <span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">xy</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span>
@@ -184,7 +166,7 @@
 ## [11,]     3       3 1.00 1.25
 ## [12,]     3       4 1.50 1.00</code></pre>
 <p>The matrix of Euclidean distances <span class="math inline">\(d\)</span> between ecosystem states in <span class="math inline">\(\Omega\)</span> is then:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Distance matrix</span>
 <span class="va">D</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>
 <span class="va">D</span></code></pre></div>
@@ -218,7 +200,7 @@
 <h3 class="hasAnchor">
 <a href="#displaying-trajectories" class="anchor"></a>2.2 Displaying trajectories</h3>
 <p>To begin our analysis of the three trajectories, we display them in an ordination space, using function <code>trajectoryPCoA</code>. Since <span class="math inline">\(\Omega\)</span> has only two dimensions in this example, the Principal Coordinates Analysis (PCoA) on <span class="math inline">\(d\)</span> displays the complete space:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,
                survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
@@ -227,7 +209,7 @@
 <p><img src="IntroductionETA_files/figure-html/pcoa-1.png" width="384" style="display: block; margin: auto;"></p>
 <p>While trajectory of site ‘1’ (black arrows) is made of three segments of the same length and direction, trajectory of site ‘2’ (red arrows) has a second and third segments that bend and are shorter than that of the segond segment of site ‘1’. Trajectory of site ‘3’ includes a stronger change in direction and shorter segments.</p>
 <p>As this example has two dimensions and we used Euclidean distance, the same plot (albeit rotated) can be straightforwardly obtained using matrix <code>xy</code> and function <code>trajectoryPlot</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,
                survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
@@ -241,14 +223,14 @@
 <h3 class="hasAnchor">
 <a href="#trajectory-lengths-angles-and-overall-directionality" class="anchor"></a>2.3 Trajectory lengths, angles and overall directionality</h3>
 <p>One may be interested in studying the geometric properties of particular trajectories. For example, one can obtain the length of trajectory segments and the total pathway length using function <code>trajectoryLengths</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##   S1       S2        S3 Trajectory
 ## 1  1 1.000000 1.0000000   3.000000
 ## 2  1 0.559017 0.7071068   2.266124
 ## 3  1 0.559017 0.5590170   2.118034</code></pre>
 <p>In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix <span class="math inline">\(\Delta\)</span> may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics (see R package <code>circular</code>). Function <code>trajectoryAngles</code> allows calculating the angles between consecutive segments:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##      S1-S2    S2-S3     mean         sd       rho
 ## 1  0.00000  0.00000  0.00000 0.00000000 1.0000000
@@ -256,7 +238,7 @@
 ## 3 63.43495 53.13010 58.28253 0.08998746 0.9959593</code></pre>
 <p>While site ‘1’ follows a straight pathway, angles are &gt; 0 for trajectories of site ‘2’ and ‘3’, denoting the change in direction. In this case, the same information could be obtained by inspecting the previous plots, but in a case where <span class="math inline">\(\Omega\)</span> has many dimensions, the representation will correspond to a reduced (ordination) space and hence, angles and lengths in the plot will not correspond exactly to those of functions <code>trajectoryLengths</code> and <code>trajectoryAngles</code>, which take into account the complete <span class="math inline">\(\Omega\)</span> space.</p>
 <p>Angles can be calculated not only for all consecutive segments but for all four triplets of ordered ecosystem states, whether of consecutive segments or not (i.e., between points 1-2-3, 1-2-4, 1-3-4 and 2-3-4). This is done by specifying <code>all=TRUE</code> in <code>trajectoryAngles</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>##         A1      A2       A3       A4     mean        sd       rho
 ## 1  0.00000  0.0000  0.00000  0.00000  0.00000 0.0000000 1.0000000
@@ -264,7 +246,7 @@
 ## 3 63.43495 90.0000 94.76364 53.13010 75.36015 0.3078934 0.9537066</code></pre>
 <p>The <em>mean resultant length</em> of circular statistics (column <code>rho</code> of the previous result), which takes values between 0 and 1, can be used to assess the degree of homogeneity of angle values and it will take a value of 1 if all angles are the same. This approach, however, uses only angular information and does not take into account the length of segments.</p>
 <p>To measure the overall directionality of a ecosystem trajectory (i.e. if the pathway consistently follows the same direction in <span class="math inline">\(\Omega\)</span> ), we recommend using another statistic that is sensitive to both angles and segment lengths and is implemented in function <code>trajectoryDirectionality</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##         1         2         3 
 ## 1.0000000 0.8274026 0.5620859</code></pre>
@@ -274,7 +256,7 @@
 <h3 class="hasAnchor">
 <a href="#relative-positions-within-trajectories" class="anchor"></a>2.4 Relative positions within trajectories</h3>
 <p>Ecosystem states occupy a position within their trajectory that depends on the total pathway length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the ecosystem state. Function <code>trajectoryProjection</code> allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryProjection</a></span><span class="op">(</span><span class="va">D</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>##   distanceToTrajectory segment relativePosition
 ## 1                    0       1        0.0000000
@@ -282,7 +264,7 @@
 ## 3                    0       2        0.6666667
 ## 4                    0       3        1.0000000</code></pre>
 <p>If we inspect the relative positions of the points in the trajectory of site ‘2’, we find than the second and third segments have relative positions larger than 1/3 and 2/3, respectively, because the second and third segments are shorter:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryProjection</a></span><span class="op">(</span><span class="va">D</span>, <span class="fl">5</span><span class="op">:</span><span class="fl">8</span>, <span class="fl">5</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span></code></pre></div>
 <pre><code>##   distanceToTrajectory segment relativePosition
 ## 5                    0       1        0.0000000
@@ -290,12 +272,12 @@
 ## 7                    0       2        0.6879664
 ## 8                   NA      NA               NA</code></pre>
 <p>Function <code>trajectoryProjection</code> can also be used to <strong>project</strong> arbitrary ecosystem states onto a given reference trajectory. For example we can study the projection of third state of the trajectory of site ‘2’ (i.e. state 7) onto the trajectory of site ‘1’ (i.e. states 1 to 4), which happens to be in the half of the trajectory:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryProjection</a></span><span class="op">(</span><span class="va">D</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>##   distanceToTrajectory segment relativePosition
 ## 7                  0.5       2              0.5</code></pre>
 <p>If we project the points of the trajectory of site ‘3’ onto the trajectory of site ‘1’ we see how the curved pathway of site ‘3’ projects its fourth point to the same relative position as its second point.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryProjection</a></span><span class="op">(</span><span class="va">D</span>, <span class="fl">9</span><span class="op">:</span><span class="fl">12</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <pre><code>##    distanceToTrajectory segment relativePosition
 ## 9                   0.5       1    -3.700743e-17
@@ -307,7 +289,7 @@
 <h3 class="hasAnchor">
 <a href="#trajectory-convergence" class="anchor"></a>2.5 Trajectory convergence</h3>
 <p>When trajectories have been sampled the same number of times, one can study their symmetric convergence or divergence (see Fig. 3a of De Cáceres et al. 2019). Function <code>trajectoryConvergence</code> allows performing tests of convergence based on the trend analysis of the sequences of distances between points of the two trajectories (i.e. first-first, second-second, …):</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryConvergence</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, symmetric <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## $tau
 ##           1         2         3
@@ -321,7 +303,7 @@
 ## 2 0.1485617        NA 0.1485617
 ## 3 0.1485617 0.1485617        NA</code></pre>
 <p>The function performs the Mann-Whitney trend test. Values of the statistic (‘tau’) larger than 0 correspond to trajectories that are diverging, whereas values lower than 0 correspond to trajectories that are converging. By setting <code>symmetric = FALSE</code> the convergence test becomes asymmetric (see Figs. 3b and 3c of De Cáceres et al. 2019). In this case the sequence of distances <em>between every point of one trajectory and the other</em>:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryConvergence</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, symmetric <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## WARNING: Error exit, tauk2. IFAULT =  12</code></pre>
 <pre><code>## $tau
@@ -341,7 +323,7 @@
 <h3 class="hasAnchor">
 <a href="#distances-between-segments-and-trajectories" class="anchor"></a>2.6 Distances between segments and trajectories</h3>
 <p>To start comparing trajectories between sites (i.e. between sampling units), one important step is the calculation of distances between directed segments (see Fig. 4 of De Cáceres et al. 2019), which can be obtained by calling function <code>segmentDistances</code>:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Ds</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectorymetrics.html">segmentDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Dseg</span>
 <span class="va">Ds</span></code></pre></div>
 <pre><code>##           1[1-2]    1[2-3]    1[3-4]    2[1-2]    2[2-3]    2[3-4]    3[1-2]
@@ -364,18 +346,25 @@
 ## 3[3-4] 0.5590170</code></pre>
 <p>Distances between segments are affected by differences in both <em>position</em>, <em>size</em> and <em>direction</em>. Hence, among the six segments of this example, the distance is maximum between the last segment of trajectory ‘1’ (named <code>1[3-4]</code>) and the first segment of trajectory ‘3’ (named <code>3[1-2]</code>).</p>
 <p>One can display distances between segments in two dimensions using mMDS.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mMDS</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">Ds</span><span class="op">)</span>
-<span class="va">mMDS</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mMDS</span> <span class="op">=</span> <span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">Ds</span><span class="op">)</span></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by 'car':
+##   method                          from
+##   influence.merMod                lme4
+##   cooks.distance.influence.merMod lme4
+##   dfbeta.influence.merMod         lme4
+##   dfbetas.influence.merMod        lme4</code></pre>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mMDS</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## mds(delta = Ds)
+## smacof::mds(delta = Ds)
 ## 
 ## Model: Symmetric SMACOF 
 ## Number of objects: 9 
 ## Stress-1 value: 0.062 
 ## Number of iterations: 15</code></pre>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">xret</span> <span class="op">=</span> <span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">xret</span>, xlab<span class="op">=</span><span class="st">"axis 1"</span>, ylab <span class="op">=</span> <span class="st">"axis 2"</span>, asp<span class="op">=</span><span class="fl">1</span>, pch<span class="op">=</span><span class="fl">21</span>,
@@ -385,18 +374,18 @@
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, pt.bg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>,<span class="st">"blue"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Trajectory 1"</span>, <span class="st">"Trajectory 2"</span>, <span class="st">"Trajectory 3"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Distances between segments are internally calculated when comparing whole trajectories using function <code>trajectoryDistances</code>. Here we show the dissimilarity between the two trajectories as assessed using either the <em>Hausdorff</em> distance (equal to the maximum distance between directed segments; see eq. 8 in De Cáceres et al. 2019) or the <em>directed segment path distance</em> (an average of distances between segments; see eq. 13 in De Cáceres et al. 2019):</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"Hausdorff"</span><span class="op">)</span></code></pre></div>
 <pre><code>##          1        2
 ## 2 2.015564         
 ## 3 2.061553 1.500000</code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></code></pre></div>
 <pre><code>##           1         2
 ## 2 0.7214045          
 ## 3 1.1345910 0.5714490</code></pre>
 <p>DSPD is a symmetrized distance. To calculate non-symmetric distances one uses (see eq. 11 in De Cáceres et al. 2019):</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>, symmetrization <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <pre><code>##           1         2         3
 ## 1 0.0000000 0.7904401 1.2101651
@@ -408,119 +397,59 @@
 <h2 class="hasAnchor">
 <a href="#structural-dynamics-in-permanent-plots" class="anchor"></a>3. Structural dynamics in permanent plots</h2>
 <p>In this example we analyze the dynamics of 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019). Forests plots are almost monospecific, being the mountain beech (<em>Fuscospora cliffortioides</em>) the main dominant tree species. Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys. We begin our example by loading the data set, which includes 72 plot observations:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"avoca"</span><span class="op">)</span></code></pre></div>
 <p>Community data is in form of an object <code>stratifiedvegdata</code>. To account for differences in tree diameter, while emphasizing regeneration, the data contains individual counts to represent tree abundance and trees are classified in 19 quadratic diameter bins (in cm): {(2.25, 4], (4, 6.25], (6.25, 9], … (110.25, 121]}. The data set also includes vectors <code>avoca_surveys</code> and <code>avoca_sites</code> that indicate the survey and forest plot corresponding to each forest state.</p>
 <p>Before starting community trajectory analysis, we have to use function <code>vegdiststruct</code> from package <strong>vegclust</strong> to calculate distances between forest plot states in terms of structure and composition (see De Cáceres M, Legendre P, He F (2013) Dissimilarity measurements and the size structure of ecological communities. Methods Ecol Evol 4:1167–1177. <a href="https://doi.org/10.1111/2041-210X.12116" class="uri">https://doi.org/10.1111/2041-210X.12116</a>):</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">vegclust</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'vegclust'</code></pre>
-<pre><code>## The following objects are masked from 'package:ecotraj':
-## 
-##     .angleConsecutiveC, .distanceToSegmentC, .ismetricC, .k2triangleC,
-##     .projectionC, .triangleinequalityC, .twoSegmentDistanceC,
-##     centerTrajectories, is.metric, segmentDistances, trajectoryAngles,
-##     trajectoryConvergence, trajectoryDirectionality,
-##     trajectoryDistances, trajectoryLengths, trajectoryPCoA,
-##     trajectoryPlot, trajectoryProjection, trajectorySelection</code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">avoca_D_man</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegclust/man/vegdiststruct.html">vegdiststruct</a></span><span class="op">(</span><span class="va">avoca_strat</span>, method<span class="op">=</span><span class="st">"manhattan"</span>, transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">avoca_D_man</span> <span class="op">=</span> <span class="fu">vegclust</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegclust/man/vegdiststruct.html">vegdiststruct</a></span><span class="op">(</span><span class="va">avoca_strat</span>, method<span class="op">=</span><span class="st">"manhattan"</span>, transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>Distances in <code>avoca_D_man</code> are calculated using the Manhattan metric.</p>
 <div id="display-trajectories-in-pcoa" class="section level3">
 <h3 class="hasAnchor">
 <a href="#display-trajectories-in-pcoa" class="anchor"></a>3.1 Display trajectories in PCoA</h3>
 <p>The distance matrix <code>avoca_D_man</code> conforms our definition of <span class="math inline">\(\Omega\)</span>. We use <code>trajectoryPCoA</code> to display the relations between forest plot states in this space and to draw the trajectory of each plot:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,
-               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, 
+               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, 
                axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/avoca_pcoa-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Note that in this case, the full <span class="math inline">\(\Omega\)</span> includes more than two dimensions, and PCoA is representing 43% of total variance (correction for negative eigenvalues is included in the call to <code>cmdscale</code> from <code>trajectoryPCoA</code>), so one has to be careful when interpreting trajectories visually.</p>
 <p>Another option is to use mMDS to represent trajectories, which in this case produces a similar result:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mMDS</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">avoca_D_man</span><span class="op">)</span>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mMDS</span> <span class="op">=</span> <span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">avoca_D_man</span><span class="op">)</span>
 <span class="va">mMDS</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## mds(delta = avoca_D_man)
+## smacof::mds(delta = avoca_D_man)
 ## 
 ## Model: Symmetric SMACOF 
 ## Number of objects: 72 
 ## Stress-1 value: 0.114 
 ## Number of iterations: 49</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,
-               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, 
+               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, 
                axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/avoca_mmds-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>One can inspect specific trajectories using argument <code>selection</code> in function <code>trajectoryPCoA</code>. This allows getting a better view of particular trajectories, here that of forest plot ‘3’:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,
                selection<span class="op">=</span> <span class="fl">3</span>,
-               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter</code></pre>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
+               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/trajectory_3-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>In the right hand, we added a representation of the change in the mountain beech tree diameter distribution through time for trajectory of forest plot ‘3’. The dynamics of this plot include mostly growth, which results in individuals moving from one diameter class to the other. The whole trajectory looks mostly directional. Let’s now inspect the trajectory of forest plot ‘4’:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,
                selection<span class="op">=</span> <span class="fl">4</span>,
-               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter
-
-## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): "survey.labels"
-## is not a graphical parameter</code></pre>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
+               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/trajectory_4-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>This second trajectory is less straight and seems to include a turn by the end of the sampling period, corresponding to the recruitment of new saplings.</p>
 </div>
@@ -528,7 +457,7 @@
 <h3 class="hasAnchor">
 <a href="#trajectory-lengths-angles-and-overall-directionality-1" class="anchor"></a>3.2 Trajectory lengths, angles and overall directionality</h3>
 <p>While trajectory lengths and angles can be inspected visually in ordination diagrams, it is better to calculate them using the full <span class="math inline">\(\Omega\)</span> space (i.e., from matrix <code>avoca_D_man</code>). Using function <code>trajectoryLengths</code> we can see that the trajectory of forest plot ‘4’ is lengthier than that of plot ‘3’, mostly because includes a lengthier last segment (i.e. the recruitment of new individuals):</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span></code></pre></div>
 <pre><code>##          S1        S2        S3        S4        S5        S6        S7
 ## 1 1.2173214 1.5911988 1.0976965 2.1173501 0.5238760 1.5863283 1.5750365
@@ -549,7 +478,7 @@
 ## 7 1.7518489   8.113223
 ## 8 1.5107357  10.681940</code></pre>
 <p>If we calculate the angles between consecutive segments (using function <code>trajectoryLengths</code>) we see that indeed the trajectory of ‘3’ is rather directional, but the angles of trajectory of ‘4’ are larger, on aveerage:</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avoca_ang</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span>
 <span class="va">avoca_ang</span></code></pre></div>
 <pre><code>##       S1-S2        S2-S3        S3-S4     S4-S5     S5-S6     S6-S7
@@ -571,13 +500,13 @@
 ## 7 1.207418e-06 49.96352 0.6562139 0.8062928
 ## 8 1.207418e-06 66.68343 1.1601974 0.5101610</code></pre>
 <p>By calling function <code>trajectoryDirectionality</code> we can confirm that the trajectory for site ‘4’ is less straight than that of site ‘3’:</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avoca_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span>
 <span class="va">avoca_dir</span></code></pre></div>
 <pre><code>##         1         2         3         4         5         6         7         8 
 ## 0.6781369 0.6736490 0.8651467 0.5122482 0.6677116 0.7058465 0.7391775 0.5254225</code></pre>
 <p>The following code displays the relationship between the statistic in <code>trajectoryDirectionality</code> and the mean resultant vector length that uses angular information only and assesses the constancy of angle values:</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avoca_rho</span> <span class="op">=</span> <span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">rho</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">avoca_rho</span>, <span class="va">avoca_dir</span>, xlab <span class="op">=</span> <span class="st">"rho(T)"</span>, ylab <span class="op">=</span> <span class="st">"dir(T)"</span>, type<span class="op">=</span><span class="st">"n"</span><span class="op">)</span>
@@ -597,24 +526,24 @@
 ## 7 4.024 3.291 4.365 4.993 4.389 6.205      
 ## 8 9.797 9.747 5.591 4.611 6.383 5.043 6.949</code></pre>
 <p>The closest trajectories are those of plots ‘1’ and ‘2’. They looked rather close in <em>position</em> in the PCoA ordination of <span class="math inline">\(\Omega\)</span> with all trajectories, so probably it is position, rather than <em>shape</em> which has influenced this low value. The next pair of similar trajectories are those of the ‘3’-‘5’ pair. We can again use mMDS to produce an ordination of resemblances between trajectories:</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mMDS</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">avoca_D_traj_man</span><span class="op">)</span>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mMDS</span><span class="op">&lt;-</span><span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html">mds</a></span><span class="op">(</span><span class="va">avoca_D_traj_man</span><span class="op">)</span>
 <span class="va">mMDS</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## mds(delta = avoca_D_traj_man)
+## smacof::mds(delta = avoca_D_traj_man)
 ## 
 ## Model: Symmetric SMACOF 
 ## Number of objects: 8 
 ## Stress-1 value: 0.091 
 ## Number of iterations: 25</code></pre>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">&lt;-</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
 <span class="va">y</span><span class="op">&lt;-</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, type<span class="op">=</span><span class="st">"p"</span>, asp<span class="op">=</span><span class="fl">1</span>, xlab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Axis 1"</span><span class="op">)</span>, 
      ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Axis 2"</span><span class="op">)</span>, col<span class="op">=</span><span class="st">"black"</span>,
-     bg<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span><span class="op">)</span>
+     bg<span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, labels<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, pos<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/avoca_DT_PCoA-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Distances between trajectories can be calculated after centering them (i.e. after bringing all trajectories to the center of the <span class="math inline">\(\Omega\)</span> space). This is done using function <code>centerTrajectories</code>, which returns a new dissimilarity matrix. Centering removes differences in <em>position</em> between trajectories, which is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. We do no illustrate centering here, because in is not interesting for this particular example.</p>

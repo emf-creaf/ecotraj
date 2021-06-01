@@ -25,8 +25,6 @@ Some dissimilarity coefficients that are popular in community ecology, such as t
 
 ```{r load libraries, echo = T}
 library(ecotraj)
-library(smacof)
-library(MASS)
 ```
 ## 2. Effect of square root on a simple directional trajectory
 Here, we use an example of a single synthetic community to illustrate the effect of square root transformation on a community trajectory. We begin by defining the species data of the trajectory itself. The dataset consists of four rows (i.e. surveys) and four columns (species). The dynamics in this example consist in an constant increase in the number of individuals of the first species and a corresponding decrease of the others, while keeping a total abundance of 100 individuals:  
@@ -153,7 +151,7 @@ pcoaSqrt = trajectoryPCoA(sqrtD, sites, surveys, selection=1,length=0.1, axes=c(
 Finally, we also transform dissimilarities using metric multidimensional scaling (mMDS), provided by package `smacof`:
 
 ```{r, echo=TRUE, fig = TRUE, fig.height=5, fig.width=6, fig.align="center"}
-res <- mds(D, ndim = length(Sj)-1, type = "interval")
+res <- smacof::mds(D, ndim = length(Sj)-1, type = "interval")
 mmdsD <- dist(res$conf)
 trajectoryPlot(res$conf, sites, surveys, selection=1,length=0.1, axes=c(1,2), survey.labels = T)
 ```
@@ -161,9 +159,9 @@ trajectoryPlot(res$conf, sites, surveys, selection=1,length=0.1, axes=c(1,2), su
 
 While the three plots look different, the differences are not striking (besides rotation issues). We can compare the stress of the global solutions:
 ```{r}
-stress0(D,pcoaSqrt$points, type="interval")
-stress0(D,pcoa$points, type="interval")
-stress0(D,res$conf, type="interval")
+smacof::stress0(D,pcoaSqrt$points, type="interval")
+smacof::stress0(D,pcoa$points, type="interval")
+smacof::stress0(D,res$conf, type="interval")
 ```
 
 Where we see that the square root leads to the strongest alteration of original dissimilarities. If we calculate geometric properties we are not limited by ordination plots and we can take into account all dimensions.

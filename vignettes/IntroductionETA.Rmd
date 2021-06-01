@@ -33,13 +33,10 @@ Procedures of trajectory analysis can be applied to data beyond community data t
 
 In this vignette you will learn how to conduct ETA using different package functions. 
 
-First of all, we load `ecotraj` and other libraries needed in this document:
+First of all, we load `ecotraj`:
 
 ```{r load libraries, echo = T}
 library(ecotraj)
-library(RColorBrewer)
-library(MASS)
-library(smacof)
 ```
 
 
@@ -199,7 +196,7 @@ Distances between segments are affected by differences in both *position*, *size
 
 One can display distances between segments in two dimensions using mMDS.
 ```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-mMDS = mds(Ds)
+mMDS = smacof::mds(Ds)
 mMDS
 xret = mMDS$conf
 par(mar=c(4,4,1,1))
@@ -235,8 +232,7 @@ Community data is in form of an object `stratifiedvegdata`. To account for diffe
 
 Before starting community trajectory analysis, we have to use function `vegdiststruct` from package **vegclust** to calculate distances between forest plot states in terms of structure and composition (see De Cáceres M, Legendre P, He F (2013) Dissimilarity measurements and the size structure of ecological communities. Methods Ecol Evol 4:1167–1177. https://doi.org/10.1111/2041-210X.12116):
 ```{r distance, echo=TRUE}
-library(vegclust)
-avoca_D_man = vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
+avoca_D_man = vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
 ```
 
 Distances in `avoca_D_man` are calculated using the Manhattan metric. 
@@ -248,9 +244,9 @@ The distance matrix `avoca_D_man` conforms our definition of $\Omega$. We use `t
 ```{r avoca_pcoa, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 par(mar=c(4,4,1,1))
 trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
-               traj.colors = brewer.pal(8,"Accent"), 
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
-legend("topright", bty="n", legend = 1:8, col = brewer.pal(8,"Accent"), lwd=2)
+legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
 ```
 
 Note that in this case, the full $\Omega$ includes more than two dimensions, and PCoA is representing 43% of total variance (correction for negative eigenvalues is included in the call to `cmdscale` from `trajectoryPCoA`), so one has to be careful when interpreting trajectories visually.
@@ -258,13 +254,13 @@ Note that in this case, the full $\Omega$ includes more than two dimensions, and
 Another option is to use mMDS to represent trajectories, which in this case produces a similar result:
 
 ```{r avoca_mmds, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-mMDS = mds(avoca_D_man)
+mMDS = smacof::mds(avoca_D_man)
 mMDS
 par(mar=c(4,4,1,1))
 trajectoryPlot(mMDS$conf,  avoca_sites, avoca_surveys,
-               traj.colors = brewer.pal(8,"Accent"), 
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
-legend("topright", bty="n", legend = 1:8, col = brewer.pal(8,"Accent"), lwd=2)
+legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
 
 ```
 
@@ -371,14 +367,14 @@ print(round(avoca_D_traj_man,3))
 The closest trajectories are those of plots '1' and '2'. They looked rather close in *position* in the PCoA ordination of $\Omega$ with all trajectories, so probably it is position, rather than *shape* which has influenced this low value. The next pair of similar trajectories are those of the '3'-'5' pair. We can again use mMDS to produce an ordination of resemblances between trajectories:
 
 ```{r avoca_DT_PCoA, echo=TRUE, fig = TRUE, fig.height=5, fig.width=5, fig.align="center"}
-mMDS<-mds(avoca_D_traj_man)
+mMDS<-smacof::mds(avoca_D_traj_man)
 mMDS
 x<-mMDS$conf[,1]
 y<-mMDS$conf[,2]
 par(mar=c(4,4,1,1))
 plot(x,y, type="p", asp=1, xlab=paste0("Axis 1"), 
      ylab=paste0("Axis 2"), col="black",
-     bg= brewer.pal(8,"Accent"), pch=21)
+     bg= RColorBrewer::brewer.pal(8,"Accent"), pch=21)
 text(x,y, labels=1:8, pos=1)
 ```
 

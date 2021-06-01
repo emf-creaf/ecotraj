@@ -9,13 +9,13 @@ Authors@R: c(
 	person('Anthony', 'Sturbois', role = 'aut'))
 Description: A set of functions to perform ecological trajectory analysis [De Caceres et al. (2019): <doi:10.1002/ecm.1350>].
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
-Imports: Kendall, circular
+Imports: Kendall, circular, MASS
 LinkingTo: Rcpp
 License: GPL (>= 2)
-URL: https://emf-creaf.github.io/ecotraj
+URL: https://emf-creaf.github.io/ecotraj/
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
 RoxygenNote: 7.1.1
-Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof
+Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan
 VignetteBuilder: utils, knitr

@@ -1,4 +1,5 @@
 importFrom("Kendall", "MannKendall")
+importFrom("MASS", "ginv")
 importFrom("circular", "circular", "mean.circular", "sd.circular", "rho.circular")
 importFrom("graphics", "arrows", "text")
 importFrom("stats", "as.dist", "cmdscale", "dist", "model.matrix")

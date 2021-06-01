@@ -203,15 +203,15 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>d</th>
-      <td><p>A symmetric <code><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></code> or an object of class <code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code> containing the distance values between pairs of community states (see details).</p></td>
+      <td><p>A symmetric <code><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></code> or an object of class <code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code> containing the distance values between pairs of ecosystem states (see details).</p></td>
     </tr>
     <tr>
       <th>sites</th>
-      <td><p>A vector indicating the site corresponding to each community state.</p></td>
+      <td><p>A vector indicating the site corresponding to each ecosystem state.</p></td>
     </tr>
     <tr>
       <th>surveys</th>
-      <td><p>A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).</p></td>
+      <td><p>A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).</p></td>
     </tr>
     <tr>
       <th>distance.type</th>
@@ -247,7 +247,7 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
     </tr>
     <tr>
       <th>xy</th>
-      <td><p>Matrix with 2D coordinates in a Cartesian space (typically an ordination of community states).</p></td>
+      <td><p>Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).</p></td>
     </tr>
     <tr>
       <th>stats</th>
@@ -259,7 +259,7 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
     </tr>
     <tr>
       <th>target</th>
-      <td><p>An integer vector of the community states to be projected.</p></td>
+      <td><p>An integer vector of the ecosystem states to be projected.</p></td>
     </tr>
     <tr>
       <th>trajectory</th>
@@ -308,8 +308,8 @@ If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 <p>Function <code>trajectoryDirectionality</code> returns a vector with directionality values (one per trajectory).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Given a distance matrix between community states, the set of functions that provide ETA metrics are:</p><ul>
-<li><p>Functions <code>segmentDistances</code> and <code>trajectoryDistances</code> calculate the distance between pairs of directed segments and community trajectories, respectively.</p></li>
+    <p>Given a distance matrix between ecosystem states, the set of functions that provide ETA metrics are:</p><ul>
+<li><p>Functions <code>segmentDistances</code> and <code>trajectoryDistances</code> calculate the distance between pairs of directed segments and ecosystem trajectories, respectively.</p></li>
 <li><p>Function <code>trajectoryLengths</code> calculates lengths of directed segments and total path lengths of trajectories.</p></li>
 <li><p>Function <code>trajectoryLengths2D</code> calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.</p></li>
 <li><p>Function <code>trajectoryAngles</code> calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.</p></li>
@@ -322,9 +322,9 @@ If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 
 <p>Details of calculations are given in De Cáceres et al (2019). 
 The input distance matrix <code>d</code> should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function <code><a href='trajectoryutils.html'>is.metric</a></code>). 
-All CTA functions that require metricity include a parameter '<code>add</code>', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
-If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify <code>d</code> to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see CTA vignette). 
-If parameter '<code>add</code>' is set to FALSE and problems of triangle inequality exist, CTA functions may provide missing values in some cases where they should not.</p>
+All ETA functions that require metricity include a parameter '<code>add</code>', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
+If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify <code>d</code> to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis'). 
+If parameter '<code>add</code>' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.</p>
 <p>The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).</p>
 <p>Function <code>trajectoryAngles</code> calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other. 
 Angles are always positive, with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. If <code>all = TRUE</code>

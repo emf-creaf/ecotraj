@@ -1,6 +1,6 @@
 #' Utility functions for Ecological Trajectory Analysis
 #' 
-#' Given a distance matrix between ecosystem states, the set of functions for ETA are:
+#' The set following set of utility functions are provided:
 #' \itemize{
 #' \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
 #' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
@@ -12,7 +12,7 @@
 #' @name trajectoryutils
 #' @aliases centerTrajectories trajectorySelection is.metric
 #' 
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).
+#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param verbose Provides console output informing about process (useful for large dataset).
 #' 
@@ -24,7 +24,6 @@
 #' Function \code{centerTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
-#' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
 #' 
 #' @references
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.

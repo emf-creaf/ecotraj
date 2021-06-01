@@ -30,11 +30,11 @@ trajectoryPlot(
 )
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
 
-\item{sites}{A vector indicating the site corresponding to each community state.}
+\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
 
-\item{surveys}{A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).}
+\item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 
 \item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
 
@@ -46,7 +46,7 @@ trajectoryPlot(
 
 \item{...}{Additional parameters for function \code{\link{arrows}}.}
 
-\item{x}{A data.frame or matrix where rows are community states and columns are coordinates in an arbitrary space}
+\item{x}{A data.frame or matrix where rows are ecosystem states and columns are coordinates in an arbitrary space}
 }
 \value{
 Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.

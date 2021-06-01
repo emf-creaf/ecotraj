@@ -84,11 +84,11 @@ trajectoryConvergence(
 trajectoryDirectionality(d, sites, surveys = NULL, add = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
 
-\item{sites}{A vector indicating the site corresponding to each community state.}
+\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
 
-\item{surveys}{A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).}
+\item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 
 \item{distance.type}{The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. submitted). For \code{segmentDistances} the available indices are:
   \itemize{
@@ -113,13 +113,13 @@ whereas for \code{trajectoryDistances} the available indices are:
 
 \item{all}{A flag to indicate that angles are desired for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, angles are calculated for consecutive segments only.}
 
-\item{xy}{Matrix with 2D coordinates in a Cartesian space (typically an ordination of community states).}
+\item{xy}{Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).}
 
 \item{stats}{A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)}
 
 \item{betweenSegments}{Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.}
 
-\item{target}{An integer vector of the community states to be projected.}
+\item{target}{An integer vector of the ecosystem states to be projected.}
 
 \item{trajectory}{An integer vector of the trajectory onto which target states are to be projected.}
 
@@ -171,9 +171,9 @@ Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosy
 ETA takes trajectories as objects to be analyzed and compared geometrically.
 }
 \details{
-Given a distance matrix between community states, the set of functions that provide ETA metrics are:
+Given a distance matrix between ecosystem states, the set of functions that provide ETA metrics are:
 \itemize{
-\item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and community trajectories, respectively.}
+\item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and ecosystem trajectories, respectively.}
 \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
@@ -186,9 +186,9 @@ Given a distance matrix between community states, the set of functions that prov
 
 Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
 The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}). 
-All CTA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
-If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see CTA vignette). 
-If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, CTA functions may provide missing values in some cases where they should not.
+All ETA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
+If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis'). 
+If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.
 
 The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).   
 

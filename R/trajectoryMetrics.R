@@ -3,9 +3,9 @@
 #' Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
 #' ETA takes trajectories as objects to be analyzed and compared geometrically. 
 #' 
-#' Given a distance matrix between community states, the set of functions that provide ETA metrics are:
+#' Given a distance matrix between ecosystem states, the set of functions that provide ETA metrics are:
 #' \itemize{
-#' \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and community trajectories, respectively.}
+#' \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and ecosystem trajectories, respectively.}
 #' \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 #' \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
@@ -21,9 +21,9 @@
 #' @aliases segmentDistances trajectoryDistances trajectoryLengths trajectoryLengths2D trajectoryAngles trajectoryAngles2D
 #'          trajectoryProjection trajectoryConvergence trajectoryDirectionality 
 #' 
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).
-#' @param sites A vector indicating the site corresponding to each community state.
-#' @param surveys A vector indicating the survey corresponding to each community state (only necessary when surveys are not in order).
+#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
+#' @param sites A vector indicating the site corresponding to each ecosystem state.
+#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
 #' @param distance.type 
 #' The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. submitted). For \code{segmentDistances} the available indices are:
 #'   \itemize{
@@ -44,9 +44,9 @@
 #' @details 
 #' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
 #' The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}). 
-#' All CTA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
-#' If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see CTA vignette). 
-#' If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, CTA functions may provide missing values in some cases where they should not.
+#' All ETA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
+#' If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis'). 
+#' If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.
 #' 
 #' The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).   
 #' 
@@ -478,7 +478,7 @@ rownames(lengths)<-c(siteIDs)
 }
 
 #' @rdname trajectorymetrics
-#' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of community states).
+#' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
 trajectoryLengths2D<-function(xy,sites,surveys, relativeToInitial=FALSE, all=FALSE, verbose = FALSE) {
   
   #order inputs by sites and surveys
@@ -586,7 +586,7 @@ trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitia
 
 #' @rdname trajectorymetrics
 #' @param betweenSegments Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.
-trajectoryAngles2D<-function(xy, sites, surveys, relativeToInitial=FALSE, betweenSegments=TRUE) {
+trajectoryAngles2D<-function(xy,sites,surveys,relativeToInitial=FALSE, betweenSegments=TRUE) {
   
   xy_temp<-as.data.frame(xy)
   xy_temp$sites<-sites
@@ -642,139 +642,173 @@ trajectoryAngles2D<-function(xy, sites, surveys, relativeToInitial=FALSE, betwee
   #dfxy
   dmod<-as.data.frame(cbind(dxmod,dymod))
   
-  
-  ##############################################################  
-  #angle alpha measurement
-  Angle_alpha_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  for(i in 1:ncol(Angle_alpha_temp)){
-    Angle_alpha_temp[,i]<-apply(dmod[c(i,i+nsurvey-1)], 1, function(irow) {
-      atan(irow[2]/irow[1])
-    })
-  }
-  Angle_alpha_temp<-Angle_alpha_temp*(180/pi)
-  
-  
-  dxy<-as.data.frame (cbind(dx,dy))
-  Angle_alpha<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  for (i in 1:ncol(Angle_alpha_temp)) {
-    Angle_alpha[,i]<-as.numeric(c(ifelse(dxy[,i]==dxy[,i+1] & dxy[,i+(nsurvey)]<dxy[,i+(nsurvey+1)],0,
-                                         ifelse(dxy[,i]==dxy[,i+1] & dxy[,i+(nsurvey)]>dxy[,i+(nsurvey+1)],180,
-                                                ifelse(dxy[,i]<dxy[,i+1] & dxy[,i+(nsurvey)]==dxy[,i+(nsurvey+1)],90,
-                                                       ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)]==dxy[,i+(nsurvey+1)],270,
-                                                              ifelse(dxy[,i] < dxy[,i+1] & dxy[,i+(nsurvey)]< dxy[,i+(nsurvey+1)],90-Angle_alpha_temp[,i],
-                                                                     ifelse(dxy[,i]< dxy[,i+1] & dxy[,i+(nsurvey)] > dxy[,i+(nsurvey+1)],90-Angle_alpha_temp[,i],
-                                                                            ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)] > dxy[,i+(nsurvey+1)],270-Angle_alpha_temp[,i],
-                                                                                   ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)] < dxy[,i+(nsurvey+1)],270-Angle_alpha_temp[,i],"ERROR"))))))))))
-  }
-  colnames(Angle_alpha) <- c(paste0("Axis2", "-t", 
-                                    as.character(1:(nsurvey-1))))  
-  ##############################################################
-  
-  #angle Theta measurement
-  #position according to first trajectory of each triplet
-  pos<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  for (i in 1:(nsurvey-2)){
-    pos[,i]<-c((dxy[,i+1]-dxy[,i])*(dxy[,nsurvey+i+2]-dxy[,nsurvey+i])-(dxy[,nsurvey+i+1]-dxy[,nsurvey+i])*(dxy[,i+2]-dxy[,i]))
-  }
-  
-  #consecutive segement lenght
-  Scons<-as.data.frame(trajectoryLengths2D(xy,sites,surveys, relativeToInitial=FALSE))
-  Scons<-Scons[,-c(ncol(Scons)-1,ncol(Scons))]
-  
-  #calculation of length t to t+2: 1to3,2to4....
-  distn2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  for (i in 1:(nsurvey-2)){
-    distn2[,i]<-sqrt(((dxy[,i+2]-dxy[,i])^2)+((dxy[,nsurvey+i+2]-dxy[,nsurvey+i])^2))
-  }
-  
-  #recovering or distancing pattern for each consecutive triplet
-  RDTcons<-distn2-Scons
-  
-  # Angle theta temp (0-180°)
-  Angle_theta_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  xvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  yvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  xvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  yvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  for(i in 1:(nsurvey-2)){
-    xvector1[,i] = dxy[,i] - dxy[,i+1]
-    yvector1[,i] = dxy[,i+nsurvey] - dxy[,i+nsurvey+1]
-    xvector2 [,i] = dxy[,i+2] - dxy[,i+1]
-    yvector2 [,i] = dxy[,i+nsurvey+2] - dxy[,i+nsurvey+1]
-    
-    num = (xvector1[,i] * xvector2[,i] + yvector1[,i] * yvector2[,i])
-    den = sqrt(xvector1[,i]^2 + yvector1[,i]^2) * sqrt(xvector2[,i]^2 +yvector2[,i]^2)
-    Angle_theta_temp[,i] = (360 * acos(num/den))/(2 * pi)
-  }
-  
-  # Angle theta (0-360°)
-  Angle_theta<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  for (i in 1:ncol(Angle_theta_temp)){
-    Angle_theta[,i]<-c(ifelse(Angle_theta_temp[,i]==180,0,
-                              ifelse(Angle_theta_temp[,i]==0,180,
-                                     ifelse(pos[,i]<0 & RDTcons[,i]<0,180-Angle_theta_temp[,i],
-                                            ifelse(pos[,i]>0 & RDTcons[,i]<0 ,360-(180-Angle_theta_temp[,i]),
-                                                   ifelse(pos[,i]<0 & RDTcons[,i]>0 & Angle_theta_temp[,i]<90,180-Angle_theta_temp[,i],
-                                                          ifelse(pos[,i]<0 & RDTcons[,i]>0 & Angle_theta_temp[,i]>90,180-Angle_theta_temp[,i], 
-                                                                 ifelse(pos[,i]>0 & RDTcons[,i]>0 & Angle_theta_temp[,i]<90 ,270-(90-Angle_theta_temp[,i]),
-                                                                        ifelse(pos[,i]>0 & RDTcons[,i]>0 & Angle_theta_temp[,i]>90 ,270+(Angle_theta_temp[,i]-90),"ERROR")))))))))
-    
-    
-  }
-  
-  colnames(Angle_theta) <- c(paste0("t", as.character(1:(nsurvey-2)), "-t", 
-                                    as.character(2:(nsurvey-1))))    
-  
-  ##############################################################   
-  #position according to first trajectory of each triplet
-  pos<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  for (i in 1:(nsurvey-2)){
-    pos[,i]<-c((dxy[,2]-dxy[,1])*(dxy[,nsurvey+i+2]-dxy[,nsurvey+1])-(dxy[,nsurvey+2]-dxy[,nsurvey+1])*(dxy[,i+2]-dxy[,1]))
-  }
-  
-  #Angle_omega_temp(0-180°)
-  Angle_omega_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
-  xvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  yvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  xvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  yvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
-  for(i in 1:(nsurvey-2)){
-    xvector1[,i] = dxy[,1] - dxy[,2]
-    yvector1[,i] = dxy[,1+nsurvey] - dxy[,2+nsurvey]
-    xvector2 [,i] = dxy[,i+2] - dxy[,2]
-    yvector2 [,i] = dxy[,i+nsurvey+2] - dxy[,2+nsurvey]
-    
-    num = (xvector1[,i] * xvector2[,i] + yvector1[,i] * yvector2[,i])
-    den = sqrt(xvector1[,i]^2 + yvector1[,i]^2) * sqrt(xvector2[,i]^2 +yvector2[,i]^2)
-    Angle_omega_temp[,i] = (360 * acos(num/den))/(2 * pi)
-  }
-  
-  #Angle_omega(0-360°)
-  Angle_omega<-as.data.frame(matrix(NA, nrow=nrow(Angle_omega_temp), ncol=ncol(Angle_omega_temp)-1))
-  for (i in 1:ncol(Angle_omega_temp)){
-    Angle_omega[,i]<-c(ifelse(Angle_theta_temp[,i]==180,0,
-                              ifelse(Angle_theta_temp[,i]==0,180,
-                                     ifelse(pos[,i]<0,180-Angle_omega_temp[,i],
-                                            ifelse(pos[,i]>0,360-(180-Angle_omega_temp[,i]),"ERROR")))))
-  }
-  
-  colnames(Angle_omega) <- c(paste0("S1", "-t", 
-                                    as.character(2:(nsurvey-1))))
-  ################################################################
-  #Output
-  if(betweenSegments) {
-    if(!relativeToInitial){
-      return(Angle_theta)
-    } else{
-      return(Angle_omega)
+  if(!betweenSegments){
+    #angle alpha measurement
+    Angle_alpha_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    for(i in 1:ncol(Angle_alpha_temp)){
+      Angle_alpha_temp[,i]<-apply(dmod[c(i,i+nsurvey-1)], 1, function(irow) {
+        atan(irow[2]/irow[1])
+      })
     }
-  } else {
-    return(Angle_alpha)
+    Angle_alpha_temp<-Angle_alpha_temp*(180/pi)
+    
+    
+    dxy<-as.data.frame (cbind(dx,dy))
+    Angle_alpha<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    for (i in 1:ncol(Angle_alpha_temp)) {
+      Angle_alpha[,i]<-as.numeric(c(ifelse(dxy[,i]==dxy[,i+1] & dxy[,i+(nsurvey)]<dxy[,i+(nsurvey+1)],0,
+                                           ifelse(dxy[,i]==dxy[,i+1] & dxy[,i+(nsurvey)]>dxy[,i+(nsurvey+1)],180,
+                                                  ifelse(dxy[,i]<dxy[,i+1] & dxy[,i+(nsurvey)]==dxy[,i+(nsurvey+1)],90,
+                                                         ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)]==dxy[,i+(nsurvey+1)],270,
+                                                                ifelse(dxy[,i] < dxy[,i+1] & dxy[,i+(nsurvey)]< dxy[,i+(nsurvey+1)],90-Angle_alpha_temp[,i],
+                                                                       ifelse(dxy[,i]< dxy[,i+1] & dxy[,i+(nsurvey)] > dxy[,i+(nsurvey+1)],90-Angle_alpha_temp[,i],
+                                                                              ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)] > dxy[,i+(nsurvey+1)],270-Angle_alpha_temp[,i],
+                                                                                     ifelse(dxy[,i]>dxy[,i+1] & dxy[,i+(nsurvey)] < dxy[,i+(nsurvey+1)],270-Angle_alpha_temp[,i],"ERROR"))))))))))
+    }
+    colnames(Angle_alpha) <- c(paste0("Axis2", "-t", 
+                                      as.character(1:(nsurvey-1))))  
+    angles_out = Angle_alpha
   }
+  else if(!relativeToInitial){
+    #angle Theta measurement
+    #position according to first trajectory of each triplet
+    dxy<-as.data.frame (cbind(dx,dy))
+    pos<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:(nsurvey-2)){
+      pos[,i]<-c((dxy[,i+1]-dxy[,i])*(dxy[,nsurvey+i+2]-dxy[,nsurvey+i])-(dxy[,nsurvey+i+1]-dxy[,nsurvey+i])*(dxy[,i+2]-dxy[,i]))
+    }
+    
+    #consecutive segement lenght
+    Scons<-as.data.frame(trajectoryLengths2D(xy,sites,surveys, relativeToInitial=FALSE))
+    Scons<-Scons[,-c(ncol(Scons)-1,ncol(Scons))]
+    
+    #calculation of length t to t+2: 1to3,2to4....
+    distn2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:(nsurvey-2)){
+      distn2[,i]<-sqrt(((dxy[,i+2]-dxy[,i])^2)+((dxy[,nsurvey+i+2]-dxy[,nsurvey+i])^2))
+    }
+    
+    #recovering or distancing pattern for each consecutive triplet
+    RDTcons<-distn2-Scons
+    
+    # Angle theta temp (0-180°)
+    Angle_theta_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    xvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    xvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    for(i in 1:(nsurvey-2)){
+      xvector1[,i] = dxy[,i] - dxy[,i+1]
+      yvector1[,i] = dxy[,i+nsurvey] - dxy[,i+nsurvey+1]
+      xvector2 [,i] = dxy[,i+2] - dxy[,i+1]
+      yvector2 [,i] = dxy[,i+nsurvey+2] - dxy[,i+nsurvey+1]
+      
+      num = (xvector1[,i] * xvector2[,i] + yvector1[,i] * yvector2[,i])
+      den = sqrt(xvector1[,i]^2 + yvector1[,i]^2) * sqrt(xvector2[,i]^2 +yvector2[,i]^2)
+      Angle_theta_temp[,i] = (360 * acos(num/den))/(2 * pi)
+    }
+    
+    # Angle theta (0-360°)
+    Angle_theta<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:ncol(Angle_theta_temp)){
+      Angle_theta[,i]<-c(ifelse(Angle_theta_temp[,i]==180,0,
+                                ifelse(Angle_theta_temp[,i]==0,180,
+                                       ifelse(pos[,i]<0 & RDTcons[,i]<0,180-Angle_theta_temp[,i],
+                                              ifelse(pos[,i]>0 & RDTcons[,i]<0 ,360-(180-Angle_theta_temp[,i]),
+                                                     ifelse(pos[,i]<0 & RDTcons[,i]>0 & Angle_theta_temp[,i]<90,180-Angle_theta_temp[,i],
+                                                            ifelse(pos[,i]<0 & RDTcons[,i]>0 & Angle_theta_temp[,i]>90,180-Angle_theta_temp[,i], 
+                                                                   ifelse(pos[,i]>0 & RDTcons[,i]>0 & Angle_theta_temp[,i]<90 ,270-(90-Angle_theta_temp[,i]),
+                                                                          ifelse(pos[,i]>0 & RDTcons[,i]>0 & Angle_theta_temp[,i]>90 ,270+(Angle_theta_temp[,i]-90),"ERROR")))))))))
+      
+      
+    }
+    
+    colnames(Angle_theta) <- c(paste0("t", as.character(1:(nsurvey-2)), "-t", 
+                                      as.character(2:(nsurvey-1))))    
+    angles_out = Angle_theta
+  } else {
+    #angle Theta temp measurement
+    #position according to first trajectory of each triplet
+    
+    dxy<-as.data.frame (cbind(dx,dy))
+    pos<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:(nsurvey-2)){
+      pos[,i]<-c((dxy[,i+1]-dxy[,i])*(dxy[,nsurvey+i+2]-dxy[,nsurvey+i])-(dxy[,nsurvey+i+1]-dxy[,nsurvey+i])*(dxy[,i+2]-dxy[,i]))
+    }
+    
+    #consecutive segment length
+    Scons<-as.data.frame(trajectoryLengths2D(xy,sites,surveys, relativeToInitial=FALSE))
+    Scons<-Scons[,-c(ncol(Scons)-1,ncol(Scons))]
+    
+    #calculation of length t to t+2: 1to3,2to4....
+    distn2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:(nsurvey-2)){
+      distn2[,i]<-sqrt(((dxy[,i+2]-dxy[,i])^2)+((dxy[,nsurvey+i+2]-dxy[,nsurvey+i])^2))
+    }
+    
+    #recovering or distancing pattern for each consecutive triplet
+    RDTcons<-distn2-Scons
+    
+    # Angle theta temp (0-180°)
+    Angle_theta_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    xvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    xvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    for(i in 1:(nsurvey-2)){
+      xvector1[,i] = dxy[,i] - dxy[,i+1]
+      yvector1[,i] = dxy[,i+nsurvey] - dxy[,i+nsurvey+1]
+      xvector2 [,i] = dxy[,i+2] - dxy[,i+1]
+      yvector2 [,i] = dxy[,i+nsurvey+2] - dxy[,i+nsurvey+1]
+      
+      num = (xvector1[,i] * xvector2[,i] + yvector1[,i] * yvector2[,i])
+      den = sqrt(xvector1[,i]^2 + yvector1[,i]^2) * sqrt(xvector2[,i]^2 +yvector2[,i]^2)
+      Angle_theta_temp[,i] = (360 * acos(num/den))/(2 * pi)
+    }
+    
+    
+    #Angle_omega measurement
+    #position according to first trajectory of each triplet
+    pos<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    for (i in 1:(nsurvey-2)){
+      pos[,i]<-c((dxy[,2]-dxy[,1])*(dxy[,nsurvey+i+2]-dxy[,nsurvey+1])-(dxy[,nsurvey+2]-dxy[,nsurvey+1])*(dxy[,i+2]-dxy[,1]))
+    }
+    
+    #Angle_omega_temp(0-180°)
+    Angle_omega_temp<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-2))
+    xvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector1<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    xvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    yvector2<-as.data.frame(matrix(NA, nrow=nsite, ncol=nsurvey-1))
+    for(i in 1:(nsurvey-2)){
+      xvector1[,i] = dxy[,1] - dxy[,2]
+      yvector1[,i] = dxy[,1+nsurvey] - dxy[,2+nsurvey]
+      xvector2 [,i] = dxy[,i+2] - dxy[,2]
+      yvector2 [,i] = dxy[,i+nsurvey+2] - dxy[,2+nsurvey]
+      
+      num = (xvector1[,i] * xvector2[,i] + yvector1[,i] * yvector2[,i])
+      den = sqrt(xvector1[,i]^2 + yvector1[,i]^2) * sqrt(xvector2[,i]^2 +yvector2[,i]^2)
+      Angle_omega_temp[,i] = (360 * acos(num/den))/(2 * pi)
+    }
+    
+    #Angle_omega(0-360°)
+    Angle_omega<-as.data.frame(matrix(NA, nrow=nrow(Angle_omega_temp), ncol=ncol(Angle_omega_temp)-1))
+    for (i in 1:ncol(Angle_omega_temp)){
+      Angle_omega[,i]<-c(ifelse(Angle_theta_temp[,i]==180,0,
+                                ifelse(Angle_theta_temp[,i]==0,180,
+                                       ifelse(pos[,i]<0,180-Angle_omega_temp[,i],
+                                              ifelse(pos[,i]>0,360-(180-Angle_omega_temp[,i]),"ERROR")))))
+    }
+    
+    colnames(Angle_omega) <- c(paste0("S1", "-t", 
+                                      as.character(2:(nsurvey-1))))
+    angles_out = Angle_omega
+  }
+  return(angles_out)
 }
 
 #' @rdname trajectorymetrics
-#' @param target An integer vector of the community states to be projected.
+#' @param target An integer vector of the ecosystem states to be projected.
 #' @param trajectory An integer vector of the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
 trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {

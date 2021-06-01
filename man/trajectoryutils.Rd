@@ -15,7 +15,7 @@ centerTrajectories(d, sites, verbose = FALSE)
 is.metric(d, tol = 1e-04)
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of community states (see details).}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
 
 \item{sites}{A vector indicating the site corresponding to each ecosystem state.}
 
@@ -29,7 +29,7 @@ is.metric(d, tol = 1e-04)
 Function \code{centerTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
 }
 \description{
-Given a distance matrix between ecosystem states, the set of functions for ETA are:
+The set following set of utility functions are provided:
 \itemize{
 \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
@@ -50,6 +50,4 @@ Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wi
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF
-
-Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
 }

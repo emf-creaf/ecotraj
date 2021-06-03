@@ -5,3 +5,5 @@
 ^README.Rmd$
 ^docs/*$
 ^\.github$
+^docs$
+^pkgdown$

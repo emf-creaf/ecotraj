@@ -12,7 +12,7 @@ Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
 Imports: Kendall, circular, MASS
 LinkingTo: Rcpp
 License: GPL (>= 2)
-URL: https://emf-creaf.github.io/ecotraj/
+URL: https://emf-creaf.github.io/ecotraj
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes

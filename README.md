@@ -4,7 +4,9 @@ ecotraj
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/emf-creaf/ecotraj/workflows/R-CMD-check/badge.svg)](https://github.com/emf-creaf/ecotraj/actions)
-<!-- badges: end --> \#\# Introduction
+<!-- badges: end -->
+
+## Introduction
 
 Package `ecotraj` is a package providing a framework to assist
 ecologists in the analysis of temporal changes in ecosystems defined on

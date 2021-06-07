@@ -7,12 +7,14 @@ Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com'),
 	person('Anthony', 'Sturbois', role = 'aut'))
-Description: A set of functions to perform ecological trajectory analysis [De Caceres et al. (2019): <doi:10.1002/ecm.1350>].
+Description: A package to assist ecologists in the analysis of 
+    temporal changes of ecosystems defined as trajectories on a chosen multivariate space, by providing a set of 
+    trajectory metrics and visual representations (see [De Caceres et al. (2019): <doi:10.1002/ecm.1350>], [Sturbois et al. (2021): <doi:10.1016/j.ecolmodel.2020.109400>]).
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
 Imports: Kendall, circular, MASS
 LinkingTo: Rcpp
 License: GPL (>= 2)
-URL: https://emf-creaf.github.io/ecotraj
+URL: https://emf-creaf.github.io/ecotraj/
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes

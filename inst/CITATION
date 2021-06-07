@@ -22,7 +22,7 @@ citEntry(entry="Manual",
          year = "2021",
          volume = "440",
          pages = "109400",
-         doi  = "10.1002/ecm.1350",         
+         doi  = "10.1016/j.ecolmodel.2020.109400",         
          textVersion = 
          paste("Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). ", 
                "Extending community trajectory analysis : New metrics and representation. ",

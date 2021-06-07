@@ -21,9 +21,10 @@ publications:
 
 ## Package installation
 
-Package `ecotraj` can be found at [CRAN](https://cran.r-project.org/).
-In addition, the latest stable `ecotraj` R package can also be installed
-from GitHub as follows:
+Package `ecotraj` can be found at
+[CRAN](https://cran.r-project.org/package=ecotraj). In addition, the
+latest stable `ecotraj` R package can also be installed from GitHub as
+follows:
 
 ``` r
 devtools::install_github("emf-creaf/ecotraj")

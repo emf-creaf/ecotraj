@@ -1,7 +1,5 @@
 url: https://emf-creaf.github.io/ecotraj
 
-destination: "docs/"
-
 home:
   links:
   - text: Package website

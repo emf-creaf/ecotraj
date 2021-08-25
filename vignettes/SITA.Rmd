@@ -1,0 +1,444 @@
+---
+title: "Stable Isotope Trajectory Analysis (SITA)"
+author: "Anthony STURBOIS"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Stable Isotope Trajectory Analysis (SITA)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+## 1. About this vignette
+
+This vignette present some ecological applications used by Sturbois at al. (under review) in the new stable isotope trajectory analysis framework. Example datasets have been included in the package for reproducibility. After the calculation of the necessary distance- and direction-based metrics, the vignette focuses, for each ecological applications, on the creation of trajectory charts.
+
+## 2. Loading libraries
+First of all, we load the required libraries, including `ecotraj`:
+```{r load libraries, echo=FALSE}
+library(factoextra)
+library(FactoMineR)
+library(reshape)
+library(gridExtra) 
+library(ecotraj)
+library(rgdal)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(hrbrthemes)
+library(viridis)
+```
+
+## 3. Spatial and temporal resource partitioning in fur seals
+
+### 3.1 Fur seal SI dataset
+We begin by loading the package dataset `furseals`:
+
+```{r load furseals, echo=T}
+data("furseals")
+```
+
+This is a subset of the data sets provided in: 
+
++ Kernaléguen, L., Arnould, J.P.Y., Guinet, C., Cherel, Y., 2015.  Determinants of individual foraging specialization in large marine vertebrates, 
+the Antarctic and subantarctic fur seals. *Journal of Animal Ecology* 1081–1091.
+
+Briefly, fur seals [the Antarctic fur seal *Arctocephalus gazella* (AFS) and subantarctic fur seal *A. tropicalis* (SAFS)] whisker SI values yield unique long-term information on individual behaviour which integrates the spatial, trophic and temporal dimensions of the ecological niche. The foraging strategies of this two species of sympatric fur seals were examined in the winter 2001/2002 at Crozet, Amsterdam and Kerguelen Islands (Southern Ocean) using the stable isotope values of serially sampled whiskers. The method consists in the analysis of consecutive whisker sections (3 mm long) starting from the proximal (facial) end, with the most recently synthesized tissue remaining under the skin. Only individuals (n = 47) with whiskers totalizing at least 30 sections were selected in the initial data, and only those 30 sections were considered herein, from t1 (more recent values) to t30 (oldest values).
+
+
+### 3.2 Trajectory metrics
+
+In this section, we illustrate how to calculate trajectory metrics to characterize the foraging strategy of each fur seal. First, we calculate net changes relative to the initial state (i.e. the distance between SI state of each whisker section and the initial SI state):
+```{r, echo=T}
+Net_changes<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
+                                 furseals$ID_SITA,
+                                 furseals$Time, relativeToInitial=TRUE) 
+head(Net_changes)
+```
+
+We then calculate trajectory segment lengths, i.e. the distance between consecutive  whisker sections in the SI space:
+```{r, echo=T}
+Segment_lengths<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
+                                     furseals$ID_SITA,
+                                     furseals$Time, relativeToInitial=FALSE) 
+head(Segment_lengths)
+```
+
+Finally, we determine the angle (α) of consecutive trajectory segments with respect to the second axis of the 2D diagram:
+```{r, echo=T}
+Angles<-trajectoryAngles2D(furseals[,c("d13C","d15N")],
+                           furseals$ID_SITA,
+                           furseals$Time, betweenSegments=FALSE)
+head(Angles)
+```
+
+
+
+### 3.3 Identification and characterization of trajectory clusters
+
+Here we aim to define groups of fur seals depending on the similarity of their foraging strategy. We need first to calculate distances between pairs of complete trajectories in the SI space:
+```{r, echo=T}
+D <- dist(furseals[,c("d13C","d15N")])
+Ds<-trajectoryDistances(D, furseals$ID_SITA, surveys = NULL, distance.type = "DSPD",
+                        symmetrization = "mean", add = TRUE, verbose = FALSE)
+```
+
+Then, we can use function `hclust()` to conduct a hierarchiacl clustering on the symmetric matrix `D`:
+```{r, echo=TRUE, fig.height=4, fig.width=6}
+colstd<-c("black","yellow","green","blue","grey","red")
+pt<-c(16,16,16,16)
+hsxy <- hclust(Ds, "ward.D2")
+plot(hsxy,hang = -1, main="distance Fur Seals", cex=.6)
+Hst=2 # Cutting height
+x<-rect.hclust(hsxy, h=Hst,
+               border = colstd)
+```
+
+We cut the dendrogram at height `Hst` to obtain a vector of cluster membership and copy it in `furseals` as a factor:
+```{r}
+groups <- cutree(hsxy, h=Hst)
+furseals$cluster <- as.factor(groups)
+```
+
+
+
+#### 3.3.1 Individual trophic trajectories for males and females of *A. gazella* and *A. tropicalis*
+
+Here we display trophic trajectories of all individuals, in plots corresponding to combinations of species and gender. To facilitate such plots, we creation of a vector with the combination of species and gender:
+```{r, echo=T}
+furseals$sp_gender<-paste(furseals$Sexe, furseals$Species, sep=" ")
+```
+
+We now create the plot of trajectories in the SI space. Arrows connects all whiskers section stable isotope values from t1 to t30 (i.e. most recent to oldest SI values). Colors corresponds to trajectory clusters and shape to breeding sites.
+```{r, echo=TRUE, fig.height=4, fig.width=6}
+ggplot(data=furseals,aes(x=d13C,y=d15N,color=cluster,shape=Place))+
+  geom_point()+
+  geom_path(aes(x=d13C,y=d15N,group=ID_SITA,color=cluster),arrow = arrow(length = unit(0.10, "cm")))+
+  xlab(expression(delta^13*"C"))+
+  ylab(expression(delta^15*"N"))+
+  facet_wrap(~sp_gender) +
+  theme_classic()
+```
+
+#### 3.3.2 Net changes time series for males and females of both fur seal species
+
+Preparation of the data to compute the trajectory diagram
+```{r}
+NC<-Net_changes[,-30]
+NC$cluster<-furseals$cluster[1:47]
+NC$ID<-as.numeric(rownames(NC))
+colnames(NC)<-c(2:30,"cluster","ID")
+```
+
+Transformation of the data set into long format
+```{r}
+NCline<-as.data.frame(melt(NC,id=c("ID","cluster")))
+colnames(NCline)<-c("ID","Clusters","Time_from_present","Net_changes")
+NCline[,3]<-as.numeric(NCline[,3])
+NCline[,2]<-as.factor(NCline[,2])
+NCline<-NCline[order(NCline[3],decreasing=F), ]
+NCline$sp_gender<-c(furseals$sp_gender[1:47])
+```
+
+Arrows connects all whiskers section stable isotope values from t1 to t30 (i.e. most recent to oldest stable isotope values). Colours corresponds to trajectory clusters.
+```{r, fig.height=4, fig.width=6}
+ggplot(data=NCline,aes(x=Time_from_present,y=Net_changes,color=Clusters))+
+  geom_path(aes(x=Time_from_present,y=Net_changes,group=ID,color=Clusters),arrow = arrow(length = unit(0.10, "cm")))+
+  facet_wrap(~sp_gender)+
+  theme_classic()
+```
+
+
+#### 3.3.3 Angle α trajectory roses of Fur seals trajectory cluster.
+
+
+Preparation of the data set to compute the trajectoy rose
+```{r}
+Angl<-Angles
+colnames(Angl)<-2:30
+Angl$ID<-as.numeric(rownames(Angl))
+Angl$cluster<-as.factor(groups)
+Angl$sp_gender<-furseals$sp_gender[1:47]
+Angline<-as.data.frame(melt(Angl,id=c("ID","cluster","sp_gender")))
+colnames(Angline)<-c("ID","Clusters","Group","Time_from_present","Direction")
+Angline$Direction<-as.numeric(Angline$Direction)
+
+
+# range 15°
+deg <- 15
+# vector for range of direction of differents bars
+dir.breaks <- seq(0-(deg/2), 360+(deg/2), deg)
+dir.binned <- cut(Angline$Direction,
+                  breaks = dir.breaks,
+                  ordered_result = TRUE)
+# direction labels
+dir.labels <- as.character(c(seq(0, 360-deg, by = deg), 0))
+levels(dir.binned) <- dir.labels
+
+# angles distribution in each range of direction
+Angline$dir.binned <- dir.binned
+
+# sort angles
+df_sorted<-as.data.frame(table(Angline$dir.binned, Angline$Clusters))
+colnames(df_sorted)<-c("dir.binned","Clusters","nb")
+
+df_cumsum <- ddply(df_sorted, "dir.binned",
+                   transform, label_ypos=cumsum(nb))
+
+```
+
+Angles α were calculated in 2D Ωδ space (δ 13C/δ 15N) and represented by range (15◦) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters). 
+```{r, fig.height=4, fig.width=6}
+ggplot(data=df_cumsum, aes(x=dir.binned, y=nb, fill=Clusters)) +
+  geom_bar(stat="identity")+
+  scale_y_continuous(limits = c(0,110), expand = c(0, 0), 
+                     breaks = c(0,25,50,75,110), 
+                     labels = c(0,25,50,75,110)) +
+  labs(x = 'Trajectory segment directions within fur seals clusters', y = 'number of trajectory segments') +
+  coord_polar(start = -(deg/2)*(pi/180)) +
+  theme_minimal()
+```
+
+## 4. Ontogenic stable isotope trajectories of juvenile fishes
+
+### 4.1 Loading data
+
+```{r load Pike data}
+data("pike")
+```
+This is a data set from :
+
++ Cucherousset, J., Paillisson, J.-M., Roussel, J.-M., 2013. Natal departure timing from spatially varying environments is dependent of individual ontogenetic status. *Naturwissenschaften* 100, 761–768.
+
+Briefly, Cucherousset et al. (2013) released 192 individually tagged, hatchery-raised,  juvenile pike (*Esox lucius* L.) with variable initial trophic position (fin δ13C/δ15N values). Based on δ15N values, individuals were classified into zooplanktivorous (δ15N < 10 ‰) and piscivorous (δ15N > 10 ‰) as cannibalism is commonly observed in this species. Individuals were released in a temporarily flooded grassland where pike eggs usually hatch of the Brière marsh (France) to identify the determinants of juvenile natal departure. The release site was connected through a unique point to an adjacent pond used as a nursery habitat. Fish were continuously recaptured when migrating from flooded grassland to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in δ13C and δ15N values, and released. 
+
+
+### 4.2 Calculating trajectory metrics and identification of trajectory clusters
+
+Trajectory metrics:
+```{r}
+Net_changes<-trajectoryLengths2D(pike[,8:9],pike$ID,pike$Time, relativeToInitial=TRUE) 
+colnames(Net_changes)<-c("Net_changes", "Trajectory")
+pike$Net_Changes<-Net_changes$Net_changes
+
+
+D=dist(pike[,8:9])
+Ds<-trajectoryDistances(D,pike$ID, surveys = NULL, distance.type = "DSPD",
+                        symmetrization = "mean", add = TRUE, verbose = FALSE)
+```
+
+Identification of trajectory clusters:
+```{r, fig.height=4, fig.width=6}
+Hst=3
+colstd<-c("black","yellow","green","blue","grey","red")
+hsxy <- hclust(Ds, "ward.D2")
+plot(hsxy,hang = -1, main="distance Pike", cex=.6)
+x<-rect.hclust (hsxy, h=Hst,
+                border = colstd)
+# Store clusters into a new data column
+pike$Cluster<-cutree(hsxy, h=Hst)
+```
+
+
+### 4.3 Trajectory diagram of pike released in the flooded grassland and recaptured when emigrating into the adjacent pond
+
+Preparation of the data set to compute trajectory diagrams and density curves
+```{r}
+Pike1<-pike[pike$Time %in% 1,]
+Pike1<-Pike1[order(Pike1$ID, decreasing=FALSE),]
+Pike1$Net_changes<-0
+Pike2<-pike[pike$Time %in% 2,]
+Pike2<-Pike2[order(Pike2$ID, decreasing=FALSE),]
+Pike2$Net_changes<-Net_changes$Net_changes
+data<-as.data.frame(rbind(Pike1,Pike2))
+```
+
+Arrow represent trajectory path for each pit-tagged individual. Colors correspond to trajectory clusters. The dashed line separates piscivorous from zooplanktivorous individuals [zooplanktivorous (δ15N < 10) vs piscivorous (δ15N > 10)]. Density curves represents the distribution of all samples according to δ13C (x) and δ15N (y), and capture (green=release; red=departure).
+
+Trajectory diagram
+```{r, fig.height=4, fig.width=6}
+ggplot(data=data,aes(x=d13C,y=d15N,shape=Trophic_status_initial))+
+  geom_point(aes(size=Net_changes))+
+  geom_path(aes(x=d13C,y=d15N,group=ID,color=factor(Cluster)),arrow = arrow(length = unit(0.30, "cm")))+
+  geom_hline(yintercept=10, linetype="dashed", color = "black")+
+  xlab(expression(delta^13*"C")) +
+  ylab(expression(delta^15*"N"))+
+  theme_minimal()
+```
+
+X density curve
+```{r, fig.height=3, fig.width=4}
+gg_dist_d13C = ggplot(data, aes(d13C, fill=TimeL)) + geom_density(alpha=.5) 
+gg_dist_d13C = gg_dist_d13C + ylab(expression(delta^13*"C"*" density"))
+gg_dist_d13C = gg_dist_d13C + theme(axis.title.y=element_blank(),
+                                    axis.text=element_blank(),
+                                    axis.line=element_blank(),
+                                    axis.ticks=element_blank(),
+                                    panel.grid.major = element_blank(),
+                                    panel.grid.minor = element_blank(),
+                                    panel.background =element_blank())
+gg_dist_d13C = gg_dist_d13C + theme(legend.position = "none")
+gg_dist_d13C + scale_x_continuous(limits = c(-33, -25))+scale_y_continuous(limits = c(0, 1))
+```
+
+Y density curve
+```{r, fig.height=3, fig.width=4}
+gg_dist_d15N = ggplot(data, aes(d15N, fill=TimeL)) + geom_density(alpha=.5) 
+gg_dist_d15N = gg_dist_d15N + ylab(expression(delta^15*"N"*" density"))
+gg_dist_d15N =gg_dist_d15N 
+gg_dist_d15N =gg_dist_d15N + coord_flip()
+gg_dist_d15N =gg_dist_d15N + theme(axis.title.y=element_blank(),
+                                   axis.text=element_blank(),
+                                   axis.line=element_blank(),
+                                   axis.ticks=element_blank(),
+                                   panel.grid.major = element_blank(),
+                                   panel.grid.minor = element_blank(),
+                                   panel.background =element_blank())
+gg_dist_d15N =gg_dist_d15N +theme(legend.position = "none")
+gg_dist_d15N + scale_x_continuous(limits = c(7, 14))+scale_y_continuous(limits = c(0, 1))
+```
+
+## 5. Spatio-temporal variability of δ13C and δ15N modelled isoscapes in the Northeast Pacific
+
+
+The data sets used in this application come from: 
+
++ Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
+
+Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting δ13C and δ15N isoscapes from 1998 to 2017. We subset modelled δ13C and δ15N values of a 1° x 1° spatial grid from the original modelled dataset. Isoscapes modelled for 2013, 2015 and 2017 were selected as they were characterised by high stable isotope dynamics and consequently constitutes relevant inputs to test our isoscape trajectory map concept. Additionally, a long-term SITA analysis was performed from 1998 to 2017 using directions and net changes calculated for all pairs of dates (1998-1999,... ,2016-2017) as input for a trajectory heat map.
+
+### 5.1 2013-2015 Isoscape trajectory maps 
+
+Loading isoscape data
+```{r load Alaska, echo=T}
+data("isoscape")
+```
+
+metrics calculations
+```{r, echo=T}
+sites<-isoscape$station
+surveys<-isoscape$Year
+Angl<-trajectoryAngles2D(isoscape[,3:4],sites,surveys, betweenSegments = FALSE)
+Length<-trajectoryLengths2D(isoscape[,3:4],sites,surveys)
+data<-as.data.frame(cbind(isoscape[1:489,],Angl,Length[,1]))
+colnames(data)<-c("Latitude","Longitude","d13C","d15N","Stations","Years","Angles","Lengths")
+head(data)
+```
+
+angles transformation for the use with geom_spoke
+```{r, echo=T}
+angle<-data$Angles
+Angles2<-c()
+for (i in 1:length(angle)) {
+  Angles2[i] <- c(ifelse(angle[i]==0,(angle[i]-270)*pi/180,
+                         ifelse(angle[i]==180,(angle[i]-270)*pi/180,
+                                ifelse(angle[i]==90,(angle[i]+270)*pi/180,
+                                       ifelse(angle[i]==270,(angle[i]+270)*pi/180,
+                                              ifelse(angle[i]==360,(angle[i]-270)*pi/180,  
+                                                     ifelse(angle[i]>0 & angle[i]<90 ,(90-angle[i])*pi/180,
+                                                            ifelse(angle[i]>90 & angle[i]<180 ,(90-angle[i])*pi/180,
+                                                                   ifelse(angle[i]>180 & angle[i]<270,(180+(270-angle[i]))*pi/180,
+                                                                          ifelse(angle[i]>270 & angle[i]<360,(90+(360-angle[i]))*pi/180,"ERROR"))))))))))
+}
+
+data$Angles2<-Angles2
+```
+
+Isoscape trajectory map
+SITA metrics were mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle α) illustrate direction in the modelled 2D Ωδ space according to increase and/or decrease in δ13C and δ15N values (0-90°: + δ13C and + δ15N; 90-180°: + δ13C and - δ15N; 90-180°: + δ13C and - δ15N; 180-270°: + δ13C and - δ15N). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station.
+```{r, fig.height=4, fig.width=6}
+ggplot(data, 
+          aes(x = Longitude, 
+              y = Latitude, 
+              fill = Lengths, 
+              angle = Angles2, 
+              radius = scales::rescale(Lengths, c(0.3, 1)))) +
+  geom_raster(interpolate = TRUE) +
+  geom_spoke(arrow = arrow(length = unit(.07, 'inches'))) + 
+  scale_fill_distiller(palette = "RdYlBu") + 
+  coord_equal(expand = 0) + 
+  theme(legend.position = 'bottom', 
+        legend.direction = 'horizontal',
+        panel.background = element_rect(fill = "white"))
+```
+
+### 5.2 1998-2017 trajectory heatmap
+
+Loading data
+```{r load heatmap, echo=T}
+data("heatmapdata")
+```
+
+
+preparation of data
+```{r, echo=T}
+#direction range
+deg <- 15
+
+dir.breaks <- c(0,15,30,45,60,75,90,105,120,135,150,165,180,195,210,225,240,255,270,285,300,315,330,345,360)
+
+
+dir.binned <- cut(heatmapdata$Angles,
+                  breaks = dir.breaks,
+                  ordered_result = TRUE)
+
+# bar labels
+dir.labels <- as.character(c(seq(0, 360-deg, by = deg),0))
+
+levels(dir.binned) <- dir.labels
+
+heatmapdata$dir.binned <- dir.binned
+
+data<-heatmapdata[,c(6,7,8,10)]
+
+#direction vs SI patterns
+data<-data[order(data$dir.binned, decreasing=FALSE),]
+rownames(data)<-1:9206
+data$ISpattern<- c(rep("+d13C/+d15N",2862),rep("+d13C/-d15N",1840),rep("-d13C/-d15N",2931), rep("-d13C/+d15N",1573))
+
+data1<-as.data.frame(table(data$dir.binned,data$Years))
+
+data2<-aggregate(x = data$Lengths, by = list(data$dir.binned, data$Years), FUN=sum, drop=FALSE)
+data2[is.na(data2)] <- 0 
+
+
+data1$Lengths<-data2$x
+dfa<-data1
+colnames(dfa)<-c("Directions","Periods","Nb_stations","Lengths")
+```
+
+Trajectory heat map
+```{r, echo=T}
+ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) + 
+  geom_tile() +
+  scale_fill_viridis(discrete=FALSE) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size=10, angle=90))
+```
+
+X bar plot
+```{r, echo=T}
+df.Xbarplot<-aggregate(dfa$Lengths, by = list(dfa$Periods), FUN = sum)
+colnames(df.Xbarplot)<-c("Periods","Lengths")
+bp.x <- ggplot(data = df.Xbarplot, aes(x = factor(Periods), y = Lengths)) + 
+  geom_bar(stat = "identity", aes(fill = Lengths)) + theme_minimal() +
+  theme(axis.text.x = element_text(size = 10,angle=90), 
+        axis.title.x = element_text(size = 20, margin = margin(10,0,0,0))) +
+  labs(x = "Periods")
+bp.x
+```
+
+Y bar plot
+```{r, echo=T}
+df.Ybarplot<-aggregate(dfa$Lengths, by = list(dfa$Directions), FUN = sum)
+colnames(df.Ybarplot)<-c("Directions","Lengths")
+df.Ybarplot$ISpattern<- c(rep("+d13C/+d15N",6),rep("+d13C/-d15N",6),rep("-d13C/-d15N",6), rep("-d13C/+d15N",6))
+
+
+bp.y <- ggplot(data = df.Ybarplot, aes(x = factor(Directions), y = Lengths,fill = ISpattern)) + 
+  geom_bar(stat="identity") + theme_minimal() + coord_flip()
+bp.y
+```

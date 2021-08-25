@@ -51,7 +51,9 @@ Briefly, fur seals [the Antarctic fur seal *Arctocephalus gazella* (AFS) and sub
 
 ### 3.2 Trajectory metrics
 
-In this section, we illustrate how to calculate trajectory metrics to characterize the foraging strategy of each fur seal. First, we calculate net changes relative to the initial state (i.e. the distance between SI state of each whisker section and the initial SI state):
+In this section, we illustrate how to calculate trajectory metrics to characterize the foraging strategy of each fur seal. In the following sections, we show how to use these metrics as data to create plots. 
+
+First, we calculate net changes relative to the initial state (i.e. the distance between SI state of each whisker section and the initial SI state):
 ```{r, echo=T}
 Net_changes<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
                                  furseals$ID_SITA,
@@ -112,8 +114,8 @@ Here we display trophic trajectories of all individuals, in plots corresponding 
 furseals$sp_gender<-paste(furseals$Sexe, furseals$Species, sep=" ")
 ```
 
-We now create the plot of trajectories in the SI space. Arrows connects all whiskers section stable isotope values from t1 to t30 (i.e. most recent to oldest SI values). Colors corresponds to trajectory clusters and shape to breeding sites.
-```{r, echo=TRUE, fig.height=4, fig.width=6}
+We now create a diagram to display fur seal trophic trajectories in the SI space. Panels correspond to the combination of species and gender. In each panel, X-Y axes are defined by SI values. Arrows connects all whiskers section SI states from t1 to t30 (i.e. most recent to oldest SI state). Colors corresponds to trajectory clusters and shape to breeding sites.
+```{r, echo=TRUE, fig.height=6, fig.width=6}
 ggplot(data=furseals,aes(x=d13C,y=d15N,color=cluster,shape=Place))+
   geom_point()+
   geom_path(aes(x=d13C,y=d15N,group=ID_SITA,color=cluster),arrow = arrow(length = unit(0.10, "cm")))+
@@ -313,12 +315,12 @@ Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled fr
 ### 5.1 2013-2015 Isoscape trajectory maps 
 
 Loading isoscape data
-```{r load Alaska, echo=T}
+```{r load Alaska}
 data("isoscape")
 ```
 
 metrics calculations
-```{r, echo=T}
+```{r}
 sites<-isoscape$station
 surveys<-isoscape$Year
 Angl<-trajectoryAngles2D(isoscape[,3:4],sites,surveys, betweenSegments = FALSE)
@@ -329,7 +331,7 @@ head(data)
 ```
 
 angles transformation for the use with geom_spoke
-```{r, echo=T}
+```{r}
 angle<-data$Angles
 Angles2<-c()
 for (i in 1:length(angle)) {
@@ -411,7 +413,7 @@ colnames(dfa)<-c("Directions","Periods","Nb_stations","Lengths")
 ```
 
 Trajectory heat map
-```{r, echo=T}
+```{r, fig.height=4, fig.width=6}
 ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) + 
   geom_tile() +
   scale_fill_viridis(discrete=FALSE) +
@@ -420,7 +422,7 @@ ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) +
 ```
 
 X bar plot
-```{r, echo=T}
+```{r, fig.height=3, fig.width=5}
 df.Xbarplot<-aggregate(dfa$Lengths, by = list(dfa$Periods), FUN = sum)
 colnames(df.Xbarplot)<-c("Periods","Lengths")
 bp.x <- ggplot(data = df.Xbarplot, aes(x = factor(Periods), y = Lengths)) + 
@@ -432,7 +434,7 @@ bp.x
 ```
 
 Y bar plot
-```{r, echo=T}
+```{r, fig.height=4, fig.width=4}
 df.Ybarplot<-aggregate(dfa$Lengths, by = list(dfa$Directions), FUN = sum)
 colnames(df.Ybarplot)<-c("Directions","Lengths")
 df.Ybarplot$ISpattern<- c(rep("+d13C/+d15N",6),rep("+d13C/-d15N",6),rep("-d13C/-d15N",6), rep("-d13C/+d15N",6))

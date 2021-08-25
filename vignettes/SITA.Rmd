@@ -29,6 +29,7 @@ library(plyr)
 library(dplyr)
 library(ggplot2)
 library(hrbrthemes)
+library(scales)
 library(viridis)
 ```
 
@@ -357,7 +358,7 @@ ggplot(data,
               y = Latitude, 
               fill = Lengths, 
               angle = Angles2, 
-              radius = scales::rescale(Lengths, c(0.3, 1)))) +
+              radius = rescale(Lengths, c(0.3, 1)))) +
   geom_raster(interpolate = TRUE) +
   geom_spoke(arrow = arrow(length = unit(.07, 'inches'))) + 
   scale_fill_distiller(palette = "RdYlBu") + 

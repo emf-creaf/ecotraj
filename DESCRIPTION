@@ -1,8 +1,8 @@
 Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
-Version: 0.0.1
-Date: 2021-05-30
+Version: 0.0.2
+Date: 2021-08-25
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com'),
@@ -22,5 +22,6 @@ LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
 RoxygenNote: 7.1.1
-Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan
+Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan, factoextra, FactoMineR,
+     reshape, gridExtra, rgdal, plyr, dplyr, ggplot2, hrbrthemes, scales, viridis
 VignetteBuilder: utils, knitr

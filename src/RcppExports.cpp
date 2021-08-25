@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // k2triangle
 double k2triangle(double d1, double d2, double d3);
 RcppExport SEXP _ecotraj_k2triangle(SEXP d1SEXP, SEXP d2SEXP, SEXP d3SEXP) {

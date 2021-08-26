@@ -6,16 +6,17 @@
 #' Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) 
 #' which includes 9 surveys.
 #' 
-#' \itemize{
-#'  \item avoca_strat An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.
-#'  \item avoca_sites A vector identifying sampled sites of each element in \code{avoca_strat}.
-#'  \item avoca_surveys A vector identifying surveys of each element in \code{avoca_strat}.
+#' @format Three data items are included:
+#' \describe{
+#'  \item{avoca_strat}{An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.}
+#'  \item{avoca_sites}{A vector identifying sampled sites of each element in \code{avoca_strat}.}
+#'  \item{avoca_surveys}{A vector identifying surveys of each element in \code{avoca_strat}.}
 #' }
 #'
 #' @name avoca
 #' @aliases avoca_sites avoca_strat avoca_surveys
 #' @docType data
-#' @author New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).
+#' @source New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).
 #' @keywords data
 #' @references 
 #' Allen, R. B., P. J. Bellingham, and S. K. Wiser. 1999. Immediate damage by an earthquake to a temperate montane forest. Ecology 80:708–714.

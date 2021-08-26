@@ -7,6 +7,17 @@
 \alias{avoca_strat}
 \alias{avoca_surveys}
 \title{Avoca permanent plot dataset}
+\format{
+Three data items are included:
+\describe{
+ \item{avoca_strat}{An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.}
+ \item{avoca_sites}{A vector identifying sampled sites of each element in \code{avoca_strat}.}
+ \item{avoca_surveys}{A vector identifying surveys of each element in \code{avoca_strat}.}
+}
+}
+\source{
+New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).
+}
 \description{
 Example dataset with data from 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. 
 The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand.  
@@ -14,21 +25,11 @@ Forests plots are almost monospecific, being the mountain beech (Fuscospora clif
 Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) 
 which includes 9 surveys.
 }
-\details{
-\itemize{
- \item avoca_strat An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.
- \item avoca_sites A vector identifying sampled sites of each element in \code{avoca_strat}.
- \item avoca_surveys A vector identifying surveys of each element in \code{avoca_strat}.
-}
-}
 \references{
 Allen, R. B., P. J. Bellingham, and S. K. Wiser. 1999. Immediate damage by an earthquake to a temperate montane forest. Ecology 80:708–714.
 
 Harcombe, P. A., R. B. Allen, J. A. Wardle, and K. H. Platt. 1998. Spatial and temporal patterns in stand structure, biomass, growth and mortality in a monospecific Nothofagus solandri var. cliffortioides (Hook. f.) Poole forest in New Zealand. Journal of Sustainable Forestry 6:313–343.
 
 Hurst, J. M., R. B. Allen, D. A. Coomes, and R. P. Duncan. 2011. Size-specific tree mortality varies with neighbourhood crowding and disturbance in a montane Nothofagus forest. PLoS ONE 6.
-}
-\author{
-New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).
 }
 \keyword{data}

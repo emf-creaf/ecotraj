@@ -3,8 +3,9 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   IntroductionETA: IntroductionETA.html
+  SITA: SITA.html
   Transformation: Transformation.html
-last_built: 2021-06-10T17:44Z
+last_built: 2021-08-26T13:08Z
 urls:
   reference: https://emf-creaf.github.io/ecotraj/reference
   article: https://emf-creaf.github.io/ecotraj/articles

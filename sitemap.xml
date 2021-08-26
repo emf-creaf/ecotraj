@@ -7,6 +7,18 @@
     <loc>https://emf-creaf.github.io/ecotraj/reference/avoca.html</loc>
   </url>
   <url>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/furseals.html</loc>
+  </url>
+  <url>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/heatmapdata.html</loc>
+  </url>
+  <url>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/isoscape.html</loc>
+  </url>
+  <url>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/pike.html</loc>
+  </url>
+  <url>
     <loc>https://emf-creaf.github.io/ecotraj/reference/trajectorymetrics.html</loc>
   </url>
   <url>
@@ -17,6 +29,9 @@
   </url>
   <url>
     <loc>https://emf-creaf.github.io/ecotraj/articles/IntroductionETA.html</loc>
+  </url>
+  <url>
+    <loc>https://emf-creaf.github.io/ecotraj/articles/SITA.html</loc>
   </url>
   <url>
     <loc>https://emf-creaf.github.io/ecotraj/articles/Transformation.html</loc>

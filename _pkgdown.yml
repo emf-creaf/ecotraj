@@ -10,6 +10,10 @@ reference:
   desc:  Example datasets
   contents:
   - avoca
+  - furseals
+  - pike
+  - heatmapdata
+  - isoscape
   
 - title: Trajectory metrics
   desc:  Set of functions to calculate trajectory metrics

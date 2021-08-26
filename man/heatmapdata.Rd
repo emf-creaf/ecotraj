@@ -28,6 +28,9 @@ from 1998 to 2017.
 This data sets is composed of trajectory metrics calculated by Sturbois et al. (under review) for all stations within all inter-annual consecutive periods between 1998 and 2017 
 calculated from the whole data set of Espinasse et al. (2020) for a 1° x 1° spatial grid.
 }
+\references{
+Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
+}
 \seealso{
 isoscape
 }

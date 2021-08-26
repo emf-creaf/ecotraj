@@ -1,4 +1,4 @@
-#' furseal dataset
+#' furseals dataset
 #'
 #' This is a subset of a data sets from Kernaléguen et al. (2015). 
 #' 
@@ -21,12 +21,12 @@
 #'  \item{d15N}{δ15N value}
 #' }
 #'
-#' @name furseal
-#' @aliases 
+#' @name furseals
+#' @aliases furseals 
 #' @docType data
 #' @author Kernaléguen, L., Arnould, J.P.Y., Guinet, C., Cherel, Y.
 #' @keywords data
-#' @reference 
+#' @references 
 #' Kernaléguen, L., Arnould, J.P.Y., Guinet, C., Cherel, Y., 2015.Determinants of individual foraging specialization inlarge marine vertebrates, the Antarctic and subantarctic fur seals. Journal of Animal Ecology 1081–1091.
 NULL
 #'
@@ -57,11 +57,11 @@ NULL
 #' }
 #'
 #' @name pike
-#' @aliases 
+#' @aliases pike 
 #' @docType data
 #' @author Cucherousset, J., Paillisson, J.-M., Roussel, J.-M.
 #' @keywords data
-#' @reference 
+#' @references 
 #' Cucherousset, J., Paillisson, J.-M., Roussel, J.-M., 2013. Natal departure timing from spatially varying environments is dependent of individual ontogenetic status. Naturwissenschaften 100, 761–768.
 NULL
 
@@ -84,12 +84,12 @@ NULL
 #' }
 #'
 #' @name isoscape
-#' @aliases 
+#' @aliases isoscape
 #' @docType data
 #' @author Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A.
 #' @keywords data
 #' @seealso heatmapdata 
-#' @reference 
+#' @references 
 #' Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
 NULL
 
@@ -117,12 +117,12 @@ NULL
 #' }
 #'
 #' @name heatmapdata
-#' @aliases 
+#' @aliases heatmapdata
 #' @docType data
 #' @author Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A.
 #' @keywords data
 #' @seealso isoscape 
-#' @reference 
+#' @references 
 #' Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
 NULL
 

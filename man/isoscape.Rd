@@ -23,6 +23,9 @@ Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled fr
 The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting δ13C and δ15N isoscapes 
 from 1998 to 2017. The subset is composed of modelled δ13C and δ15N values of a 1° x 1° spatial grid from the original modelled dataset for 2013 and 2015.
 }
+\references{
+Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
+}
 \seealso{
 heatmapdata
 }

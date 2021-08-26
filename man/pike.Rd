@@ -31,6 +31,9 @@ The release site was connected through a unique point to an adjacent pond used a
 to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in δ13C and δ15N values, 
 and released.
 }
+\references{
+Cucherousset, J., Paillisson, J.-M., Roussel, J.-M., 2013. Natal departure timing from spatially varying environments is dependent of individual ontogenetic status. Naturwissenschaften 100, 761–768.
+}
 \author{
 Cucherousset, J., Paillisson, J.-M., Roussel, J.-M.
 }

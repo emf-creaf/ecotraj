@@ -14,7 +14,11 @@ vignette: >
 
 ## 1. About this vignette
 
-This vignette present some ecological applications used by Sturbois at al. (under review) in the new stable isotope trajectory analysis framework. Example datasets have been included in the package for reproducibility. After the calculation of the necessary distance- and direction-based metrics, the vignette focuses, for each ecological applications, on the creation of trajectory charts.
+This vignette present some ecological applications used by Sturbois et al. (2021) in the new stable isotope trajectory analysis framework:
+
++ Sturbois, et al., Stable Isotope Trajectory Analysis (SITA): A new approach to quantify and visualize dynamics in stable isotope studies. Ecol. Monogr. (2021) https:/doi.org/10.1002/ecm.1501.
+
+Example datasets have been included in the package for reproducibility. After the calculation of the necessary distance- and direction-based metrics, the vignette focuses, for each ecological applications, on the creation of trajectory charts.
 
 ## 2. Loading libraries
 First of all, we load the required libraries, including `ecotraj`:

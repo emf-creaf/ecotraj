@@ -102,7 +102,7 @@ double angularAttributeConsecutive(double d12, double d23, double d13, bool add 
 // [[Rcpp::export(".distanceToSegmentC")]]
 NumericVector distanceToSegment(double dref, double d1, double d2, bool add = true) {
   NumericVector p = projection(dref,d1, d2, add);
-  if(NumericVector::is_na(p[2]) | (p[0]<0.0) | (p[1]<0.0)) {
+  if(NumericVector::is_na(p[2]) || (p[0]<0.0) || (p[1]<0.0)) {
     if(d1<d2) {
       p[0] = 0.0;
       p[1] = dref;

@@ -546,10 +546,10 @@ trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitia
         angles[i1, s1] = .angleConsecutiveC(d12,d23,d13, add)
         # cat(paste(i1,s1,":", d12,d23,d13,.angleConsecutiveC(d12,d23,d13, TRUE),"\n"))
       }
-      x <- circular::circular(angles[i1,1:(nsurveysite[i1]-2)], units="degrees") 
-      angles[i1, ncol(angles)-2] = circular::mean.circular(x, na.rm=T)
-      angles[i1, ncol(angles)-1] = circular::sd.circular(x, na.rm=T)
-      angles[i1, ncol(angles)] = circular::rho.circular(x, na.rm=T)
+      x <- angles[i1,1:(nsurveysite[i1]-2)] 
+      angles[i1, ncol(angles)-2] = .meancircular(x, na.rm=TRUE)
+      angles[i1, ncol(angles)-1] = .sdcircular(x, na.rm=TRUE)
+      angles[i1, ncol(angles)] = .rhocircular(x, na.rm=TRUE)
     } else {
       cs = combn(length(ind_surv1),3)
       dsub = dmat[ind_surv1, ind_surv1]
@@ -559,10 +559,10 @@ trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitia
         d13 = dsub[cs[1,s],cs[3,s]]
         angles[i1, s] = .angleConsecutiveC(d12,d23,d13, add)
       }
-      x <- circular::circular(angles[i1,], units="degrees") 
-      angles[i1, ncol(angles)-2] = circular::mean.circular(x, na.rm=T)
-      angles[i1, ncol(angles)-1] = circular::sd.circular(x, na.rm=T)
-      angles[i1, ncol(angles)] = circular::rho.circular(x, na.rm=T)
+      x <- angles[i1,]
+      angles[i1, ncol(angles)-2] = .meancircular(x, na.rm=TRUE)
+      angles[i1, ncol(angles)-1] = .sdcircular(x, na.rm=TRUE)
+      angles[i1, ncol(angles)] = .rhocircular(x, na.rm=TRUE)
     }
   }
   angles = as.data.frame(angles)

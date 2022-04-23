@@ -1,8 +1,8 @@
 Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
-Version: 0.0.2
-Date: 2021-08-25
+Version: 0.0.3
+Date: 2022-04-23
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com'),
@@ -14,14 +14,14 @@ Description: Assists ecologists in the analysis of temporal changes of
     to estimate metrics for individual trajectories (length, directionality, angles, ...) as well as
     metrics to relate pairs of trajectories (dissimilarity and convergence).
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
-Imports: Kendall, circular, MASS
+Imports: Kendall, MASS
 LinkingTo: Rcpp
 License: GPL (>= 2)
 URL: https://emf-creaf.github.io/ecotraj/
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan, factoextra, FactoMineR,
      reshape, gridExtra, rgdal, plyr, dplyr, ggplot2, hrbrthemes, scales, viridis
 VignetteBuilder: utils, knitr

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ecotraj</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -71,13 +71,13 @@
 
       
 
-      </header><script src="IntroductionETA_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to Ecological Trajectory Analysis</h1>
                         <h4 data-toc-skip class="author">Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2021-12-17</h4>
+            <h4 data-toc-skip class="date">2022-04-23</h4>
       
       
       <div class="hidden name"><code>IntroductionETA.Rmd</code></div>
@@ -232,7 +232,7 @@
 <span class="co">## 1  1 1.000000 1.0000000   3.000000</span>
 <span class="co">## 2  1 0.559017 0.7071068   2.266124</span>
 <span class="co">## 3  1 0.559017 0.5590170   2.118034</span></code></pre>
-<p>In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix <span class="math inline">\(\Delta\)</span> may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics (see R package <code>circular</code>). Function <code>trajectoryAngles</code> allows calculating the angles between consecutive segments:</p>
+<p>In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix <span class="math inline">\(\Delta\)</span> may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics. Function <code>trajectoryAngles</code> allows calculating the angles between consecutive segments:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##      S1-S2    S2-S3     mean         sd       rho</span>
@@ -578,7 +578,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

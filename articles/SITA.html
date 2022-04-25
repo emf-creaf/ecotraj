@@ -91,7 +91,8 @@
 </h2>
 <p>This vignette present some ecological applications used by Sturbois et al. (2021) in the new stable isotope trajectory analysis framework:</p>
 <ul>
-<li>Sturbois, et al., Stable Isotope Trajectory Analysis (SITA): A new approach to quantify and visualize dynamics in stable isotope studies. Ecol. Monogr. (2021).</li>
+<li>Sturbois, et al., Stable Isotope Trajectory Analysis (SITA): A new approach to quantify and visualize dynamics in stable isotope studies. Ecol. Monogr. (2021). <a href="https://doi.org/10.1002/ecm.1501" class="external-link uri">https://doi.org/10.1002/ecm.1501</a>
+</li>
 </ul>
 <p>Example datasets have been included in the package for reproducibility. After the calculation of the necessary distance- and direction-based metrics, the vignette focuses, for each ecological applications, on the creation of trajectory charts.</p>
 </div>
@@ -99,47 +100,7 @@
 <h2 id="loading-libraries">2. Loading libraries<a class="anchor" aria-label="anchor" href="#loading-libraries"></a>
 </h2>
 <p>First of all, we load the required libraries, including <code>ecotraj</code>:</p>
-<pre><code><span class="co">## Loading required package: ggplot2</span></code></pre>
-<pre><code><span class="co">## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</span></code></pre>
 <pre><code><span class="co">## Loading required package: Rcpp</span></code></pre>
-<pre><code><span class="co">## Loading required package: sp</span></code></pre>
-<pre><code><span class="co">## Please note that rgdal will be retired by the end of 2023,</span>
-<span class="co">## plan transition to sf/stars/terra functions using GDAL and PROJ</span>
-<span class="co">## at your earliest convenience.</span>
-<span class="co">## </span>
-<span class="co">## rgdal: version: 1.5-31, (SVN revision 1171)</span>
-<span class="co">## Geospatial Data Abstraction Library extensions to R successfully loaded</span>
-<span class="co">## Loaded GDAL runtime: GDAL 3.0.4, released 2020/01/28</span>
-<span class="co">## Path to GDAL shared files: /usr/share/gdal</span>
-<span class="co">## GDAL binary built with GEOS: TRUE </span>
-<span class="co">## Loaded PROJ runtime: Rel. 6.3.1, February 10th, 2020, [PJ_VERSION: 631]</span>
-<span class="co">## Path to PROJ shared files: /usr/share/proj</span>
-<span class="co">## Linking to sp version:1.4-7</span>
-<span class="co">## To mute warnings of possible GDAL/OSR exportToProj4() degradation,</span>
-<span class="co">## use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">## Attaching package: 'plyr'</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:reshape':</span>
-<span class="co">## </span>
-<span class="co">##     rename, round_any</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">## Attaching package: 'dplyr'</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:plyr':</span>
-<span class="co">## </span>
-<span class="co">##     arrange, count, desc, failwith, id, mutate, rename, summarise,</span>
-<span class="co">##     summarize</span></code></pre>
-<pre><code><span class="co">## The following object is masked from 'package:gridExtra':</span>
-<span class="co">## </span>
-<span class="co">##     combine</span></code></pre>
-<pre><code><span class="co">## The following object is masked from 'package:reshape':</span>
-<span class="co">## </span>
-<span class="co">##     rename</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:stats':</span>
-<span class="co">## </span>
-<span class="co">##     filter, lag</span></code></pre>
-<pre><code><span class="co">## The following objects are masked from 'package:base':</span>
-<span class="co">## </span>
-<span class="co">##     intersect, setdiff, setequal, union</span></code></pre>
 <pre><code><span class="co">## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.</span></code></pre>
 <pre><code><span class="co">##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and</span></code></pre>
 <pre><code><span class="co">##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow</span></code></pre>
@@ -157,7 +118,7 @@
 <h3 id="fur-seal-stable-isotope-dataset">3.1 Fur seal stable isotope dataset<a class="anchor" aria-label="anchor" href="#fur-seal-stable-isotope-dataset"></a>
 </h3>
 <p>We begin by loading the package dataset <code>furseals</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"furseals"</span><span class="op">)</span></code></pre></div>
 <p>This is a subset of the dataset provided in:</p>
 <ul>
@@ -170,7 +131,7 @@
 </h3>
 <p>In this section, we illustrate how to calculate trajectory metrics to characterize the foraging strategy of each fur seal. In the following sections, we show how to use these metrics as data to create plots.</p>
 <p>First, we calculate net changes relative to the initial state (i.e. the distance between stable isotope compositions (i.e state) of each whisker section and the initial stable isotope composition):</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,
                                  <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,
                                  <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> 
@@ -211,7 +172,7 @@
 <span class="co">## 5   76.30333</span>
 <span class="co">## 6  107.19276</span></code></pre>
 <p>We then calculate trajectory segment lengths, i.e. the distance between the stable isotope composition of consecutive whisker sections in the stable isotope space:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Segment_lengths</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,
                                      <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,
                                      <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> 
@@ -251,8 +212,8 @@
 <span class="co">## 4 0.5050881   21.38160</span>
 <span class="co">## 5 1.8207584   28.96757</span>
 <span class="co">## 6 0.9149454   42.62136</span></code></pre>
-<p>Finally, we determine the angle (α) of consecutive trajectory segments with respect to the second axis of the 2D stable isotope space:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<p>Finally, we determine the angle (<span class="math inline">\(\alpha\)</span>) of consecutive trajectory segments with respect to the second axis of the 2D stable isotope space:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Angles</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,
                            <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,
                            <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, betweenSegments<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
@@ -297,12 +258,12 @@
 <h3 id="identification-and-characterization-of-trajectory-clusters">3.3 Identification and characterization of trajectory clusters<a class="anchor" aria-label="anchor" href="#identification-and-characterization-of-trajectory-clusters"></a>
 </h3>
 <p>Here we aim to define groups of fur seals depending on the similarity of their foraging strategy. We need first to calculate distances between pairs of complete trajectories in the stable isotope space:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,
                         symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">colstd</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span>,<span class="st">"grey"</span>,<span class="st">"red"</span><span class="op">)</span>
 <span class="va">pt</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>,<span class="fl">16</span>,<span class="fl">16</span>,<span class="fl">16</span><span class="op">)</span>
 <span class="va">hsxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">Ds</span>, <span class="st">"ward.D2"</span><span class="op">)</span>
@@ -312,20 +273,21 @@
                border <span class="op">=</span> <span class="va">colstd</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 <p>We cut the dendrogram at height <code>Hst</code> to obtain a vector of cluster membership and copy it in <code>furseals</code> as a factor:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html" class="external-link">cutree</a></span><span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span><span class="op">)</span>
 <span class="va">furseals</span><span class="op">$</span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></code></pre></div>
 <div class="section level4">
 <h4 id="individual-trophic-trajectories-for-males-and-females-of-a--gazella-and-a--tropicalis">3.3.1 Individual trophic trajectories for males and females of <em>A. gazella</em> and <em>A. tropicalis</em><a class="anchor" aria-label="anchor" href="#individual-trophic-trajectories-for-males-and-females-of-a--gazella-and-a--tropicalis"></a>
 </h4>
 <p>Here we display trophic trajectories of all individuals, in plots corresponding to combinations of species and gender. To facilitate such plots, we create of a vector with the combination of species and gender:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">furseals</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">$</span><span class="va">Sexe</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">Species</span>, sep<span class="op">=</span><span class="st">" "</span><span class="op">)</span></code></pre></div>
 <p>We now create a diagram to display fur seal trophic trajectories in the stable isotope space. Panels correspond to the combination of species and gender. In each panel, X-Y axes are defined by d13C and d15N stable isotope values. Arrows connects all whiskers section SI states from t1 to t30 (i.e. most recent to oldest SI state). Colors corresponds to trajectory clusters and shape to breeding sites:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">furseals</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,color<span class="op">=</span><span class="va">cluster</span>,shape<span class="op">=</span><span class="va">Place</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,group<span class="op">=</span><span class="va">ID_SITA</span>,color<span class="op">=</span><span class="va">cluster</span><span class="op">)</span>,arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.10</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,group<span class="op">=</span><span class="va">ID_SITA</span>,color<span class="op">=</span><span class="va">cluster</span><span class="op">)</span>,
+            arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.10</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">xlab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">13</span><span class="op">*</span><span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">ylab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">15</span><span class="op">*</span><span class="st">"N"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">sp_gender</span><span class="op">)</span> <span class="op">+</span>
@@ -336,48 +298,51 @@
 <h4 id="net-changes-time-series-for-males-and-females-of-both-fur-seal-species">3.3.2 Net changes time series for males and females of both fur seal species<a class="anchor" aria-label="anchor" href="#net-changes-time-series-for-males-and-females-of-both-fur-seal-species"></a>
 </h4>
 <p>In this sub-section we display net changes time series for all individuals, in plots corresponding to combinations of species and gender We prepare a subset of the data called <code>NC</code>:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">NC</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">[</span>,<span class="op">-</span><span class="fl">30</span><span class="op">]</span>
 <span class="va">NC</span><span class="op">$</span><span class="va">cluster</span><span class="op">&lt;-</span><span class="va">furseals</span><span class="op">$</span><span class="va">cluster</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">47</span><span class="op">]</span>
 <span class="va">NC</span><span class="op">$</span><span class="va">ID</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">NC</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">NC</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">30</span>,<span class="st">"cluster"</span>,<span class="st">"ID"</span><span class="op">)</span></code></pre></div>
-<p>We then prepare the subset. We notably transform NC in a line structure to compute <code>NCline</code> using the function “melt”, order the data set and add the vector sp_gender:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">NCline</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">melt</span><span class="op">(</span><span class="va">NC</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"cluster"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"Clusters"</span>,<span class="st">"Time_from_present"</span>,<span class="st">"Net_changes"</span><span class="op">)</span>
-<span class="va">NCline</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span>
-<span class="va">NCline</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>
-<span class="va">NCline</span><span class="op">&lt;-</span><span class="va">NCline</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,decreasing<span class="op">=</span><span class="cn">F</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
-<pre><code><span class="co">## Warning in xtfrm.data.frame(x): cannot xtfrm data frames</span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">NCline</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">47</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<p>We then prepare the subset. We notably transform NC to a longer format, order the data set and add the vector sp_gender:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">NCline</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">NC</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">29</span>, 
+                              names_to <span class="op">=</span><span class="st">"Time_from_present"</span>, 
+                              values_to<span class="op">=</span><span class="st">"Net_changes"</span>, 
+                              names_transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">}</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Clusters"</span>, <span class="st">"ID"</span><span class="op">)</span>
+<span class="va">NCline</span> <span class="op">&lt;-</span> <span class="va">NCline</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">$</span><span class="va">Time_from_present</span>, decreasing<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">NCline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">NCline</span><span class="op">)</span>
+<span class="va">NCline</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">47</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>We now create the plot to display net changes time series for all individuals in panel corresponding Arrows connects all whiskers section stable isotope values from t1 to t30 (i.e. most recent to oldest stable isotope values). Colours corresponds to trajectory clusters:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">NCline</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Time_from_present</span>,y<span class="op">=</span><span class="va">Net_changes</span>,color<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Time_from_present</span>,y<span class="op">=</span><span class="va">Net_changes</span>,group<span class="op">=</span><span class="va">ID</span>,color<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span>,arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.10</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Time_from_present</span>,y<span class="op">=</span><span class="va">Net_changes</span>,group<span class="op">=</span><span class="va">ID</span>,color<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span>,
+            arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.10</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">sp_gender</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 </div>
 <div class="section level4">
-<h4 id="angle-α-trajectory-roses-of-fur-seals-trajectory-cluster-">3.3.3 Angle α trajectory roses of Fur seals trajectory cluster.<a class="anchor" aria-label="anchor" href="#angle-%CE%B1-trajectory-roses-of-fur-seals-trajectory-cluster-"></a>
+<h4 id="angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-">3.3.3 Angle <span class="math inline">\(\alpha\)</span> trajectory roses of Fur seals trajectory cluster.<a class="anchor" aria-label="anchor" href="#angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-"></a>
 </h4>
-<p>In this sub-section, we plot the distribution of Angle α values in a trajectory rose<br>
-We prepare the data set to compute the trajectoy rose and transform it in a line structure. We create a vector of direction to class Angle α values by range of 15°:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<p>In this sub-section, we plot the distribution of Angle <span class="math inline">\(\alpha\)</span> values in a trajectory rose<br>
+We prepare the data set to compute the trajectory rose and transform to a long data structure. We create a vector of direction to class Angle <span class="math inline">\(\alpha\)</span> values by range of 15°:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Angl</span><span class="op">&lt;-</span><span class="va">Angles</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Angl</span><span class="op">)</span><span class="op">&lt;-</span><span class="fl">2</span><span class="op">:</span><span class="fl">30</span>
 <span class="va">Angl</span><span class="op">$</span><span class="va">ID</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">Angl</span><span class="op">)</span><span class="op">)</span>
 <span class="va">Angl</span><span class="op">$</span><span class="va">cluster</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span>
 <span class="va">Angl</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">&lt;-</span><span class="va">furseals</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">47</span><span class="op">]</span>
-<span class="va">Angline</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu">melt</span><span class="op">(</span><span class="va">Angl</span>,id<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"cluster"</span>,<span class="st">"sp_gender"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>,<span class="st">"Clusters"</span>,<span class="st">"Group"</span>,<span class="st">"Time_from_present"</span>,<span class="st">"Direction"</span><span class="op">)</span>
-<span class="va">Angline</span><span class="op">$</span><span class="va">Direction</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">$</span><span class="va">Direction</span><span class="op">)</span>
 
+<span class="va">Angline</span><span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">Angl</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">29</span>, 
+                              names_to <span class="op">=</span><span class="st">"Time_from_present"</span>, 
+                              values_to<span class="op">=</span><span class="st">"Direction"</span>, 
+                              names_transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">}</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Clusters"</span>, <span class="st">"Group"</span><span class="op">)</span>
 
 <span class="co"># range 15°</span>
 <span class="va">deg</span> <span class="op">&lt;-</span> <span class="fl">15</span>
-<span class="co"># vector for range of direction of differents bars</span>
+<span class="co"># vector for range of direction of different bars</span>
 <span class="va">dir.breaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span><span class="op">-</span><span class="op">(</span><span class="va">deg</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">360</span><span class="op">+</span><span class="op">(</span><span class="va">deg</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>, <span class="va">deg</span><span class="op">)</span>
 <span class="va">dir.binned</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">$</span><span class="va">Direction</span>,
                   breaks <span class="op">=</span> <span class="va">dir.breaks</span>,
@@ -392,12 +357,10 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="co"># sort angles</span>
 <span class="va">df_sorted</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">$</span><span class="va">dir.binned</span>, <span class="va">Angline</span><span class="op">$</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_sorted</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dir.binned"</span>,<span class="st">"Clusters"</span>,<span class="st">"nb"</span><span class="op">)</span>
-
-<span class="va">df_cumsum</span> <span class="op">&lt;-</span> <span class="fu">ddply</span><span class="op">(</span><span class="va">df_sorted</span>, <span class="st">"dir.binned"</span>,
-                   <span class="va">transform</span>, label_ypos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">nb</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>We now create the trajectory rose. Angles α were calculated in 2D <span class="math inline">\(\Omega \delta\)</span> space (<span class="math inline">\(\delta 13C/\delta 15N\)</span>) and represented by range (15<span class="math inline">\(\circ\)</span>) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters).</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">df_cumsum</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">dir.binned</span>, y<span class="op">=</span><span class="va">nb</span>, fill<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<span class="va">df_sorted</span> <span class="op">=</span> <span class="va">df_sorted</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">df_sorted</span><span class="op">$</span><span class="va">dir.binned</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<p>We now create the trajectory rose. Angles <span class="math inline">\(\alpha\)</span> were calculated in 2D <span class="math inline">\(\Omega \delta\)</span> space (<span class="math inline">\(\delta 13C/\delta 15N\)</span>) and represented by range (15<span class="math inline">\(\circ\)</span>) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters).</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">df_sorted</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">dir.binned</span>, y<span class="op">=</span><span class="va">nb</span>, fill<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_bar</span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">110</span><span class="op">)</span>, expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, 
                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">25</span>,<span class="fl">50</span>,<span class="fl">75</span>,<span class="fl">110</span><span class="op">)</span>, 
@@ -417,7 +380,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <h3 id="loading-data">4.1 Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h3>
 <p>We begin by loading the package dataset <code>pike</code>:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"pike"</span><span class="op">)</span></code></pre></div>
 <p>This is a data set from :</p>
 <ul>
@@ -429,17 +392,17 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <h3 id="calculating-trajectory-metrics-and-identification-of-trajectory-clusters">4.2 Calculating trajectory metrics and identification of trajectory clusters<a class="anchor" aria-label="anchor" href="#calculating-trajectory-metrics-and-identification-of-trajectory-clusters"></a>
 </h3>
 <p>First, we calculate net changes relative to the initial state for each individual (i.e. the distance between stable isotope compositions at release and at recapture):</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>,<span class="va">pike</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> 
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Net_changes</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Net_changes"</span>, <span class="st">"Trajectory"</span><span class="op">)</span>
 <span class="va">pike</span><span class="op">$</span><span class="va">Net_Changes</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">$</span><span class="va">Net_changes</span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">D</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span>
 <span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,
                         symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We cut the dendrogram at height <code>Hst</code> to obtain a vector of cluster membership and copy it in <code>pike</code>:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Hst</span><span class="op">=</span><span class="fl">3</span>
 <span class="va">colstd</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span>,<span class="st">"grey"</span>,<span class="st">"red"</span><span class="op">)</span>
 <span class="va">hsxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">Ds</span>, <span class="st">"ward.D2"</span><span class="op">)</span>
@@ -447,7 +410,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/rect.hclust.html" class="external-link">rect.hclust</a></span> <span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span>,
                 border <span class="op">=</span> <span class="va">colstd</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Store clusters into a new data column</span>
 <span class="va">pike</span><span class="op">$</span><span class="va">Cluster</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/cutree.html" class="external-link">cutree</a></span><span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span><span class="op">)</span></code></pre></div>
 </div>
@@ -455,7 +418,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <h3 id="trajectory-diagram-of-pike-released-in-the-flooded-grassland-and-recaptured-when-emigrating-into-the-adjacent-pond">4.3 Trajectory diagram of pike released in the flooded grassland and recaptured when emigrating into the adjacent pond<a class="anchor" aria-label="anchor" href="#trajectory-diagram-of-pike-released-in-the-flooded-grassland-and-recaptured-when-emigrating-into-the-adjacent-pond"></a>
 </h3>
 <p>We prepare the data set to compute trajectory diagrams and density curves:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Pike1</span><span class="op">&lt;-</span><span class="va">pike</span><span class="op">[</span><span class="va">pike</span><span class="op">$</span><span class="va">Time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span>,<span class="op">]</span>
 <span class="va">Pike1</span><span class="op">&lt;-</span><span class="va">Pike1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">Pike1</span><span class="op">$</span><span class="va">ID</span>, decreasing<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span>
 <span class="va">Pike1</span><span class="op">$</span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fl">0</span>
@@ -464,7 +427,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="va">Pike2</span><span class="op">$</span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">$</span><span class="va">Net_changes</span>
 <span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">Pike1</span>,<span class="va">Pike2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>We create the trajectory diagram. Arrows represent trajectory path for each pit-tagged individual. Colors correspond to trajectory clusters. The dashed line separates piscivorous from zooplanktivorous individuals [zooplanktivorous (<span class="math inline">\(\delta15N\)</span> &lt; 10) vs piscivorous (<span class="math inline">\(\delta15N\)</span> &gt; 10)].</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>,<span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,shape<span class="op">=</span><span class="va">Trophic_status_initial</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>size<span class="op">=</span><span class="va">Net_changes</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
   <span class="fu">geom_path</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,group<span class="op">=</span><span class="va">ID</span>,color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">Cluster</span><span class="op">)</span><span class="op">)</span>,arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">0.30</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span>
@@ -474,7 +437,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
   <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
 <p>Density curves X represents the distribution of all samples according to <span class="math inline">\(\delta13C\)</span> values, and capture (green=release; red=departure):</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">data</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">d13C</span>, fill<span class="op">=</span><span class="va">TimeL</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_density</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> 
 <span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">13</span><span class="op">*</span><span class="st">"C"</span><span class="op">*</span><span class="st">" density"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>axis.title.y<span class="op">=</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>,
@@ -488,7 +451,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu">scale_x_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33</span>, <span class="op">-</span><span class="fl">25</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu">scale_y_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-19-1.png" width="384"></p>
 <p>Density curves Y represents the distribution of all samples according to <span class="math inline">\(\delta15N\)</span> values, and capture (green=release; red=departure):</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gg_dist_d15N</span> <span class="op">=</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">data</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">d15N</span>, fill<span class="op">=</span><span class="va">TimeL</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_density</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> 
 <span class="va">gg_dist_d15N</span> <span class="op">=</span> <span class="va">gg_dist_d15N</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">15</span><span class="op">*</span><span class="st">"N"</span><span class="op">*</span><span class="st">" density"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">gg_dist_d15N</span> <span class="op">=</span><span class="va">gg_dist_d15N</span> 
@@ -518,10 +481,10 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <h3 id="isoscape-trajectory-maps">5.1 2013-2015 Isoscape trajectory maps<a class="anchor" aria-label="anchor" href="#isoscape-trajectory-maps"></a>
 </h3>
 <p>We begin by loading the package dataset <code>isoscape</code>:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"isoscape"</span><span class="op">)</span></code></pre></div>
-<p>We calculate Segment lengths and Angle α for each stations to assess, respectively, the magnitude and the nature of change in the stable isotope space between 2013 and 2015. We then prepare a data set to compute the isoscape trajectory map with notably: Latitude, Longitude, Years, Angles and segment lenghts values:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<p>We calculate Segment lengths and Angle <span class="math inline">\(\alpha\)</span> for each stations to assess, respectively, the magnitude and the nature of change in the stable isotope space between 2013 and 2015. We then prepare a data set to compute the isoscape trajectory map with notably: Latitude, Longitude, Years, Angles and segment lenghts values:</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sites</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">station</span>
 <span class="va">surveys</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">Year</span>
 <span class="va">Angl</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -536,8 +499,8 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="co">## 4       50       195 -24.30105 5.261582        5  2013 147.84429 0.25570108</span>
 <span class="co">## 5       51       195 -24.05084 5.302065        6  2013 126.14883 0.32439073</span>
 <span class="co">## 6       52       195 -23.92968 5.407169        7  2013  60.21061 0.28423495</span></code></pre>
-<p>Angles α need to be transformed for the use with <code>geom_spoke</code>. We then add transformed values in a new column <code>Angles2</code>.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<p>Angles <span class="math inline">\(\alpha\)</span> need to be transformed for the use with <code>geom_spoke</code>. We then add transformed values in a new column <code>Angles2</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">angle</span><span class="op">&lt;-</span><span class="va">data</span><span class="op">$</span><span class="va">Angles</span>
 <span class="va">Angles2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -553,8 +516,8 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="op">}</span>
 
 <span class="va">data</span><span class="op">$</span><span class="va">Angles2</span><span class="op">&lt;-</span><span class="va">Angles2</span></code></pre></div>
-<p>We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angle α are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle α) illustrate direction (i.e. the nature of change) in the modelled 2D <span class="math inline">\(\Omega \delta\)</span> space according to increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<p>We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angles <span class="math inline">\(\alpha\)</span> are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle <span class="math inline">\(\alpha\)</span>) illustrate direction (i.e. the nature of change) in the modelled 2D <span class="math inline">\(\Omega \delta\)</span> space according to increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">data</span>, 
           <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Longitude</span>, 
               y <span class="op">=</span> <span class="va">Latitude</span>, 
@@ -574,10 +537,10 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <h3 id="trajectory-heatmap">5.2 1998-2017 trajectory heatmap<a class="anchor" aria-label="anchor" href="#trajectory-heatmap"></a>
 </h3>
 <p>We begin by loading the package dataset <code>heatmapdata</code>:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"heatmapdata"</span><span class="op">)</span></code></pre></div>
 <p><code>heatmapdata</code> is composed of trajectory metrics for all stations within all inter-annual consecutive periods between 1998 and 2017:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">heatmapdata</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##   Latitude Longitude      d13C     d15N Stations     Years    Angles    Lengths</span>
 <span class="co">## 1       46       195 -24.76366 5.451872        1 1998-1999 181.31874 0.30196921</span>
@@ -593,8 +556,8 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="co">## 4 -1.384174</span>
 <span class="co">## 5 -1.476076</span>
 <span class="co">## 6  1.338939</span></code></pre>
-<p>We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle α values. We create the vector <code>ISPattern</code> to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>):</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<p>We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle <span class="math inline">\(\alpha\)</span> values. We create the vector <code>ISPattern</code> to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>):</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#direction range</span>
 <span class="va">deg</span> <span class="op">&lt;-</span> <span class="fl">15</span>
 
@@ -629,7 +592,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="va">dfa</span><span class="op">&lt;-</span><span class="va">data1</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Directions"</span>,<span class="st">"Periods"</span>,<span class="st">"Nb_stations"</span>,<span class="st">"Lengths"</span><span class="op">)</span></code></pre></div>
 <p>The final dataset used to create the trajectory heat map is composed of four variables (“Directions”,“Periods”,“Nb_stations”,“Lengths”):</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##   Directions   Periods Nb_stations   Lengths</span>
 <span class="co">## 1          0 1998-1999          12  8.634497</span>
@@ -638,8 +601,8 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
 <span class="co">## 4         45 1998-1999           8 11.138909</span>
 <span class="co">## 5         60 1998-1999           4  1.861980</span>
 <span class="co">## 6         75 1998-1999           4  1.835733</span></code></pre>
-<p>We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles α in the modelled 2D <span class="math inline">\(\Omega \delta\)</span> space exhibited by all stations within all pairs of dates (1998-1999,…,2016-2017) are represented by range of direction (15°) according to period. Color gradient from dark blue to yellow indicate the number of stations exhibited by a given range of direction within a given period.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<p>We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles <span class="math inline">\(\alpha\)</span> in the modelled 2D <span class="math inline">\(\Omega \delta\)</span> space exhibited by all stations within all pairs of dates (1998-1999,…,2016-2017) are represented by range of direction (15°) according to period. Color gradient from dark blue to yellow indicate the number of stations exhibited by a given range of direction within a given period.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">dfa</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Periods</span>, <span class="va">Directions</span>, fill<span class="op">=</span> <span class="va">Nb_stations</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_tile</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_fill_viridis</span><span class="op">(</span>discrete<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
@@ -647,7 +610,7 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
   <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size<span class="op">=</span><span class="fl">10</span>, angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-27-1.png" width="576"></p>
 <p>The X bar plot represents the sum of segment lengths across stations and times, 1231 exhibiting the chosen angle. The blue gradient indicates the net change magnitude.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df.Xbarplot</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Lengths</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Periods</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df.Xbarplot</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Periods"</span>,<span class="st">"Lengths"</span><span class="op">)</span>
 <span class="va">bp.x</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df.Xbarplot</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">Periods</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">Lengths</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -657,8 +620,8 @@ We prepare the data set to compute the trajectoy rose and transform it in a line
   <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Periods"</span><span class="op">)</span>
 <span class="va">bp.x</span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-28-1.png" width="480"></p>
-<p>The Y bar plot represents the overall net changes according to range of directions (angle α). Bars are colored according to increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (Pink: 0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span> ; Blue: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Red: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Green: 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>).</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<p>The Y bar plot represents the overall net changes according to range of directions (angle <span class="math inline">\(\alpha\)</span>). Bars are colored according to increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (Pink: 0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span> ; Blue: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Red: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Green: 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>).</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df.Ybarplot</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Lengths</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Directions</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df.Ybarplot</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Directions"</span>,<span class="st">"Lengths"</span><span class="op">)</span>
 <span class="va">df.Ybarplot</span><span class="op">$</span><span class="va">ISpattern</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"+d13C/+d15N"</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"+d13C/-d15N"</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"-d13C/-d15N"</span>,<span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"-d13C/+d15N"</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span>

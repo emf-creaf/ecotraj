@@ -16,7 +16,7 @@ vignette: >
 
 This vignette present some ecological applications used by Sturbois et al. (2021) in the new stable isotope trajectory analysis framework:
 
-+ Sturbois, et al., Stable Isotope Trajectory Analysis (SITA): A new approach to quantify and visualize dynamics in stable isotope studies. Ecol. Monogr. (2021) https:/doi.org/10.1002/ecm.1501.
++ Sturbois, et al., Stable Isotope Trajectory Analysis (SITA): A new approach to quantify and visualize dynamics in stable isotope studies. Ecol. Monogr. (2021).
 
 Example datasets have been included in the package for reproducibility. After the calculation of the necessary distance- and direction-based metrics, the vignette focuses, for each ecological applications, on the creation of trajectory charts.
 
@@ -200,7 +200,7 @@ df_cumsum <- ddply(df_sorted, "dir.binned",
 
 ```
 
-We now create the trajectory rose. Angles α were calculated in 2D Ωδ space (δ 13C/δ 15N) and represented by range (15°) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters). 
+We now create the trajectory rose. Angles α were calculated in 2D $\Omega \delta$ space ($\delta 13C/\delta 15N$) and represented by range (15$\circ$) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters). 
 ```{r, fig.height=4, fig.width=6}
 ggplot(data=df_cumsum, aes(x=dir.binned, y=nb, fill=Clusters)) +
   geom_bar(stat="identity")+
@@ -226,7 +226,7 @@ This is a data set from :
 
 + Cucherousset, J., Paillisson, J.-M., Roussel, J.-M., 2013. Natal departure timing from spatially varying environments is dependent of individual ontogenetic status. *Naturwissenschaften* 100, 761–768.
 
-Briefly, Cucherousset et al. (2013) released 192 individually tagged, hatchery-raised,  juvenile pike (*Esox lucius* L.) with variable initial trophic position (fin δ13C/δ15N values). Based on δ15N values, individuals were classified into zooplanktivorous (δ15N < 10 ‰) and piscivorous (δ15N > 10 ‰) as cannibalism is commonly observed in this species. Individuals were released in a temporarily flooded grassland where pike eggs usually hatch of the Brière marsh (France) to identify the determinants of juvenile natal departure. The release site was connected through a unique point to an adjacent pond used as a nursery habitat. Fish were continuously recaptured when migrating from flooded grassland to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in δ13C and δ15N values, and released. 
+Briefly, Cucherousset et al. (2013) released 192 individually tagged, hatchery-raised,  juvenile pike (*Esox lucius* L.) with variable initial trophic position (fin $\delta13C/\delta15N$ values). Based on $\delta15N$ values, individuals were classified into zooplanktivorous ($\delta15N$ < 10 ‰) and piscivorous ($\delta15N$ > 10 ‰) as cannibalism is commonly observed in this species. Individuals were released in a temporarily flooded grassland where pike eggs usually hatch of the Brière marsh (France) to identify the determinants of juvenile natal departure. The release site was connected through a unique point to an adjacent pond used as a nursery habitat. Fish were continuously recaptured when migrating from flooded grassland to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in $\delta13C$ and $\delta15N$ values, and released. 
 
 
 ### 4.2 Calculating trajectory metrics and identification of trajectory clusters
@@ -271,7 +271,7 @@ Pike2$Net_changes<-Net_changes$Net_changes
 data<-as.data.frame(rbind(Pike1,Pike2))
 ```
 
-We create the trajectory diagram. Arrows represent trajectory path for each pit-tagged individual. Colors correspond to trajectory clusters. The dashed line separates piscivorous from zooplanktivorous individuals [zooplanktivorous (δ15N < 10) vs piscivorous (δ15N > 10)]. 
+We create the trajectory diagram. Arrows represent trajectory path for each pit-tagged individual. Colors correspond to trajectory clusters. The dashed line separates piscivorous from zooplanktivorous individuals [zooplanktivorous ($\delta15N$ < 10) vs piscivorous ($\delta15N$ > 10)]. 
 ```{r, fig.height=4, fig.width=6}
 ggplot(data=data,aes(x=d13C,y=d15N,shape=Trophic_status_initial))+
   geom_point(aes(size=Net_changes))+
@@ -282,7 +282,7 @@ ggplot(data=data,aes(x=d13C,y=d15N,shape=Trophic_status_initial))+
   theme_minimal()
 ```
 
-Density curves X represents the distribution of all samples according to δ13C values, and capture (green=release; red=departure):
+Density curves X represents the distribution of all samples according to $\delta13C$ values, and capture (green=release; red=departure):
 ```{r, fig.height=3, fig.width=4}
 gg_dist_d13C = ggplot(data, aes(d13C, fill=TimeL)) + geom_density(alpha=.5) 
 gg_dist_d13C = gg_dist_d13C + ylab(expression(delta^13*"C"*" density"))
@@ -297,7 +297,7 @@ gg_dist_d13C = gg_dist_d13C + theme(legend.position = "none")
 gg_dist_d13C + scale_x_continuous(limits = c(-33, -25))+scale_y_continuous(limits = c(0, 1))
 ```
 
-Density curves Y represents the distribution of all samples according to δ15N values, and capture (green=release; red=departure):
+Density curves Y represents the distribution of all samples according to $\delta15N$ values, and capture (green=release; red=departure):
 ```{r, fig.height=3, fig.width=4}
 gg_dist_d15N = ggplot(data, aes(d15N, fill=TimeL)) + geom_density(alpha=.5) 
 gg_dist_d15N = gg_dist_d15N + ylab(expression(delta^15*"N"*" density"))
@@ -314,14 +314,14 @@ gg_dist_d15N =gg_dist_d15N +theme(legend.position = "none")
 gg_dist_d15N + scale_x_continuous(limits = c(7, 14))+scale_y_continuous(limits = c(0, 1))
 ```
 
-## 5. Spatio-temporal variability of δ13C and δ15N modelled isoscapes in the Northeast Pacific
-In this section, we illustrate how to use trajectory metrics to characterize the spatio-temporal variability of δ13C and δ15N modelled isoscapes in the Northeast Pacific in an isoscape trajectory map and a trajectory heat map 
+## 5. Spatio-temporal variability of $\delta 13C$ and $\delta 15N$ modelled isoscapes in the Northeast Pacific
+In this section, we illustrate how to use trajectory metrics to characterize the spatio-temporal variability of $\delta 13C$ and $\delta 15N$ modelled isoscapes in the Northeast Pacific in an isoscape trajectory map and a trajectory heat map 
 
 The datasets used in this application come from: 
 
 + Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020. Defining isoscapes in the Northeast Pacific as an index of ocean productivity. Global Ecol Biogeogr 29, 246–261.
 
-Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting δ13C and δ15N isoscapes from 1998 to 2017. We subset modelled δ13C and δ15N values of a 1° x 1° spatial grid from the original modelled dataset. Isoscapes modelled for 2013, 2015 and 2017 were selected as they were characterised by high stable isotope dynamics and consequently constitutes relevant inputs to test our isoscape trajectory map concept. Additionally, a long-term SITA analysis was performed from 1998 to 2017 using directions and net changes calculated for all pairs of dates (1998-1999,... ,2016-2017) as input for a trajectory heat map.
+Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting $\delta13C$ and $\delta15N$ isoscapes from 1998 to 2017. We subset modelled $\delta13C$ and $\delta15N$ values of a 1° x 1° spatial grid from the original modelled dataset. Isoscapes modelled for 2013, 2015 and 2017 were selected as they were characterised by high stable isotope dynamics and consequently constitutes relevant inputs to test our isoscape trajectory map concept. Additionally, a long-term SITA analysis was performed from 1998 to 2017 using directions and net changes calculated for all pairs of dates (1998-1999,... ,2016-2017) as input for a trajectory heat map.
 
 ### 5.1 2013-2015 Isoscape trajectory maps 
 
@@ -361,7 +361,7 @@ for (i in 1:length(angle)) {
 data$Angles2<-Angles2
 ```
 
-We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angle α are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle α) illustrate direction (i.e. the nature of change) in the modelled 2D Ωδ space according to increase and/or decrease in δ13C and δ15N values (0-90°: + δ13C and + δ15N; 90-180°: + δ13C and - δ15N; 90-180°: + δ13C and - δ15N; 180-270°: + δ13C and - δ15N). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).
+We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angle α are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle α) illustrate direction (i.e. the nature of change) in the modelled 2D $\Omega \delta$ space according to increase and/or decrease in $\delta13C$ and $\delta15N$ values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).
 ```{r, fig.height=4, fig.width=6}
 ggplot(data, 
           aes(x = Longitude, 
@@ -390,7 +390,7 @@ data("heatmapdata")
 head(heatmapdata)
 ```
 
-We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle α values. We create the vector `ISPattern` to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + δ13C and + δ15N; 90-180°: + δ13C and - δ15N; 90-180°: + δ13C and - δ15N; 180-270°: + δ13C and - δ15N):
+We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle α values. We create the vector `ISPattern` to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$):
 ```{r, echo=T}
 #direction range
 deg <- 15
@@ -432,7 +432,7 @@ The final dataset used to create the trajectory heat map is composed of four var
 head(dfa)
 ```
 
-We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles α in the modelled 2D Ωδ space
+We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles α in the modelled 2D $\Omega \delta$ space
 exhibited by all stations within all pairs of dates (1998-1999,…,2016-2017) are represented by range of direction (15°) according to period. Color gradient from dark blue to yellow indicate the number of stations exhibited by a given range of direction within a given period.
 ```{r, fig.height=4, fig.width=6}
 ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) + 
@@ -455,7 +455,7 @@ bp.x
 ```
 
 The Y bar plot represents the overall net changes according to range of directions (angle α). Bars are colored
-according to increase and/or decrease in δ13C and δ15N values (Pink: 0-90°: + δ13C and + δ15N ; Blue: 90-180°: + δ13C and - δ15N; Red: 90-180°: + δ13C and - δ15N; Green: 180-270°: + δ13C and - δ15N).
+according to increase and/or decrease in $\delta13C$ and $\delta15N$ values (Pink: 0-90°: + $\delta13C$ and + $\delta15N$ ; Blue: 90-180°: + $\delta13C$ and - $\delta15N$; Red: 90-180°: + $\delta13C$ and - $\delta15N$; Green: 180-270°: + $\delta13C$ and - $\delta15N$).
 ```{r, fig.height=4, fig.width=4}
 df.Ybarplot<-aggregate(dfa$Lengths, by = list(dfa$Directions), FUN = sum)
 colnames(df.Ybarplot)<-c("Directions","Lengths")

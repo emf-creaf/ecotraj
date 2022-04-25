@@ -21,11 +21,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ### 1.1 What is Ecological Trajectory Analysis?
 *Ecological Trajectory Analysis* (ETA) is a framework to analyze ecosystem dynamics described as trajectories in a chosen space of ecosystem resemblance. ETA takes trajectories as objects to be analyzed and compared geometrically. The framework was presented for community ecology in:
 
-+ De Cáceres M, Coll L, Legendre P, et al (2019) Trajectory analysis in community ecology. Ecol Monographs 89:e01350. https://doi.org/10.1002/ecm.1350. 
++ De Cáceres M, Coll L, Legendre P, et al (2019) Trajectory analysis in community ecology. Ecol Monographs 89:e01350. 
 
 The framework was then extended with new metrics and visualisation modes in:
 
-+ Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400. https://doi.org/10.1016/j.ecolmodel.2020.109400
++ Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400.
 
 Procedures of trajectory analysis can be applied to data beyond community data tables. For this reason we now call the framework 'Ecological Trajectory Analysis' and provide a package **ecotraj** that offers a set of functions to calculate metrics and produce plots. 
 

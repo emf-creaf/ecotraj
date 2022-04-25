@@ -8,6 +8,7 @@
 #' The subset of the initial data set is composed of consecutive whisker sections (3 mm-long) starting from the proximal (facial) end, with the most recently synthesized tissue remaining 
 #' under the skin. Only individuals (n = 47) with whiskers totalizing at least 30 sections were selected in the initail data, and only those 30 sections were selected.
 #' 
+#' @encoding UTF-8
 #' @format furseals is an object of class data.frame composed of 1414 observations and 8 variables.
 #'
 #' \describe{
@@ -17,8 +18,8 @@
 #'  \item{Sexe}{Fur seal gender, either 'Male' or 'Female'.}
 #'  \item{Time}{Number of the whisker sections from 1 to 30.}
 #'  \item{Place}{Breeding place: Crozet, Amsterdam or Kerguelen}
-#'  \item{d13C}{δ13C value}
-#'  \item{d15N}{δ15N value}
+#'  \item{d13C}{delta 13C value}
+#'  \item{d15N}{delta 15N value}
 #' }
 #'
 #' @name furseals
@@ -27,21 +28,21 @@
 #' @author Kernaléguen, L., Arnould, J.P.Y., Guinet, C., Cherel, Y.
 #' @keywords data
 #' @references 
-#' Kernaléguen, L., Arnould, J.P.Y., Guinet, C., Cherel, Y., 2015.Determinants of individual foraging specialization inlarge marine vertebrates, the Antarctic and subantarctic fur seals. Journal of Animal Ecology 1081–1091.
+#' \enc{Kernaléguen}{Kernaleguen}, L., Arnould, J.P.Y., Guinet, C., Cherel, Y., 2015. Determinants of individual foraging specialization inlarge marine vertebrates, the Antarctic and subantarctic fur seals. Journal of Animal Ecology 1081–1091.
 NULL
-#'
 #' pike dataset
 #'
 #' This data sets comes from Cucherousset et al. (2013). 
 #' 
-#' Briefly, Cucherousset et al. (2013) released 192 individually tagged, hatchery-raised, juvenile pike (Esox lucius L.) with variable initial trophic position (fin δ13C/δ15N values). 
-#' Based on δ15N values, individuals were classified into zooplanktivorous (δ15N < 10 ‰) and piscivorous (δ15N > 10 ‰) as cannibalism is commonly observed in this species. 
+#' Briefly, Cucherousset et al. (2013) released 192 individually tagged, hatchery-raised, juvenile pike (Esox lucius L.) with variable initial trophic position (fin delta 13C/delta 15N values). 
+#' Based on delta values, individuals were classified into zooplanktivorous (delta 15N < 10 ‰) and piscivorous (delta 15N > 10 ‰) as cannibalism is commonly observed in this species. 
 #' Individuals were released in a temporarily flooded grassland where pike eggs usually hatch of the Brière marsh (France) to identify the determinants of juvenile natal departure. 
 #' The release site was connected through a unique point to an adjacent pond used as a nursery habitat. Fish were continuously recaptured when migrating from flooded grassland 
-#' to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in δ13C and δ15N values, 
+#' to adjacent pond. Recaptured individuals (n = 29) were anaesthetized, checked for tags, measured for fork length, fin-clipped to quantify changes in delta 13C and delta 15N values, 
 #' and released.
 #'
-#'@format pike is an object of class dataframe composed of 58 observations of 10 variables.
+#' @encoding UTF-8
+#' @format pike is an object of class dataframe composed of 58 observations of 10 variables.
 #' 
 #' \describe{
 #'  \item{trophic_status_initial}{Initial trophic status at release}
@@ -50,8 +51,8 @@ NULL
 #'  \item{Time_L}{Time of the stable isotope measurement as string, either 'Release' or 'Departure'}
 #'  \item{Date}{Date of release (common for all individuals) or recapture (variable dependind of the date of departure)}
 #'  \item{Size_mm}{Size (length) of juvenile pike, in mm}
-#'  \item{d13C}{δ13C values}
-#'  \item{d15N}{δ15N values}
+#'  \item{d13C}{delta 13C values}
+#'  \item{d15N}{delta 15N values}
 #'  \item{Residence_time}{Number of days between the release and the recapture} 
 #'  \item{Trophic_status_final}{Trophic status at the end of the study}
 #' }
@@ -70,15 +71,16 @@ NULL
 #' This data sets is a subset from Espinasse et al. (2020). 
 #' 
 #' Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. 
-#' The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting δ13C and δ15N isoscapes 
-#' from 1998 to 2017. The subset is composed of modelled δ13C and δ15N values of a 1° x 1° spatial grid from the original modelled dataset for 2013 and 2015. 
+#' The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes 
+#' from 1998 to 2017. The subset is composed of modelled  delta 13C and delta 15N values of a 1° x 1° spatial grid from the original modelled dataset for 2013 and 2015. 
 #'
+#' @encoding UTF-8
 #' @format isoscape is an object of class dataframe composed of 978 observations of 6 variables.
 #' \describe{
 #'  \item{Latitude}{Latitude coordinate of the station, in degrees}
 #'  \item{Longitude}{Longitude coordinate of the station, in degrees}
-#'  \item{d13C}{δ13C modelled value}
-#'  \item{d15N}{δ15N modelled value}
+#'  \item{d13C}{delta 13C modelled value}
+#'  \item{d15N}{delta 15N modelled value}
 #'  \item{station}{station ID}
 #'  \item{Year}{Year corresponding to modelled stable isotope values}
 #' }
@@ -96,10 +98,10 @@ NULL
 #' heatmapdata dataset
 #'
 #' Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. 
-#' The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting δ13C and δ15N isoscapes 
+#' The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes 
 #' from 1998 to 2017.
 #'
-#' This data sets is composed of trajectory metrics calculated by Sturbois et al. (under review) for all stations within all inter-annual consecutive periods between 1998 and 2017 
+#' This data sets is composed of trajectory metrics calculated by Sturbois et al. (2021) for all stations within all inter-annual consecutive periods between 1998 and 2017 
 #' calculated from the whole data set of Espinasse et al. (2020) for a 1° x 1° spatial grid.
 #'
 #' @format heatmapdata is an object of class dataframe composed of 9206 observations of 9 variables.
@@ -107,8 +109,8 @@ NULL
 #' \describe{
 #'  \item{Latitude}{Latitude coordinate of the station, in degrees}
 #'  \item{Longitude}{Longitude coordinate of the station, in degrees}
-#'  \item{d13C}{δ13C modelled value}
-#'  \item{d15N}{δ15N modelled value}
+#'  \item{d13C}{delta 13C modelled value}
+#'  \item{d15N}{delta 15N modelled value}
 #'  \item{station}{Station ID}
 #'  \item{Years}{Period corresponding to the calculation of trajectory metrics}
 #'  \item{Angles}{Angle α (i.e direction) in the stable isotope space}

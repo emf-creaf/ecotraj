@@ -6,6 +6,7 @@
 #' Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) 
 #' which includes 9 surveys.
 #' 
+#' @encoding UTF-8
 #' @format Three data items are included:
 #' \describe{
 #'  \item{avoca_strat}{An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.}

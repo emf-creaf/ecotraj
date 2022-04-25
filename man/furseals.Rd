@@ -10,13 +10,13 @@ furseals is an object of class data.frame composed of 1414 observations and 8 va
 
 \describe{
  \item{ID_SITA}{Fur seal ID used by Sturbois et al. (under review), from 1 to 47}
- \item{ID}{Fur seal ID used by Kernaléguen et al. (2015) in the initial data set.}
+ \item{ID}{Fur seal ID used by \enc{Kernaléguen}{Kernaleguen} et al. (2015) in the initial data set.}
  \item{Species}{Fur seal species: the Antarctic fur seal Arctocephalus gazella or the subantarctic fur seal A. tropicalis.}
  \item{Sexe}{Fur seal gender, either 'Male' or 'Female'.}
  \item{Time}{Number of the whisker sections from 1 to 30.}
  \item{Place}{Breeding place: Crozet, Amsterdam or Kerguelen}
- \item{d13C}{δ 13C value}
- \item{d15N}{δ 15N value}
+ \item{d13C}{delta 13C value}
+ \item{d15N}{delta 15N value}
 }
 }
 \description{

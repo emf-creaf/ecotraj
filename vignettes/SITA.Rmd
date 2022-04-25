@@ -23,18 +23,12 @@ Example datasets have been included in the package for reproducibility. After th
 ## 2. Loading libraries
 First of all, we load the required libraries, including `ecotraj`:
 ```{r load libraries, echo=FALSE}
-library(factoextra)
-library(FactoMineR)
-library(reshape)
-library(gridExtra) 
 library(ecotraj)
-library(rgdal)
-library(plyr)
-library(dplyr)
-library(ggplot2)
-library(hrbrthemes)
-library(scales)
-library(viridis)
+library(tidyr) ## For data manipulation
+library(ggplot2) ## For plotting
+library(hrbrthemes) ## Additional themes for ggplot2
+library(scales) ## Scale functions for visualisation
+library(viridis) ## Viridis color map
 ```
 
 ## 3. Spatial and temporal resource partitioning in fur seals
@@ -75,7 +69,7 @@ Segment_lengths<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
 head(Segment_lengths)
 ```
 
-Finally, we determine the angle (α) of consecutive trajectory segments with respect to the second axis of the 2D stable isotope space:
+Finally, we determine the angle ($\alpha$) of consecutive trajectory segments with respect to the second axis of the 2D stable isotope space:
 ```{r, echo=T}
 Angles<-trajectoryAngles2D(furseals[,c("d13C","d15N")],
                            furseals$ID_SITA,
@@ -124,7 +118,8 @@ We now create a diagram to display fur seal trophic trajectories in the stable i
 ```{r, echo=TRUE, fig.height=6, fig.width=6}
 ggplot(data=furseals,aes(x=d13C,y=d15N,color=cluster,shape=Place))+
   geom_point()+
-  geom_path(aes(x=d13C,y=d15N,group=ID_SITA,color=cluster),arrow = arrow(length = unit(0.10, "cm")))+
+  geom_path(aes(x=d13C,y=d15N,group=ID_SITA,color=cluster),
+            arrow = arrow(length = unit(0.10, "cm")))+
   xlab(expression(delta^13*"C"))+
   ylab(expression(delta^15*"N"))+
   facet_wrap(~sp_gender) +
@@ -142,44 +137,49 @@ NC$ID<-as.numeric(rownames(NC))
 colnames(NC)<-c(2:30,"cluster","ID")
 ```
 
-We then prepare the subset. We notably transform NC in a line structure to compute `NCline` using the function "melt", order the data set and add the vector sp_gender:
+We then prepare the subset. We notably transform NC to a longer format, order the data set and add the vector sp_gender:
 ```{r}
-NCline<-as.data.frame(melt(NC,id=c("ID","cluster")))
-colnames(NCline)<-c("ID","Clusters","Time_from_present","Net_changes")
-NCline[,3]<-as.numeric(NCline[,3])
-NCline[,2]<-as.factor(NCline[,2])
-NCline<-NCline[order(NCline[3],decreasing=F), ]
+NCline <- tidyr::pivot_longer(NC, 1:29, 
+                              names_to ="Time_from_present", 
+                              values_to="Net_changes", 
+                              names_transform = function(x) {as.numeric(x)-1}) 
+colnames(NCline)[1:2]<-c("Clusters", "ID")
+NCline <- NCline[order(NCline$Time_from_present, decreasing=FALSE),]
+NCline <- as.data.frame(NCline)
 NCline$sp_gender<-c(furseals$sp_gender[1:47])
 ```
 
 We now create the plot to display net changes time series for all individuals in panel corresponding Arrows connects all whiskers section stable isotope values from t1 to t30 (i.e. most recent to oldest stable isotope values). Colours corresponds to trajectory clusters:
 ```{r, fig.height=4, fig.width=6}
 ggplot(data=NCline,aes(x=Time_from_present,y=Net_changes,color=Clusters))+
-  geom_path(aes(x=Time_from_present,y=Net_changes,group=ID,color=Clusters),arrow = arrow(length = unit(0.10, "cm")))+
+  geom_path(aes(x=Time_from_present,y=Net_changes,group=ID,color=Clusters),
+            arrow = arrow(length = unit(0.10, "cm")))+
   facet_wrap(~sp_gender)+
   theme_classic()
 ```
 
 
-#### 3.3.3 Angle α trajectory roses of Fur seals trajectory cluster.
+#### 3.3.3 Angle $\alpha$ trajectory roses of Fur seals trajectory cluster.
 
-In this sub-section, we plot the distribution of Angle α values in a trajectory rose  
-We prepare the data set to compute the trajectoy rose and transform it in a line structure.
-We create a vector of direction to class Angle α values by range of 15°:
+In this sub-section, we plot the distribution of Angle $\alpha$ values in a trajectory rose  
+We prepare the data set to compute the trajectory rose and transform to a long data structure.
+We create a vector of direction to class Angle $\alpha$ values by range of 15°:
 ```{r}
 Angl<-Angles
 colnames(Angl)<-2:30
 Angl$ID<-as.numeric(rownames(Angl))
 Angl$cluster<-as.factor(groups)
 Angl$sp_gender<-furseals$sp_gender[1:47]
-Angline<-as.data.frame(melt(Angl,id=c("ID","cluster","sp_gender")))
-colnames(Angline)<-c("ID","Clusters","Group","Time_from_present","Direction")
-Angline$Direction<-as.numeric(Angline$Direction)
 
+Angline<- tidyr::pivot_longer(Angl, 1:29, 
+                              names_to ="Time_from_present", 
+                              values_to="Direction", 
+                              names_transform = function(x) {as.numeric(x)-1}) 
+colnames(Angline)[c(2,3)] = c("Clusters", "Group")
 
 # range 15°
 deg <- 15
-# vector for range of direction of differents bars
+# vector for range of direction of different bars
 dir.breaks <- seq(0-(deg/2), 360+(deg/2), deg)
 dir.binned <- cut(Angline$Direction,
                   breaks = dir.breaks,
@@ -194,15 +194,12 @@ Angline$dir.binned <- dir.binned
 # sort angles
 df_sorted<-as.data.frame(table(Angline$dir.binned, Angline$Clusters))
 colnames(df_sorted)<-c("dir.binned","Clusters","nb")
-
-df_cumsum <- ddply(df_sorted, "dir.binned",
-                   transform, label_ypos=cumsum(nb))
-
+df_sorted = df_sorted[order(df_sorted$dir.binned),]
 ```
 
-We now create the trajectory rose. Angles α were calculated in 2D $\Omega \delta$ space ($\delta 13C/\delta 15N$) and represented by range (15$\circ$) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters). 
+We now create the trajectory rose. Angles $\alpha$ were calculated in 2D $\Omega \delta$ space ($\delta 13C/\delta 15N$) and represented by range (15$\circ$) of direction. Bars size represent the number of trajectory segments (all individual within each trajectory clusters). 
 ```{r, fig.height=4, fig.width=6}
-ggplot(data=df_cumsum, aes(x=dir.binned, y=nb, fill=Clusters)) +
+ggplot(data=df_sorted, aes(x=dir.binned, y=nb, fill=Clusters)) +
   geom_bar(stat="identity")+
   scale_y_continuous(limits = c(0,110), expand = c(0, 0), 
                      breaks = c(0,25,50,75,110), 
@@ -331,7 +328,7 @@ data("isoscape")
 ```
 
 
-We calculate Segment lengths and Angle α for each stations to assess, respectively, the magnitude and the nature of change in the stable isotope space between 2013 and 2015. We then prepare a data set to compute the isoscape trajectory map with notably: Latitude, Longitude, Years, Angles and segment lenghts values:  
+We calculate Segment lengths and Angle $\alpha$ for each stations to assess, respectively, the magnitude and the nature of change in the stable isotope space between 2013 and 2015. We then prepare a data set to compute the isoscape trajectory map with notably: Latitude, Longitude, Years, Angles and segment lenghts values:  
 ```{r}
 sites<-isoscape$station
 surveys<-isoscape$Year
@@ -342,7 +339,7 @@ colnames(data)<-c("Latitude","Longitude","d13C","d15N","Stations","Years","Angle
 head(data)
 ```
 
-Angles α need to be transformed for the use with `geom_spoke`. We then add transformed values in a new column `Angles2`.
+Angles $\alpha$ need to be transformed for the use with `geom_spoke`. We then add transformed values in a new column `Angles2`.
 ```{r}
 angle<-data$Angles
 Angles2<-c()
@@ -361,7 +358,7 @@ for (i in 1:length(angle)) {
 data$Angles2<-Angles2
 ```
 
-We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angle α are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle α) illustrate direction (i.e. the nature of change) in the modelled 2D $\Omega \delta$ space according to increase and/or decrease in $\delta13C$ and $\delta15N$ values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).
+We now create the Isoscape trajectory map. In this kind of map, Segment lengths and Angles $\alpha$ are mapped to illustrate stable isotope spatio-temporal dynamics. Direction of arrows (angle $\alpha$) illustrate direction (i.e. the nature of change) in the modelled 2D $\Omega \delta$ space according to increase and/or decrease in $\delta13C$ and $\delta15N$ values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$). Length of arrows and colored background rasters illustrate modelled trajectory segment length at each station (i.e. the magnitude of change).
 ```{r, fig.height=4, fig.width=6}
 ggplot(data, 
           aes(x = Longitude, 
@@ -390,7 +387,7 @@ data("heatmapdata")
 head(heatmapdata)
 ```
 
-We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle α values. We create the vector `ISPattern` to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$):
+We then prepare the data set to create the trajectory heat map. We create a vector of direction, ranging by 15° between 0 and 360°, to class Angle $\alpha$ values. We create the vector `ISPattern` to characterize the pattern of direction according to changes in both stable isotope values (0-90°: + $\delta13C$ and + $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 90-180°: + $\delta13C$ and - $\delta15N$; 180-270°: + $\delta13C$ and - $\delta15N$):
 ```{r, echo=T}
 #direction range
 deg <- 15
@@ -432,7 +429,7 @@ The final dataset used to create the trajectory heat map is composed of four var
 head(dfa)
 ```
 
-We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles α in the modelled 2D $\Omega \delta$ space
+We plot trajectory metrics with respect to period and direction in a trajectory heat map. Angles $\alpha$ in the modelled 2D $\Omega \delta$ space
 exhibited by all stations within all pairs of dates (1998-1999,…,2016-2017) are represented by range of direction (15°) according to period. Color gradient from dark blue to yellow indicate the number of stations exhibited by a given range of direction within a given period.
 ```{r, fig.height=4, fig.width=6}
 ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) + 
@@ -454,7 +451,7 @@ bp.x <- ggplot(data = df.Xbarplot, aes(x = factor(Periods), y = Lengths)) +
 bp.x
 ```
 
-The Y bar plot represents the overall net changes according to range of directions (angle α). Bars are colored
+The Y bar plot represents the overall net changes according to range of directions (angle $\alpha$). Bars are colored
 according to increase and/or decrease in $\delta13C$ and $\delta15N$ values (Pink: 0-90°: + $\delta13C$ and + $\delta15N$ ; Blue: 90-180°: + $\delta13C$ and - $\delta15N$; Red: 90-180°: + $\delta13C$ and - $\delta15N$; Green: 180-270°: + $\delta13C$ and - $\delta15N$).
 ```{r, fig.height=4, fig.width=4}
 df.Ybarplot<-aggregate(dfa$Lengths, by = list(dfa$Directions), FUN = sum)

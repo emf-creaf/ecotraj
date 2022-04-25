@@ -22,6 +22,6 @@ LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
 RoxygenNote: 7.1.2
-Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan, factoextra, FactoMineR,
-     reshape, gridExtra, rgdal, plyr, dplyr, ggplot2, hrbrthemes, scales, viridis
+Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan,
+          ggplot2, hrbrthemes, scales, tidyr, viridis
 VignetteBuilder: utils, knitr

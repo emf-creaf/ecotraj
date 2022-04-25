@@ -15,8 +15,8 @@ furseals is an object of class data.frame composed of 1414 observations and 8 va
  \item{Sexe}{Fur seal gender, either 'Male' or 'Female'.}
  \item{Time}{Number of the whisker sections from 1 to 30.}
  \item{Place}{Breeding place: Crozet, Amsterdam or Kerguelen}
- \item{d13C}{delta 13C value}
- \item{d15N}{delta 15N value}
+ \item{d13C}{δ 13C value}
+ \item{d15N}{δ 15N value}
 }
 }
 \description{

@@ -128,7 +128,7 @@ double twoSegmentDistance(NumericMatrix dmat12, String type="directed-segment", 
   double de1e2 = dmat12(1,3);
   double ds2e2 = dmat12(2,3);
   double Ds = NA_REAL; 
-  if((type=="Hausdorff") | (type == "directed-segment")) {
+  if((type=="Hausdorff") || (type == "directed-segment")) {
     NumericVector ps1_2 = distanceToSegment(ds2e2,ds1s2, ds1e2, add);
     NumericVector pe1_2 = distanceToSegment(ds2e2,de1s2, de1e2, add);
     NumericVector ps2_1 = distanceToSegment(ds1e1,ds1s2, de1s2, add);

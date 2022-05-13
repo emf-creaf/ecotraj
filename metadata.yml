@@ -1,0 +1,24 @@
+id: ecotraj
+title: ecotraj
+emf_type: softwork
+emf_public: true
+emf_automatized: true
+emf_reproducible: false
+emf_draft: false
+nodes: ''
+authors:
+- mcaceres
+resource_link: softworks/ecotraj
+thematic: statistics
+tags:
+- vegetation
+- R
+- statistics
+requirements:
+- 'R (>= 3.4.0)'
+description: Assists ecologists in the analysis of temporal changes of ecosystems, defined as trajectories on a chosen multivariate space, by providing a set of trajectory metrics and visual representations.
+links:
+  url_docs: 'https://emf-creaf.github.io/ecotraj/'
+  url_source: 'https://github.com/emf-creaf/ecotraj'
+model_repository: ''
+data_repository: ''

@@ -7,3 +7,4 @@
 ^\.github$
 ^docs$
 ^pkgdown$
+^metadata.yml$

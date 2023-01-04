@@ -62,84 +62,90 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">segmentDistances</span><span class="op">(</span>
-  <span class="va">d</span>,
-  <span class="va">sites</span>,
-  surveys <span class="op">=</span> <span class="cn">NULL</span>,
-  distance.type <span class="op">=</span> <span class="st">"directed-segment"</span>,
-  add <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryDistances</span><span class="op">(</span>
-  <span class="va">d</span>,
-  <span class="va">sites</span>,
-  surveys <span class="op">=</span> <span class="cn">NULL</span>,
-  distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,
-  symmetrization <span class="op">=</span> <span class="st">"mean"</span>,
-  add <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryLengths</span><span class="op">(</span>
-  <span class="va">d</span>,
-  <span class="va">sites</span>,
-  surveys <span class="op">=</span> <span class="cn">NULL</span>,
-  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,
-  all <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryLengths2D</span><span class="op">(</span>
-  <span class="va">xy</span>,
-  <span class="va">sites</span>,
-  <span class="va">surveys</span>,
-  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,
-  all <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryAngles</span><span class="op">(</span>
-  <span class="va">d</span>,
-  <span class="va">sites</span>,
-  surveys <span class="op">=</span> <span class="cn">NULL</span>,
-  all <span class="op">=</span> <span class="cn">FALSE</span>,
-  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,
-  stats <span class="op">=</span> <span class="cn">TRUE</span>,
-  add <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryAngles2D</span><span class="op">(</span>
-  <span class="va">xy</span>,
-  <span class="va">sites</span>,
-  <span class="va">surveys</span>,
-  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,
-  betweenSegments <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryProjection</span><span class="op">(</span><span class="va">d</span>, <span class="va">target</span>, <span class="va">trajectory</span>, tol <span class="op">=</span> <span class="fl">1e-06</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">trajectoryConvergence</span><span class="op">(</span>
-  <span class="va">d</span>,
-  <span class="va">sites</span>,
-  surveys <span class="op">=</span> <span class="cn">NULL</span>,
-  symmetric <span class="op">=</span> <span class="cn">FALSE</span>,
-  add <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">trajectoryDirectionality</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">segmentDistances</span><span class="op">(</span></span>
+<span>  <span class="va">d</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  distance.type <span class="op">=</span> <span class="st">"directed-segment"</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryDistances</span><span class="op">(</span></span>
+<span>  <span class="va">d</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
+<span>  symmetrization <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryLengths</span><span class="op">(</span></span>
+<span>  <span class="va">d</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  all <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryLengths2D</span><span class="op">(</span></span>
+<span>  <span class="va">xy</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  <span class="va">surveys</span>,</span>
+<span>  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  all <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryAngles</span><span class="op">(</span></span>
+<span>  <span class="va">d</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  all <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  stats <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryAngles2D</span><span class="op">(</span></span>
+<span>  <span class="va">xy</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  <span class="va">surveys</span>,</span>
+<span>  relativeToInitial <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  betweenSegments <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryProjection</span><span class="op">(</span><span class="va">d</span>, <span class="va">target</span>, <span class="va">trajectory</span>, tol <span class="op">=</span> <span class="fl">1e-06</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryConvergence</span><span class="op">(</span></span>
+<span>  <span class="va">d</span>,</span>
+<span>  <span class="va">sites</span>,</span>
+<span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryDirectionality</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>d</dt>
 <dd><p>A symmetric <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></code> or an object of class <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></code> containing the distance values between pairs of ecosystem states (see details).</p></dd>
+
+
 <dt>sites</dt>
 <dd><p>A vector indicating the site corresponding to each ecosystem state.</p></dd>
+
+
 <dt>surveys</dt>
 <dd><p>A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).</p></dd>
+
+
 <dt>distance.type</dt>
 <dd><p>The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. submitted). For <code>segmentDistances</code> the available indices are:</p><ul><li><p><code>Hausdorff</code>: Hausdorff distance between two segments.</p></li>
 <li><p><code>directed-segment</code>: Directed segment distance (default).</p></li>
@@ -148,48 +154,85 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
 <li><p><code>SPD</code>: Segment path distance.</p></li>
 <li><p><code>DSPD</code>: Directed segment path distance (default).</p></li>
 </ul></dd>
+
+
 <dt>add</dt>
 <dd><p>Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Provides console output informing about process (useful for large dataset).</p></dd>
+
+
 <dt>symmetrization</dt>
 <dd><p>Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., <code>mean</code> or <code>min</code>). If <code>symmetrization = NULL</code> then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.</p></dd>
+
+
 <dt>relativeToInitial</dt>
 <dd><p>Flag to indicate that lengths or angles should be calculated with respect to initial survey.</p></dd>
+
+
 <dt>all</dt>
 <dd><p>A flag to indicate that angles are desired for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, angles are calculated for consecutive segments only.</p></dd>
+
+
 <dt>xy</dt>
 <dd><p>Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).</p></dd>
+
+
 <dt>stats</dt>
 <dd><p>A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)</p></dd>
+
+
 <dt>betweenSegments</dt>
 <dd><p>Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.</p></dd>
+
+
 <dt>target</dt>
 <dd><p>An integer vector of the ecosystem states to be projected.</p></dd>
+
+
 <dt>trajectory</dt>
 <dd><p>An integer vector of the trajectory onto which target states are to be projected.</p></dd>
+
+
 <dt>tol</dt>
 <dd><p>Numerical tolerance value to determine that projection of a point lies within the trajectory.</p></dd>
+
+
 <dt>symmetric</dt>
 <dd><p>A logical flag to indicate a symmetric convergence comparison of trajectories.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Function <code>trajectoryDistances</code> returns an object of class <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></code> containing the distances between trajectories (if <code>symmetrization = NULL</code> then the object returned is of class <code>matrix</code>). 
-Function <code>trajectorySegments</code> returns a list with the following elements:</p><ul><li><p><code>Dseg</code>: Distance matrix between segments.</p></li>
+    
+
+<p>Function <code>trajectoryDistances</code> returns an object of class <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></code> containing the distances between trajectories (if <code>symmetrization = NULL</code> then the object returned is of class <code>matrix</code>).</p>
+
+
+<p>Function <code>trajectorySegments</code> returns a list with the following elements:</p><ul><li><p><code>Dseg</code>: Distance matrix between segments.</p></li>
 <li><p><code>Dini</code>: Distance matrix between initial points of segments.</p></li>
 <li><p><code>Dfin</code>: Distance matrix between final points of segments.</p></li>
 <li><p><code>Dinifin</code>: Distance matrix between initial points of one segment and the final point of the other.</p></li>
 <li><p><code>Dfinini</code>: Distance matrix between final points of one segment and the initial point of the other.</p></li>
 </ul><p>Function <code>trajectoryLengths</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
 If <code>relativeToInitial = TRUE</code> lengths are calculated between the initial survey and all the other surveys.
-If <code>all = TRUE</code> lengths are calculated for all segments.
-Function <code>trajectoryLengths2D</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
+If <code>all = TRUE</code> lengths are calculated for all segments.</p>
+
+
+<p>Function <code>trajectoryLengths2D</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
 If <code>relativeToInitial = TRUE</code> lengths are calculated between the initial survey and all the other surveys.
-If <code>all = TRUE</code> lengths are calculated for all segments.
-Function <code>trajectoryAngles</code> returns a data frame with angle values on each trajectory. If <code>stats=TRUE</code>, then the mean, standard deviation and mean resultant length of those angles are also returned. 
-Function <code>trajectoryAngles2D</code> returns a data frame with angle values on each trajectory. If <code>betweenSegments=TRUE</code>, then angles are calculated between trajectory segments, alternatively, If <code>betweenSegments=FALSE</code>, angles are calculated considering Y axis as the North (0°).
-Function <code>trajectoryProjection</code> returns a data frame with the following columns:</p><ul><li><p><code>distanceToTrajectory</code>: Distances to the trajectory, i.e. rejection (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
+If <code>all = TRUE</code> lengths are calculated for all segments.</p>
+
+
+<p>Function <code>trajectoryAngles</code> returns a data frame with angle values on each trajectory. If <code>stats=TRUE</code>, then the mean, standard deviation and mean resultant length of those angles are also returned.</p>
+
+
+<p>Function <code>trajectoryAngles2D</code> returns a data frame with angle values on each trajectory. If <code>betweenSegments=TRUE</code>, then angles are calculated between trajectory segments, alternatively, If <code>betweenSegments=FALSE</code>, angles are calculated considering Y axis as the North (0°).</p>
+
+
+<p>Function <code>trajectoryProjection</code> returns a data frame with the following columns:</p><ul><li><p><code>distanceToTrajectory</code>: Distances to the trajectory, i.e. rejection (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
 <li><p><code>segment</code>: Segment that includes the projected point (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
 <li><p><code>relativePosition</code>: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing the end (<code>NA</code> for target points whose projection is outside the trajectory).</p></li>
 </ul><p>Function <code>trajectoryConvergence</code> returns a list with two elements:</p><ul><li><p><code>tau</code>: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If <code>symmetric=TRUE</code> then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.</p></li>
@@ -237,109 +280,109 @@ If <code>betweenSegments = TRUE</code> angles are calculated between segments of
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#Description of sites and surveys</span></span>
-<span class="r-in"><span class="va">sites</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">surveys</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="co">#Raw data table</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">6</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="co">#Draw trajectories</span></span>
-<span class="r-in"><span class="fu"><a href="trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, </span>
-<span class="r-in">               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#Description of sites and surveys</span></span></span>
+<span class="r-in"><span><span class="va">sites</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">surveys</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">#Raw data table</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">6</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">#Draw trajectories</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, </span></span>
+<span class="r-in"><span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="trajectorymetrics-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#Distance matrix</span></span>
-<span class="r-in"><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Distance matrix</span></span></span>
+<span class="r-in"><span><span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4        5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.000000                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 2.000000 1.000000                           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.500000 1.118034 2.061553                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.118034 0.500000 1.118034 1.000000         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 2.236068 1.414214 1.000000 2.061553 1.118034</span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="fu">trajectoryLengths</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="fu">trajectoryLengths</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   S1       S2 Trajectory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 1.000000   2.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  1 1.118034   2.118034</span>
-<span class="r-in"><span class="fu">trajectoryLengths2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryLengths2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   S1       S2 Trajectory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 1.000000   2.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  1 1.118034   2.118034</span>
-<span class="r-in"><span class="fu">trajectoryAngles</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      S1-S2     mean           sd rho</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.00000  0.00000 0.000000e+00   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 26.56505 26.56505 1.490116e-08   1</span>
-<span class="r-in"><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             t1-t2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1               0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 26.565051177078</span>
-<span class="r-in"><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Axis2-t1 Axis2-t2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        0  0.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        0 26.56505</span>
-<span class="r-in"><span class="fu">segmentDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Dseg</span></span>
+<span class="r-in"><span><span class="fu">segmentDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Dseg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1[1-2]   1[2-3]   2[1-2]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1[2-3] 1.000000                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2[1-2] 0.500000 1.118034         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2[2-3] 1.414214 1.000000 1.118034</span>
-<span class="r-in"><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"Hausdorff"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"Hausdorff"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.414214</span>
-<span class="r-in"><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="va">d</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.75</span>
-<span class="r-in">  </span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="co">#Should give the same results if surveys are not in order </span></span>
-<span class="r-in"><span class="co">#(here we switch surveys for site 2)</span></span>
-<span class="r-in"><span class="va">temp</span> <span class="op">=</span> <span class="va">xy</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span> <span class="op">=</span> <span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="op">]</span></span>
-<span class="r-in"><span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="op">]</span> <span class="op">=</span> <span class="va">temp</span></span>
-<span class="r-in"><span class="va">surveys</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="fl">3</span></span>
-<span class="r-in"><span class="va">surveys</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">=</span> <span class="fl">2</span></span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="fu"><a href="trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, </span>
-<span class="r-in">               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>   </span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">#Should give the same results if surveys are not in order </span></span></span>
+<span class="r-in"><span><span class="co">#(here we switch surveys for site 2)</span></span></span>
+<span class="r-in"><span><span class="va">temp</span> <span class="op">=</span> <span class="va">xy</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span> <span class="op">=</span> <span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">xy</span><span class="op">[</span><span class="fl">6</span>,<span class="op">]</span> <span class="op">=</span> <span class="va">temp</span></span></span>
+<span class="r-in"><span><span class="va">surveys</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">surveys</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="fu"><a href="trajectoryplots.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, </span></span>
+<span class="r-in"><span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>   </span></span>
 <span class="r-plt img"><img src="trajectorymetrics-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">trajectoryLengths</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryLengths</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   S1       S2 Trajectory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 1.000000   2.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  1 1.118034   2.118034</span>
-<span class="r-in"><span class="fu">trajectoryLengths2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryLengths2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   S1       S2 Trajectory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 1.000000   2.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  1 1.118034   2.118034</span>
-<span class="r-in"><span class="fu">segmentDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Dseg</span></span>
+<span class="r-in"><span><span class="fu">segmentDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Dseg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1[1-2]   1[2-3]   2[1-2]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1[2-3] 1.000000                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2[1-2] 0.500000 1.118034         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2[2-3] 1.414214 1.000000 1.118034</span>
-<span class="r-in"><span class="fu">trajectoryAngles</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      S1-S2     mean           sd rho</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.00000  0.00000 0.000000e+00   1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 26.56505 26.56505 1.490116e-08   1</span>
-<span class="r-in"><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             t1-t2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1               0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 26.565051177078</span>
-<span class="r-in"><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryAngles2D</span><span class="op">(</span><span class="va">xy</span>, <span class="va">sites</span>, <span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Axis2-t1 Axis2-t2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        0  0.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        0 26.56505</span>
-<span class="r-in"><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"Hausdorff"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"Hausdorff"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.414214</span>
-<span class="r-in"><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">trajectoryDistances</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.75</span>
-<span class="r-in"> </span>
+<span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
   </div>
@@ -354,7 +397,7 @@ If <code>betweenSegments = TRUE</code> angles are calculated between segments of
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -21,7 +21,7 @@ URL: https://emf-creaf.github.io/ecotraj/
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan,
           ggplot2, hrbrthemes, scales, tidyr, viridis
 VignetteBuilder: utils, knitr

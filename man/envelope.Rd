@@ -37,6 +37,7 @@ compareToStateEnvelope(
   m = 1.5,
   nboot.ci = NULL,
   alpha.ci = 0.05,
+  distances_to_envelope = FALSE,
   ...
 )
 }
@@ -56,9 +57,34 @@ compareToStateEnvelope(
 \item{envelope}{A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)}
 
 \item{m}{Fuzziness exponent for quality value assessment}
+
+\item{distances_to_envelope}{Flag to indicate that distances to envelope should be included in the result}
+}
+\value{
+A data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the 
+envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built 
+using bootstrap samples of the reference envelope.
 }
 \description{
 Reference envelopes
+}
+\examples{
+ \dontrun{
+ data(glomel)
+ 
+ # Extract compositional data matrix
+ glomel_comp <- as.matrix(glomel[,!(names(glomel) \%in\% c("ID", "Ref", "Complementary"))])
+ rownames(glomel_comp) <- glomel$ID
+ 
+ # Calculate Bray-curtis distance matrix 
+ glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
+ 
+ # Define reference envelope by observation ID
+ glomel_env <- glomel$ID[glomel$Ref]
+ 
+ # Assess quality with respect to reference envelope
+ compareToStateEnvelope(glomel_bc, glomel_env)
+ }
 }
 \seealso{
 \code{\link{trajectorymetrics}}

@@ -31,19 +31,38 @@
 #' @param alpha.ci Error in confidence intervals.
 #' @param envelope A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)
 #' @param m Fuzziness exponent for quality value assessment
+#' @param distances_to_envelope Flag to indicate that distances to envelope should be included in the result
 #' @param ... Additional parameters for function \code{\link{trajectoryDistances}}
 #' 
 #' @details 
 #' 
+#' @return A data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the 
+#' envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built 
+#' using bootstrap samples of the reference envelope.
+#' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
 #' 
-#' @references
 #' 
 #' @seealso \code{\link{trajectorymetrics}} 
 #' 
 #' @examples 
+#'  \dontrun{
+#'  data(glomel)
 #'  
+#'  # Extract compositional data matrix
+#'  glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref", "Complementary"))])
+#'  rownames(glomel_comp) <- glomel$ID
+#'  
+#'  # Calculate Bray-curtis distance matrix 
+#'  glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
+#'  
+#'  # Define reference envelope by observation ID
+#'  glomel_env <- glomel$ID[glomel$Ref]
+#'  
+#'  # Assess quality with respect to reference envelope
+#'  compareToStateEnvelope(glomel_bc, glomel_env)
+#'  }
 trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -133,12 +152,12 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
     D_T_i <- as.vector(as.matrix(D_T)[sites_T == unique_sites[i], sel_T_env])
     D2E[i] <- sum(D_T_i^2)/r - 0.5*var_env
   }
-  Q <- 1.0/(1.0 + (D2E/var_env)^(1/(m-1))) 
+  Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
   return(data.frame(Site = unique_sites, Envelope = is_env, Var = var_env, SquaredDist = D2E, Q = Q))
 }
 
 #' @rdname envelope
-compareToStateEnvelope<-function(d, envelope, m = 1.5, nboot.ci = NULL, alpha.ci = 0.05, ...) {
+compareToStateEnvelope<-function(d, envelope, m = 1.5, nboot.ci = NULL, alpha.ci = 0.05, distances_to_envelope = FALSE, ...) {
   if(length(envelope)<2) stop("At least two observations must be part of the envelope")
   obs <- rownames(as.matrix(d))
   if(sum(envelope %in% obs)< length(envelope)) stop("Some elements in 'envelope' are not in row names of 'd'")
@@ -156,7 +175,9 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5, nboot.ci = NULL, alpha.ci
       D2E[i] <- sum(d_i^2)/length(d_i) - 0.5*var_env
     }
     Q <- 1.0/(1.0 + (D2E/var_env)^(1/(m-1))) 
-    return(data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, Q = Q))
+    res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, Q = Q)
+    if(!distances_to_envelope) res <- res[,-3]
+    return(res)
   } else {
     if(is.integer(nboot.ci)) stop("'nboot.ci' must be an integer")
     if(nboot.ci < 1) stop("'nboot.ci' must be larger than 0")
@@ -178,16 +199,20 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5, nboot.ci = NULL, alpha.ci
         d_i_boot <-  as.vector(as.matrix(d)[i, bsm[j,]])
         D2E_i_boot[j] <- sum(d_i_boot^2)/length(d_i_boot) - 0.5*var_env_boot[j]
       }
-      Q_i_boot <- 1.0/(1.0 + (D2E_i_boot/var_env_boot)^(1/(m-1))) 
+      Q_i_boot <- pmin(1.0, 2.0/(1.0 + (D2E_i_boot/var_env_boot)^(1/(m-1)))) 
       Q_i_boot[D2E_i_boot==0] <- 1.0
       lci_d[i] <- quantile(D2E_i_boot, probs = alpha.ci/2.0, na.rm=TRUE)
       uci_d[i] <- quantile(D2E_i_boot, probs = 1.0 - (alpha.ci/2.0), na.rm=TRUE)
       lci_q[i] <- quantile(Q_i_boot, probs = alpha.ci/2.0, na.rm=TRUE)
       uci_q[i] <- quantile(Q_i_boot, probs = 1.0 - (alpha.ci/2.0), na.rm=TRUE)
     }
-    Q <- 1.0/(1.0 + (D2E/var_env)^(1/(m-1))) 
-    return(data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, 
+    Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
+    Q[D2E==0] <- 1.0
+    
+    res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, 
                       Lower_D = lci_d, Upper_D = uci_d, 
-                      Q = Q, Lower_Q = lci_q, Upper_Q = uci_q))
+                      Q = Q, Lower_Q = lci_q, Upper_Q = uci_q)
+    if(!distances_to_envelope) res <- res[,-c(3:5)]
+    return(res)
   }
 }

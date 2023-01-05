@@ -1,0 +1,71 @@
+---
+title: "Assessing Ecological Status"
+author: "Miquel De Cáceres"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Assessing Ecological Status}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+### 1.1 Reference envelopes
+
+### 1.2 About this vignette
+
+In this vignette you will learn how to assess the ecological status of ecosystems by using a set of reference stations. 
+
+First of all, we load `ecotraj`:
+
+```{r load libraries, echo = T}
+library(ecotraj)
+```
+
+
+## 2. Relationship with state reference envelope: GLOMEL example
+
+Load GLOMEL data set
+```{r}
+data(glomel)
+```
+
+Subset compositional data matrix
+```{r}
+glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref", "Complementary"))])
+rownames(glomel_comp) <- glomel$ID
+```
+
+Bray curtis distance
+```{r}
+glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
+```
+
+Get reference station IDs
+```{r}
+glomel_env <- glomel$ID[glomel$Ref]
+```
+
+```{r}
+glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.5)
+```
+
+Add interpretation
+```{r}
+glomel_assess$Interpretation <- glomel$Complementary
+glomel_assess
+```
+
+Recalculate using confidence intervals
+```{r}
+glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.5, nboot.ci = 1000)
+glomel_assess
+```

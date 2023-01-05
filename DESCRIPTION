@@ -25,3 +25,4 @@ RoxygenNote: 7.2.3
 Suggests: vegclust, knitr, rmarkdown, RColorBrewer, smacof, vegan,
           ggplot2, hrbrthemes, scales, tidyr, viridis
 VignetteBuilder: utils, knitr
+LazyData: true

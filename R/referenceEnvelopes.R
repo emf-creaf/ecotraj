@@ -186,7 +186,7 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5,
       d_i <- as.vector(as.matrix(d)[obs == obs[i], sel_env])
       D2E[i] <- sum(d_i^2)/length(d_i) - 0.5*var_env
     }
-    Q <- 1.0/(1.0 + (D2E/var_env)^(1/(m-1))) 
+    Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
     res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, Q = Q)
     if(!distances_to_envelope) res <- res[,-3]
     return(res)

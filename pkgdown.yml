@@ -2,10 +2,11 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  EcologicalStatus: EcologicalStatus.html
   IntroductionETA: IntroductionETA.html
   SITA: SITA.html
   Transformation: Transformation.html
-last_built: 2023-01-04T17:34Z
+last_built: 2023-01-05T11:15Z
 urls:
   reference: https://emf-creaf.github.io/ecotraj/reference
   article: https://emf-creaf.github.io/ecotraj/articles

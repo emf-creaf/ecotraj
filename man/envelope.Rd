@@ -62,12 +62,21 @@ compareToStateEnvelope(
 \item{distances_to_envelope}{Flag to indicate that distances to envelope should be included in the result}
 }
 \value{
-A data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the 
+\itemize{
+   \item{Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the}
+   \item{Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} return data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the 
 envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built 
-using bootstrap samples of the reference envelope.
+using bootstrap samples of the reference envelope.}
+ }
 }
 \description{
-Reference envelopes
+Functions to assess the variability of ecological reference envelopes and to assess the ecological quality of
+target stations/observations with respect to reference envelopes.
+}
+\details{
+Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the 
+variability of reference envelopes. Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} are 
+used to evaluate the ecological quality of stations/observations with respect to a predefined reference envelope.
 }
 \examples{
  \dontrun{

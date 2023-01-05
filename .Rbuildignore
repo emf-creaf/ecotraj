@@ -3,6 +3,7 @@
 ^\.Rproj\.user$
 ^README.md$
 ^README.Rmd$
+^data-raw/*$
 ^docs/*$
 ^\.github$
 ^docs$

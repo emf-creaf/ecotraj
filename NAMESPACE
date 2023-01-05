@@ -1,7 +1,7 @@
 importFrom("Kendall", "MannKendall")
 importFrom("MASS", "ginv")
 importFrom("graphics", "arrows", "text")
-importFrom("stats", "as.dist", "cmdscale", "dist", "model.matrix")
+importFrom("stats", "as.dist", "cmdscale", "dist", "model.matrix", "quantile")
 importFrom("utils", "combn", "setTxtProgressBar", "txtProgressBar")
 importFrom(Rcpp, evalCpp)
 useDynLib(ecotraj)

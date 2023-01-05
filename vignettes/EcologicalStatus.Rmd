@@ -1,6 +1,6 @@
 ---
 title: "Assessing Ecological Status"
-author: "Miquel De Cáceres"
+author: "Anthony Sturbois/Miquel De Cáceres"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:

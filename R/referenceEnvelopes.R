@@ -122,7 +122,7 @@ stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
 #' @rdname envelope
 compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.5, 
                             nboot.ci = NULL, alpha.ci = 0.05,
-                            ...) {
+                            distances_to_envelope = FALSE, ...) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
   if(length(envelope)<2) stop("At least two sites must be part of the envelope")
@@ -153,11 +153,15 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
     D2E[i] <- sum(D_T_i^2)/r - 0.5*var_env
   }
   Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
-  return(data.frame(Site = unique_sites, Envelope = is_env, Var = var_env, SquaredDist = D2E, Q = Q))
+  res <- data.frame(Site = unique_sites, Envelope = is_env, SquaredDist = D2E, Q = Q)
+  if(!distances_to_envelope) res <- res[,-3]
+  return(res)
 }
 
 #' @rdname envelope
-compareToStateEnvelope<-function(d, envelope, m = 1.5, nboot.ci = NULL, alpha.ci = 0.05, distances_to_envelope = FALSE, ...) {
+compareToStateEnvelope<-function(d, envelope, m = 1.5, 
+                                 nboot.ci = NULL, alpha.ci = 0.05, 
+                                 distances_to_envelope = FALSE, ...) {
   if(length(envelope)<2) stop("At least two observations must be part of the envelope")
   obs <- rownames(as.matrix(d))
   if(sum(envelope %in% obs)< length(envelope)) stop("Some elements in 'envelope' are not in row names of 'd'")

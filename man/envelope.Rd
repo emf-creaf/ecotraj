@@ -28,6 +28,7 @@ compareToTrajectoryEnvelope(
   m = 1.5,
   nboot.ci = NULL,
   alpha.ci = 0.05,
+  distances_to_envelope = FALSE,
   ...
 )
 

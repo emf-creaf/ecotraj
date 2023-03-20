@@ -33,17 +33,17 @@ reference:
   - starts_with("trajectoryDistances")
   - starts_with("segment")
 
-- title: Envelopes
+- title: Trajectory plots
+  desc:  Set of plotting functions
+  contents:
+  - starts_with("trajectoryPlot")
+
+- title: Ecological Quality Assessment
   desc:  Set of functions to determine the membership to state/trajectory envelopes
   contents:
   - starts_with("stateEnvelope")
   - starts_with("trajectoryEnvelope")
   - starts_with("compareTo")
-
-- title: Trajectory plots
-  desc:  Set of plotting functions
-  contents:
-  - starts_with("trajectoryPlot")
 
 - title: Utility functions
   desc:  Utility functions for trajectory analysis

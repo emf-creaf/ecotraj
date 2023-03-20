@@ -81,7 +81,7 @@
                         <h4 data-toc-skip class="author">Anthony
 Sturbois/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2023-01-05</h4>
+            <h4 data-toc-skip class="date">2023-03-20</h4>
       
       
       <div class="hidden name"><code>EcologicalStatus.Rmd</code></div>
@@ -109,7 +109,11 @@ of ecosystems by using a set of reference stations.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="relationship-with-state-reference-envelope-glomel-example">2. Relationship with state reference envelope: GLOMEL example<a class="anchor" aria-label="anchor" href="#relationship-with-state-reference-envelope-glomel-example"></a>
+<h2 id="relationship-with-state-reference-envelope">2. Relationship with state reference envelope<a class="anchor" aria-label="anchor" href="#relationship-with-state-reference-envelope"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="glomel-example">2.1 GLOMEL example<a class="anchor" aria-label="anchor" href="#glomel-example"></a>
 </h2>
 <p>Load GLOMEL data set</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -118,7 +122,7 @@ of ecosystems by using a set of reference stations.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">[</span>,<span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"Ref"</span>, <span class="st">"Complementary"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">glomel_comp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">glomel</span><span class="op">$</span><span class="va">ID</span></span></code></pre></div>
-<p>Bray curtis distance</p>
+<p>Bray-Curtis distance</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>Get reference station IDs</p>
@@ -131,29 +135,29 @@ of ecosystems by using a set of reference stations.</p>
 <code class="sourceCode R"><span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Interpretation</span> <span class="op">&lt;-</span> <span class="va">glomel</span><span class="op">$</span><span class="va">Complementary</span></span>
 <span><span class="va">glomel_assess</span></span></code></pre></div>
 <pre><code><span><span class="co">##    Observation Envelope          Q</span></span>
-<span><span class="co">## 1           1A     TRUE 0.68738860</span></span>
-<span><span class="co">## 2           1B     TRUE 0.38306881</span></span>
-<span><span class="co">## 3           1C     TRUE 0.28614938</span></span>
-<span><span class="co">## 4           5A     TRUE 0.62384702</span></span>
-<span><span class="co">## 5           13     TRUE 0.40958880</span></span>
-<span><span class="co">## 6            2    FALSE 0.29027592</span></span>
-<span><span class="co">## 7           3A    FALSE 0.21655792</span></span>
-<span><span class="co">## 8           3B    FALSE 0.75592792</span></span>
-<span><span class="co">## 9           3C    FALSE 0.22721094</span></span>
-<span><span class="co">## 10          5B    FALSE 0.16511016</span></span>
-<span><span class="co">## 11          6A    FALSE 0.02963579</span></span>
-<span><span class="co">## 12          6C    FALSE 0.19212259</span></span>
-<span><span class="co">## 13          6D    FALSE 0.02028308</span></span>
-<span><span class="co">## 14          7A    FALSE 0.03320745</span></span>
-<span><span class="co">## 15          8A    FALSE 0.09461447</span></span>
-<span><span class="co">## 16          8B    FALSE 0.07209629</span></span>
-<span><span class="co">## 17          8C    FALSE 0.01484262</span></span>
-<span><span class="co">## 18           9    FALSE 0.06486378</span></span>
-<span><span class="co">## 19          10    FALSE 0.38492762</span></span>
-<span><span class="co">## 20          11    FALSE 0.28835223</span></span>
-<span><span class="co">## 21          12    FALSE 0.73324662</span></span>
-<span><span class="co">## 22         14A    FALSE 0.32764490</span></span>
-<span><span class="co">## 23         14B    FALSE 0.06511283</span></span>
+<span><span class="co">## 1           1A     TRUE 1.00000000</span></span>
+<span><span class="co">## 2           1B     TRUE 0.76613763</span></span>
+<span><span class="co">## 3           1C     TRUE 0.57229876</span></span>
+<span><span class="co">## 4           5A     TRUE 1.00000000</span></span>
+<span><span class="co">## 5           13     TRUE 0.81917760</span></span>
+<span><span class="co">## 6            2    FALSE 0.58055183</span></span>
+<span><span class="co">## 7           3A    FALSE 0.43311585</span></span>
+<span><span class="co">## 8           3B    FALSE 1.00000000</span></span>
+<span><span class="co">## 9           3C    FALSE 0.45442188</span></span>
+<span><span class="co">## 10          5B    FALSE 0.33022033</span></span>
+<span><span class="co">## 11          6A    FALSE 0.05927157</span></span>
+<span><span class="co">## 12          6C    FALSE 0.38424518</span></span>
+<span><span class="co">## 13          6D    FALSE 0.04056616</span></span>
+<span><span class="co">## 14          7A    FALSE 0.06641490</span></span>
+<span><span class="co">## 15          8A    FALSE 0.18922894</span></span>
+<span><span class="co">## 16          8B    FALSE 0.14419258</span></span>
+<span><span class="co">## 17          8C    FALSE 0.02968524</span></span>
+<span><span class="co">## 18           9    FALSE 0.12972756</span></span>
+<span><span class="co">## 19          10    FALSE 0.76985523</span></span>
+<span><span class="co">## 20          11    FALSE 0.57670446</span></span>
+<span><span class="co">## 21          12    FALSE 1.00000000</span></span>
+<span><span class="co">## 22         14A    FALSE 0.65528979</span></span>
+<span><span class="co">## 23         14B    FALSE 0.13022565</span></span>
 <span><span class="co">##                                                                          Interpretation</span></span>
 <span><span class="co">## 1                                         stade plus développé bon état de conservation</span></span>
 <span><span class="co">## 2                                             stade plus jeune bon état de conservation</span></span>
@@ -183,29 +187,160 @@ of ecosystems by using a set of reference stations.</p>
 <code class="sourceCode R"><span><span class="va">glomel_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/envelope.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span>, m<span class="op">=</span><span class="fl">1.5</span>, nboot.ci <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
 <span><span class="va">glomel_assess</span></span></code></pre></div>
 <pre><code><span><span class="co">##    Observation Envelope          Q     Lower_Q    Upper_Q</span></span>
-<span><span class="co">## 1           1A     TRUE 1.00000000 0.162592883 1.00000000</span></span>
+<span><span class="co">## 1           1A     TRUE 1.00000000 0.160890537 1.00000000</span></span>
 <span><span class="co">## 2           1B     TRUE 0.76613763 0.056748772 1.00000000</span></span>
 <span><span class="co">## 3           1C     TRUE 0.57229876 0.039662609 1.00000000</span></span>
-<span><span class="co">## 4           5A     TRUE 1.00000000 0.150943396 1.00000000</span></span>
-<span><span class="co">## 5           13     TRUE 0.81917760 0.082369644 1.00000000</span></span>
+<span><span class="co">## 4           5A     TRUE 1.00000000 0.176489721 1.00000000</span></span>
+<span><span class="co">## 5           13     TRUE 0.81917760 0.094218259 1.00000000</span></span>
 <span><span class="co">## 6            2    FALSE 0.58055183 0.043208754 1.00000000</span></span>
 <span><span class="co">## 7           3A    FALSE 0.43311585 0.034040474 0.61617669</span></span>
-<span><span class="co">## 8           3B    FALSE 1.00000000 0.393298215 1.00000000</span></span>
-<span><span class="co">## 9           3C    FALSE 0.45442188 0.040027043 0.62790907</span></span>
-<span><span class="co">## 10          5B    FALSE 0.33022033 0.024403788 0.59242926</span></span>
+<span><span class="co">## 8           3B    FALSE 1.00000000 0.304666502 1.00000000</span></span>
+<span><span class="co">## 9           3C    FALSE 0.45442188 0.039620804 0.62790907</span></span>
+<span><span class="co">## 10          5B    FALSE 0.33022033 0.036556643 0.62036822</span></span>
 <span><span class="co">## 11          6A    FALSE 0.05927157 0.005494313 0.08174610</span></span>
-<span><span class="co">## 12          6C    FALSE 0.38424518 0.027829702 0.74459518</span></span>
-<span><span class="co">## 13          6D    FALSE 0.04056616 0.002811865 0.06036804</span></span>
-<span><span class="co">## 14          7A    FALSE 0.06641490 0.004858955 0.09414612</span></span>
-<span><span class="co">## 15          8A    FALSE 0.18922894 0.020354861 0.24078510</span></span>
-<span><span class="co">## 16          8B    FALSE 0.14419258 0.012461354 0.21421941</span></span>
-<span><span class="co">## 17          8C    FALSE 0.02968524 0.002277437 0.04428647</span></span>
-<span><span class="co">## 18           9    FALSE 0.12972756 0.009404634 0.18503995</span></span>
-<span><span class="co">## 19          10    FALSE 0.76985523 0.115442644 0.84382321</span></span>
-<span><span class="co">## 20          11    FALSE 0.57670446 0.043929855 0.81593809</span></span>
-<span><span class="co">## 21          12    FALSE 1.00000000 0.258410782 1.00000000</span></span>
+<span><span class="co">## 12          6C    FALSE 0.38424518 0.027829702 0.84301971</span></span>
+<span><span class="co">## 13          6D    FALSE 0.04056616 0.003264656 0.06036804</span></span>
+<span><span class="co">## 14          7A    FALSE 0.06641490 0.005858523 0.09414612</span></span>
+<span><span class="co">## 15          8A    FALSE 0.18922894 0.022748715 0.22798561</span></span>
+<span><span class="co">## 16          8B    FALSE 0.14419258 0.012480635 0.21421941</span></span>
+<span><span class="co">## 17          8C    FALSE 0.02968524 0.002423464 0.04428647</span></span>
+<span><span class="co">## 18           9    FALSE 0.12972756 0.011100347 0.18503995</span></span>
+<span><span class="co">## 19          10    FALSE 0.76985523 0.076288468 0.84382321</span></span>
+<span><span class="co">## 20          11    FALSE 0.57670446 0.043377389 0.81593809</span></span>
+<span><span class="co">## 21          12    FALSE 1.00000000 0.225911044 1.00000000</span></span>
 <span><span class="co">## 22         14A    FALSE 0.65528979 0.048471495 0.92615016</span></span>
-<span><span class="co">## 23         14B    FALSE 0.13022565 0.009475738 0.19355284</span></span></code></pre>
+<span><span class="co">## 23         14B    FALSE 0.13022565 0.010463377 0.19355284</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="glenan-example">2.1 GLENAN example<a class="anchor" aria-label="anchor" href="#glenan-example"></a>
+</h2>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">)</span></span></code></pre></div>
+<p>Subset compositional data matrix</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glenan_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">[</span>,<span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ref"</span>, <span class="st">"Group"</span>, <span class="st">"DistanceFromExtraction"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p>Bray-Curtis distance</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glenan_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glenan_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<p>Get reference station IDs</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glenan_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">)</span><span class="op">[</span><span class="va">glenan</span><span class="op">$</span><span class="va">Ref</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">glenan_env</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "1" "2" "3" "4" "5" "6"</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glenan_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/envelope.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">glenan_bc</span>, <span class="va">glenan_env</span>, m<span class="op">=</span><span class="fl">1.5</span>, nboot.ci <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">glenan_assess</span><span class="op">$</span><span class="va">Interpretation</span> <span class="op">&lt;-</span> <span class="va">glenan</span><span class="op">$</span><span class="va">Group</span></span>
+<span><span class="va">glenan_assess</span><span class="op">$</span><span class="va">DistanceFromExtraction</span> <span class="op">&lt;-</span> <span class="va">glenan</span><span class="op">$</span><span class="va">DistanceFromExtraction</span></span>
+<span><span class="va">glenan_assess</span></span></code></pre></div>
+<pre><code><span><span class="co">##    Observation Envelope         Q    Lower_Q   Upper_Q           Interpretation</span></span>
+<span><span class="co">## 1            1     TRUE 0.8971479 0.17096966 1.0000000                Reference</span></span>
+<span><span class="co">## 2            2     TRUE 0.8060224 0.18348323 1.0000000                Reference</span></span>
+<span><span class="co">## 3            3     TRUE 1.0000000 0.24327772 1.0000000                Reference</span></span>
+<span><span class="co">## 4            4     TRUE 0.7525722 0.13438066 1.0000000                Reference</span></span>
+<span><span class="co">## 5            5     TRUE 0.5465354 0.09369619 1.0000000                Reference</span></span>
+<span><span class="co">## 6            6     TRUE 1.0000000 0.30423948 1.0000000                Reference</span></span>
+<span><span class="co">## 7            7    FALSE 1.0000000 0.31812311 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 8            8    FALSE 0.4955592 0.10234789 0.7101618 Potentially not affected</span></span>
+<span><span class="co">## 9            9    FALSE 0.4972602 0.10974716 0.6865025 Potentially not affected</span></span>
+<span><span class="co">## 10          10    FALSE 0.6551259 0.14699739 0.9230901 Potentially not affected</span></span>
+<span><span class="co">## 11          11    FALSE 1.0000000 0.30717588 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 12          12    FALSE 1.0000000 0.23804463 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 13          13    FALSE 1.0000000 0.25458479 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 14          14    FALSE 0.4023181 0.09669015 0.4812991 Potentially not affected</span></span>
+<span><span class="co">## 15          15    FALSE 0.8271395 0.16269457 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 16          16    FALSE 0.2258377 0.04672902 0.2888686 Potentially not affected</span></span>
+<span><span class="co">## 17          17    FALSE 0.1728020 0.03564665 0.2164664 Potentially not affected</span></span>
+<span><span class="co">## 18          18    FALSE 0.7963415 0.16591575 1.0000000 Potentially not affected</span></span>
+<span><span class="co">## 19          19    FALSE 0.2344442 0.04713232 0.3006705     Potentially affected</span></span>
+<span><span class="co">## 20          20    FALSE 0.1681996 0.03603986 0.2096945     Potentially affected</span></span>
+<span><span class="co">## 21          21    FALSE 0.1210871 0.02343556 0.1516195     Potentially affected</span></span>
+<span><span class="co">## 22          22    FALSE 0.3311000 0.06161069 0.4468991     Potentially affected</span></span>
+<span><span class="co">## 23          23    FALSE 0.1201868 0.02369800 0.1547943     Potentially affected</span></span>
+<span><span class="co">## 24          24    FALSE 0.1195947 0.02327437 0.1533513     Potentially affected</span></span>
+<span><span class="co">## 25          25    FALSE 0.2932539 0.06330454 0.3516409     Potentially affected</span></span>
+<span><span class="co">## 26          26    FALSE 0.2710910 0.05838373 0.3312008     Potentially affected</span></span>
+<span><span class="co">## 27          27    FALSE 0.1717602 0.03556573 0.2127451     Potentially affected</span></span>
+<span><span class="co">## 28          28    FALSE 0.1222382 0.02551082 0.1599816     Potentially affected</span></span>
+<span><span class="co">## 29          29    FALSE 0.2394551 0.04694253 0.3259742     Potentially affected</span></span>
+<span><span class="co">## 30          30    FALSE 0.2349553 0.05136776 0.2877820     Potentially affected</span></span>
+<span><span class="co">## 31          31    FALSE 0.1402470 0.02941540 0.1782720     Potentially affected</span></span>
+<span><span class="co">## 32          32    FALSE 0.1582573 0.03280489 0.1996573     Potentially affected</span></span>
+<span><span class="co">## 33          33    FALSE 0.1251353 0.02583884 0.1637425     Potentially affected</span></span>
+<span><span class="co">## 34          34    FALSE 0.1244305 0.02446990 0.1522370     Potentially affected</span></span>
+<span><span class="co">## 35          35    FALSE 0.1727212 0.03517689 0.2217754     Potentially affected</span></span>
+<span><span class="co">## 36          36    FALSE 0.1326532 0.02735092 0.1669558     Potentially affected</span></span>
+<span><span class="co">## 37          37    FALSE 0.1256193 0.02419998 0.1578747     Potentially affected</span></span>
+<span><span class="co">## 38          38    FALSE 0.1435388 0.02870979 0.1780111     Potentially affected</span></span>
+<span><span class="co">## 39          39    FALSE 0.1677414 0.03487940 0.2140891     Potentially affected</span></span>
+<span><span class="co">## 40          40    FALSE 0.1204359 0.02362938 0.1480530     Potentially affected</span></span>
+<span><span class="co">## 41          41    FALSE 0.1118698 0.02103951 0.1375739     Potentially affected</span></span>
+<span><span class="co">## 42          42    FALSE 0.1286591 0.02583040 0.1575602     Potentially affected</span></span>
+<span><span class="co">## 43          43    FALSE 0.1491829 0.02973484 0.1900231     Potentially affected</span></span>
+<span><span class="co">## 44          44    FALSE 0.1466970 0.02953071 0.1872383     Potentially affected</span></span>
+<span><span class="co">## 45          45    FALSE 0.2136169 0.04487440 0.2614862     Potentially affected</span></span>
+<span><span class="co">## 46          46    FALSE 0.1540005 0.03176606 0.1988684     Potentially affected</span></span>
+<span><span class="co">## 47          47    FALSE 0.2178950 0.04058194 0.2772176     Potentially affected</span></span>
+<span><span class="co">## 48          48    FALSE 0.1518308 0.03161821 0.2017274     Potentially affected</span></span>
+<span><span class="co">## 49          49    FALSE 0.1345995 0.02811480 0.1737741     Potentially affected</span></span>
+<span><span class="co">## 50          50    FALSE 0.1681576 0.03631054 0.2106725     Potentially affected</span></span>
+<span><span class="co">## 51          51    FALSE 0.1474013 0.03075325 0.1928825     Potentially affected</span></span>
+<span><span class="co">## 52          52    FALSE 0.1525177 0.03295371 0.1903032     Potentially affected</span></span>
+<span><span class="co">##    DistanceFromExtraction</span></span>
+<span><span class="co">## 1               4870.7185</span></span>
+<span><span class="co">## 2               4624.1689</span></span>
+<span><span class="co">## 3               4623.5219</span></span>
+<span><span class="co">## 4               4305.4678</span></span>
+<span><span class="co">## 5               4075.1672</span></span>
+<span><span class="co">## 6               4080.6292</span></span>
+<span><span class="co">## 7               3769.4910</span></span>
+<span><span class="co">## 8               3582.7601</span></span>
+<span><span class="co">## 9               3584.1683</span></span>
+<span><span class="co">## 10              3300.0228</span></span>
+<span><span class="co">## 11              3026.5201</span></span>
+<span><span class="co">## 12              2754.5731</span></span>
+<span><span class="co">## 13              2419.7073</span></span>
+<span><span class="co">## 14              2114.0219</span></span>
+<span><span class="co">## 15              1292.4532</span></span>
+<span><span class="co">## 16               606.5231</span></span>
+<span><span class="co">## 17               679.7869</span></span>
+<span><span class="co">## 18               934.9196</span></span>
+<span><span class="co">## 19              2519.9859</span></span>
+<span><span class="co">## 20              2193.0884</span></span>
+<span><span class="co">## 21              1899.2504</span></span>
+<span><span class="co">## 22              1877.6205</span></span>
+<span><span class="co">## 23              1679.8981</span></span>
+<span><span class="co">## 24              1565.9667</span></span>
+<span><span class="co">## 25              1569.5280</span></span>
+<span><span class="co">## 26              1377.4719</span></span>
+<span><span class="co">## 27              1323.8278</span></span>
+<span><span class="co">## 28              1202.6453</span></span>
+<span><span class="co">## 29              1074.1339</span></span>
+<span><span class="co">## 30              1091.1601</span></span>
+<span><span class="co">## 31               886.4168</span></span>
+<span><span class="co">## 32               797.2202</span></span>
+<span><span class="co">## 33               756.1461</span></span>
+<span><span class="co">## 34               595.7080</span></span>
+<span><span class="co">## 35               570.1667</span></span>
+<span><span class="co">## 36               486.3184</span></span>
+<span><span class="co">## 37               250.3599</span></span>
+<span><span class="co">## 38               627.8732</span></span>
+<span><span class="co">## 39              1152.4039</span></span>
+<span><span class="co">## 40               114.9553</span></span>
+<span><span class="co">## 41               107.7510</span></span>
+<span><span class="co">## 42               100.9700</span></span>
+<span><span class="co">## 43               158.3781</span></span>
+<span><span class="co">## 44               448.4847</span></span>
+<span><span class="co">## 45               528.7384</span></span>
+<span><span class="co">## 46               649.1970</span></span>
+<span><span class="co">## 47              1840.6956</span></span>
+<span><span class="co">## 48               306.6780</span></span>
+<span><span class="co">## 49               732.5250</span></span>
+<span><span class="co">## 50               269.1164</span></span>
+<span><span class="co">## 51               320.1823</span></span>
+<span><span class="co">## 52               713.4355</span></span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="va">glenan_assess</span><span class="op">$</span><span class="va">Q</span><span class="op">~</span>  <span class="va">glenan_assess</span><span class="op">$</span><span class="va">Interpretation</span><span class="op">)</span></span></code></pre></div>
+<p><img src="EcologicalStatus_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
   </div>
 

@@ -55,20 +55,20 @@
 #' @seealso \code{\link{trajectorymetrics}} 
 #' 
 #' @examples 
-#'  data(glomel)
+#' data(glomel)
 #'  
-#'  # Extract compositional data matrix
-#'  glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref", "Complementary"))])
-#'  rownames(glomel_comp) <- glomel$ID
+#' # Extract compositional data matrix
+#' glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref", "Complementary"))])
+#' rownames(glomel_comp) <- glomel$ID
 #'  
-#'  # Calculate Bray-Curtis distance matrix 
-#'  glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
+#' # Calculate Bray-Curtis distance matrix 
+#' glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 #'  
-#'  # Define reference envelope by observation ID
-#'  glomel_env <- glomel$ID[glomel$Ref]
+#' # Define reference envelope (5 stations) by observation ID
+#' glomel_env <- glomel$ID[glomel$Ref]
 #'  
-#'  # Assess quality with respect to reference envelope
-#'  compareToStateEnvelope(glomel_bc, glomel_env)
+#' # Assess quality with respect to reference envelope
+#' compareToStateEnvelope(glomel_bc, glomel_env)
 #'  
 trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")

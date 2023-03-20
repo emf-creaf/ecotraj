@@ -33,7 +33,6 @@ library(ecotraj)
 
 ## 2. Relationship with state reference envelope
 
-## 2.1 GLOMEL example
 Load GLOMEL data set
 ```{r}
 data(glomel)
@@ -71,37 +70,4 @@ glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.5, nboot.ci =
 glomel_assess
 ```
 
-## 2.1 GLENAN example
-
-```{r}
-data(glenan)
-```
-
-
-Subset compositional data matrix
-```{r}
-glenan_comp <- as.matrix(glenan[,!(names(glenan) %in% c("Ref", "Group", "DistanceFromExtraction"))])
-```
-
-Bray-Curtis distance
-```{r}
-glenan_bc <- vegan::vegdist(glenan_comp, method = "bray")
-```
-
-Get reference station IDs
-```{r}
-glenan_env <- row.names(glenan)[glenan$Ref==1]
-glenan_env
-```
-
-```{r}
-glenan_assess <- compareToStateEnvelope(glenan_bc, glenan_env, m=1.5, nboot.ci = 1000)
-glenan_assess$Interpretation <- glenan$Group
-glenan_assess$DistanceFromExtraction <- glenan$DistanceFromExtraction
-glenan_assess
-```
-
-```{r}
-boxplot(glenan_assess$Q~  glenan_assess$Interpretation)
-```
 

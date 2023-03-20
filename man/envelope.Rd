@@ -79,14 +79,13 @@ variability of reference envelopes. Functions \code{compareToStateEnvelope} and 
 used to evaluate the ecological quality of stations/observations with respect to a predefined reference envelope.
 }
 \examples{
- \dontrun{
  data(glomel)
  
  # Extract compositional data matrix
  glomel_comp <- as.matrix(glomel[,!(names(glomel) \%in\% c("ID", "Ref", "Complementary"))])
  rownames(glomel_comp) <- glomel$ID
  
- # Calculate Bray-curtis distance matrix 
+ # Calculate Bray-Curtis distance matrix 
  glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
  
  # Define reference envelope by observation ID
@@ -94,7 +93,7 @@ used to evaluate the ecological quality of stations/observations with respect to
  
  # Assess quality with respect to reference envelope
  compareToStateEnvelope(glomel_bc, glomel_env)
- }
+ 
 }
 \seealso{
 \code{\link{trajectorymetrics}}

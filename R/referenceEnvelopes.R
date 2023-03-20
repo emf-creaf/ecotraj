@@ -55,14 +55,13 @@
 #' @seealso \code{\link{trajectorymetrics}} 
 #' 
 #' @examples 
-#'  \dontrun{
 #'  data(glomel)
 #'  
 #'  # Extract compositional data matrix
 #'  glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref", "Complementary"))])
 #'  rownames(glomel_comp) <- glomel$ID
 #'  
-#'  # Calculate Bray-curtis distance matrix 
+#'  # Calculate Bray-Curtis distance matrix 
 #'  glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 #'  
 #'  # Define reference envelope by observation ID
@@ -70,7 +69,7 @@
 #'  
 #'  # Assess quality with respect to reference envelope
 #'  compareToStateEnvelope(glomel_bc, glomel_env)
-#'  }
+#'  
 trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")

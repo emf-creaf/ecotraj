@@ -1,12 +1,12 @@
 ---
-title: "Assessing Ecological Status"
+title: "Ecological Quality Assessment"
 author: "Anthony Sturbois/Miquel De Cáceres"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: TRUE
 vignette: >
-  %\VignetteIndexEntry{Assessing Ecological Status}
+  %\VignetteIndexEntry{Ecological Quality Assessment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignettePackage{ecotraj}
   \usepackage[utf8]{inputenc}

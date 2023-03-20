@@ -4,6 +4,17 @@ home:
   links:
   - text: Package website
     href: https://emf-creaf.github.io/ecotraj
+
+articles:
+- title: Ecological Trajectory Analysis
+  contents:
+    - starts_with("IntroductionETA")
+    - starts_with("Transformation")
+    - starts_with("SITA")
+- title: Ecological Quality Assessment
+  contents:
+    - starts_with("IntroductionEQA")
+
     
 reference:
 - title: Datasets

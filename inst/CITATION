@@ -1,33 +1,34 @@
-citHeader("To cite 'ecotraj' package in publications use:")
-
-citEntry(entry="Manual",
-         title = "Trajectory analysis in community ecology",
-         author = "Miquel De Cáceres, Lluís Coll, Pierre Legendre, Robert B. Allen, Susan K. Wiser, M.J. Fortin, Richard Condit & Stephen Hubbell",
+c(
+  bibentry("Article",
+      header = "To cite 'ecotraj' package in publications use:",
+      title = "Trajectory analysis in community ecology",
+      author = c(person("Miquel", "De Cáceres"), 
+                 person("Lluís","Coll"), 
+                 person("Pierre","Legendre"),
+                 person("Robert B.","Allen"),
+                 person("Susan K.","Wiser"),
+                 person("M.J.","Fortin"),
+                 person("Richard","Condit"),
+                 person("Stephen","Hubbell")),
          journal = "Ecological Monographs",
          year = "2019",
          volume = "89",
          pages = "e01350",
-         doi  = "10.1002/ecm.1350",         
-         textVersion = 
-         paste("De Cáceres, M., Coll, L., Legendre, P., Allen, R.B., Wiser, S.K., Fortin, M.J., Condit, R. & Hubbell, S. (2019). ", 
-               "Trajectory analysis in community ecology. ",
-               "Ecological Monographs 89: e01350",
-               sep="")
-         )
-
-citEntry(entry="Manual",
+         doi  = "10.1002/ecm.1350"),
+  bibentry("Article",
+         footer = "Thank you for using 'ecotraj'",
          title = "Extending community trajectory analysis : New metrics and representation",
-         author = "Anthony Sturbois, Miquel De Cáceres, Martina Sánchez-Pinillos, Gauthier Schaal, Olivier Gauthier, P. Le Mao, A. Ponsero, & Nicholas Desroy.",
+         author = c(person("Anthony","Sturbois"), 
+                    person("Miquel","De Cáceres"),
+                    person("Martina","Sánchez-Pinillos"),
+                    person("Gauthier","Schaal"),
+                    person("Olivier","Gauthier"),
+                    person("P.","Le Mao"),
+                    person("A.","Ponsero"),
+                    person("Nicholas","Desroy")),
          journal = "Ecological Modelling",
          year = "2021",
          volume = "440",
          pages = "109400",
-         doi  = "10.1016/j.ecolmodel.2020.109400",         
-         textVersion = 
-         paste("Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). ", 
-               "Extending community trajectory analysis : New metrics and representation. ",
-               "Ecological Modelling 440: 109400",
-               sep="")
-         )
-         
-citFooter("Thank you for using 'ecotraj'")
+         doi  = "10.1016/j.ecolmodel.2020.109400")         
+)

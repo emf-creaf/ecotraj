@@ -17,7 +17,9 @@
     trajectory metrics and visual representations (see De Caceres et al. (2019) &lt;doi:10.1002/ecm.1350&gt; 
     and Sturbois et al. (2021) &lt;doi:10.1016/j.ecolmodel.2020.109400&gt;). Includes functions
     to estimate metrics for individual trajectories (length, directionality, angles, ...) as well as
-    metrics to relate pairs of trajectories (dissimilarity and convergence).">
+    metrics to relate pairs of trajectories (dissimilarity and convergence). Functions are also
+    provided to estimate the ecological quality of ecosystem with respect to reference conditions 
+    (Sturbois et al. under review).">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -88,10 +90,13 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Package <code>ecotraj</code> is a package providing a framework to assist ecologists in the analysis of temporal changes in ecosystems defined on a chosen multivariate space. It is related to the following publications:</p>
+<p>Package <code>ecotraj</code> is a package providing Ecological Trajectory Analysis (ETA), a framework to assist ecologists in the analysis of temporal changes in ecosystems defined on a chosen multivariate space.</p>
+<p>ETA is related to the following publications:</p>
 <ul>
 <li><p>First presentation of the community trajectory analysis framework: De Cáceres et al. (2019) (<a href="https://doi.org/10.1002/ecm.1350" class="external-link uri">https://doi.org/10.1002/ecm.1350</a>).</p></li>
 <li><p>Extension of community trajectory analysis: Sturbois et al. (2021) (<a href="https://doi.org/10.1016/j.ecolmodel.2020.109400" class="external-link uri">https://doi.org/10.1016/j.ecolmodel.2020.109400</a>).</p></li>
+<li><p>Generalisation to stable isotope data: Sturbois et al. (2021) (<a href="https://doi.org/10.1002/ecm.1501" class="external-link uri">https://doi.org/10.1002/ecm.1501</a>).</p></li>
+<li><p>Application of ETA for the assessement of ecological status: Sturbois et al. (under review).</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -99,10 +104,10 @@
 </h2>
 <p>Package <code>ecotraj</code> can be found at <a href="https://cran.r-project.org/package=ecotraj" class="external-link">CRAN</a>. In addition, the latest stable <code>ecotraj</code> R package can also be installed from GitHub as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"emf-creaf/ecotraj"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"emf-creaf/ecotraj"</span><span class="op">)</span></span></code></pre></div>
 <p>Additionally, users can have help to run package functions directly as package vignettes, by forcing their inclusion in installation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"emf-creaf/ecotraj"</span>, </span>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"emf-creaf/ecotraj"</span>, </span>
 <span>                         build_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"--no-resave-data"</span>, <span class="st">"--no-manual"</span><span class="op">)</span>,</span>
 <span>                         build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -110,8 +115,10 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p>De Cáceres, M., Coll, L., Legendre, P., Allen, R.B., Wiser, S.K., Fortin, M.J., Condit, R. &amp; Hubbell, S.. (2019). Trajectory analysis in community ecology. Ecological Monographs.</p></li>
+<li><p>De Cáceres, M., Coll, L., Legendre, P., Allen, R.B., Wiser, S.K., Fortin, M.J., Condit, R. &amp; Hubbell, S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p></li>
 <li><p>Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., &amp; Desroy, N. (2021). Extending community trajectory analysis : New metrics and representation. Ecological Modelling, 440, 109400.</p></li>
+<li><p>Sturbois, A., Cucherousset, J., De Cáceres, M., Desroy, N., Riera, P., Carpentier, A., Quillien, N., Grall, J., Espinasse, B., Cherel, Y., Schaal, G. (2021). Stable Isotope Trajectory Analysis (SITA) : A new approach to quantify and visualize dynamics in stable isotope studies. Ecological Monographs, 92, e1501.</p></li>
+<li><p>Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A., Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal, G., Desroy, N. (under review). Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions.</p></li>
 </ul>
 </div>
 </div>

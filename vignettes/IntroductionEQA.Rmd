@@ -1,12 +1,12 @@
 ---
-title: "Ecological Quality Assessment"
+title: "Introduction to Ecological Quality Assessment (EQA)"
 author: "Anthony Sturbois/Miquel De Cáceres"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: TRUE
 vignette: >
-  %\VignetteIndexEntry{Ecological Quality Assessment}
+  %\VignetteIndexEntry{Introduction to Ecological Quality Assessment (EQA)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignettePackage{ecotraj}
   \usepackage[utf8]{inputenc}

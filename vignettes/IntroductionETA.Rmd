@@ -1,12 +1,12 @@
 ---
-title: "Introduction to Ecological Trajectory Analysis"
+title: "Introduction to Ecological Trajectory Analysis (ETA)"
 author: "Miquel De Cáceres"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: TRUE
 vignette: >
-  %\VignetteIndexEntry{Introduction to Ecological Trajectory Analysis}
+  %\VignetteIndexEntry{Introduction to Ecological Trajectory Analysis (ETA)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignettePackage{ecotraj}
   \usepackage[utf8]{inputenc}

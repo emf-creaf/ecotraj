@@ -20,7 +20,7 @@
 #' Reference envelopes
 #' 
 #' Functions to assess the variability of ecological reference envelopes and to assess the ecological quality of
-#' target stations/observations with respect to reference envelopes.
+#' target stations/observations with respect to reference envelopes (Sturbois et al., under review).
 #'
 #' @encoding UTF-8
 #' @name envelope
@@ -49,10 +49,14 @@
 #'  }
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
-#' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
+#' @author Anthony Sturbois, Vivarmor nature, \enc{Réserve}{Reserve} Naturelle nationale de la Baie de Saint-Brieuc
 #' 
+#' @references 
+#' Sturbois, A., De \enc{Cáceres}{Caceres}, M., Bifolchi, A., Bioret, F., \enc{Boyé}{Boye}, A., Gauthier, O., Grall, J., \enc{Grémare}{Gremare}, A., Labrune, C., 
+#' Robert, A., Schaal, G., Desroy, N. (under review). Ecological Quality Assessment: a general multivariate framework to report 
+#' the quality of ecosystems and their dynamics with respect to reference conditions.
 #' 
-#' @seealso \code{\link{trajectorymetrics}} 
+#' @seealso \code{\link{trajectorymetrics}}, \code{\link{glomel}}
 #' 
 #' @examples 
 #' data(glomel)

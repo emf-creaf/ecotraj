@@ -34,6 +34,9 @@ The first five stations (rows) were used to define the reference
 envelope, and the next 18 stations (rows) where those for which the conservation status 
 was to be assessed.
 }
+\seealso{
+\code{\link{envelope}}
+}
 \author{
 XXX
 }

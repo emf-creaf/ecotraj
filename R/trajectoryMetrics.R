@@ -104,7 +104,8 @@
 #' @references
 #' Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.
 #' 
-#' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs.
+#' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). 
+#' Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 #' 
 #' @seealso \code{\link{trajectoryplots}}, \code{\link{trajectoryutils}} 
 #' 

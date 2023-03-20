@@ -32,6 +32,8 @@
 #' @docType data
 #' @author XXX
 #' @keywords data
+#' 
+#' @seealso \code{\link{envelope}}
 NULL
 
 

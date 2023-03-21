@@ -7,7 +7,7 @@
 \alias{stateEnvelopeVariability}
 \alias{compareToStateEnvelope}
 \alias{compareToTrajectoryEnvelope}
-\title{Reference envelopes}
+\title{Ecological quality assessment}
 \usage{
 trajectoryEnvelopeVariability(
   d,

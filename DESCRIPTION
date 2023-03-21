@@ -25,6 +25,7 @@ Encoding: UTF-8
 NeedsCompilation: yes
 RoxygenNote: 7.2.3
 Suggests: 
+    ape,
     vegclust,
     knitr,
     rmarkdown,
@@ -33,6 +34,7 @@ Suggests:
     vegan,
     ggplot2,
     hrbrthemes,
+    reshape2,
     scales,
     tidyr,
     viridis,

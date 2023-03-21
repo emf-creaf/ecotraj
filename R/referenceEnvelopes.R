@@ -17,7 +17,7 @@
   return(bs)
 }
 
-#' Reference envelopes
+#' Ecological quality assessment
 #' 
 #' Functions to assess the variability of ecological reference envelopes and to assess the ecological quality of
 #' target stations/observations with respect to reference envelopes (Sturbois et al., under review).

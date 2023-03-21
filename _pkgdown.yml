@@ -26,6 +26,7 @@ reference:
   - heatmapdata
   - isoscape
   - glomel
+  - glenan
   
 - title: Trajectory metrics
   desc:  Set of functions to calculate trajectory metrics

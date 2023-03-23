@@ -24,7 +24,7 @@
 #' @name glomel
 #' @aliases glomel 
 #' @docType data
-#' @author XXX
+#' @author Aline Bifolchi, Réserve Naturelle des landes et marais de Glomel
 #' @keywords data
 #' 
 #' @seealso \code{\link{envelope}}

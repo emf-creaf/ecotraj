@@ -32,6 +32,6 @@ was to be assessed.
 \code{\link{envelope}}
 }
 \author{
-XXX
+Aline Bifolchi, Réserve Naturelle des landes et marais de Glomel
 }
 \keyword{data}

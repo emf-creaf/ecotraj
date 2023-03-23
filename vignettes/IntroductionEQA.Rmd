@@ -18,13 +18,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. About this vignette
 
-This vignette present the ecological applications used by Sturbois at al. (under review) in the presentation of the Ecological Quality Assessment (EQA) framework.
-After the distance-matrix computation, the vignette focuses on Ecological Quality Assessement through state-based and trajectory-based variants, and on the representation of the results. 
-Data sets used in this vignette have been included in the package for reproducibility.
+This vignette present the ecological applications used by Sturbois et al. (under review) for the presentation of the Ecological Quality Assessment (EQA) framework. The vignette illustrates how to conduct an Ecological Quality Assessement through state-based and trajectory-based variants, and how to presentation the results graphically. The two data sets used in this vignette have been included in the **ecotraj** package for reproducibility.
 
 ## 2. Loading libraries
 
-First of all, we load required libraries, including `ecotraj`:
+First of all, we load the libraries required for the examples, including **ecotraj**:
 ```{r load libraries, echo = T}
 #loading libraries
 library(ecotraj)
@@ -43,7 +41,7 @@ The nature reserve of *Landes et Marais de Glomel* (Brittany, France) is compose
 
 ### 3.2 Loading data
 
-The data set consists of 23 rows (stations) and 46 columns (species). The percent cover values derived from Braun-Blanquet ordinal scale was estimated for 43 species of vascular plants. The first five stations (rows) were used to define the reference envelope, and the next 18 stations (rows) where those for which the conservation status was to be assessed.
+The data set consists of 23 rows (stations) and 46 columns (species). The percent cover values derived from Braun-Blanquet ordinal scale were estimated for 43 species of vascular plants. The first five stations (rows) were used to define the reference envelope, and the next 18 stations (rows) where those for which the conservation status was to be assessed.
 
 ```{r load glomel, echo=T}
 data(glomel)
@@ -67,37 +65,42 @@ Using the compositional data, we can use function `vegdist()` from package **veg
 glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 ```
 
-Column `Ref` identifies stations considered as reference. We define the **state reference envelope** using reference station IDs as follows:
+The distance matrix `glomel_bc` defines the multivariate space that represents the ressemblance between ecological states. 
+
+To conduct EQA, we also need to define the conservation targets. Column `Ref` in `glomel` identifies the stations considered as reference. We define the **state reference envelope** using reference station IDs as follows:
 ```{r, echo=T}
 glomel_env <- glomel$ID[glomel$Ref]
 ```
 
-We are now ready to comparing the assessed stations with respect to the state reference envelope:
+We are now ready to compare the assessed stations with respect to the state reference envelope using function `compareToStateEnvelope()`:
 ```{r, echo=T}
 glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.7, distances_to_envelope = TRUE)
 head(glomel_assess)
 ```
-Function `compareToStateEnvelope` returns the squared distance to the envelope centroid and values of Q statistic, between 0 and 1. We can transform those values into a qualitative assessement using:
+Function `compareToStateEnvelope` returns `SquaredDist`, the squared distance to the envelope centroid, and the `Q` statistic, which defines the quality of the tested stations and is comprised between 0 and 1. We can transform those values into a *qualitative* assessment using:
 ```{r, echo=T}
 glomel_assess$Status<-c(ifelse(glomel_assess$Q>=0.5,"Inside", "Oustside"))
-head(glomel_assess)
 ```
 
+And the assessment for the 18 tested stations is:
 
-### 3.4 Representing the results of Glomel EQSA
+```{r, echo=T}
+glomel_assess[!glomel_assess$Envelope,]
+```
+
+### 3.4 Representing EQA results graphically
 
 To represent the results in a graphical way, we start by conducting a Principal Coordinates Analysis (PCoA) using package **ape**:
 ```{r, echo=TRUE}
 pcoa_glom<-ape::pcoa(glomel_bc)
-pcoa_glom$values
 ```
 
 We can use function `biplot()` from package **ape** to show the ordination of stations with the species projected as arrows:
-```{r, echo=TRUE, fig.width=6, fig.height=6, warning = FALSE}
+```{r, echo=TRUE, fig.width=7, fig.height=7, warning = FALSE}
 biplot(pcoa_glom, glomel_comp)
 ```
 
-Get coordinates of stations in the two first dimensions of the PCoA and copy them into the assessment data frame:
+To generate a different representation, we first get coordinates of stations in the two first dimensions of the PCoA and copy them into the assessment data frame:
 ```{r, echo=TRUE}
 PCOA_DIM1_2 <- pcoa_glom[["vectors"]][,1:2]
 glomel_assess$Dim1<-PCOA_DIM1_2[,1]
@@ -106,9 +109,9 @@ glomel_assess$Dim2<-PCOA_DIM1_2[,2]
 head(glomel_assess)
 ```
 
-We will use package **ggplot** to achieve a nicer representation of the assessment. Colors are used to illustrate stations that achieve conservation objectives (green) from those that not achieve them (red). The size of dot illustrate the squared distance to the centroid of the state reference envelope:
+We then use package **ggplot** to achieve a nicer representation of the assessment. Symbol **colors** are used to illustrate stations that do achieve conservation objectives (in green) from those that do not achieve them (in red). The **size** of dots represents the squared distance to the centroid of the state reference envelope:
 
-```{r, echo=TRUE, fig.width=6, fig.height=6}
+```{r, echo=TRUE, fig.width=7, fig.height=6}
 p<-ggplot(glomel_assess,
           mapping=aes(x=Dim1,y=Dim2,size=SquaredDist, color=Status, shape=Status))+
   geom_point()+
@@ -135,12 +138,10 @@ p
 
 ### 4.1 Context
 
-We used an experimental data set built by Tauran et al. (2020) to study the impact of fishing dredges and varying fishing pressures on maerl beds, in the bay of Brest (Brittany, France). The study follows a Before-After-Control-Impact design (Stewart-Oaten et al., 1986). Briefly, three control stations were surveyed and compared to five treatment stations characterised by different fishing dredges and pressure levels (Tauran et al., 2020): (1) a clam dredge (CD), 70 to 90 kg, 1.5 m wide, 40 teeth of 11 cm each; (2) a queen scallop dredge (QSD), 120 kg,1.8 m wide, with a blade; and (3) a king scallop dredge (KSD), 190 kg, 1.8 m wide, 18 teeth of 10 cm each every 9 cm.
-Pressure levels were measured as the number of dredge tows performed on the zone during the experimental dredging session: 0 (i.e. control), 10, or 30 dredge tows. Samples were collected from April 2016 to April2017. Session 1 was sampled just before the experimental dredging (t0); session 2 at t0 + 1 week; session 3 at t0 + 1 month and session 4 at t0 + 12 months. Nine replicates were sampled for all treatments and sessions with a Smith-McIntyre grab (0.1m2).
-
-Abundance were pooled at the treatment levels (i.e. CTRL1, CTRL2, CTRL3, KSD_10, CD_10, CD_30, QSD_10 and QSD_30; Appendix_D) and log-transformed as initially performed in Tauran et al. (2020). A Bray-Curtis matrix of dissimilarity was computed with the resulting data set including raw data for 250 species at 32 observations (i.e. treatments*surveys) and used for both state- and trajectory-based EQAs.
+We used an experimental data set built by Tauran et al. (2020) to study the impact of fishing dredges and varying fishing pressures on maerl beds, in the bay of Brest (Brittany, France). The study follows a Before-After-Control-Impact design (Stewart-Oaten et al., 1986). Briefly, three control stations were surveyed and compared to five treatment stations characterized by different fishing dredges and pressure levels (Tauran et al., 2020). Three **fishing dredges** are compared: (1) a clam dredge (CD), 70 to 90 kg, 1.5 m wide, 40 teeth of 11 cm each; (2) a queen scallop dredge (QSD), 120 kg,1.8 m wide, with a blade; and (3) a king scallop dredge (**KSD**), 190 kg, 1.8 m wide, 18 teeth of 10 cm each every 9 cm. Pressure levels were measured as the **number of dredge tows** performed on the zone during the experimental dredging session: 0 (i.e. control), 10, or 30 dredge tows. Samples were collected from April 2016 to April2017. Session 1 was sampled just before the experimental dredging (t0); session 2 at t0 + 1 week; session 3 at t0 + 1 month and session 4 at t0 + 12 months. Nine replicates were sampled for all treatments and sessions with a Smith-McIntyre grab (0.1m2). Abundance data were pooled at the treatment levels (i.e. CTRL1, CTRL2, CTRL3, KSD_10, CD_10, CD_30, QSD_10 and QSD_30; Appendix_D). 
 
 ### 4.2 Loading data
+The data set has 32 observations (i.e. treatments*surveys) and 250 species. We begin by loading the data:
 ```{r load glenan, echo=T}
 data(glenan)
 #Showing a first lines /columns subset
@@ -148,32 +149,49 @@ head(glenan[,1:6])
 ```
 
 
-### 4.3 Data set preparation
-```{r, echo=T}
 
+### 4.3 Definition of the ressemblance space
+
+We separate the columns that identify the treatment and surveys. 
+```{r, echo=T}
 #vector Treatment
 Treatment<-glenan$Treatment
 
 #vector Surveys
 Surveys<-glenan$Surveys
-
-#log transformation
-grab_comp<-log1p(glenan[,-c(251:252)])
-ID<-rownames(grab_comp)
-
-#Calculation of Bray Curtis ditance
-grab_bc <- vegan::vegdist(grab_comp, method = "bray")
 ```
 
-### 4.4 State-based Ecological Quality Assessment
+We also extract the compositional data and log-transform it as initially performed in Tauran et al. (2020). 
+```{r, echo=T}
+#log transformation
+grab_comp<-log1p(glenan[,-c(251:252)])
+```
+
+Using the compositional data, we can use function `vegdist()` from package **vegan** to calculate of Bray Curtis distances between ecosystem states:
+```{r, echo=T}
+grab_bc <- vegan::vegdist(grab_comp, method = "bray")
+```
+Like in the first example, the distance matrix `grab_bc` defines the multivariate space that represents the ressemblance between ecological states of maerl beds. 
+
+### 4.4 State-based EQA
+
+In addition to the resemblance space, to conduct the EQA we need to define the conservation targets. In this case, we define the states conforming our **state reference envelope** manually among the observation IDs:
 
 ```{r, echo=T}
 #Definition of the state reference envelope
+ID<-rownames(grab_comp)
 grab_env <- ID[c(1,9:20,21,25,29)]
+```
 
+We are now ready to compare the assessed stations with respect to the state reference envelope using function `compareToStateEnvelope()`:
+```{r, echo=T}
 #Comparing assessed stations with respect to the state reference envelope
-grab_assess <- compareToStateEnvelope(grab_bc, grab_env, m=1.5, distances_to_envelope = TRUE)
+grab_assess <- compareToStateEnvelope(grab_bc, grab_env, m=1.5, 
+                                      distances_to_envelope = TRUE)
+```
 
+As before we derive a qualitative assessment:
+```{r, echo=T}
 grab_assess$Status<-c(ifelse(grab_assess$Q>=0.5,"Inside", "Outside"))
 
 grab_assess$Status[c(1,9:20,21,25,29)]<-"Reference"
@@ -181,19 +199,13 @@ grab_assess$Status[c(1,9:20,21,25,29)]<-"Reference"
 grab_assess$Status<- factor(grab_assess$Status, levels = c("Reference","Inside","Outside"))
 
 head(grab_assess)
-
-```
-
-Principal Coordinates Analysis
-```{r, echo=TRUE}
-pcoa<-pcoa(grab_bc)
-pcoa$values
 ```
 
 
-Representing the results of Glenan state-based EQSA trough in the two first PCoA dimensions
-```{r, echo=TRUE, fig.width=6, fig.height=6}
+As before, we can represent the results of the state-based EQA on in the two first dimensions of a Principal Coordinates Analysis:
+```{r, echo=TRUE, fig.width=7, fig.height=6}
 #Get coordinates of stations in the two first dimensions of the PCoA
+pcoa<-pcoa(grab_bc)
 PCOA_DIM1_2<-pcoa[["vectors"]][,1:2]
 grab_assess$Dim1<-PCOA_DIM1_2[,1]
 grab_assess$Dim2<-PCOA_DIM1_2[,2]
@@ -224,7 +236,7 @@ p
 ```
 
 
-Creating a bar plot showing the evolution of the squared distance to the centroid of the state reference envelope during the study period for each treatment
+Since we are dealing with temporal data, we can create a bar plot showing the evolution of the squared distance to the centroid of the state reference envelope during the study period for each treatment:
 ```{r, echo=TRUE, fig.width=7, fig.height=6}
 grab_assess$Treatment<-factor(grab_assess$Treatment,c("CTRL1","CTRL2","CTRL3",
                                                       "CD_10","CD_30", 
@@ -244,8 +256,8 @@ ggplot(grab_assess, aes(x=Surveys, y=SquaredDist, color=Status, fill=Status)) +
 
 ```
 
-Creating the heatmap showing the evolution of the distance between control and dredged stations during the experimentation
-```{r, echo=TRUE, fig.width=6, fig.height=6}
+In addition, we can create the heatmap showing the evolution of the distance between control and dredged stations during the experimentation:
+```{r, echo=TRUE, fig.width=7, fig.height=6}
 grabbc_sel <- melt(as.matrix(grab_bc),rnames = c("row", "col"))
 
 #selection of the observation of interest (i.e. control stations for heat map row, and dredged stations for heat map column)
@@ -278,17 +290,23 @@ ggplot(grabbc_sel, aes(x=Var2, y=Var1, fill=value)) +
 ```
 
 
-### 4.5 Trajectory-based Ecological Quality Assessment
+### 4.5 Trajectory-based EQA
+
+One of the nice features of EQA is the possibility to conduct the quality assessment taking into account ecosystem dynamics. In this case, the conservation target is defined by a set of trajectories conforming a **trajectory reference envelope**, which in our case are the three control stations:
+
 ```{r, echo=T}
 #Definition of the trajectory reference envelope 
 grab_dynenv<-c("CTRL1","CTRL2","CTRL3")
-
-##Comparing assessed trajectories with respect to the trajectory reference envelope
-grab_dynassess <- compareToTrajectoryEnvelope(grab_bc,Treatment, grab_dynenv, m=1.5, distances_to_envelope = TRUE)
-
 ```
 
-Creating a bar plot showing the squared distance to the centroid of the trajectory reference envelope during the study period for each treatment
+We are now ready to compare the assessed trajectories (those subject to treatment) with respect to the trajectory reference envelope using function `compareToTrajectoryEnvelope()`:
+```{r, echo=T}
+##Comparing assessed trajectories with respect to the trajectory reference envelope
+grab_dynassess <- compareToTrajectoryEnvelope(grab_bc,Treatment, grab_dynenv, 
+                                              m=1.5, distances_to_envelope = TRUE)
+```
+
+As before, we can create a bar plot showing the squared distance to the centroid of the trajectory reference envelope during the study period for each treatment:
 ```{r, echo=T, fig.height=4, fig.width=7}
 grab_dynassess$Treatment<-factor(grab_dynassess$Site,c("CTRL1","CTRL2","CTRL3",
                                                       "CD_10","CD_30", 
@@ -297,7 +315,8 @@ grab_dynassess$Treatment<-factor(grab_dynassess$Site,c("CTRL1","CTRL2","CTRL3",
 grab_dynassess$Status<-c(ifelse(grab_dynassess$Q>=0.5,"Inside", "Outside"))
 grab_dynassess$Status<- factor(grab_dynassess$Status, levels = c("Inside","Outside"))
 
-ggplot(grab_dynassess, aes(x=reorder(Treatment, SquaredDist), y=SquaredDist, color=Status, fill=Status)) + 
+ggplot(grab_dynassess, aes(x=reorder(Treatment, SquaredDist), 
+                           y=SquaredDist, color=Status, fill=Status)) + 
   geom_bar(stat = "identity",width=0.5)+
   scale_colour_manual(values=c("#00BFC4", "#F8766D"))+
   scale_fill_manual(values=c("#00BFC4", "#F8766D"))+

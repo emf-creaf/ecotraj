@@ -18,7 +18,7 @@ target stations/observations with respect to reference envelopes (Sturbois et al
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ecotraj</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
@@ -69,6 +69,7 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 <span>  nboot.ci <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha.ci <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  distances_to_envelope <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  distance_percentiles <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -79,6 +80,7 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 <span>  nboot.ci <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha.ci <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  distances_to_envelope <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  distance_percentiles <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -119,6 +121,10 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 
 <dt>distances_to_envelope</dt>
 <dd><p>Flag to indicate that distances to envelope should be included in the result</p></dd>
+
+
+<dt>distance_percentiles</dt>
+<dd><p>Flag to include the percentage of distances to the envelope (among sites corresponding to the reference) that are smaller than that of the site.</p></dd>
 
 </dl></div>
     <div id="value">

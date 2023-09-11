@@ -1,7 +1,7 @@
 Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
-Version: 0.1.0
+Version: 0.1.1
 Date: 2023-03-20
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),

@@ -29,6 +29,7 @@ compareToTrajectoryEnvelope(
   nboot.ci = NULL,
   alpha.ci = 0.05,
   distances_to_envelope = FALSE,
+  distance_percentiles = FALSE,
   ...
 )
 
@@ -39,6 +40,7 @@ compareToStateEnvelope(
   nboot.ci = NULL,
   alpha.ci = 0.05,
   distances_to_envelope = FALSE,
+  distance_percentiles = FALSE,
   ...
 )
 }
@@ -60,6 +62,8 @@ compareToStateEnvelope(
 \item{m}{Fuzziness exponent for quality value assessment}
 
 \item{distances_to_envelope}{Flag to indicate that distances to envelope should be included in the result}
+
+\item{distance_percentiles}{Flag to include the percentage of distances to the envelope (among sites corresponding to the reference) that are smaller than that of the site.}
 }
 \value{
 \itemize{

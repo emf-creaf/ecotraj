@@ -34,6 +34,7 @@
 #' @param envelope A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)
 #' @param m Fuzziness exponent for quality value assessment
 #' @param distances_to_envelope Flag to indicate that distances to envelope should be included in the result
+#' @param distance_percentiles Flag to include the percentage of distances to the envelope (among sites corresponding to the reference) that are smaller than that of the site.
 #' @param ... Additional parameters for function \code{\link{trajectoryDistances}}
 #' 
 #' @details Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the 
@@ -133,7 +134,8 @@ stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
 #' @rdname envelope
 compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.5, 
                             nboot.ci = NULL, alpha.ci = 0.05,
-                            distances_to_envelope = FALSE, ...) {
+                            distances_to_envelope = FALSE,
+                            distance_percentiles = FALSE, ...) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
   if(length(envelope)<2) stop("At least two sites must be part of the envelope")
@@ -163,16 +165,22 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
     D_T_i <- as.vector(as.matrix(D_T)[sites_T == unique_sites[i], sel_T_env])
     D2E[i] <- sum(D_T_i^2)/r - 0.5*var_env
   }
+  Perc <- numeric(length(unique_sites))
+  for(i in 1:length(unique_sites)) {
+    Perc[i] <- 100*sum(D2E[is_env] <= D2E[i])/sum(is_env)
+  }
   Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
-  res <- data.frame(Site = unique_sites, Envelope = is_env, SquaredDist = D2E, Q = Q)
-  if(!distances_to_envelope) res <- res[,-3]
+  res <- data.frame(Site = unique_sites, Envelope = is_env, SquaredDist = D2E, Percentiles = Perc, Q = Q)
+  if(!distances_to_envelope) res$SquaredDist <- NULL
+  if(!distance_percentiles) res$Percentiles <- NULL
   return(res)
 }
 
 #' @rdname envelope
 compareToStateEnvelope<-function(d, envelope, m = 1.5, 
                                  nboot.ci = NULL, alpha.ci = 0.05, 
-                                 distances_to_envelope = FALSE, ...) {
+                                 distances_to_envelope = FALSE,
+                                 distance_percentiles = FALSE, ...) {
   if(length(envelope)<2) stop("At least two observations must be part of the envelope")
   obs <- rownames(as.matrix(d))
   if(sum(envelope %in% obs)< length(envelope)) stop("Some elements in 'envelope' are not in row names of 'd'")
@@ -189,9 +197,15 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5,
       d_i <- as.vector(as.matrix(d)[obs == obs[i], sel_env])
       D2E[i] <- sum(d_i^2)/length(d_i) - 0.5*var_env
     }
+    Perc <- numeric(length(obs))
+    for(i in 1:length(obs)) {
+      Perc[i] <- 100*sum(D2E[sel_env] <= D2E[i])/sum(sel_env)
+    }
     Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
-    res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, Q = Q)
-    if(!distances_to_envelope) res <- res[,-3]
+    res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, Percentiles = Perc,
+                      Q = Q)
+    if(!distances_to_envelope) res$SquaredDist <- NULL
+    if(!distance_percentiles) res$Percentiles <- NULL
     return(res)
   } else {
     if(is.integer(nboot.ci)) stop("'nboot.ci' must be an integer")
@@ -224,10 +238,20 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5,
     Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
     Q[D2E==0] <- 1.0
     
+    Perc <- numeric(length(obs))
+    for(i in 1:length(obs)) {
+      Perc[i] <- 100*sum(D2E[sel_env] <= D2E[i])/sum(sel_env)
+    }
     res <- data.frame(Observation = obs, Envelope = sel_env, SquaredDist = D2E, 
                       Lower_D = lci_d, Upper_D = uci_d, 
+                      Percentiles = Perc,
                       Q = Q, Lower_Q = lci_q, Upper_Q = uci_q)
-    if(!distances_to_envelope) res <- res[,-c(3:5)]
+    if(!distances_to_envelope) {
+      res$SquaredDist <- NULL
+      res$Lower_D <- NULL
+      res$Upper_D <- NULL
+    }
+    if(!distance_percentiles) res$Percentiles <- NULL
     return(res)
   }
 }

@@ -28,7 +28,7 @@
     <loc>https://emf-creaf.github.io/ecotraj/reference/avoca.html</loc>
   </url>
   <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/envelope.html</loc>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/ecotraj-package.html</loc>
   </url>
   <url>
     <loc>https://emf-creaf.github.io/ecotraj/reference/furseals.html</loc>
@@ -50,6 +50,9 @@
   </url>
   <url>
     <loc>https://emf-creaf.github.io/ecotraj/reference/pike.html</loc>
+  </url>
+  <url>
+    <loc>https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.html</loc>
   </url>
   <url>
     <loc>https://emf-creaf.github.io/ecotraj/reference/trajectorymetrics.html</loc>

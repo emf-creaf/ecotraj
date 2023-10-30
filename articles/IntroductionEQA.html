@@ -176,9 +176,9 @@ envelope</strong> using reference station IDs as follows:</p>
 <code class="sourceCode R"><span><span class="va">glomel_env</span> <span class="op">&lt;-</span> <span class="va">glomel</span><span class="op">$</span><span class="va">ID</span><span class="op">[</span><span class="va">glomel</span><span class="op">$</span><span class="va">Ref</span><span class="op">]</span></span></code></pre></div>
 <p>We are now ready to compare the assessed stations with respect to the
 state reference envelope using function
-<code><a href="../reference/envelope.html">compareToStateEnvelope()</a></code>:</p>
+<code><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glomel_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/envelope.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span>, m<span class="op">=</span><span class="fl">1.7</span>, distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">glomel_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span>, m<span class="op">=</span><span class="fl">1.7</span>, distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">glomel_assess</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Observation Envelope SquaredDist         Q</span></span>
 <span><span class="co">## 1          1A     TRUE  0.03790333 1.0000000</span></span>
@@ -371,10 +371,10 @@ the observation IDs:</p>
 <span><span class="va">grab_env</span> <span class="op">&lt;-</span> <span class="va">ID</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">20</span>,<span class="fl">21</span>,<span class="fl">25</span>,<span class="fl">29</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <p>We are now ready to compare the assessed stations with respect to the
 state reference envelope using function
-<code><a href="../reference/envelope.html">compareToStateEnvelope()</a></code>:</p>
+<code><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope()</a></code>:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Comparing assessed stations with respect to the state reference envelope</span></span>
-<span><span class="va">grab_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/envelope.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>, <span class="va">grab_env</span>, m<span class="op">=</span><span class="fl">1.5</span>, </span>
+<span><span class="va">grab_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>, <span class="va">grab_env</span>, m<span class="op">=</span><span class="fl">1.5</span>, </span>
 <span>                                      distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>As before we derive a qualitative assessment:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
@@ -493,10 +493,10 @@ the three control stations:</p>
 <span><span class="va">grab_dynenv</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTRL1"</span>,<span class="st">"CTRL2"</span>,<span class="st">"CTRL3"</span><span class="op">)</span></span></code></pre></div>
 <p>We are now ready to compare the assessed trajectories (those subject
 to treatment) with respect to the trajectory reference envelope using
-function <code><a href="../reference/envelope.html">compareToTrajectoryEnvelope()</a></code>:</p>
+function <code><a href="../reference/referenceEnvelopes.html">compareToTrajectoryEnvelope()</a></code>:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##Comparing assessed trajectories with respect to the trajectory reference envelope</span></span>
-<span><span class="va">grab_dynassess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/envelope.html">compareToTrajectoryEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>,<span class="va">Treatment</span>, <span class="va">grab_dynenv</span>, </span>
+<span><span class="va">grab_dynassess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToTrajectoryEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>,<span class="va">Treatment</span>, <span class="va">grab_dynenv</span>, </span>
 <span>                                              m<span class="op">=</span><span class="fl">1.5</span>, distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>As before, we can create a bar plot showing the squared distance to
 the centroid of the trajectory reference envelope during the study
@@ -526,9 +526,9 @@ period for each treatment:</p>
 <ul>
 <li><p>Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A.,
 Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal,
-G., Desroy, N. (under review). Ecological Quality Assessment: a general
+G., Desroy, N. (2023). Ecological Quality Assessment: a general
 multivariate framework to report the quality of ecosystems and their
-dynamics with respect to reference conditions.</p></li>
+dynamics with respect to reference conditions. Ecosphere.</p></li>
 <li><p>Tauran, A., Dubreuil, J., Guyonnet, B., Grall, J., 2020. Impact
 of fishing gears and fishing intensities on maerl beds: An experimental
 approach. Journal of Experimental Marine Biology and Ecology 533,

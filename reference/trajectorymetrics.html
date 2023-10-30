@@ -203,12 +203,12 @@ ETA takes trajectories as objects to be analyzed and compared geometrically.</p>
 <li><p><code>Dfin</code>: Distance matrix between final points of segments.</p></li>
 <li><p><code>Dinifin</code>: Distance matrix between initial points of one segment and the final point of the other.</p></li>
 <li><p><code>Dfinini</code>: Distance matrix between final points of one segment and the initial point of the other.</p></li>
-</ul><p>Function <code>trajectoryLengths</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
+</ul><p>Function <code>trajectoryLengths</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories.
 If <code>relativeToInitial = TRUE</code> lengths are calculated between the initial survey and all the other surveys.
 If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 
 
-<p>Function <code>trajectoryLengths2D</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
+<p>Function <code>trajectoryLengths2D</code> returns a data frame with the length of each segment on each trajectory and the total length of all trajectories.
 If <code>relativeToInitial = TRUE</code> lengths are calculated between the initial survey and all the other surveys.
 If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 
@@ -236,24 +236,24 @@ If <code>all = TRUE</code> lengths are calculated for all segments.</p>
 <li><p>Function <code>trajectoryProjection</code> projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.</p></li>
 <li><p>Function <code>trajectoryConvergence</code> performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.</p></li>
 <li><p>Function <code>trajectoryDirectionality</code> returns (for each trajectory) a statistic that measures directionality of the whole trajectory.</p></li>
-</ul><p>Details of calculations are given in De Cáceres et al (2019). 
-The input distance matrix <code>d</code> should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function <code><a href="trajectoryutils.html">is.metric</a></code>). 
+</ul><p>Details of calculations are given in De Cáceres et al (2019).
+The input distance matrix <code>d</code> should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function <code><a href="trajectoryutils.html">is.metric</a></code>).
 All ETA functions that require metricity include a parameter '<code>add</code>', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
-If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify <code>d</code> to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis'). 
+If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify <code>d</code> to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis').
 If parameter '<code>add</code>' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.</p>
 <p>The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).</p>
-<p>Function <code>trajectoryAngles</code> calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other. 
+<p>Function <code>trajectoryAngles</code> calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other.
 Angles are always positive, with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. If <code>all = TRUE</code>
 angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if <code>relativeToInitial = TRUE</code> angles are calculated for each segment with respect to the initial survey.</p>
-<p>Function <code>trajectoryAngles2D</code> calculates angles between consecutive segments in degrees from 2D coordinates given as input. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other. 
-Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. 
+<p>Function <code>trajectoryAngles2D</code> calculates angles between consecutive segments in degrees from 2D coordinates given as input. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other.
+Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions.
 If <code>all = TRUE</code> angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if <code>relativeToInitial = TRUE</code> angles are calculated for each segment with respect to the initial survey.
 If <code>betweenSegments = TRUE</code> angles are calculated between segments of trajectory, otherwise, If <code>betweenSegments = FALSE</code>, angles are calculated considering Y axis as the North (0°).</p>
     </div>
     <div id="references">
     <h2>References</h2>
     <p>Besse, P., Guillouet, B., Loubes, J.-M. &amp; François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.</p>
-<p>De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R &amp; Hubbell S. (2019). 
+<p>De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R &amp; Hubbell S. (2019).
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p>
     </div>
     <div id="see-also">

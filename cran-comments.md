@@ -4,15 +4,15 @@ This submission (v0.1.1) adds new R functions to the package
 
 ## Tested environments
 
-* local R installation (Arch Linux), R 4.3.1
+* local R installation (Arch Linux), R 4.3.1, OK
 * windows-latest (on github actions), R release
 * macOS-latest (on github actions), R release
 * ubuntu-latest (on github actions), R release
 * ubuntu-latest (on github actions), R devel
 * ubuntu-latest (on github actions), R oldrel-1
-* win-builder (release)
-* win-builder (devel)
-* win-builder (old-rel)
+* win-builder (release), OK
+* win-builder (devel), OK
+* win-builder (old-rel), OK
 
 ## R CMD check results
 

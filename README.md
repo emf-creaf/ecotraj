@@ -23,7 +23,7 @@ ETA is related to the following publications:
   (<https://doi.org/10.1002/ecm.1501>).
 
 - Application of ETA for the assessement of ecological status: Sturbois
-  et al. (under review).
+  et al. (2023).
 
 ## Package installation
 
@@ -64,6 +64,6 @@ remotes::install_github("emf-creaf/ecotraj",
 
 - Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A.,
   Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal,
-  G., Desroy, N. (under review). Ecological Quality Assessment: a
-  general multivariate framework to report the quality of ecosystems and
-  their dynamics with respect to reference conditions.
+  G., Desroy, N. (2023). Ecological Quality Assessment: a general
+  multivariate framework to report the quality of ecosystems and their
+  dynamics with respect to reference conditions. Ecosphere.

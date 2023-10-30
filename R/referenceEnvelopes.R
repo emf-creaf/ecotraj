@@ -54,8 +54,8 @@
 #' 
 #' @references 
 #' Sturbois, A., De \enc{Cáceres}{Caceres}, M., Bifolchi, A., Bioret, F., \enc{Boyé}{Boye}, A., Gauthier, O., Grall, J., \enc{Grémare}{Gremare}, A., Labrune, C., 
-#' Robert, A., Schaal, G., Desroy, N. (under review). Ecological Quality Assessment: a general multivariate framework to report 
-#' the quality of ecosystems and their dynamics with respect to reference conditions.
+#' Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report 
+#' the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.
 #' 
 #' @seealso \code{\link{trajectorymetrics}}, \code{\link{glomel}}
 #' 

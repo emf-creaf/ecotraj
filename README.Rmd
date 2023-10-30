@@ -24,7 +24,7 @@ ETA is related to the following publications:
 
 * Generalisation to stable isotope data: Sturbois et al. (2021) (https://doi.org/10.1002/ecm.1501).
 
-* Application of ETA for the assessement of ecological status: Sturbois et al. (under review).
+* Application of ETA for the assessement of ecological status: Sturbois et al. (2023).
 
 ## Package installation
 
@@ -51,5 +51,4 @@ remotes::install_github("emf-creaf/ecotraj",
 + Sturbois, A., Cucherousset, J., De Cáceres, M., Desroy, N., Riera, P., Carpentier, A., Quillien, N., Grall,
 J., Espinasse, B., Cherel, Y., Schaal, G. (2021). Stable Isotope Trajectory Analysis (SITA) : A new approach to quantify and visualize dynamics in stable isotope studies. Ecological Monographs, 92, e1501. 
 
-+ Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A., Gauthier, O., Grall, J., Grémare, A., Labrune, C., 
-Robert, A., Schaal, G., Desroy, N. (under review). Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions.
++ Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A., Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.

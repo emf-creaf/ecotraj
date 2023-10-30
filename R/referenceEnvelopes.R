@@ -23,7 +23,7 @@
 #' target stations/observations with respect to reference envelopes (Sturbois et al., under review).
 #'
 #' @encoding UTF-8
-#' @name envelope
+#' @name referenceEnvelopes
 #' @aliases trajectoryEnvelopeVariability stateEnvelopeVariability compareToStateEnvelope compareToTrajectoryEnvelope
 #' 
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
@@ -113,7 +113,7 @@ trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NUL
   }
 }
 
-#' @rdname envelope
+#' @rdname referenceEnvelopes
 #' @export
 stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
   if(is.null(nboot.ci)){
@@ -133,7 +133,7 @@ stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
   }
 }
 
-#' @rdname envelope
+#' @rdname referenceEnvelopes
 #' @export
 compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.5, 
                             nboot.ci = NULL, alpha.ci = 0.05,
@@ -179,7 +179,7 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
   return(res)
 }
 
-#' @rdname envelope
+#' @rdname referenceEnvelopes
 #' @export
 compareToStateEnvelope<-function(d, envelope, m = 1.5, 
                                  nboot.ci = NULL, alpha.ci = 0.05, 

@@ -76,6 +76,7 @@
 #' @param survey.labels A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
+#' @export
 trajectoryPCoA<-function(d, sites, surveys = NULL, selection = NULL, traj.colors = NULL, axes=c(1,2), 
                          survey.labels = FALSE, ...) {
   siteIDs = unique(sites)
@@ -124,6 +125,7 @@ trajectoryPCoA<-function(d, sites, surveys = NULL, selection = NULL, traj.colors
 
 #' @rdname trajectoryplots
 #' @param x A data.frame or matrix where rows are ecosystem states and columns are coordinates in an arbitrary space
+#' @export
 trajectoryPlot<-function(x, sites, surveys = NULL, selection = NULL, traj.colors = NULL, axes=c(1,2), 
                          survey.labels = FALSE, ...) {
   siteIDs = unique(sites)

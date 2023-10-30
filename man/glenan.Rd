@@ -9,22 +9,22 @@
 Glenan is an object of class data.frame composed of 32 observations and 252 variables.
 
 \describe{
- \item{Abundance.\emph{x}}{Abundance (number of individuals) of each taxon \emph{x}}
- \item{Surveys}{Indicates different Maerl bed surveys.}
- \item{Treatment}{Combinations of fishing dredges and pressure levels. 'CTRL' stands for control. Fishing dredges are: 
-   \itemize{
-      \item{(1) a clam dredge (CD), 70 to 90 kg, 1.5 m wide, 40 teeth of 11 cm each;}
-      \item{(2) a queen scallop dredge (QSD), 120 kg,1.8 m wide, with a blade;}
-      \item{(3) a king scallop dredge (KSD), 190 kg, 1.8 m wide, 18 teeth of 10 cm each every 9 cm.}
-   }
- }
+\item{Abundance.\emph{x}}{Abundance (number of individuals) of each taxon \emph{x}}
+\item{Surveys}{Indicates different Maerl bed surveys.}
+\item{Treatment}{Combinations of fishing dredges and pressure levels. 'CTRL' stands for control. Fishing dredges are:
+\itemize{
+\item{(1) a clam dredge (CD), 70 to 90 kg, 1.5 m wide, 40 teeth of 11 cm each;}
+\item{(2) a queen scallop dredge (QSD), 120 kg,1.8 m wide, with a blade;}
+\item{(3) a king scallop dredge (KSD), 190 kg, 1.8 m wide, 18 teeth of 10 cm each every 9 cm.}
+}
+}
 }
 }
 \description{
 Maerl bed data set to illustrate Ecological Quality Assessment (EQA)
 }
 \details{
-Experimental data set built by Tauran et al. (2020) to study the impact of fishing dredges 
+Experimental data set built by Tauran et al. (2020) to study the impact of fishing dredges
 and varying fishing pressures on maerl beds, in the bay of Brest (Brittany, France).
 }
 \references{

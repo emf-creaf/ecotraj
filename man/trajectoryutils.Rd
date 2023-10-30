@@ -37,7 +37,7 @@ The set following set of utility functions are provided:
 }
 }
 \details{
-Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
+Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
 Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
 }
 \references{

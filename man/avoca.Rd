@@ -11,19 +11,19 @@
 \format{
 Three data items are included:
 \describe{
- \item{avoca_strat}{An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.}
- \item{avoca_sites}{A vector identifying sampled sites of each element in \code{avoca_strat}.}
- \item{avoca_surveys}{A vector identifying surveys of each element in \code{avoca_strat}.}
+\item{avoca_strat}{An object of class \code{stratifiedvegdata} (see function \code{stratifyvegdata} from package 'vegclust') with structural and compositional data.}
+\item{avoca_sites}{A vector identifying sampled sites of each element in \code{avoca_strat}.}
+\item{avoca_surveys}{A vector identifying surveys of each element in \code{avoca_strat}.}
 }
 }
 \source{
 New Zealand National Vegetation Survey (NVS) Databank (https://nvs.landcareresearch.co.nz/).
 }
 \description{
-Example dataset with data from 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. 
-The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand.  
-Forests plots are almost monospecific, being the mountain beech (Fuscospora cliffortioides) the main dominant tree species. 
-Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) 
+Example dataset with data from 8 permanent forest plots located on slopes of a valley in the New Zealand Alps.
+The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand.
+Forests plots are almost monospecific, being the mountain beech (Fuscospora cliffortioides) the main dominant tree species.
+Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009)
 which includes 9 surveys.
 }
 \references{

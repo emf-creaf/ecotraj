@@ -9,14 +9,14 @@
 furseals is an object of class data.frame composed of 1414 observations and 8 variables.
 
 \describe{
- \item{ID_SITA}{Fur seal ID used by Sturbois et al. (under review), from 1 to 47}
- \item{ID}{Fur seal ID used by \enc{Kernaléguen}{Kernaleguen} et al. (2015) in the initial data set.}
- \item{Species}{Fur seal species: the Antarctic fur seal Arctocephalus gazella or the subantarctic fur seal A. tropicalis.}
- \item{Sexe}{Fur seal gender, either 'Male' or 'Female'.}
- \item{Time}{Number of the whisker sections from 1 to 30.}
- \item{Place}{Breeding place: Crozet, Amsterdam or Kerguelen}
- \item{d13C}{delta 13C value}
- \item{d15N}{delta 15N value}
+\item{ID_SITA}{Fur seal ID used by Sturbois et al. (under review), from 1 to 47}
+\item{ID}{Fur seal ID used by \enc{Kernaléguen}{Kernaleguen} et al. (2015) in the initial data set.}
+\item{Species}{Fur seal species: the Antarctic fur seal Arctocephalus gazella or the subantarctic fur seal A. tropicalis.}
+\item{Sexe}{Fur seal gender, either 'Male' or 'Female'.}
+\item{Time}{Number of the whisker sections from 1 to 30.}
+\item{Place}{Breeding place: Crozet, Amsterdam or Kerguelen}
+\item{d13C}{delta 13C value}
+\item{d15N}{delta 15N value}
 }
 }
 \description{
@@ -24,9 +24,9 @@ This is a subset of a data sets from Kernaléguen et al. (2015).
 }
 \details{
 Briefly, fur seals the Antarctic fur seal Arctocephalus gazella and subantarctic fur seal A. tropicalis whisker SI values yield unique long-term information
-on individual behaviour which integrates the spatial, trophic and temporal dimensions of the ecological niche. The foraging strategies of this two species of sympatric 
-fur seals were examined in the winter 2001/2002 at Crozet, Amsterdam and Kerguelen Islands (Southern Ocean) using the stable isotope values of serially sampled whiskers. 
-The subset of the initial data set is composed of consecutive whisker sections (3 mm-long) starting from the proximal (facial) end, with the most recently synthesized tissue remaining 
+on individual behaviour which integrates the spatial, trophic and temporal dimensions of the ecological niche. The foraging strategies of this two species of sympatric
+fur seals were examined in the winter 2001/2002 at Crozet, Amsterdam and Kerguelen Islands (Southern Ocean) using the stable isotope values of serially sampled whiskers.
+The subset of the initial data set is composed of consecutive whisker sections (3 mm-long) starting from the proximal (facial) end, with the most recently synthesized tissue remaining
 under the skin. Only individuals (n = 47) with whiskers totalizing at least 30 sections were selected in the initail data, and only those 30 sections were selected.
 }
 \references{

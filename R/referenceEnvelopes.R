@@ -74,7 +74,8 @@
 #'  
 #' # Assess quality with respect to reference envelope
 #' compareToStateEnvelope(glomel_bc, glomel_env)
-#'  
+#'
+#' @export
 trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -113,6 +114,7 @@ trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NUL
 }
 
 #' @rdname envelope
+#' @export
 stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
   if(is.null(nboot.ci)){
     return(.stateEnvelopeVar(d = d))
@@ -132,6 +134,7 @@ stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
 }
 
 #' @rdname envelope
+#' @export
 compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.5, 
                             nboot.ci = NULL, alpha.ci = 0.05,
                             distances_to_envelope = FALSE,
@@ -177,6 +180,7 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
 }
 
 #' @rdname envelope
+#' @export
 compareToStateEnvelope<-function(d, envelope, m = 1.5, 
                                  nboot.ci = NULL, alpha.ci = 0.05, 
                                  distances_to_envelope = FALSE,

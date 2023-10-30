@@ -2,30 +2,30 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 .k2triangleC <- function(d1, d2, d3) {
-    .Call('_ecotraj_k2triangle', PACKAGE = 'ecotraj', d1, d2, d3)
+    .Call(`_ecotraj_k2triangle`, d1, d2, d3)
 }
 
 .triangleinequalityC <- function(d1, d2, d3, tol = 0.0001) {
-    .Call('_ecotraj_triangleinequality', PACKAGE = 'ecotraj', d1, d2, d3, tol)
+    .Call(`_ecotraj_triangleinequality`, d1, d2, d3, tol)
 }
 
 .ismetricC <- function(dmat, tol = 0.0001) {
-    .Call('_ecotraj_ismetric', PACKAGE = 'ecotraj', dmat, tol)
+    .Call(`_ecotraj_ismetric`, dmat, tol)
 }
 
 .projectionC <- function(dref, d1, d2, add = TRUE) {
-    .Call('_ecotraj_projection', PACKAGE = 'ecotraj', dref, d1, d2, add)
+    .Call(`_ecotraj_projection`, dref, d1, d2, add)
 }
 
 .angleConsecutiveC <- function(d12, d23, d13, add = TRUE) {
-    .Call('_ecotraj_angularAttributeConsecutive', PACKAGE = 'ecotraj', d12, d23, d13, add)
+    .Call(`_ecotraj_angularAttributeConsecutive`, d12, d23, d13, add)
 }
 
 .distanceToSegmentC <- function(dref, d1, d2, add = TRUE) {
-    .Call('_ecotraj_distanceToSegment', PACKAGE = 'ecotraj', dref, d1, d2, add)
+    .Call(`_ecotraj_distanceToSegment`, dref, d1, d2, add)
 }
 
 .twoSegmentDistanceC <- function(dmat12, type = "directed-segment", add = TRUE) {
-    .Call('_ecotraj_twoSegmentDistance', PACKAGE = 'ecotraj', dmat12, type, add)
+    .Call(`_ecotraj_twoSegmentDistance`, dmat12, type, add)
 }
 

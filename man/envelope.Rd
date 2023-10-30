@@ -67,19 +67,19 @@ compareToStateEnvelope(
 }
 \value{
 \itemize{
-   \item{Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the}
-   \item{Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} return data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the 
-envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built 
+\item{Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the}
+\item{Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} return data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the
+envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built
 using bootstrap samples of the reference envelope.}
- }
+}
 }
 \description{
 Functions to assess the variability of ecological reference envelopes and to assess the ecological quality of
 target stations/observations with respect to reference envelopes (Sturbois et al., under review).
 }
 \details{
-Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the 
-variability of reference envelopes. Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} are 
+Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the
+variability of reference envelopes. Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} are
 used to evaluate the ecological quality of stations/observations with respect to a predefined reference envelope.
 }
 \examples{
@@ -97,11 +97,11 @@ glomel_env <- glomel$ID[glomel$Ref]
  
 # Assess quality with respect to reference envelope
 compareToStateEnvelope(glomel_bc, glomel_env)
- 
+
 }
 \references{
-Sturbois, A., De \enc{Cáceres}{Caceres}, M., Bifolchi, A., Bioret, F., \enc{Boyé}{Boye}, A., Gauthier, O., Grall, J., \enc{Grémare}{Gremare}, A., Labrune, C., 
-Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report 
+Sturbois, A., De \enc{Cáceres}{Caceres}, M., Bifolchi, A., Bioret, F., \enc{Boyé}{Boye}, A., Gauthier, O., Grall, J., \enc{Grémare}{Gremare}, A., Labrune, C.,
+Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report
 the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.
 }
 \seealso{

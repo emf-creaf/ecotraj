@@ -8,20 +8,20 @@
 \format{
 isoscape is an object of class dataframe composed of 978 observations of 6 variables.
 \describe{
- \item{Latitude}{Latitude coordinate of the station, in degrees}
- \item{Longitude}{Longitude coordinate of the station, in degrees}
- \item{d13C}{delta 13C modelled value}
- \item{d15N}{delta 15N modelled value}
- \item{station}{station ID}
- \item{Year}{Year corresponding to modelled stable isotope values}
+\item{Latitude}{Latitude coordinate of the station, in degrees}
+\item{Longitude}{Longitude coordinate of the station, in degrees}
+\item{d13C}{delta 13C modelled value}
+\item{d15N}{delta 15N modelled value}
+\item{station}{station ID}
+\item{Year}{Year corresponding to modelled stable isotope values}
 }
 }
 \description{
 This data sets is a subset from Espinasse et al. (2020).
 }
 \details{
-Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. 
-The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes 
+Briefly, Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific.
+The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes
 from 1998 to 2017. The subset is composed of modelled  delta 13C and delta 15N values of a 1° x 1° spatial grid from the original modelled dataset for 2013 and 2015.
 }
 \references{

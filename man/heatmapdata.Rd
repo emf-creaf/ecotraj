@@ -9,24 +9,24 @@
 heatmapdata is an object of class dataframe composed of 9206 observations of 9 variables.
 
 \describe{
- \item{Latitude}{Latitude coordinate of the station, in degrees}
- \item{Longitude}{Longitude coordinate of the station, in degrees}
- \item{d13C}{delta 13C modelled value}
- \item{d15N}{delta 15N modelled value}
- \item{station}{Station ID}
- \item{Years}{Period corresponding to the calculation of trajectory metrics}
- \item{Angles}{Angle alpha (i.e direction) in the stable isotope space}
- \item{Lengths}{Net change values (i.e direction) in the stable isotope space}
- \item{Angles2}{Angle alpha values (i.e direction) in the stable isotope space transformed for a potential use with function \code{geom_spoke}}
+\item{Latitude}{Latitude coordinate of the station, in degrees}
+\item{Longitude}{Longitude coordinate of the station, in degrees}
+\item{d13C}{delta 13C modelled value}
+\item{d15N}{delta 15N modelled value}
+\item{station}{Station ID}
+\item{Years}{Period corresponding to the calculation of trajectory metrics}
+\item{Angles}{Angle alpha (i.e direction) in the stable isotope space}
+\item{Lengths}{Net change values (i.e direction) in the stable isotope space}
+\item{Angles2}{Angle alpha values (i.e direction) in the stable isotope space transformed for a potential use with function \code{geom_spoke}}
 }
 }
 \description{
-Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific. 
-The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes 
+Espinasse et al. (2020) tested the application of isoscapes modelled from satellite data to the description of secondary production in the Northeast pacific.
+The output model fits in a 0.25° x 0.25° spatial grid covering the region spanning from 46 to 62°N and from 195 to 235°E and supporting delta 13C and delta 15N isoscapes
 from 1998 to 2017.
 }
 \details{
-This data sets is composed of trajectory metrics calculated by Sturbois et al. (2021) for all stations within all inter-annual consecutive periods between 1998 and 2017 
+This data sets is composed of trajectory metrics calculated by Sturbois et al. (2021) for all stations within all inter-annual consecutive periods between 1998 and 2017
 calculated from the whole data set of Espinasse et al. (2020) for a 1° x 1° spatial grid.
 }
 \references{

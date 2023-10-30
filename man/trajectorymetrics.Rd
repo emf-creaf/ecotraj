@@ -91,17 +91,17 @@ trajectoryDirectionality(d, sites, surveys = NULL, add = TRUE, verbose = FALSE)
 \item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 
 \item{distance.type}{The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. submitted). For \code{segmentDistances} the available indices are:
-  \itemize{
-    \item{\code{Hausdorff}: Hausdorff distance between two segments.}
-    \item{\code{directed-segment}: Directed segment distance (default).}
-    \item{\code{PPA}: Perpendicular-parallel-angle distance.}
-  }
+\itemize{
+\item{\code{Hausdorff}: Hausdorff distance between two segments.}
+\item{\code{directed-segment}: Directed segment distance (default).}
+\item{\code{PPA}: Perpendicular-parallel-angle distance.}
+}
 whereas for \code{trajectoryDistances} the available indices are:
-  \itemize{
-    \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
-    \item{\code{SPD}: Segment path distance.}
-    \item{\code{DSPD}: Directed segment path distance (default).}
-  }}
+\itemize{
+\item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
+\item{\code{SPD}: Segment path distance.}
+\item{\code{DSPD}: Directed segment path distance (default).}
+}}
 
 \item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 
@@ -128,40 +128,40 @@ whereas for \code{trajectoryDistances} the available indices are:
 \item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
 }
 \value{
-Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
+Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).
 
 Function \code{trajectorySegments} returns a list with the following elements:
 \itemize{
-  \item{\code{Dseg}: Distance matrix between segments.}
-  \item{\code{Dini}: Distance matrix between initial points of segments.}
-  \item{\code{Dfin}: Distance matrix between final points of segments.}
-  \item{\code{Dinifin}: Distance matrix between initial points of one segment and the final point of the other.}
-  \item{\code{Dfinini}: Distance matrix between final points of one segment and the initial point of the other.}
+\item{\code{Dseg}: Distance matrix between segments.}
+\item{\code{Dini}: Distance matrix between initial points of segments.}
+\item{\code{Dfin}: Distance matrix between final points of segments.}
+\item{\code{Dinifin}: Distance matrix between initial points of one segment and the final point of the other.}
+\item{\code{Dfinini}: Distance matrix between final points of one segment and the initial point of the other.}
 }
 
-Function \code{trajectoryLengths} returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
+Function \code{trajectoryLengths} returns a data frame with the length of each segment on each trajectory and the total length of all trajectories.
 If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 If \code{all = TRUE} lengths are calculated for all segments.
 
-Function \code{trajectoryLengths2D} returns a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
+Function \code{trajectoryLengths2D} returns a data frame with the length of each segment on each trajectory and the total length of all trajectories.
 If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 If \code{all = TRUE} lengths are calculated for all segments.
 
-Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned. 
+Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned.
 
 Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
 
 Function \code{trajectoryProjection} returns a data frame with the following columns:
 \itemize{
-  \item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection (\code{NA} for target points whose projection is outside the trajectory).}
-  \item{\code{segment}: Segment that includes the projected point (\code{NA} for target points whose projection is outside the trajectory).}
-  \item{\code{relativePosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing the end (\code{NA} for target points whose projection is outside the trajectory).}
+\item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection (\code{NA} for target points whose projection is outside the trajectory).}
+\item{\code{segment}: Segment that includes the projected point (\code{NA} for target points whose projection is outside the trajectory).}
+\item{\code{relativePosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing the end (\code{NA} for target points whose projection is outside the trajectory).}
 }
 
 Function \code{trajectoryConvergence} returns a list with two elements:
 \itemize{
-  \item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
-  \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
+\item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
+\item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
 }
 
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
@@ -175,7 +175,7 @@ Given a distance matrix between ecosystem states, the set of functions that prov
 \itemize{
 \item{Functions \code{segmentDistances} and \code{trajectoryDistances} calculate the distance between pairs of directed segments and ecosystem trajectories, respectively.}
 \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
-\item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
+\item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.}
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryProjection} projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
@@ -183,21 +183,20 @@ Given a distance matrix between ecosystem states, the set of functions that prov
 \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 }
 
-
-Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
-The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}). 
+Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
+The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}).
 All ETA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
-If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis'). 
+If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis').
 If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.
 
-The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).   
+The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).
 
-Function \code{trajectoryAngles} calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other. 
+Function \code{trajectoryAngles} calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other.
 Angles are always positive, with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. If \code{all = TRUE}
 angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 
-Function \code{trajectoryAngles2D} calculates angles between consecutive segments in degrees from 2D coordinates given as input. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other. 
-Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. 
+Function \code{trajectoryAngles2D} calculates angles between consecutive segments in degrees from 2D coordinates given as input. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other.
+Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions.
 If \code{all = TRUE} angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 If \code{betweenSegments = TRUE} angles are calculated between segments of trajectory, otherwise, If \code{betweenSegments = FALSE}, angles are calculated considering Y axis as the North (0°).
 }
@@ -255,7 +254,7 @@ trajectoryDistances(dist(xy), sites, surveys, distance.type = "DSPD")
 \references{
 Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.
 
-De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). 
+De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019).
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \seealso{

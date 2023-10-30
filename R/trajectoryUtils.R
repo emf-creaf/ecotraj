@@ -35,6 +35,7 @@
 
 #' @rdname trajectoryutils
 #' @param selection A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.
+#' @export
 trajectorySelection<-function(d, sites, selection) {
   siteIDs = unique(sites)
   nsite = length(siteIDs)
@@ -52,6 +53,7 @@ trajectorySelection<-function(d, sites, selection) {
 
 
 #' @rdname trajectoryutils
+#' @export
 centerTrajectories<-function(d, sites, verbose = FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
 
@@ -90,6 +92,7 @@ centerTrajectories<-function(d, sites, verbose = FALSE) {
 
 #' @rdname trajectoryutils
 #' @param tol Tolerance value for metricity
+#' @export
 is.metric<-function(d, tol=0.0001) {
   return(.ismetricC(as.matrix(d), tol))
 }

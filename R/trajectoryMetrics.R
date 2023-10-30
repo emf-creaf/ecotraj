@@ -159,6 +159,7 @@
 #' trajectoryDistances(dist(xy), sites, surveys, distance.type = "Hausdorff")
 #' trajectoryDistances(dist(xy), sites, surveys, distance.type = "DSPD")
 #'  
+#' @export
 segmentDistances<-function(d, sites, surveys=NULL, distance.type ="directed-segment", add = TRUE, verbose=FALSE) {
   distance.type <- match.arg(distance.type, c("directed-segment", "Hausdorff", "PPA"))
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
@@ -236,6 +237,7 @@ segmentDistances<-function(d, sites, surveys=NULL, distance.type ="directed-segm
 }
 
 #' @rdname trajectorymetrics
+#' @export
 trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symmetrization = "mean" , add=TRUE, verbose=FALSE) {
   distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff"))
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
@@ -387,6 +389,7 @@ trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symm
 #' @rdname trajectorymetrics
 #' @param relativeToInitial Flag to indicate that lengths or angles should be calculated with respect to initial survey.
 #' @param all Flag to indicate that lengths or angles are desired for all segments or for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, length or angles are calculated according to relativeToInitial flag.
+#' @export
 trajectoryLengths<-function(d, sites, surveys=NULL, relativeToInitial = FALSE, all=FALSE, verbose= FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -480,6 +483,7 @@ rownames(lengths)<-c(siteIDs)
 
 #' @rdname trajectorymetrics
 #' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
+#' @export
 trajectoryLengths2D<-function(xy,sites,surveys, relativeToInitial=FALSE, all=FALSE, verbose = FALSE) {
   
   #order inputs by sites and surveys
@@ -505,6 +509,7 @@ surveys<-c(xy_temp$surveys)
 #' @rdname trajectorymetrics
 #' @param all A flag to indicate that angles are desired for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, angles are calculated for consecutive segments only.
 #' @param stats A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)
+#' @export
 trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitial = FALSE, stats = TRUE, add=TRUE, verbose= FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -587,6 +592,7 @@ trajectoryAngles<-function(d, sites, surveys=NULL, all = FALSE, relativeToInitia
 
 #' @rdname trajectorymetrics
 #' @param betweenSegments Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.
+#' @export
 trajectoryAngles2D<-function(xy,sites,surveys,relativeToInitial=FALSE, betweenSegments=TRUE) {
   
   xy_temp<-as.data.frame(xy)
@@ -812,6 +818,7 @@ trajectoryAngles2D<-function(xy,sites,surveys,relativeToInitial=FALSE, betweenSe
 #' @param target An integer vector of the ecosystem states to be projected.
 #' @param trajectory An integer vector of the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
+#' @export
 trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {
   if(length(trajectory)<2) stop("Trajectory needs to include at least two states")
   dmat = as.matrix(d)
@@ -868,6 +875,7 @@ trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) 
 
 #' @rdname trajectorymetrics
 #' @param symmetric A logical flag to indicate a symmetric convergence comparison of trajectories.
+#' @export
 trajectoryConvergence<-function(d, sites, surveys = NULL, symmetric = FALSE, add=TRUE, verbose = FALSE){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -933,6 +941,7 @@ trajectoryConvergence<-function(d, sites, surveys = NULL, symmetric = FALSE, add
 
 
 #' @rdname trajectorymetrics
+#' @export
 trajectoryDirectionality<-function(d, sites, surveys = NULL, add=TRUE, verbose = FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")

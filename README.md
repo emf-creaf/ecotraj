@@ -25,7 +25,7 @@ ETA is related to the following publications:
 - Application of ETA for the assessement of ecological status: Sturbois
   et al. (2023).
 
-## Package installation
+## Package installation and documentation
 
 Package `ecotraj` can be found at
 [CRAN](https://cran.r-project.org/package=ecotraj). In addition, the
@@ -36,14 +36,9 @@ follows:
 remotes::install_github("emf-creaf/ecotraj")
 ```
 
-Additionally, users can have help to run package functions directly as
-package vignettes, by forcing their inclusion in installation:
-
-``` r
-remotes::install_github("emf-creaf/ecotraj", 
-                         build_opts = c("--no-resave-data", "--no-manual"),
-                         build_vignettes = TRUE)
-```
+Although the package comes with function documentation, articles
+explaining how to use the package can be found at
+<https://emf-creaf.github.io/ecotraj/>.
 
 ## References
 

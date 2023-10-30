@@ -96,7 +96,7 @@ pcoa_glom<-ape::pcoa(glomel_bc)
 ```
 
 We can use function `biplot()` from package **ape** to show the ordination of stations with the species projected as arrows:
-```{r, echo=TRUE, fig.width=7, fig.height=7, warning = FALSE}
+```{r, echo=TRUE, fig.width=7, fig.height=7, warning = FALSE, eval = FALSE}
 biplot(pcoa_glom, glomel_comp)
 ```
 

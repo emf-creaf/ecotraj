@@ -4,71 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introduction to Ecological Trajectory Analysis (ETA) • ecotraj</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to Ecological Trajectory Analysis (ETA)">
-<meta property="og:description" content="ecotraj">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to Ecological Trajectory Analysis (ETA)">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">ecotraj</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
-      </span>
-    </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/index.html">Articles</a>
-</li>
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/emf-creaf/ecotraj/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Introduction to Ecological Trajectory Analysis
-(ETA)</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Introduction to Ecological Trajectory Analysis (ETA)</h1>
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2023-10-30</h4>
+            <h4 data-toc-skip class="date">2024-07-23</h4>
       
-      
-      <div class="hidden name"><code>IntroductionETA.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionETA.Rmd" class="external-link"><code>vignettes/IntroductionETA.Rmd</code></a></small>
+      <div class="d-none name"><code>IntroductionETA.Rmd</code></div>
     </div>
 
     
@@ -125,8 +119,10 @@ calculations can be followed more easily.</p>
 </h3>
 <p>To specify ecosystem dynamics, we need three data items:</p>
 <ol style="list-style-type: lower-alpha">
-<li>A set of ecosystem states (i.e. coordinates in a space <span class="math inline">\(\Omega\)</span>), described using a distance
-matrix <span class="math inline">\(d\)</span>;</li>
+<li>A set of ecosystem states (i.e. coordinates in a space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>),
+described using a distance matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>;</li>
 <li>A vector specifying the site (i.e. sampling unit) corresponding to
 each ecosystem state;</li>
 <li>A vector specifying the survey (i.e. time point) corresponding to
@@ -144,7 +140,9 @@ of each ecosystem state:</p>
 <p>We then define a matrix whose coordinates correspond to the set of
 ecosystem states observed. The number of rows in this matrix has to be
 equal to the length of vectors <code>sites</code> and
-<code>surveys</code>. We assume that the ecosystem space <span class="math inline">\(\Omega\)</span> has two dimensions:</p>
+<code>surveys</code>. We assume that the ecosystem space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+has two dimensions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Raw data table</span></span>
 <span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -176,7 +174,11 @@ equal to the length of vectors <code>sites</code> and
 <span><span class="co">## [10,]     3       2 0.50 1.00</span></span>
 <span><span class="co">## [11,]     3       3 1.00 1.25</span></span>
 <span><span class="co">## [12,]     3       4 1.50 1.00</span></span></code></pre>
-<p>The matrix of Euclidean distances <span class="math inline">\(d\)</span> between ecosystem states in <span class="math inline">\(\Omega\)</span> is then:</p>
+<p>The matrix of Euclidean distances
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+between ecosystem states in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+is then:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Distance matrix</span></span>
 <span><span class="va">D</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span>
@@ -206,19 +208,23 @@ equal to the length of vectors <code>sites</code> and
 <span><span class="co">## 11 0.7500000 1.3462912 0.5590170          </span></span>
 <span><span class="co">## 12 1.1180340 1.4142136 1.0000000 0.5590170</span></span></code></pre>
 <p>CTA is based on the analysis of information in the distance matrix
-<span class="math inline">\(\Delta = [d]\)</span>. Therefore, it does
-not require explicit coordinates. This is an advantage because it allows
-the analysis to be conducted on arbitrary metric (or semi-metric)
-spaces. The choice of <span class="math inline">\(d\)</span> is left to
-the user and will depend on the problem at hand.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>d</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\Delta = [d]</annotation></semantics></math>.
+Therefore, it does not require explicit coordinates. This is an
+advantage because it allows the analysis to be conducted on arbitrary
+metric (or semi-metric) spaces. The choice of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+is left to the user and will depend on the problem at hand.</p>
 </div>
 <div class="section level3">
 <h3 id="displaying-trajectories">2.2 Displaying trajectories<a class="anchor" aria-label="anchor" href="#displaying-trajectories"></a>
 </h3>
 <p>To begin our analysis of the three trajectories, we display them in
 an ordination space, using function <code>trajectoryPCoA</code>. Since
-<span class="math inline">\(\Omega\)</span> has only two dimensions in
-this example, the Principal Coordinates Analysis (PCoA) on <span class="math inline">\(d\)</span> displays the complete space:</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+has only two dimensions in this example, the Principal Coordinates
+Analysis (PCoA) on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+displays the complete space:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -275,15 +281,17 @@ trajectory segments and the total pathway length using function
 <span><span class="co">## 3  1 0.559017 0.5590170   2.118034</span></span></code></pre>
 <p>In CTA, angles are measured using triplets of time-ordered ecosystem
 states (a pair of consecutive segments is an example of such triplets).
-As matrix <span class="math inline">\(\Delta\)</span> may represent a
-space of multiple dimensions, angles cannot be calculated with respect
-to a single plane. Instead, each angle is measured on the plane defined
-by each triplet. Zero angles indicate that the three points (e.g. the
-two consecutive segments) are in a straight line. The larger the angle
-value, the more is trajectory changing in direction. Mean and standard
-deviation statistics of angles are calculated according to circular
-statistics. Function <code>trajectoryAngles</code> allows calculating
-the angles between consecutive segments:</p>
+As matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Δ</mi><annotation encoding="application/x-tex">\Delta</annotation></semantics></math>
+may represent a space of multiple dimensions, angles cannot be
+calculated with respect to a single plane. Instead, each angle is
+measured on the plane defined by each triplet. Zero angles indicate that
+the three points (e.g. the two consecutive segments) are in a straight
+line. The larger the angle value, the more is trajectory changing in
+direction. Mean and standard deviation statistics of angles are
+calculated according to circular statistics. Function
+<code>trajectoryAngles</code> allows calculating the angles between
+consecutive segments:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      S1-S2    S2-S3     mean         sd       rho</span></span>
@@ -293,12 +301,14 @@ the angles between consecutive segments:</p>
 <p>While site ‘1’ follows a straight pathway, angles are &gt; 0 for
 trajectories of site ‘2’ and ‘3’, denoting the change in direction. In
 this case, the same information could be obtained by inspecting the
-previous plots, but in a case where <span class="math inline">\(\Omega\)</span> has many dimensions, the
-representation will correspond to a reduced (ordination) space and
-hence, angles and lengths in the plot will not correspond exactly to
-those of functions <code>trajectoryLengths</code> and
-<code>trajectoryAngles</code>, which take into account the complete
-<span class="math inline">\(\Omega\)</span> space.</p>
+previous plots, but in a case where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+has many dimensions, the representation will correspond to a reduced
+(ordination) space and hence, angles and lengths in the plot will not
+correspond exactly to those of functions <code>trajectoryLengths</code>
+and <code>trajectoryAngles</code>, which take into account the complete
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+space.</p>
 <p>Angles can be calculated not only for all consecutive segments but
 for all four triplets of ordered ecosystem states, whether of
 consecutive segments or not (i.e., between points 1-2-3, 1-2-4, 1-3-4
@@ -317,9 +327,11 @@ and it will take a value of 1 if all angles are the same. This approach,
 however, uses only angular information and does not take into account
 the length of segments.</p>
 <p>To measure the overall directionality of a ecosystem trajectory
-(i.e. if the pathway consistently follows the same direction in <span class="math inline">\(\Omega\)</span> ), we recommend using another
-statistic that is sensitive to both angles and segment lengths and is
-implemented in function <code>trajectoryDirectionality</code>:</p>
+(i.e. if the pathway consistently follows the same direction in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+), we recommend using another statistic that is sensitive to both angles
+and segment lengths and is implemented in function
+<code>trajectoryDirectionality</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         1         2         3 </span></span>
@@ -550,9 +562,11 @@ Manhattan metric.</p>
 <h3 id="display-trajectories-in-pcoa">3.1 Display trajectories in PCoA<a class="anchor" aria-label="anchor" href="#display-trajectories-in-pcoa"></a>
 </h3>
 <p>The distance matrix <code>avoca_D_man</code> conforms our definition
-of <span class="math inline">\(\Omega\)</span>. We use
-<code>trajectoryPCoA</code> to display the relations between forest plot
-states in this space and to draw the trajectory of each plot:</p>
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>.
+We use <code>trajectoryPCoA</code> to display the relations between
+forest plot states in this space and to draw the trajectory of each
+plot:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryplots.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,</span>
@@ -565,11 +579,12 @@ states in this space and to draw the trajectory of each plot:</p>
 <p><img src="IntroductionETA_files/figure-html/avoca_pcoa-1.png" width="480" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
-<p>Note that in this case, the full <span class="math inline">\(\Omega\)</span> includes more than two dimensions,
-and PCoA is representing 43% of total variance (correction for negative
-eigenvalues is included in the call to <code>cmdscale</code> from
-<code>trajectoryPCoA</code>), so one has to be careful when interpreting
-trajectories visually.</p>
+<p>Note that in this case, the full
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+includes more than two dimensions, and PCoA is representing 43% of total
+variance (correction for negative eigenvalues is included in the call to
+<code>cmdscale</code> from <code>trajectoryPCoA</code>), so one has to
+be careful when interpreting trajectories visually.</p>
 <p>Another option is to use mMDS to represent trajectories, which in
 this case produces a similar result:</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
@@ -628,11 +643,12 @@ new saplings.</p>
 <h3 id="trajectory-lengths-angles-and-overall-directionality-1">3.2 Trajectory lengths, angles and overall directionality<a class="anchor" aria-label="anchor" href="#trajectory-lengths-angles-and-overall-directionality-1"></a>
 </h3>
 <p>While trajectory lengths and angles can be inspected visually in
-ordination diagrams, it is better to calculate them using the full <span class="math inline">\(\Omega\)</span> space (i.e., from matrix
-<code>avoca_D_man</code>). Using function <code>trajectoryLengths</code>
-we can see that the trajectory of forest plot ‘4’ is lengthier than that
-of plot ‘3’, mostly because includes a lengthier last segment (i.e. the
-recruitment of new individuals):</p>
+ordination diagrams, it is better to calculate them using the full
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+space (i.e., from matrix <code>avoca_D_man</code>). Using function
+<code>trajectoryLengths</code> we can see that the trajectory of forest
+plot ‘4’ is lengthier than that of plot ‘3’, mostly because includes a
+lengthier last segment (i.e. the recruitment of new individuals):</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##          S1        S2        S3        S4        S5        S6        S7</span></span>
@@ -713,11 +729,12 @@ using <code>trajectoryDistances</code>:</p>
 <span><span class="co">## 7 4.024 3.291 4.365 4.993 4.389 6.205      </span></span>
 <span><span class="co">## 8 9.797 9.747 5.591 4.611 6.383 5.043 6.949</span></span></code></pre>
 <p>The closest trajectories are those of plots ‘1’ and ‘2’. They looked
-rather close in <em>position</em> in the PCoA ordination of <span class="math inline">\(\Omega\)</span> with all trajectories, so probably
-it is position, rather than <em>shape</em> which has influenced this low
-value. The next pair of similar trajectories are those of the ‘3’-‘5’
-pair. We can again use mMDS to produce an ordination of resemblances
-between trajectories:</p>
+rather close in <em>position</em> in the PCoA ordination of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+with all trajectories, so probably it is position, rather than
+<em>shape</em> which has influenced this low value. The next pair of
+similar trajectories are those of the ‘3’-‘5’ pair. We can again use
+mMDS to produce an ordination of resemblances between trajectories:</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mMDS</span><span class="op">&lt;-</span><span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html" class="external-link">mds</a></span><span class="op">(</span><span class="va">avoca_D_traj_man</span><span class="op">)</span></span>
 <span><span class="va">mMDS</span></span></code></pre></div>
@@ -741,44 +758,37 @@ between trajectories:</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>Distances between trajectories can be calculated after centering them
-(i.e. after bringing all trajectories to the center of the <span class="math inline">\(\Omega\)</span> space). This is done using
-function <code>centerTrajectories</code>, which returns a new
-dissimilarity matrix. Centering removes differences in <em>position</em>
-between trajectories, which is useful in cases where one wants to focus
-on spatio-temporal interaction while discarding spatial patterns that
-are constant in time. We do no illustrate centering here, because in is
-not interesting for this particular example.</p>
+(i.e. after bringing all trajectories to the center of the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+space). This is done using function <code>centerTrajectories</code>,
+which returns a new dissimilarity matrix. Centering removes differences
+in <em>position</em> between trajectories, which is useful in cases
+where one wants to focus on spatio-temporal interaction while discarding
+spatial patterns that are constant in time. We do no illustrate
+centering here, because in is not interesting for this particular
+example.</p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Miquel De Cáceres, Anthony Sturbois.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Miquel De Cáceres, Anthony Sturbois.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
 
 
-  
+
 
   </body>
 </html>

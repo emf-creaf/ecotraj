@@ -4,70 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Stable Isotope Trajectory Analysis (SITA) • ecotraj</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Stable Isotope Trajectory Analysis (SITA)">
-<meta property="og:description" content="ecotraj">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Stable Isotope Trajectory Analysis (SITA)">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">ecotraj</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
-      </span>
-    </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../articles/index.html">Articles</a>
-</li>
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/emf-creaf/ecotraj/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Stable Isotope Trajectory Analysis (SITA)</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Stable Isotope Trajectory Analysis (SITA)</h1>
                         <h4 data-toc-skip class="author">Anthony
 STURBOIS</h4>
             
-            <h4 data-toc-skip class="date">2023-10-30</h4>
+            <h4 data-toc-skip class="date">2024-07-23</h4>
       
-      
-      <div class="hidden name"><code>SITA.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/SITA.Rmd" class="external-link"><code>vignettes/SITA.Rmd</code></a></small>
+      <div class="d-none name"><code>SITA.Rmd</code></div>
     </div>
 
     
@@ -95,9 +90,6 @@ applications, on the creation of trajectory charts.</p>
 <p>First of all, we load the required libraries, including
 <code>ecotraj</code>:</p>
 <pre><code><span><span class="co">## Loading required package: Rcpp</span></span></code></pre>
-<pre><code><span><span class="co">## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.</span></span></code></pre>
-<pre><code><span><span class="co">##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and</span></span></code></pre>
-<pre><code><span><span class="co">##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow</span></span></code></pre>
 <pre><code><span><span class="co">## Loading required package: viridisLite</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Attaching package: 'viridis'</span></span></code></pre>
@@ -112,7 +104,7 @@ applications, on the creation of trajectory charts.</p>
 <h3 id="fur-seal-stable-isotope-dataset">3.1 Fur seal stable isotope dataset<a class="anchor" aria-label="anchor" href="#fur-seal-stable-isotope-dataset"></a>
 </h3>
 <p>We begin by loading the package dataset <code>furseals</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"furseals"</span><span class="op">)</span></span></code></pre></div>
 <p>This is a subset of the dataset provided in:</p>
 <ul>
@@ -145,7 +137,7 @@ sections, we show how to use these metrics as data to create plots.</p>
 <p>First, we calculate net changes relative to the initial state
 (i.e. the distance between stable isotope compositions (i.e state) of
 each whisker section and the initial stable isotope composition):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                                 <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                                 <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span>
@@ -188,7 +180,7 @@ each whisker section and the initial stable isotope composition):</p>
 <p>We then calculate trajectory segment lengths, i.e. the distance
 between the stable isotope composition of consecutive whisker sections
 in the stable isotope space:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Segment_lengths</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                                     <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                                     <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> </span>
@@ -228,10 +220,11 @@ in the stable isotope space:</p>
 <span><span class="co">## 4 0.5050881   21.38160</span></span>
 <span><span class="co">## 5 1.8207584   28.96757</span></span>
 <span><span class="co">## 6 0.9149454   42.62136</span></span></code></pre>
-<p>Finally, we determine the angle (<span class="math inline">\(\alpha\)</span>) of consecutive trajectory
-segments with respect to the second axis of the 2D stable isotope
-space:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>Finally, we determine the angle
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>)
+of consecutive trajectory segments with respect to the second axis of
+the 2D stable isotope space:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Angles</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                           <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                           <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, betweenSegments<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
@@ -278,13 +271,13 @@ space:</p>
 <p>Here we aim to define groups of fur seals depending on the similarity
 of their foraging strategy. We need first to calculate distances between
 pairs of complete trajectories in the stable isotope space:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
 <span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a
 hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">colstd</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span>,<span class="st">"grey"</span>,<span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="va">pt</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>,<span class="fl">16</span>,<span class="fl">16</span>,<span class="fl">16</span><span class="op">)</span></span>
 <span><span class="va">hsxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">Ds</span>, <span class="st">"ward.D2"</span><span class="op">)</span></span>
@@ -296,7 +289,7 @@ hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
 <p>We cut the dendrogram at height <code>Hst</code> to obtain a vector
 of cluster membership and copy it in <code>furseals</code> as a
 factor:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html" class="external-link">cutree</a></span><span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span><span class="op">)</span></span>
 <span><span class="va">furseals</span><span class="op">$</span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
@@ -307,7 +300,7 @@ factor:</p>
 corresponding to combinations of species and gender. To facilitate such
 plots, we create of a vector with the combination of species and
 gender:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">furseals</span><span class="op">$</span><span class="va">sp_gender</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">$</span><span class="va">Sexe</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">Species</span>, sep<span class="op">=</span><span class="st">" "</span><span class="op">)</span></span></code></pre></div>
 <p>We now create a diagram to display fur seal trophic trajectories in
 the stable isotope space. Panels correspond to the combination of
@@ -315,7 +308,7 @@ species and gender. In each panel, X-Y axes are defined by d13C and d15N
 stable isotope values. Arrows connects all whiskers section SI states
 from t1 to t30 (i.e. most recent to oldest SI state). Colors corresponds
 to trajectory clusters and shape to breeding sites:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">furseals</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,color<span class="op">=</span><span class="va">cluster</span>,shape<span class="op">=</span><span class="va">Place</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,group<span class="op">=</span><span class="va">ID_SITA</span>,color<span class="op">=</span><span class="va">cluster</span><span class="op">)</span>,</span>
@@ -333,14 +326,14 @@ species<a class="anchor" aria-label="anchor" href="#net-changes-time-series-for-
 <p>In this sub-section we display net changes time series for all
 individuals, in plots corresponding to combinations of species and
 gender We prepare a subset of the data called <code>NC</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">NC</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">[</span>,<span class="op">-</span><span class="fl">30</span><span class="op">]</span></span>
 <span><span class="va">NC</span><span class="op">$</span><span class="va">cluster</span><span class="op">&lt;-</span><span class="va">furseals</span><span class="op">$</span><span class="va">cluster</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">47</span><span class="op">]</span></span>
 <span><span class="va">NC</span><span class="op">$</span><span class="va">ID</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">NC</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">NC</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">30</span>,<span class="st">"cluster"</span>,<span class="st">"ID"</span><span class="op">)</span></span></code></pre></div>
 <p>We then prepare the subset. We notably transform NC to a longer
 format, order the data set and add the vector sp_gender:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">NCline</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">NC</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">29</span>, </span>
 <span>                              names_to <span class="op">=</span><span class="st">"Time_from_present"</span>, </span>
 <span>                              values_to<span class="op">=</span><span class="st">"Net_changes"</span>, </span>
@@ -353,7 +346,7 @@ format, order the data set and add the vector sp_gender:</p>
 individuals in panel corresponding Arrows connects all whiskers section
 stable isotope values from t1 to t30 (i.e. most recent to oldest stable
 isotope values). Colours corresponds to trajectory clusters:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">NCline</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time_from_present</span>,y<span class="op">=</span><span class="va">Net_changes</span>,color<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Time_from_present</span>,y<span class="op">=</span><span class="va">Net_changes</span>,group<span class="op">=</span><span class="va">ID</span>,color<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span>,</span>
 <span>            arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.10</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -362,14 +355,18 @@ isotope values). Colours corresponds to trajectory clusters:</p>
 <p><img src="SITA_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 </div>
 <div class="section level4">
-<h4 id="angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-">3.3.3 Angle <span class="math inline">\(\alpha\)</span> trajectory
-roses of Fur seals trajectory cluster.<a class="anchor" aria-label="anchor" href="#angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-"></a>
+<h4 id="angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-">3.3.3 Angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+trajectory roses of Fur seals trajectory cluster.<a class="anchor" aria-label="anchor" href="#angle-alpha-trajectory-roses-of-fur-seals-trajectory-cluster-"></a>
 </h4>
-<p>In this sub-section, we plot the distribution of Angle <span class="math inline">\(\alpha\)</span> values in a trajectory rose<br>
+<p>In this sub-section, we plot the distribution of Angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+values in a trajectory rose<br>
 We prepare the data set to compute the trajectory rose and transform to
 a long data structure. We create a vector of direction to class Angle
-<span class="math inline">\(\alpha\)</span> values by range of 15°:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+values by range of 15°:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Angl</span><span class="op">&lt;-</span><span class="va">Angles</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Angl</span><span class="op">)</span><span class="op">&lt;-</span><span class="fl">2</span><span class="op">:</span><span class="fl">30</span></span>
 <span><span class="va">Angl</span><span class="op">$</span><span class="va">ID</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">Angl</span><span class="op">)</span><span class="op">)</span></span>
@@ -400,11 +397,17 @@ a long data structure. We create a vector of direction to class Angle
 <span><span class="va">df_sorted</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">Angline</span><span class="op">$</span><span class="va">dir.binned</span>, <span class="va">Angline</span><span class="op">$</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df_sorted</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dir.binned"</span>,<span class="st">"Clusters"</span>,<span class="st">"nb"</span><span class="op">)</span></span>
 <span><span class="va">df_sorted</span> <span class="op">=</span> <span class="va">df_sorted</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">df_sorted</span><span class="op">$</span><span class="va">dir.binned</span><span class="op">)</span>,<span class="op">]</span></span></code></pre></div>
-<p>We now create the trajectory rose. Angles <span class="math inline">\(\alpha\)</span> were calculated in 2D <span class="math inline">\(\Omega \delta\)</span> space (<span class="math inline">\(\delta 13C/\delta 15N\)</span>) and represented by
-range (15<span class="math inline">\(\circ\)</span>) of direction. Bars
-size represent the number of trajectory segments (all individual within
-each trajectory clusters).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<p>We now create the trajectory rose. Angles
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+were calculated in 2D
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Ω</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">\Omega \delta</annotation></semantics></math>
+space
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi><mi>/</mi><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta 13C/\delta 15N</annotation></semantics></math>)
+and represented by range
+(15<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∘</mo><annotation encoding="application/x-tex">\circ</annotation></semantics></math>)
+of direction. Bars size represent the number of trajectory segments (all
+individual within each trajectory clusters).</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">df_sorted</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">dir.binned</span>, y<span class="op">=</span><span class="va">nb</span>, fill<span class="op">=</span><span class="va">Clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">110</span><span class="op">)</span>, expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
@@ -428,7 +431,7 @@ data to create a trajectory diagram.</p>
 <h3 id="loading-data">4.1 Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h3>
 <p>We begin by loading the package dataset <code>pike</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"pike"</span><span class="op">)</span></span></code></pre></div>
 <p>This is a data set from :</p>
 <ul>
@@ -439,19 +442,27 @@ individual ontogenetic status. <em>Naturwissenschaften</em> 100,
 </ul>
 <p>Briefly, Cucherousset et al. (2013) released 192 individually tagged,
 hatchery-raised, juvenile pike (<em>Esox lucius</em> L.) with variable
-initial trophic position (fin <span class="math inline">\(\delta13C/\delta15N\)</span> values). Based on
-<span class="math inline">\(\delta15N\)</span> values, individuals were
-classified into zooplanktivorous (<span class="math inline">\(\delta15N\)</span> &lt; 10 ‰) and piscivorous
-(<span class="math inline">\(\delta15N\)</span> &gt; 10 ‰) as
-cannibalism is commonly observed in this species. Individuals were
-released in a temporarily flooded grassland where pike eggs usually
-hatch of the Brière marsh (France) to identify the determinants of
-juvenile natal departure. The release site was connected through a
-unique point to an adjacent pond used as a nursery habitat. Fish were
-continuously recaptured when migrating from flooded grassland to
-adjacent pond. Recaptured individuals (n = 29) were anaesthetized,
+initial trophic position (fin
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi><mi>/</mi><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta13C/\delta15N</annotation></semantics></math>
+values). Based on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values, individuals were classified into zooplanktivorous
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+&lt; 10 ‰) and piscivorous
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+&gt; 10 ‰) as cannibalism is commonly observed in this species.
+Individuals were released in a temporarily flooded grassland where pike
+eggs usually hatch of the Brière marsh (France) to identify the
+determinants of juvenile natal departure. The release site was connected
+through a unique point to an adjacent pond used as a nursery habitat.
+Fish were continuously recaptured when migrating from flooded grassland
+to adjacent pond. Recaptured individuals (n = 29) were anaesthetized,
 checked for tags, measured for fork length, fin-clipped to quantify
-changes in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values, and released.</p>
+changes in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values, and released.</p>
 </div>
 <div class="section level3">
 <h3 id="calculating-trajectory-metrics-and-identification-of-trajectory-clusters">4.2 Calculating trajectory metrics and identification of trajectory
@@ -460,19 +471,19 @@ clusters<a class="anchor" aria-label="anchor" href="#calculating-trajectory-metr
 <p>First, we calculate net changes relative to the initial state for
 each individual (i.e. the distance between stable isotope compositions
 at release and at recapture):</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>,<span class="va">pike</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Net_changes</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Net_changes"</span>, <span class="st">"Trajectory"</span><span class="op">)</span></span>
 <span><span class="va">pike</span><span class="op">$</span><span class="va">Net_Changes</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">$</span><span class="va">Net_changes</span></span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a
 hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
 <span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>We cut the dendrogram at height <code>Hst</code> to obtain a vector
 of cluster membership and copy it in <code>pike</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Hst</span><span class="op">=</span><span class="fl">3</span></span>
 <span><span class="va">colstd</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span>,<span class="st">"grey"</span>,<span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="va">hsxy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">Ds</span>, <span class="st">"ward.D2"</span><span class="op">)</span></span>
@@ -480,7 +491,7 @@ of cluster membership and copy it in <code>pike</code>:</p>
 <span><span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/rect.hclust.html" class="external-link">rect.hclust</a></span> <span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span>,</span>
 <span>                border <span class="op">=</span> <span class="va">colstd</span><span class="op">)</span></span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Store clusters into a new data column</span></span>
 <span><span class="va">pike</span><span class="op">$</span><span class="va">Cluster</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/cutree.html" class="external-link">cutree</a></span><span class="op">(</span><span class="va">hsxy</span>, h<span class="op">=</span><span class="va">Hst</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -490,7 +501,7 @@ recaptured when emigrating into the adjacent pond<a class="anchor" aria-label="a
 </h3>
 <p>We prepare the data set to compute trajectory diagrams and density
 curves:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Pike1</span><span class="op">&lt;-</span><span class="va">pike</span><span class="op">[</span><span class="va">pike</span><span class="op">$</span><span class="va">Time</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">1</span>,<span class="op">]</span></span>
 <span><span class="va">Pike1</span><span class="op">&lt;-</span><span class="va">Pike1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">Pike1</span><span class="op">$</span><span class="va">ID</span>, decreasing<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="va">Pike1</span><span class="op">$</span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fl">0</span></span>
@@ -501,8 +512,12 @@ curves:</p>
 <p>We create the trajectory diagram. Arrows represent trajectory path
 for each pit-tagged individual. Colors correspond to trajectory
 clusters. The dashed line separates piscivorous from zooplanktivorous
-individuals [zooplanktivorous (<span class="math inline">\(\delta15N\)</span> &lt; 10) vs piscivorous (<span class="math inline">\(\delta15N\)</span> &gt; 10)].</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+individuals [zooplanktivorous
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+&lt; 10) vs piscivorous
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+&gt; 10)].</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,shape<span class="op">=</span><span class="va">Trophic_status_initial</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>size<span class="op">=</span><span class="va">Net_changes</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_path</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">d13C</span>,y<span class="op">=</span><span class="va">d15N</span>,group<span class="op">=</span><span class="va">ID</span>,color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">Cluster</span><span class="op">)</span><span class="op">)</span>,arrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/arrow.html" class="external-link">arrow</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">0.30</span>, <span class="st">"cm"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -512,9 +527,10 @@ individuals [zooplanktivorous (<span class="math inline">\(\delta15N\)</span> &l
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
 <p>Density curves X represents the distribution of all samples according
-to <span class="math inline">\(\delta13C\)</span> values, and capture
-(green=release; red=departure):</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+values, and capture (green=release; red=departure):</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">d13C</span>, fill<span class="op">=</span><span class="va">TimeL</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> </span>
 <span><span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">13</span><span class="op">*</span><span class="st">"C"</span><span class="op">*</span><span class="st">" density"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">gg_dist_d13C</span> <span class="op">=</span> <span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.title.y<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -528,9 +544,10 @@ to <span class="math inline">\(\delta13C\)</span> values, and capture
 <span><span class="va">gg_dist_d13C</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">33</span>, <span class="op">-</span><span class="fl">25</span><span class="op">)</span><span class="op">)</span><span class="op">+</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-19-1.png" width="384"></p>
 <p>Density curves Y represents the distribution of all samples according
-to <span class="math inline">\(\delta15N\)</span> values, and capture
-(green=release; red=departure):</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values, and capture (green=release; red=departure):</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gg_dist_d15N</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">d15N</span>, fill<span class="op">=</span><span class="va">TimeL</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> </span>
 <span><span class="va">gg_dist_d15N</span> <span class="op">=</span> <span class="va">gg_dist_d15N</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">delta</span><span class="op">^</span><span class="fl">15</span><span class="op">*</span><span class="st">"N"</span><span class="op">*</span><span class="st">" density"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">gg_dist_d15N</span> <span class="op">=</span><span class="va">gg_dist_d15N</span> </span>
@@ -548,14 +565,19 @@ to <span class="math inline">\(\delta15N\)</span> values, and capture
 </div>
 </div>
 <div class="section level2">
-<h2 id="spatio-temporal-variability-of-delta-13c-and-delta-15n-modelled-isoscapes-in-the-northeast-pacific">5. Spatio-temporal variability of <span class="math inline">\(\delta
-13C\)</span> and <span class="math inline">\(\delta 15N\)</span>
+<h2 id="spatio-temporal-variability-of-delta-13c-and-delta-15n-modelled-isoscapes-in-the-northeast-pacific">5. Spatio-temporal variability of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta 13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta 15N</annotation></semantics></math>
 modelled isoscapes in the Northeast Pacific<a class="anchor" aria-label="anchor" href="#spatio-temporal-variability-of-delta-13c-and-delta-15n-modelled-isoscapes-in-the-northeast-pacific"></a>
 </h2>
 <p>In this section, we illustrate how to use trajectory metrics to
-characterize the spatio-temporal variability of <span class="math inline">\(\delta 13C\)</span> and <span class="math inline">\(\delta 15N\)</span> modelled isoscapes in the
-Northeast Pacific in an isoscape trajectory map and a trajectory heat
-map</p>
+characterize the spatio-temporal variability of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta 13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta 15N</annotation></semantics></math>
+modelled isoscapes in the Northeast Pacific in an isoscape trajectory
+map and a trajectory heat map</p>
 <p>The datasets used in this application come from:</p>
 <ul>
 <li>Espinasse, B., Hunt, B.P.V., Batten, S.D., Pakhomov, E.A., 2020.
@@ -566,28 +588,34 @@ productivity. Global Ecol Biogeogr 29, 246–261.</li>
 modelled from satellite data to the description of secondary production
 in the Northeast pacific. The output model fits in a 0.25° x 0.25°
 spatial grid covering the region spanning from 46 to 62°N and from 195
-to 235°E and supporting <span class="math inline">\(\delta13C\)</span>
-and <span class="math inline">\(\delta15N\)</span> isoscapes from 1998
-to 2017. We subset modelled <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values of a 1° x 1° spatial
-grid from the original modelled dataset. Isoscapes modelled for 2013,
-2015 and 2017 were selected as they were characterised by high stable
-isotope dynamics and consequently constitutes relevant inputs to test
-our isoscape trajectory map concept. Additionally, a long-term SITA
-analysis was performed from 1998 to 2017 using directions and net
-changes calculated for all pairs of dates (1998-1999,… ,2016-2017) as
-input for a trajectory heat map.</p>
+to 235°E and supporting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+isoscapes from 1998 to 2017. We subset modelled
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values of a 1° x 1° spatial grid from the original modelled dataset.
+Isoscapes modelled for 2013, 2015 and 2017 were selected as they were
+characterised by high stable isotope dynamics and consequently
+constitutes relevant inputs to test our isoscape trajectory map concept.
+Additionally, a long-term SITA analysis was performed from 1998 to 2017
+using directions and net changes calculated for all pairs of dates
+(1998-1999,… ,2016-2017) as input for a trajectory heat map.</p>
 <div class="section level3">
 <h3 id="isoscape-trajectory-maps">5.1 2013-2015 Isoscape trajectory maps<a class="anchor" aria-label="anchor" href="#isoscape-trajectory-maps"></a>
 </h3>
 <p>We begin by loading the package dataset <code>isoscape</code>:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"isoscape"</span><span class="op">)</span></span></code></pre></div>
-<p>We calculate Segment lengths and Angle <span class="math inline">\(\alpha\)</span> for each stations to assess,
-respectively, the magnitude and the nature of change in the stable
-isotope space between 2013 and 2015. We then prepare a data set to
-compute the isoscape trajectory map with notably: Latitude, Longitude,
-Years, Angles and segment lenghts values:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<p>We calculate Segment lengths and Angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+for each stations to assess, respectively, the magnitude and the nature
+of change in the stable isotope space between 2013 and 2015. We then
+prepare a data set to compute the isoscape trajectory map with notably:
+Latitude, Longitude, Years, Angles and segment lenghts values:</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">station</span></span>
 <span><span class="va">surveys</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">Year</span></span>
 <span><span class="va">Angl</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -602,10 +630,11 @@ Years, Angles and segment lenghts values:</p>
 <span><span class="co">## 4       50       195 -24.30105 5.261582        5  2013 147.84429 0.25570108</span></span>
 <span><span class="co">## 5       51       195 -24.05084 5.302065        6  2013 126.14883 0.32439073</span></span>
 <span><span class="co">## 6       52       195 -23.92968 5.407169        7  2013  60.21061 0.28423495</span></span></code></pre>
-<p>Angles <span class="math inline">\(\alpha\)</span> need to be
-transformed for the use with <code>geom_spoke</code>. We then add
-transformed values in a new column <code>Angles2</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<p>Angles
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+need to be transformed for the use with <code>geom_spoke</code>. We then
+add transformed values in a new column <code>Angles2</code>.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">angle</span><span class="op">&lt;-</span><span class="va">data</span><span class="op">$</span><span class="va">Angles</span></span>
 <span><span class="va">Angles2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angle</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -622,15 +651,37 @@ transformed values in a new column <code>Angles2</code>.</p>
 <span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="va">Angles2</span><span class="op">&lt;-</span><span class="va">Angles2</span></span></code></pre></div>
 <p>We now create the Isoscape trajectory map. In this kind of map,
-Segment lengths and Angles <span class="math inline">\(\alpha\)</span>
+Segment lengths and Angles
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
 are mapped to illustrate stable isotope spatio-temporal dynamics.
-Direction of arrows (angle <span class="math inline">\(\alpha\)</span>)
+Direction of arrows (angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>)
 illustrate direction (i.e. the nature of change) in the modelled 2D
-<span class="math inline">\(\Omega \delta\)</span> space according to
-increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>). Length of arrows and colored
-background rasters illustrate modelled trajectory segment length at each
-station (i.e. the magnitude of change).</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Ω</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">\Omega \delta</annotation></semantics></math>
+space according to increase and/or decrease in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values (0-90°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+180-270°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>).
+Length of arrows and colored background rasters illustrate modelled
+trajectory segment length at each station (i.e. the magnitude of
+change).</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">data</span>, </span>
 <span>          <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Longitude</span>, </span>
 <span>              y <span class="op">=</span> <span class="va">Latitude</span>, </span>
@@ -650,12 +701,12 @@ station (i.e. the magnitude of change).</p>
 <h3 id="trajectory-heatmap">5.2 1998-2017 trajectory heatmap<a class="anchor" aria-label="anchor" href="#trajectory-heatmap"></a>
 </h3>
 <p>We begin by loading the package dataset <code>heatmapdata</code>:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"heatmapdata"</span><span class="op">)</span></span></code></pre></div>
 <p><code>heatmapdata</code> is composed of trajectory metrics for all
 stations within all inter-annual consecutive periods between 1998 and
 2017:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">heatmapdata</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Latitude Longitude      d13C     d15N Stations     Years    Angles    Lengths</span></span>
 <span><span class="co">## 1       46       195 -24.76366 5.451872        1 1998-1999 181.31874 0.30196921</span></span>
@@ -673,11 +724,27 @@ stations within all inter-annual consecutive periods between 1998 and
 <span><span class="co">## 6  1.338939</span></span></code></pre>
 <p>We then prepare the data set to create the trajectory heat map. We
 create a vector of direction, ranging by 15° between 0 and 360°, to
-class Angle <span class="math inline">\(\alpha\)</span> values. We
-create the vector <code>ISPattern</code> to characterize the pattern of
-direction according to changes in both stable isotope values (0-90°: +
-<span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>):</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+class Angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+values. We create the vector <code>ISPattern</code> to characterize the
+pattern of direction according to changes in both stable isotope values
+(0-90°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+180-270°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>):</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#direction range</span></span>
 <span><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fl">15</span></span>
 <span></span>
@@ -713,7 +780,7 @@ direction according to changes in both stable isotope values (0-90°: +
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Directions"</span>,<span class="st">"Periods"</span>,<span class="st">"Nb_stations"</span>,<span class="st">"Lengths"</span><span class="op">)</span></span></code></pre></div>
 <p>The final dataset used to create the trajectory heat map is composed
 of four variables (“Directions”,“Periods”,“Nb_stations”,“Lengths”):</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Directions   Periods Nb_stations   Lengths</span></span>
 <span><span class="co">## 1          0 1998-1999          12  8.634497</span></span>
@@ -723,14 +790,16 @@ of four variables (“Directions”,“Periods”,“Nb_stations”,“Lengths�
 <span><span class="co">## 5         60 1998-1999           4  1.861980</span></span>
 <span><span class="co">## 6         75 1998-1999           4  1.835733</span></span></code></pre>
 <p>We plot trajectory metrics with respect to period and direction in a
-trajectory heat map. Angles <span class="math inline">\(\alpha\)</span>
-in the modelled 2D <span class="math inline">\(\Omega \delta\)</span>
+trajectory heat map. Angles
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+in the modelled 2D
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Ω</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">\Omega \delta</annotation></semantics></math>
 space exhibited by all stations within all pairs of dates
 (1998-1999,…,2016-2017) are represented by range of direction (15°)
 according to period. Color gradient from dark blue to yellow indicate
 the number of stations exhibited by a given range of direction within a
 given period.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">dfa</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Periods</span>, <span class="va">Directions</span>, fill<span class="op">=</span> <span class="va">Nb_stations</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_viridis</span><span class="op">(</span>discrete<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
@@ -740,7 +809,7 @@ given period.</p>
 <p>The X bar plot represents the sum of segment lengths across stations
 and times, 1231 exhibiting the chosen angle. The blue gradient indicates
 the net change magnitude.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df.Xbarplot</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Lengths</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Periods</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df.Xbarplot</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Periods"</span>,<span class="st">"Lengths"</span><span class="op">)</span></span>
 <span><span class="va">bp.x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df.Xbarplot</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">Periods</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">Lengths</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -751,9 +820,29 @@ the net change magnitude.</p>
 <span><span class="va">bp.x</span></span></code></pre></div>
 <p><img src="SITA_files/figure-html/unnamed-chunk-28-1.png" width="480"></p>
 <p>The Y bar plot represents the overall net changes according to range
-of directions (angle <span class="math inline">\(\alpha\)</span>). Bars
-are colored according to increase and/or decrease in <span class="math inline">\(\delta13C\)</span> and <span class="math inline">\(\delta15N\)</span> values (Pink: 0-90°: + <span class="math inline">\(\delta13C\)</span> and + <span class="math inline">\(\delta15N\)</span> ; Blue: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Red: 90-180°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>; Green: 180-270°: + <span class="math inline">\(\delta13C\)</span> and - <span class="math inline">\(\delta15N\)</span>).</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+of directions (angle
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>).
+Bars are colored according to increase and/or decrease in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+values (Pink: 0-90°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>
+; Blue: 90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+Red: 90-180°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>;
+Green: 180-270°: +
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi></mrow><annotation encoding="application/x-tex">\delta13C</annotation></semantics></math>
+and -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta15N</annotation></semantics></math>).</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df.Ybarplot</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Lengths</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dfa</span><span class="op">$</span><span class="va">Directions</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df.Ybarplot</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Directions"</span>,<span class="st">"Lengths"</span><span class="op">)</span></span>
 <span><span class="va">df.Ybarplot</span><span class="op">$</span><span class="va">ISpattern</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"+d13C/+d15N"</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"+d13C/-d15N"</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"-d13C/-d15N"</span>,<span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"-d13C/+d15N"</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
@@ -765,35 +854,26 @@ are colored according to increase and/or decrease in <span class="math inline">\
 <p><img src="SITA_files/figure-html/unnamed-chunk-29-1.png" width="384"></p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Miquel De Cáceres, Anthony Sturbois.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Miquel De Cáceres, Anthony Sturbois.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
 
 
-  
+
 
   </body>
 </html>

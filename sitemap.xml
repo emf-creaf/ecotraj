@@ -1,66 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/404.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/articles/IntroductionEQA.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/articles/IntroductionETA.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/articles/SITA.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/articles/Transformation.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/index.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/avoca.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/ecotraj-package.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/furseals.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/glenan.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/glomel.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/heatmapdata.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/isoscape.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/pike.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/trajectorymetrics.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/trajectoryplots.html</loc>
-  </url>
-  <url>
-    <loc>https://emf-creaf.github.io/ecotraj/reference/trajectoryutils.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://emf-creaf.github.io/ecotraj/404.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/articles/IntroductionEQA.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/articles/IntroductionETA.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/articles/SITA.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/articles/Transformation.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/articles/index.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/authors.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/index.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/avoca.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/ecotraj-package.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/furseals.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/glenan.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/glomel.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/heatmapdata.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/index.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/isoscape.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/pike.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/trajectorymetrics.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/trajectoryplots.html</loc></url>
+<url><loc>https://emf-creaf.github.io/ecotraj/reference/trajectoryutils.html</loc></url>
 </urlset>
+

@@ -8,7 +8,7 @@
 ^\.github$
 ^docs$
 ^pkgdown$
-^metadata.yml$
+^metadata\\.yml$
 ^cran-comments.md$
 ^vignettes/*$
 ^CRAN-SUBMISSION$

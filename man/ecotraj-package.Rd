@@ -3,7 +3,6 @@
 \docType{package}
 \name{ecotraj-package}
 \alias{ecotraj-package}
-\alias{_PACKAGE}
 \alias{ecotraj}
 \title{ecotraj: Ecological Trajectory Analysis}
 \description{

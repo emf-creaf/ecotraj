@@ -1,9 +1,33 @@
 url: https://emf-creaf.github.io/ecotraj
 
+template:
+  bootstrap: 5
+  bslib:
+    bootswatch: materia
+    pkgdown-nav-height: 100px
+    primary: "#241F1C"
+    
 home:
   links:
   - text: Package website
     href: https://emf-creaf.github.io/ecotraj
+
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Ecological Trajectory Analysis
+      - text: Introduction to Ecological Trajectory Analysis (ETA)
+        href: articles/IntroductionETA.html
+      - text: Transformation of dissimilarities in community data
+        href: articles/Transformation.html
+      - text: Stable Isotope Trajectory Analysis (SITA)
+        href: articles/SITA.html
+      - text: -------
+      - text: Ecological Quality Assessment
+      - text: Introduction to Ecological Quality Assessment (EQA)
+        href: articles/IntroductionEQA.html
 
 articles:
 - title: Ecological Trajectory Analysis
@@ -15,7 +39,6 @@ articles:
   contents:
     - starts_with("IntroductionEQA")
 
-    
 reference:
 - title: Datasets
   desc:  Example datasets

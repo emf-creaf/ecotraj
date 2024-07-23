@@ -12,6 +12,6 @@ This submission (v0.1.1) adds new R functions to the package. Vignettes have bee
 * ubuntu-latest (on github actions), R oldrel-1, OK
 * win-builder (release), OK
 * win-builder (devel), OK
-* win-builder (old-rel), OK
+* win-builder (old-rel), NOTE
 
 

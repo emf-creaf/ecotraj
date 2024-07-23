@@ -6,3 +6,5 @@ ecotraj.Rproj
 src/*.o
 src/*.so
 src/*.dll
+pkgdown/favicon/*
+CRAN-SUBMISSION

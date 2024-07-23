@@ -1,5 +1,5 @@
-ecotraj
-================
+
+# Ecological trajectory analysis <a href="https://emf-creaf.github.io/ecotraj/"><img src="man/figures/logo.png" align="right" height="139" alt="ecotraj website" /></a>
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ecotraj)](https://cran.r-project.org/package=ecotraj)
 [![](https://cranlogs.r-pkg.org/badges/ecotraj)](https://cran.rstudio.com/web/packages/ecotraj/index.html)
@@ -39,6 +39,14 @@ remotes::install_github("emf-creaf/ecotraj")
 Although the package comes with function documentation, articles
 explaining how to use the package can be found at
 <https://emf-creaf.github.io/ecotraj/>.
+
+## Related package
+
+Package [**ecoregime**](https://mspinillos.github.io/ecoregime/), by
+Martina Sánchez-Pinillos, implements the Ecological Dynamic Regimes
+(EDR) framework to characterize and compare groups of ecological
+trajectories in multidimensional spaces defined by ecosystem state
+variables.
 
 ## References
 

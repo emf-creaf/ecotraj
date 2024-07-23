@@ -39,7 +39,18 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><h6 class="dropdown-header" data-toc-skip>Ecological Trajectory Analysis</h6></li>
+    <li><a class="dropdown-item" href="articles/IntroductionETA.html">Introduction to Ecological Trajectory Analysis (ETA)</a></li>
+    <li><a class="dropdown-item" href="articles/Transformation.html">Transformation of dissimilarities in community data</a></li>
+    <li><a class="dropdown-item" href="articles/SITA.html">Stable Isotope Trajectory Analysis (SITA)</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Ecological Quality Assessment</h6></li>
+    <li><a class="dropdown-item" href="articles/IntroductionEQA.html">Introduction to Ecological Quality Assessment (EQA)</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -79,6 +90,11 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"emf-creaf/ecotraj"</span><span class="op">)</span></span></code></pre></div>
 <p>Although the package comes with function documentation, articles explaining how to use the package can be found at <a href="https://emf-creaf.github.io/ecotraj/" class="uri">https://emf-creaf.github.io/ecotraj/</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="related-package">Related package<a class="anchor" aria-label="anchor" href="#related-package"></a>
+</h2>
+<p>Package <a href="https://mspinillos.github.io/ecoregime/" class="external-link"><strong>ecoregime</strong></a>, by Martina Sánchez-Pinillos, implements the Ecological Dynamic Regimes (EDR) framework to characterize and compare groups of ecological trajectories in multidimensional spaces defined by ecosystem state variables.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

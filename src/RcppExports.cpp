@@ -104,6 +104,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// distanceToClusters
+NumericMatrix distanceToClusters(NumericMatrix dmat, NumericMatrix umat);
+RcppExport SEXP _ecotraj_distanceToClusters(SEXP dmatSEXP, SEXP umatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type dmat(dmatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type umat(umatSEXP);
+    rcpp_result_gen = Rcpp::wrap(distanceToClusters(dmat, umat));
+    return rcpp_result_gen;
+END_RCPP
+}
+// distanceBetweenClusters
+NumericMatrix distanceBetweenClusters(NumericMatrix dmat, NumericMatrix umat);
+RcppExport SEXP _ecotraj_distanceBetweenClusters(SEXP dmatSEXP, SEXP umatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type dmat(dmatSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type umat(umatSEXP);
+    rcpp_result_gen = Rcpp::wrap(distanceBetweenClusters(dmat, umat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ecotraj_k2triangle", (DL_FUNC) &_ecotraj_k2triangle, 3},
@@ -113,6 +137,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ecotraj_angularAttributeConsecutive", (DL_FUNC) &_ecotraj_angularAttributeConsecutive, 4},
     {"_ecotraj_distanceToSegment", (DL_FUNC) &_ecotraj_distanceToSegment, 4},
     {"_ecotraj_twoSegmentDistance", (DL_FUNC) &_ecotraj_twoSegmentDistance, 3},
+    {"_ecotraj_distanceToClusters", (DL_FUNC) &_ecotraj_distanceToClusters, 2},
+    {"_ecotraj_distanceBetweenClusters", (DL_FUNC) &_ecotraj_distanceBetweenClusters, 2},
     {NULL, NULL, 0}
 };
 

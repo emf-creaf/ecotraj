@@ -73,4 +73,5 @@ reference:
   desc:  Utility functions for trajectory analysis
   contents:
   - starts_with("centerTrajectories")
+  - starts_with("trajectorySmoothing")
 

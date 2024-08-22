@@ -29,3 +29,11 @@
     .Call(`_ecotraj_twoSegmentDistance`, dmat12, type, add)
 }
 
+.distanceToClusters <- function(dmat, umat) {
+    .Call(`_ecotraj_distanceToClusters`, dmat, umat)
+}
+
+.distanceBetweenClusters <- function(dmat, umat) {
+    .Call(`_ecotraj_distanceBetweenClusters`, dmat, umat)
+}
+

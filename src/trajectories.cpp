@@ -174,6 +174,74 @@ double twoSegmentDistance(NumericMatrix dmat12, String type="directed-segment", 
 }
 
 
+//
+// Distances between points and arbitrary clusters 
+//
+// param dmat distance matrix (objects in rows and columns)
+// param umat membership matrix (objects in rows, clusters in columns)
+// [[Rcpp::export(".distanceToClusters")]]
+NumericMatrix distanceToClusters(NumericMatrix dmat, NumericMatrix umat) {
+  int N = dmat.nrow();
+  int K = umat.ncol();
+  NumericMatrix d2c(N,K);
+  for(int k=0;k<K;k++){
+    double cardinality = sum(umat(_,k));
+    double vg = 0.0;
+    for(int i1=0;i1<N;i1++) {
+      for(int i2=0;i2<N;i2++) {
+        vg += umat(i1,k)*umat(i2,k)*pow(dmat(i1,i2),2.0);
+      }
+    }
+    vg = vg/(2.0*pow(cardinality, 2.0));
+    for(int i1=0;i1<N;i1++) {
+      double sqd2c_i1 = 0.0;
+      for(int i2=0;i2<N;i2++) {
+        sqd2c_i1 += umat(i2,k)*pow(dmat(i1,i2),2.0);
+      }
+      d2c(i1,k) = sqrt(sqd2c_i1/cardinality);
+    }  
+  }
+  return(d2c);
+}
+
+//
+// Distances between arbitrary (fuzzy) clusters 
+//
+// param dmat distance matrix (objects in rows and columns)
+// param umat membership matrix (objects in rows, clusters in columns)
+// [[Rcpp::export(".distanceBetweenClusters")]]
+NumericMatrix distanceBetweenClusters(NumericMatrix dmat, NumericMatrix umat) {
+  int N = dmat.nrow();
+  int K = umat.ncol();
+  NumericVector card(K, 0.0);
+  NumericVector var(K, 0.0);
+  for(int k=0;k<K;k++){
+    card[k] = sum(umat(_,k));
+    double vg = 0.0;
+    for(int i1=0;i1<N;i1++) {
+      for(int i2=0;i2<N;i2++) {
+        vg += umat(i1,k)*umat(i2,k)*pow(dmat(i1,i2),2.0);
+      }
+    }
+    var[k] = vg/(2.0*pow(card[k], 2.0));
+  }
+  NumericMatrix dbc(K,K);
+  for(int k1=0;k1<K;k1++){
+    dbc(k1, k1) = 0.0;
+    for(int k2=0;k2<k1;k2++){
+      double cd = 0.0;
+      for(int i1=0;i1<N;i1++) {
+        for(int i2=0;i2<N;i2++) {
+          cd += umat(i1,k1)*pow(dmat(i1,i2),2.0)*umat(i2,k2);
+        }
+      }
+      dbc(k1,k2) = sqrt((cd/(card[k1]*card[k2])) - var[k1] - var[k2]);
+      dbc(k2,k1) = dbc(k1,k2);
+    }  
+  }
+  return(dbc);
+}
+
 // NOT PRESENTLY USED
 double pt(double dIT, double dXT, double dPX, double dPI) {
   if(dPI==0) return(dIT);

@@ -391,11 +391,16 @@ Distances between trajectories can be calculated after centering them (i.e. afte
 
 ### 3.4 Smoothing noisy trajectories
 
-Although trajectories in this data set are not particularly noisy, package `ecotraj` incldues a function that allows smoothing out trajectory noise. This is done by applying a smoothing kernel over each trajectory, which turns consecutive ecosystem states more similar. Function `trajectorySmoothing()` performs the smoothing operation and returns a modified distance matrix:
+Although trajectories in this data set are not particularly noisy, package `ecotraj` includes function `trajectorySmoothing()` to smooth out noise from trajectories. This is done by applying a Gaussian kernel over each trajectory:
+\begin{equation}
+K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
+\end{equation}
+where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecosystem observations. The kernel application turns consecutive ecosystem states more similar. 
+
+Function `trajectorySmoothing()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
 
 ```{r trajectory_smooth}
-avoca_D_man_smooth <- trajectorySmoothing(avoca_D_man, avoca_sites, avoca_surveys,
-                                          kernel_scale = 2)
+avoca_D_man_smooth <- trajectorySmoothing(avoca_D_man, avoca_sites, avoca_surveys)
 ```
 
 The following figure illustrates the effect of smoothing:

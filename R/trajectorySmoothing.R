@@ -49,7 +49,8 @@ trajectorySmoothing<-function(d, sites, surveys = NULL, survey_times = NULL, ker
           if(!is.null(survey_times)) {
             x2 <- survey_times[x2]
           }
-          umat_smooth[i1, i2] <- exp(-1*((x1-x2)^2)/kernel_scale)
+          # Gaussian kernel
+          umat_smooth[i1, i2] <- exp(-1*((x1-x2)^2)/(2*(kernel_scale^2)))
         }
       }
       # Normalize to one

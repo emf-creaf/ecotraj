@@ -784,14 +784,27 @@ example.</p>
 <h3 id="smoothing-noisy-trajectories">3.4 Smoothing noisy trajectories<a class="anchor" aria-label="anchor" href="#smoothing-noisy-trajectories"></a>
 </h3>
 <p>Although trajectories in this data set are not particularly noisy,
-package <code>ecotraj</code> incldues a function that allows smoothing
-out trajectory noise. This is done by applying a smoothing kernel over
-each trajectory, which turns consecutive ecosystem states more similar.
-Function <code><a href="../reference/trajectorySmoothing.html">trajectorySmoothing()</a></code> performs the smoothing
-operation and returns a modified distance matrix:</p>
+package <code>ecotraj</code> includes function
+<code><a href="../reference/trajectorySmoothing.html">trajectorySmoothing()</a></code> to smooth out noise from
+trajectories. This is done by applying a Gaussian kernel over each
+trajectory:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mrow><mn>2</mn><mo>⋅</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
+K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
+\end{equation}</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+is the survey time of the target location,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>r</mi></msub><annotation encoding="application/x-tex">x_r</annotation></semantics></math>
+is the survey time of one the original points and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
+is the kernel scale. Kernel values are normalized to one and they are
+used to determine (implicitly) the new coordinates of ecosystem
+observations. The kernel application turns consecutive ecosystem states
+more similar.</p>
+<p>Function <code><a href="../reference/trajectorySmoothing.html">trajectorySmoothing()</a></code> performs the smoothing
+operation and returns a modified distance matrix describing distances
+between ecosystem states:</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">avoca_D_man_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectorySmoothing.html">trajectorySmoothing</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,</span>
-<span>                                          kernel_scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">avoca_D_man_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectorySmoothing.html">trajectorySmoothing</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span></span></code></pre></div>
 <p>The following figure illustrates the effect of smoothing:</p>
 <p><img src="IntroductionETA_files/figure-html/trajectory_smooth_plot-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Trajectory smoothing logically alters several trajectory metrics. In

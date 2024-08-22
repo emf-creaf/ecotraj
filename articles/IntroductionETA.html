@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
     <li><a class="dropdown-item" href="../articles/IntroductionEQA.html">Introduction to Ecological Quality Assessment (EQA)</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -70,7 +71,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2024-07-23</h4>
+            <h4 data-toc-skip class="date">2024-08-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionETA.Rmd" class="external-link"><code>vignettes/IntroductionETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionETA.Rmd</code></div>
@@ -778,6 +779,42 @@ where one wants to focus on spatio-temporal interaction while discarding
 spatial patterns that are constant in time. We do no illustrate
 centering here, because in is not interesting for this particular
 example.</p>
+</div>
+<div class="section level3">
+<h3 id="smoothing-noisy-trajectories">3.4 Smoothing noisy trajectories<a class="anchor" aria-label="anchor" href="#smoothing-noisy-trajectories"></a>
+</h3>
+<p>Although trajectories in this data set are not particularly noisy,
+package <code>ecotraj</code> incldues a function that allows smoothing
+out trajectory noise. This is done by applying a smoothing kernel over
+each trajectory, which turns consecutive ecosystem states more similar.
+Function <code><a href="../reference/trajectorySmoothing.html">trajectorySmoothing()</a></code> performs the smoothing
+operation and returns a modified distance matrix:</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avoca_D_man_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectorySmoothing.html">trajectorySmoothing</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,</span>
+<span>                                          kernel_scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p>The following figure illustrates the effect of smoothing:</p>
+<p><img src="IntroductionETA_files/figure-html/trajectory_smooth_plot-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>Trajectory smoothing logically alters several trajectory metrics. In
+particular, overall trajectory length is reduced:</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Trajectory</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 10.336602  8.848673  8.272077 14.124698  7.558909 10.777816  8.113223</span></span>
+<span><span class="co">## [8] 10.681940</span></span></code></pre>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">avoca_D_man_smooth</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span><span class="op">$</span><span class="va">Trajectory</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1]  6.776356  7.601166  6.792566 11.049763  5.741160  8.884752  6.351899</span></span>
+<span><span class="co">## [8]  7.884819</span></span></code></pre>
+<p>while trajectory directionality is increased:</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">avoca_D_man</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         1         2         3         4         5         6         7         8 </span></span>
+<span><span class="co">## 0.6781369 0.6736490 0.8651467 0.5122482 0.6677116 0.7058465 0.7391775 0.5254225</span></span></code></pre>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">avoca_D_man_smooth</span>, <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         1         2         3         4         5         6         7         8 </span></span>
+<span><span class="co">## 0.8043023 0.7034985 0.9107370 0.5753210 0.7545522 0.7586568 0.8084251 0.6322645</span></span></code></pre>
+<p>Whether these effects are desirable or not, will depend on the
+application.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

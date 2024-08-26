@@ -55,12 +55,13 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 <span>  <span class="va">d</span>,</span>
 <span>  <span class="va">sites</span>,</span>
 <span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  envelope <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nboot.ci <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha.ci <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">stateEnvelopeVariability</span><span class="op">(</span><span class="va">d</span>, nboot.ci <span class="op">=</span> <span class="cn">NULL</span>, alpha.ci <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="fu">stateEnvelopeVariability</span><span class="op">(</span><span class="va">d</span>, envelope <span class="op">=</span> <span class="cn">NULL</span>, nboot.ci <span class="op">=</span> <span class="cn">NULL</span>, alpha.ci <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">compareToTrajectoryEnvelope</span><span class="op">(</span></span>
 <span>  <span class="va">d</span>,</span>
@@ -103,6 +104,10 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 <dd><p>A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).</p></dd>
 
 
+<dt id="arg-envelope">envelope<a class="anchor" aria-label="anchor" href="#arg-envelope"></a></dt>
+<dd><p>A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)</p></dd>
+
+
 <dt id="arg-nboot-ci">nboot.ci<a class="anchor" aria-label="anchor" href="#arg-nboot-ci"></a></dt>
 <dd><p>Number of bootstrap samples for confidence intervals. If nboot.ci = NULL then confidence intervals are not estimated.</p></dd>
 
@@ -113,10 +118,6 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional parameters for function <code><a href="trajectorymetrics.html">trajectoryDistances</a></code></p></dd>
-
-
-<dt id="arg-envelope">envelope<a class="anchor" aria-label="anchor" href="#arg-envelope"></a></dt>
-<dd><p>A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)</p></dd>
 
 
 <dt id="arg-m">m<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
@@ -179,28 +180,28 @@ the quality of ecosystems and their dynamics with respect to reference condition
 <span class="r-in"><span><span class="fu">compareToStateEnvelope</span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Observation Envelope          Q</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           1A     TRUE 1.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           1B     TRUE 0.76613763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           1C     TRUE 0.57229876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           1B     TRUE 0.81060634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           1C     TRUE 0.56214189</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           5A     TRUE 1.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           13     TRUE 0.81917760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6            2    FALSE 0.58055183</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7           3A    FALSE 0.43311585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           13     TRUE 0.88208650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6            2    FALSE 0.57224382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           3A    FALSE 0.39919080</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8           3B    FALSE 1.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9           3C    FALSE 0.45442188</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10          5B    FALSE 0.33022033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11          6A    FALSE 0.05927157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12          6C    FALSE 0.38424518</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13          6D    FALSE 0.04056616</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14          7A    FALSE 0.06641490</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15          8A    FALSE 0.18922894</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          8B    FALSE 0.14419258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17          8C    FALSE 0.02968524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18           9    FALSE 0.12972756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19          10    FALSE 0.76985523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20          11    FALSE 0.57670446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           3C    FALSE 0.42318855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          5B    FALSE 0.28846018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          6A    FALSE 0.04261028</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12          6C    FALSE 0.34551240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13          6D    FALSE 0.02853182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14          7A    FALSE 0.04810891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15          8A    FALSE 0.15160202</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          8B    FALSE 0.11181164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17          8C    FALSE 0.02057370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18           9    FALSE 0.09946578</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19          10    FALSE 0.81557507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          11    FALSE 0.56752876</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21          12    FALSE 1.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22         14A    FALSE 0.65528979</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23         14B    FALSE 0.13022565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22         14A    FALSE 0.66577245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23         14B    FALSE 0.09988729</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

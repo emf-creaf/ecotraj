@@ -2,11 +2,12 @@ Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
 Version: 0.2.0
-Date: 2024-08-22
+Date: 2024-08-23
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
-	person('Anthony', 'Sturbois', role = 'aut'))
+	person('Anthony', 'Sturbois', role = 'aut'),
+	person('Javier', 'De la Casa', role = 'ctb'))
 Description: Assists ecologists in the analysis of temporal changes of 
     ecosystems, defined as trajectories on a chosen multivariate space, by providing a set of 
     trajectory metrics and visual representations [De Caceres et al. (2019) <doi:10.1002/ecm.1350>; 
@@ -14,7 +15,7 @@ Description: Assists ecologists in the analysis of temporal changes of
     to estimate metrics for individual trajectories (length, directionality, angles, ...) as well as
     metrics to relate pairs of trajectories (dissimilarity and convergence). Functions are also
     provided to estimate the ecological quality of ecosystem with respect to reference conditions 
-    [Sturbois et al. (2023) ].
+    [Sturbois et al. (2023)  <doi:10.1002/ecs2.4726>].
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
 Imports: Kendall, MASS
 LinkingTo: Rcpp

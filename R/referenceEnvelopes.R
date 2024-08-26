@@ -1,12 +1,12 @@
 .trajectoryEnvelopeVar<-function(d, sites, surveys, ...){
   D_T <- trajectoryDistances(d = d, sites = sites, surveys = surveys, ...)
   r <- ncol(as.matrix(D_T))
-  return(sum(as.vector(D_T)^2)/(r*(r-1)))
+  return(sum(as.vector(as.dist(D_T))^2)/(r^2))
 }
 
 .stateEnvelopeVar <-function(d){
   r <- ncol(as.matrix(d))
-  return(sum(as.vector(d)^2)/(r*(r-1)))
+  return(sum(as.vector(as.dist(d))^2)/(r^2))
 }
 # Generates a bootstrap sample of the envelope variability
 .bootstrapSamples<-function(ind, nboot) {
@@ -76,9 +76,16 @@
 #' compareToStateEnvelope(glomel_bc, glomel_env)
 #'
 #' @export
-trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
+trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, envelope = NULL, nboot.ci = NULL, alpha.ci = 0.05, ...){
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  if(!is.null(envelope)) {
+    d <- as.dist(as.matrix(d)[sites %in% envelope, sites %in% envelope])
+    if(!is.null(surveys)) surveys <- surveys[sites %in% envelope]
+    sites <- sites[sites %in% envelope]
+  } else {
+    d <- as.dist(d)
+  }
   if(is.null(nboot.ci)){
     return(.trajectoryEnvelopeVar(d = d, sites = sites, surveys = surveys, ...))
   } else {
@@ -115,7 +122,12 @@ trajectoryEnvelopeVariability<-function(d, sites, surveys = NULL, nboot.ci = NUL
 
 #' @rdname referenceEnvelopes
 #' @export
-stateEnvelopeVariability<-function(d, nboot.ci = NULL, alpha.ci = 0.05){
+stateEnvelopeVariability<-function(d, envelope = NULL, nboot.ci = NULL, alpha.ci = 0.05){
+  if(!is.null(envelope)) {
+    d <- as.dist(as.matrix(d)[envelope, envelope])
+  } else {
+    d <- as.dist(d)
+  }
   if(is.null(nboot.ci)){
     return(.stateEnvelopeVar(d = d))
   } else {
@@ -160,13 +172,13 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
   sites_T <- colnames(as.matrix(D_T))
   sel_T_env <- sites_T %in% envelope
   D_T_env <- as.dist(as.matrix(D_T)[sel_T_env, sel_T_env])
-  var_env <- sum(as.vector(D_T_env)^2)/(r*(r-1))
+  var_env <- sum(as.vector(as.dist(D_T_env))^2)/(r^2)
   
   D2E <- numeric(length(unique_sites))
   is_env <- unique_sites %in% envelope 
   for(i in 1:length(unique_sites)) {
     D_T_i <- as.vector(as.matrix(D_T)[sites_T == unique_sites[i], sel_T_env])
-    D2E[i] <- sum(D_T_i^2)/r - 0.5*var_env
+    D2E[i] <- sum(D_T_i^2)/r - var_env
   }
   Perc <- numeric(length(unique_sites))
   for(i in 1:length(unique_sites)) {
@@ -199,7 +211,7 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5,
     D2E <- numeric(length(obs))
     for(i in 1:length(obs)) {
       d_i <- as.vector(as.matrix(d)[obs == obs[i], sel_env])
-      D2E[i] <- sum(d_i^2)/length(d_i) - 0.5*var_env
+      D2E[i] <- sum(d_i^2)/length(d_i) - var_env
     }
     Perc <- numeric(length(obs))
     for(i in 1:length(obs)) {
@@ -227,10 +239,10 @@ compareToStateEnvelope<-function(d, envelope, m = 1.5,
     }
     for(i in 1:length(obs)) {
       d_i <- as.vector(as.matrix(d)[i, which(sel_env)])
-      D2E[i] <- sum(d_i^2)/length(d_i) - 0.5*var_env
+      D2E[i] <- sum(d_i^2)/length(d_i) - var_env
       for(j in 1:nboot.ci) {
         d_i_boot <-  as.vector(as.matrix(d)[i, bsm[j,]])
-        D2E_i_boot[j] <- sum(d_i_boot^2)/length(d_i_boot) - 0.5*var_env_boot[j]
+        D2E_i_boot[j] <- sum(d_i_boot^2)/length(d_i_boot) - var_env_boot[j]
       }
       Q_i_boot <- pmin(1.0, 2.0/(1.0 + (D2E_i_boot/var_env_boot)^(1/(m-1)))) 
       Q_i_boot[D2E_i_boot==0] <- 1.0

@@ -23,5 +23,8 @@ Useful links: \itemize{ \item{
 Authors: \itemize{
 \item{ Anthony Sturbois}
 }
+Contributors: \itemize{
+\item{ Javier De la Casa}
+}
 }
 \keyword{internal}

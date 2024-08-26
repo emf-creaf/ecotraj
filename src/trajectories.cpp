@@ -175,7 +175,7 @@ double twoSegmentDistance(NumericMatrix dmat12, String type="directed-segment", 
 
 
 //
-// Distances between points and arbitrary clusters 
+// Distances between points and arbitrary fuzzy clusters 
 //
 // param dmat distance matrix (objects in rows and columns)
 // param umat membership matrix (objects in rows, clusters in columns)
@@ -198,7 +198,7 @@ NumericMatrix distanceToClusters(NumericMatrix dmat, NumericMatrix umat) {
       for(int i2=0;i2<N;i2++) {
         sqd2c_i1 += umat(i2,k)*pow(dmat(i1,i2),2.0);
       }
-      d2c(i1,k) = sqrt(sqd2c_i1/cardinality);
+      d2c(i1,k) = sqrt(sqd2c_i1/cardinality - vg);
     }  
   }
   return(d2c);

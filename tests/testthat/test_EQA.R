@@ -13,5 +13,8 @@ glomel_env <- glomel$ID[glomel$Ref]
 
 test_that("EQA can be performed",{
     # Assess quality with respect to reference envelope
-  expect_s3_class(compareToStateEnvelope(glomel_bc, glomel_env), "data.frame")
+  glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, distances_to_envelope = TRUE)
+  expect_s3_class(glomel_assess, "data.frame")
+  expect_equal(mean(glomel_assess$SquaredDist[glomel_assess$Envelope]),
+               stateEnvelopeVariability(glomel_bc, glomel_env))
 })

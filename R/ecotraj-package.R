@@ -12,7 +12,10 @@
 #' Authors: \itemize{
 #' \item{ Anthony Sturbois}
 #' }
-#' 
+#' Contributors: \itemize{
+#' \item{ Javier De la Casa}
+#' }
+#'  
 #' @seealso Useful links: \itemize{ \item{
 #' \url{https://emf-creaf.github.io/ecotraj/index.html}} }
 #'

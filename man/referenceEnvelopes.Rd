@@ -13,12 +13,13 @@ trajectoryEnvelopeVariability(
   d,
   sites,
   surveys = NULL,
+  envelope = NULL,
   nboot.ci = NULL,
   alpha.ci = 0.05,
   ...
 )
 
-stateEnvelopeVariability(d, nboot.ci = NULL, alpha.ci = 0.05)
+stateEnvelopeVariability(d, envelope = NULL, nboot.ci = NULL, alpha.ci = 0.05)
 
 compareToTrajectoryEnvelope(
   d,
@@ -51,13 +52,13 @@ compareToStateEnvelope(
 
 \item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 
+\item{envelope}{A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)}
+
 \item{nboot.ci}{Number of bootstrap samples for confidence intervals. If nboot.ci = NULL then confidence intervals are not estimated.}
 
 \item{alpha.ci}{Error in confidence intervals.}
 
 \item{...}{Additional parameters for function \code{\link{trajectoryDistances}}}
-
-\item{envelope}{A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)}
 
 \item{m}{Fuzziness exponent for quality value assessment}
 

@@ -18,13 +18,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. About this vignette
 
-This vignette present the ecological applications used by Sturbois et al. (under review) for the presentation of the Ecological Quality Assessment (EQA) framework. The vignette illustrates how to conduct an Ecological Quality Assessement through state-based and trajectory-based variants, and how to presentation the results graphically. The two data sets used in this vignette have been included in the **ecotraj** package for reproducibility.
+This vignette illustrates the ecological applications included in Sturbois et al. (2023) for the presentation of the Ecological Quality Assessment (EQA) framework. The vignette illustrates how to conduct an Ecological Quality Assessment through state-based and trajectory-based variants, and how to display the results graphically. The two data sets used in this vignette have been included in the **ecotraj** package for reproducibility.
 
 ## 2. Loading libraries
 
 First of all, we load the libraries required for the examples, including **ecotraj**:
 ```{r load libraries, echo = T}
-#loading libraries
 library(ecotraj)
 library(vegan)
 library(vegclust)
@@ -32,7 +31,6 @@ library(ape)
 library(ggplot2)
 library(reshape2)
 ```
-
 
 ## 3. Heathland conservation status in *Landes et Marais de Glomel*
 
@@ -49,8 +47,6 @@ data(glomel)
 head(glomel[,1:8])
 ```
 
-
-
 ### 3.3 Ecological Quality Assessment
 
 We first create a compositional data matrix, by extracting species data from the initial data table:
@@ -65,7 +61,7 @@ Using the compositional data, we can use function `vegdist()` from package **veg
 glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 ```
 
-The distance matrix `glomel_bc` defines the multivariate space that represents the ressemblance between ecological states. 
+The distance matrix `glomel_bc` defines the multivariate space that represents the resemblance between ecological states. 
 
 To conduct EQA, we also need to define the conservation targets. Column `Ref` in `glomel` identifies the stations considered as reference. We define the **state reference envelope** using reference station IDs as follows:
 ```{r, echo=T}
@@ -77,9 +73,21 @@ We are now ready to compare the assessed stations with respect to the state refe
 glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.7, distances_to_envelope = TRUE)
 head(glomel_assess)
 ```
-Function `compareToStateEnvelope` returns `SquaredDist`, the squared distance to the envelope centroid, and the `Q` statistic, which defines the quality of the tested stations and is comprised between 0 and 1. We can transform those values into a *qualitative* assessment using:
+Function `compareToStateEnvelope()` returns `SquaredDist`, the squared distance to the envelope's centroid. The squared distances to the envelope averaged over the reference points defines the variability of the envelope:
+
+```{r}
+mean(glomel_assess$SquaredDist[glomel_assess$Envelope])
+```
+
+This value should be equal to a call to function `stateEnvelopeVariability()` :
+
+```{r}
+stateEnvelopeVariability(glomel_bc, glomel_env)
+```
+
+Function `compareToStateEnvelope()` also returns the `Q` statistic, which defines the quality of the tested stations according to their resemblance to the set of stations used as reference. `Q` is comprised between 0 (lowest quality) and 1 (highest quality). We can transform `Q` values into a *qualitative* assessment using:
 ```{r, echo=T}
-glomel_assess$Status<-c(ifelse(glomel_assess$Q>=0.5,"Inside", "Oustside"))
+glomel_assess$Status<-c(ifelse(glomel_assess$Q>=0.5,"Inside", "Outside"))
 ```
 
 And the assessment for the 18 tested stations is:
@@ -171,7 +179,7 @@ Using the compositional data, we can use function `vegdist()` from package **veg
 ```{r, echo=T}
 grab_bc <- vegan::vegdist(grab_comp, method = "bray")
 ```
-Like in the first example, the distance matrix `grab_bc` defines the multivariate space that represents the ressemblance between ecological states of maerl beds. 
+Like in the first example, the distance matrix `grab_bc` defines the multivariate space that represents the resemblance between ecological states of maerl beds. 
 
 ### 4.4 State-based EQA
 
@@ -190,7 +198,13 @@ grab_assess <- compareToStateEnvelope(grab_bc, grab_env, m=1.5,
                                       distances_to_envelope = TRUE)
 ```
 
-As before we derive a qualitative assessment:
+We can again check that the average of squared distances in the envelope is equal to the envelope variability:
+```{r}
+mean(grab_assess$SquaredDist[grab_assess$Envelope])
+stateEnvelopeVariability(grab_bc, grab_env)
+```
+
+As before we derive a qualitative assessment from `Q` values:
 ```{r, echo=T}
 grab_assess$Status<-c(ifelse(grab_assess$Q>=0.5,"Inside", "Outside"))
 
@@ -201,11 +215,10 @@ grab_assess$Status<- factor(grab_assess$Status, levels = c("Reference","Inside",
 head(grab_assess)
 ```
 
-
-As before, we can represent the results of the state-based EQA on in the two first dimensions of a Principal Coordinates Analysis:
+We then represent the results of the state-based EQA on in the two first dimensions of a Principal Coordinates Analysis:
 ```{r, echo=TRUE, fig.width=7, fig.height=6}
 #Get coordinates of stations in the two first dimensions of the PCoA
-pcoa<-pcoa(grab_bc)
+pcoa<-ape::pcoa(grab_bc)
 PCOA_DIM1_2<-pcoa[["vectors"]][,1:2]
 grab_assess$Dim1<-PCOA_DIM1_2[,1]
 grab_assess$Dim2<-PCOA_DIM1_2[,2]
@@ -234,7 +247,6 @@ p<-p+ theme_minimal()+
 
 p
 ```
-
 
 Since we are dealing with temporal data, we can create a bar plot showing the evolution of the squared distance to the centroid of the state reference envelope during the study period for each treatment:
 ```{r, echo=TRUE, fig.width=7, fig.height=6}
@@ -306,6 +318,12 @@ grab_dynassess <- compareToTrajectoryEnvelope(grab_bc,Treatment, grab_dynenv,
                                               m=1.5, distances_to_envelope = TRUE)
 ```
 
+We can also check that the average of squared distances in the envelope is equal to the envelope variability:
+```{r}
+mean(grab_dynassess$SquaredDist[grab_dynassess$Envelope])
+trajectoryEnvelopeVariability(grab_bc, sites = Treatment, envelope = grab_dynenv)
+```
+
 As before, we can create a bar plot showing the squared distance to the centroid of the trajectory reference envelope during the study period for each treatment:
 ```{r, echo=T, fig.height=4, fig.width=7}
 grab_dynassess$Treatment<-factor(grab_dynassess$Site,c("CTRL1","CTRL2","CTRL3",
@@ -328,7 +346,7 @@ ggplot(grab_dynassess, aes(x=reorder(Treatment, SquaredDist),
 
 ## 5. References
 
-+ Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A., Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.
++ Sturbois, A., De Cáceres, M., Bifolchi, A., Bioret, F., Boyé, A., Gauthier, O., Grall, J., Grémare, A., Labrune, C., Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere 14, e4726. https://doi.org/10.1002/ecs2.4726
 
 + Tauran, A., Dubreuil, J., Guyonnet, B., Grall, J., 2020. Impact of fishing gears and fishing intensities on maerl beds: An experimental approach. Journal of Experimental Marine Biology and Ecology 533, 151472. https://doi.org/10.1016/j.jembe.2020.151472
 

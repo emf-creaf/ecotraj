@@ -69,8 +69,7 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 <span>  <span class="va">envelope</span>,</span>
 <span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  m <span class="op">=</span> <span class="fl">1.5</span>,</span>
-<span>  nboot.ci <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  alpha.ci <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  comparison_target <span class="op">=</span> <span class="st">"trajectories"</span>,</span>
 <span>  distances_to_envelope <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  distance_percentiles <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -122,6 +121,10 @@ target stations/observations with respect to reference envelopes (Sturbois et al
 
 <dt id="arg-m">m<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
 <dd><p>Fuzziness exponent for quality value assessment</p></dd>
+
+
+<dt id="arg-comparison-target">comparison_target<a class="anchor" aria-label="anchor" href="#arg-comparison-target"></a></dt>
+<dd><p>String indicating the component to be compared to the reference envelope. Either 'trajectories' (to compare complete trajectories) or 'states' (to compare individual trajectory states).</p></dd>
 
 
 <dt id="arg-distances-to-envelope">distances_to_envelope<a class="anchor" aria-label="anchor" href="#arg-distances-to-envelope"></a></dt>

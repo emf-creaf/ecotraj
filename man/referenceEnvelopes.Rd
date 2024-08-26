@@ -27,8 +27,7 @@ compareToTrajectoryEnvelope(
   envelope,
   surveys = NULL,
   m = 1.5,
-  nboot.ci = NULL,
-  alpha.ci = 0.05,
+  comparison_target = "trajectories",
   distances_to_envelope = FALSE,
   distance_percentiles = FALSE,
   ...
@@ -61,6 +60,8 @@ compareToStateEnvelope(
 \item{...}{Additional parameters for function \code{\link{trajectoryDistances}}}
 
 \item{m}{Fuzziness exponent for quality value assessment}
+
+\item{comparison_target}{String indicating the component to be compared to the reference envelope. Either 'trajectories' (to compare complete trajectories) or 'states' (to compare individual trajectory states).}
 
 \item{distances_to_envelope}{Flag to indicate that distances to envelope should be included in the result}
 

@@ -146,9 +146,10 @@ stateEnvelopeVariability<-function(d, envelope = NULL, nboot.ci = NULL, alpha.ci
 }
 
 #' @rdname referenceEnvelopes
+#' @param comparison_target String indicating the component to be compared to the reference envelope. Either 'trajectories' (to compare complete trajectories) or 'states' (to compare individual trajectory states).
 #' @export
 compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.5, 
-                            nboot.ci = NULL, alpha.ci = 0.05,
+                            comparison_target = "trajectories",
                             distances_to_envelope = FALSE,
                             distance_percentiles = FALSE, ...) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
@@ -158,7 +159,7 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
   unique_sites <- unique(sites) 
   non_envelope <- unique_sites[!(unique_sites %in% envelope)]
   if(length(non_envelope)==0) stop("At least one site must be outside the envelope")
-  
+  comparison_target <- match.arg(comparison_target, c("trajectories", "states"))
   nsites <- length(unique_sites)
   if(is.null(surveys)) {
     surveys <- numeric(0)
@@ -166,26 +167,44 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
       surveys<-c(surveys, 1:sum(sites==sites[i]))
     }
   }   
-  D_T <- trajectoryDistances(d = d, sites = sites, surveys = surveys, ...)
-
-  r <- length(envelope)
-  sites_T <- colnames(as.matrix(D_T))
-  sel_T_env <- sites_T %in% envelope
-  D_T_env <- as.dist(as.matrix(D_T)[sel_T_env, sel_T_env])
-  var_env <- sum(as.vector(as.dist(D_T_env))^2)/(r^2)
-  
-  D2E <- numeric(length(unique_sites))
-  is_env <- unique_sites %in% envelope 
-  for(i in 1:length(unique_sites)) {
-    D_T_i <- as.vector(as.matrix(D_T)[sites_T == unique_sites[i], sel_T_env])
-    D2E[i] <- sum(D_T_i^2)/r - var_env
+  if(comparison_target == "trajectories") {
+    
+    D_T <- trajectoryDistances(d = d, sites = sites, surveys = surveys, ...)
+    r <- length(envelope)
+    sites_T <- colnames(as.matrix(D_T))
+    sel_T_env <- sites_T %in% envelope
+    D_T_env <- as.dist(as.matrix(D_T)[sel_T_env, sel_T_env])
+    var_env <- sum(as.vector(as.dist(D_T_env))^2)/(r^2)
+    
+    D2E <- numeric(length(unique_sites))
+    is_env <- unique_sites %in% envelope 
+    for(i in 1:length(unique_sites)) {
+      D_T_i <- as.vector(as.matrix(D_T)[sites_T == unique_sites[i], sel_T_env])
+      D2E[i] <- sum(D_T_i^2)/r - var_env
+    }
+    Perc <- numeric(length(unique_sites))
+    for(i in 1:length(unique_sites)) {
+      Perc[i] <- 100*sum(D2E[is_env] <= D2E[i])/sum(is_env)
+    }
+    Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
+    res <- data.frame(Site = unique_sites, Envelope = is_env, SquaredDist = D2E, Percentiles = Perc, Q = Q)
+  } else {
+    var_env <- trajectoryEnvelopeVariability(d, sites, surveys, envelope)
+    d2T <- matrix(NA, nrow = length(sites), ncol = length(envelope))
+    for(j in 1:length(envelope)) {
+      tp <- trajectoryProjection(d, 1:length(sites), which(sites %in% envelope[j]))
+      d2T[,j] <- tp$distanceToTrajectory
+    }
+    # Squared distances to the centroid defined as 
+    D2E <- rowMeans(d2T^2) - var_env
+    is_env <- sites %in% envelope 
+    Perc <- numeric(length(sites))
+    for(i in 1:length(sites)) {
+      Perc[i] <- 100*sum(D2E[is_env] <= D2E[i])/sum(is_env)
+    }
+    Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
+    res <- data.frame(Site = sites, Surveys = surveys, Envelope = is_env, SquaredDist = D2E, Percentiles = Perc, Q = Q)
   }
-  Perc <- numeric(length(unique_sites))
-  for(i in 1:length(unique_sites)) {
-    Perc[i] <- 100*sum(D2E[is_env] <= D2E[i])/sum(is_env)
-  }
-  Q <- pmin(1.0, 2.0/(1.0 + (D2E/var_env)^(1/(m-1)))) 
-  res <- data.frame(Site = unique_sites, Envelope = is_env, SquaredDist = D2E, Percentiles = Perc, Q = Q)
   if(!distances_to_envelope) res$SquaredDist <- NULL
   if(!distance_percentiles) res$Percentiles <- NULL
   return(res)

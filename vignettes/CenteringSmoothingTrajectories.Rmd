@@ -1,0 +1,264 @@
+---
+title: "Centering and smoothing trajectories"
+author: "Miquel De Cáceres / Nicolas Djeghri"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Centering and smoothing trajectories}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+### 1.1 What is trajectory centering?
+
+Trajectory centering removes differences in (e.g. initial or overall) *position* between trajectories, without changing their shape, to focus on the direction of temporal changes. It is done using function `centerTrajectories()`. Trajectory centering will normally imply subtracting the coordinate values of the trajectory centroid from the states conforming each trajectory. However, one may decide that the original trajectory centers do not correspond to the centroid, but to a specific subset of states, for example the state corresponding to the first or last observation. In this cases, trajectories are shifted with respect to particular reference states. Trajectory centering is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. It can also be useful when trajectories are defined as subtrajectories of a trajectory with cyclical patterns.
+
+### 1.2 What is trajectory smoothing?
+
+Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `trajectorySmoothing()`.
+
+### 1.3 About this vignette
+
+In this vignette you will learn how to center trajectories, in different ways, using function `centerTrajectories()`, and how to perform trajectory smoothing using `trajectorySmoothing()`. 
+
+First of all, we load `ecotraj`:
+
+```{r load libraries, echo = T}
+library(ecotraj)
+```
+
+
+## 2. Trajectory centering
+### 2.1 Simple centering example
+
+We will employ the same simple example used in the introduction to trajectory analysis. Let us first define the vectors that describe the state of each site:
+```{r}
+sites = c(1,1,1,1,2,2,2,2,3,3,3,3)
+```
+We do not define `surveys`, so that they are assumed to be consecutive for the each site. However, we do define a matrix whose coordinates correspond to the set of ecosystem states observed. We assume that the ecosystem space $\Omega$ has two dimensions:
+```{r}
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:6,2] <- xy[1:2,2]
+xy[7,2]<-1.5
+xy[8,2]<-2.0
+xy[5:6,1] <- 0.25
+xy[7,1]<-0.5
+xy[8,1]<-1.0
+xy[9:10,1] <- xy[5:6,1]+0.25
+xy[11,1] <- 1.0
+xy[12,1] <-1.5
+xy[9:10,2] <- xy[5:6,2]
+xy[11:12,2]<-c(1.25,1.0)
+D = dist(xy)
+```
+
+The trajectories can be displayed using a PCoA on the distance matrix as follows:
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(D, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+Centering trajectories is straightforward using function `centerTrajectories()`, which requires a distance matrix and the vector grouping states into trajectories:
+
+```{r}
+Dcent <- centerTrajectories(D, sites)
+```
+
+The effect of centering can be shown by repeating PCoA on the centered distance matrix:
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(Dcent, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+Function `centerTrajectories()` operates on distance matrices, so that we are free to use arbitrary dissimilarity coefficients for resemblance between states. However, in this case we could have conducted the centering manually by substracting trajectory centroids. For that we build a matrix containing centroid coordinates, which are repeated for all states of each trajectory:
+```{r}
+m <- cbind(c(rep(mean(xy[1:4,1]),4), rep(mean(xy[5:8,1]),4), rep(mean(xy[9:12,1]),4)),
+                   c(rep(mean(xy[1:4,2]),4), rep(mean(xy[5:8,2]),4), rep(mean(xy[9:12,2]),4)))
+m
+```
+
+Centering operation is equal to the subtraction:
+```{r}
+xy_cent <- (xy - m)
+xy_cent
+```
+
+We can compare the equivalence of the two approaches using:
+```{r}
+max(as.matrix(Dcent) - as.matrix(dist(xy_cent)))
+```
+
+
+### 2.2 Trajectory centering excluding observations
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+ext <- c(3:4,7:8,11:12)
+Dcent_ext <- centerTrajectories(D, sites, 
+                                exclude = ext)
+trajectoryPCoA(Dcent_ext, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+
+```{r}
+sites = c(1,1,1,1,1,2,2,2,2,2)
+
+x <- c(rnorm(n=4, mean=5, sd =1), 14.5, rnorm(n=4, mean=15, sd =2), 27.5)
+y <- c(rnorm(n=4, mean=5, sd =1), -14.5, rnorm(n=4, mean=15, sd =2), 27.5)
+xy<-cbind(x,y)
+D = dist(xy)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPlot(xy, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+Dcent <- centerTrajectories(D, sites)
+trajectoryPCoA(Dcent, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+ext <- c(5,10)
+Dcent_ext <- centerTrajectories(D, sites, 
+                                exclude = ext)
+trajectoryPCoA(Dcent_ext, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+centroids <- cbind(c(rep(mean(x[1:4]),5), rep(mean(x[6:9]),5)),
+                   c(rep(mean(y[1:4]),5), rep(mean(y[6:9]),5)))
+trajectoryPlot(xy-centroids, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+
+```{r}
+D_centroids <- dist(xy-centroids)
+max(as.matrix(Dcent_ext) - as.matrix(D_centroids))
+```
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+ext <- c(1:4,6:9)
+Dcent_ext <- centerTrajectories(D, sites, 
+                                exclude = ext)
+trajectoryPCoA(Dcent_ext, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+### 2.3 Centering in a real example
+
+```{r}
+data("avoca")
+```
+
+
+```{r}
+avoca_D_man = vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites)
+trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+all_but_first <- 9:length(avoca_sites)
+avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites, 
+                                       exclude = all_but_first) 
+trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+all_but_last <- 1:(length(avoca_sites)-8)
+avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites, 
+                                       exclude = all_but_last) 
+trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+
+## 3 Smoothing trajectories
+
+### 3.1 Smoothing kernel
+
+Function `trajectorySmoothing()` smoothes out noise from trajectories by applying a Gaussian kernel over each trajectory:
+\begin{equation}
+K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
+\end{equation}
+where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecosystem observations. The kernel application turns consecutive ecosystem states more similar. 
+
+### 3.2 Smoothing effect
+
+Function `trajectorySmoothing()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
+
+```{r trajectory_smooth}
+avoca_D_man_smooth <- trajectorySmoothing(avoca_D_man, avoca_sites, avoca_surveys)
+```
+
+The following figure illustrates the effect of smoothing:
+
+```{r trajectory_smooth_plot, echo=F, warning = FALSE, fig.height=4, fig.width=8, fig.align = "center"}
+oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
+trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+title("Before smoothing")
+trajectoryPCoA(avoca_D_man_smooth,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+title("After smoothing")
+par(oldpar)
+```
+
+Trajectory smoothing logically alters several trajectory metrics. In particular, overall trajectory length is reduced:
+
+```{r trajectory_length_smooth, echo=T}
+trajectoryLengths(avoca_D_man, avoca_sites, avoca_surveys)$Trajectory
+trajectoryLengths(avoca_D_man_smooth, avoca_sites, avoca_surveys)$Trajectory
+```
+
+while trajectory directionality is increased:
+
+```{r trajectory_dir_smooth, echo=T}
+trajectoryDirectionality(avoca_D_man, avoca_sites, avoca_surveys)
+trajectoryDirectionality(avoca_D_man_smooth, avoca_sites, avoca_surveys)
+```
+
+Whether these effects are desirable or not, will depend on the application.

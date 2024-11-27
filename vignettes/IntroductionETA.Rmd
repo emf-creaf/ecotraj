@@ -387,49 +387,5 @@ text(x,y, labels=1:8, pos=1)
 par(oldpar)
 ```
 
-Distances between trajectories can be calculated after centering them (i.e. after bringing all trajectories to the center of the $\Omega$ space). This is done using function `centerTrajectories`, which returns a new dissimilarity matrix. Centering removes differences in *position* between trajectories, which is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. We do no illustrate centering here, because in is not interesting for this particular example.
+Distances between trajectories can be calculated after centering them (i.e. after bringing all trajectories to the center of the $\Omega$ space). This is done using function `centerTrajectories()`, which returns a new dissimilarity matrix and is illustrated in a different vignette. 
 
-### 3.4 Smoothing noisy trajectories
-
-Although trajectories in this data set are not particularly noisy, package `ecotraj` includes function `trajectorySmoothing()` to smooth out noise from trajectories. This is done by applying a Gaussian kernel over each trajectory:
-\begin{equation}
-K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
-\end{equation}
-where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecosystem observations. The kernel application turns consecutive ecosystem states more similar. 
-
-Function `trajectorySmoothing()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
-
-```{r trajectory_smooth}
-avoca_D_man_smooth <- trajectorySmoothing(avoca_D_man, avoca_sites, avoca_surveys)
-```
-
-The following figure illustrates the effect of smoothing:
-
-```{r trajectory_smooth_plot, echo=F, warning = FALSE, fig.height=4, fig.width=8, fig.align = "center"}
-oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
-trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
-               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
-               axes=c(1,2), length=0.1, lwd=2)
-title("Before smoothing")
-trajectoryPCoA(avoca_D_man_smooth,  avoca_sites, avoca_surveys,
-               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
-               axes=c(1,2), length=0.1, lwd=2)
-title("After smoothing")
-par(oldpar)
-```
-
-Trajectory smoothing logically alters several trajectory metrics. In particular, overall trajectory length is reduced:
-
-```{r trajectory_length_smooth, echo=T}
-trajectoryLengths(avoca_D_man, avoca_sites, avoca_surveys)$Trajectory
-trajectoryLengths(avoca_D_man_smooth, avoca_sites, avoca_surveys)$Trajectory
-```
-
-while trajectory directionality is increased:
-
-```{r trajectory_dir_smooth, echo=T}
-trajectoryDirectionality(avoca_D_man, avoca_sites, avoca_surveys)
-trajectoryDirectionality(avoca_D_man_smooth, avoca_sites, avoca_surveys)
-```
-
-Whether these effects are desirable or not, will depend on the application.

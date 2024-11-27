@@ -93,12 +93,10 @@ centerTrajectories<-function(d, sites, exclude = integer(0), verbose = FALSE) {
       s <- sites[exclude[i]]
       non_exclude <- which(sites==s)
       non_exclude <- non_exclude[non_exclude!=exclude[i]]
-      H[,exclude[i]] <- H[,non_exclude[1]]
-      # H[exclude[i],] <- H[non_exclude[1],]
-      # H[exclude[i],exclude[i]] <- 0 # H[non_exclude[1],non_exclude[1]]
+      H[,exclude[i]] <- H[,non_exclude[1]] # Copies values for centroid removal
     }
   }
-  #Residual G matrix
+  #Residual G matrix (when there are no excluded sites, the H matrix is symmetrical)
   R <- (I-t(H))%*%G%*%(I-H)
   #Backtransform to distances
   dcent<-matrix(0,n,n)

@@ -10,7 +10,7 @@
 \usage{
 trajectorySelection(d, sites, selection)
 
-centerTrajectories(d, sites, verbose = FALSE)
+centerTrajectories(d, sites, exclude = integer(0), verbose = FALSE)
 
 is.metric(d, tol = 1e-04)
 }
@@ -20,6 +20,8 @@ is.metric(d, tol = 1e-04)
 \item{sites}{A vector indicating the site corresponding to each ecosystem state.}
 
 \item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
+
+\item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation}
 
 \item{verbose}{Provides console output informing about process (useful for large dataset).}
 

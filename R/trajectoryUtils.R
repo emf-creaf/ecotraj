@@ -53,10 +53,21 @@ trajectorySelection<-function(d, sites, selection) {
 
 
 #' @rdname trajectoryutils
+#' @param exclude An integer vector indicating sites that are excluded from trajectory centroid computation
 #' @export
-centerTrajectories<-function(d, sites, verbose = FALSE) {
+centerTrajectories<-function(d, sites, exclude = integer(0), verbose = FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
-
+  if(length(exclude)>0) {
+    if(!is.numeric(exclude)) stop("`exclude` needs to be an integer vector")
+    exclude <- as.integer(exclude)
+    if(max(exclude)>length(sites)) stop("`exclude` contains values outside range")
+    if(min(exclude)<1) stop("`exclude` contains values outside range")
+    s_non_excluded <- sites[-exclude] 
+    for(s in unique(sites)) {
+      if(sum(s_non_excluded==s)==0) stop("`exclude` cannot include all sites of a trajectory")
+    }
+  }
+  
   Dmat <-as.matrix(d)
   
   # Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
@@ -72,10 +83,23 @@ centerTrajectories<-function(d, sites, verbose = FALSE) {
   #model matrix
   df <- data.frame(a = factor(sites))
   M <- model.matrix(~a,df, contrasts = list(a = "contr.helmert"))
+  if(length(exclude)>0) M[exclude,] <- 0
   #Projection matrix
   H <- M%*%MASS::ginv(t(M)%*%M)%*%t(M)
+  if(length(exclude)>0) {
+    non_exclude <- (1:length(sites))[-exclude]
+    #Copy projection values from non-excluded site of the trajectory that the external site belongs to
+    for(i in 1:length(exclude)) {
+      s <- sites[exclude[i]]
+      non_exclude <- which(sites==s)
+      non_exclude <- non_exclude[non_exclude!=exclude[i]]
+      H[,exclude[i]] <- H[,non_exclude[1]]
+      # H[exclude[i],] <- H[non_exclude[1],]
+      # H[exclude[i],exclude[i]] <- 0 # H[non_exclude[1],non_exclude[1]]
+    }
+  }
   #Residual G matrix
-  R <- (I-H)%*%G%*%(I-H)
+  R <- (I-t(H))%*%G%*%(I-H)
   #Backtransform to distances
   dcent<-matrix(0,n,n)
   for(i in 1:n) {

@@ -1,12 +1,13 @@
 Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
-Version: 0.2.0
-Date: 2024-08-23
+Version: 0.2.1
+Date: 2024-11-27
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
 	person('Anthony', 'Sturbois', role = 'aut'),
+	person('Nicolas', 'Djeghri', role = 'aut'),
 	person('Javier', 'De la Casa', role = 'ctb'))
 Description: Assists ecologists in the analysis of temporal changes of 
     ecosystems, defined as trajectories on a chosen multivariate space, by providing a set of 

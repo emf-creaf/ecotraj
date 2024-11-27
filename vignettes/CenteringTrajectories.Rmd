@@ -1,0 +1,113 @@
+---
+title: "Centering trajectories"
+author: "Miquel De Cáceres / Nicolas Djeghri"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Centering trajectories}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+### 1.1 Why centering trajectories?
+
+
+### 1.2 About this vignette
+
+In this vignette you will learn how to center trajectories in different ways. 
+
+First of all, we load `ecotraj`:
+
+```{r load libraries, echo = T}
+library(ecotraj)
+```
+
+
+## 2. Simple example
+
+```{r}
+sites = c(1,1,1,1,1,2,2,2,2,2)
+
+x <- c(rnorm(n=4, mean=5, sd =1), 14.5, rnorm(n=4, mean=15, sd =2), 27.5)
+y <- c(rnorm(n=4, mean=5, sd =1), -14.5, rnorm(n=4, mean=15, sd =2), 27.5)
+xy<-cbind(x,y)
+D = dist(xy)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPlot(xy, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+Dcent <- centerTrajectories(D, sites)
+trajectoryPCoA(Dcent, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+ext <- c(5,10)
+Dcent_ext <- centerTrajectories(D, sites, 
+                                exclude = ext)
+trajectoryPCoA(Dcent_ext, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+centroids <- cbind(c(rep(mean(x[1:4]),5), rep(mean(x[6:9]),5)),
+                   c(rep(mean(y[1:4]),5), rep(mean(y[6:9]),5)))
+trajectoryPlot(xy-centroids, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+
+```{r}
+D_centroids <- dist(xy-centroids)
+max(as.matrix(Dcent_ext) - as.matrix(D_centroids))
+```
+
+## 3. Centering Avoca trajectories
+
+```{r}
+data("avoca")
+```
+
+
+```{r}
+avoca_D_man = vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites)
+trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```
+
+
+```{r, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+all_but_first <- 9:length(avoca_sites)
+avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites, 
+                                       exclude = all_but_first) 
+trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+```

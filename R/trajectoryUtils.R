@@ -91,9 +91,8 @@ centerTrajectories<-function(d, sites, exclude = integer(0), verbose = FALSE) {
     #Copy projection values from non-excluded site of the trajectory that the external site belongs to
     for(i in 1:length(exclude)) {
       s <- sites[exclude[i]]
-      non_exclude <- which(sites==s)
-      non_exclude <- non_exclude[non_exclude!=exclude[i]]
-      H[,exclude[i]] <- H[,non_exclude[1]] # Copies values for centroid removal
+      copy_from <- which((sites==s)&((1:n)%in%non_exclude))[1]
+      H[,exclude[i]] <- H[,copy_from] # Copies values for centroid removal
     }
   }
   #Residual G matrix (when there are no excluded sites, the H matrix is symmetrical)

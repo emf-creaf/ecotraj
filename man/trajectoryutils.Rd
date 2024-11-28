@@ -6,9 +6,19 @@
 \alias{trajectorySelection}
 \alias{centerTrajectories}
 \alias{is.metric}
+\alias{trajectorySmoothing}
 \title{Utility functions for Ecological Trajectory Analysis}
 \usage{
 trajectorySelection(d, sites, selection)
+
+trajectorySmoothing(
+  d,
+  sites,
+  surveys = NULL,
+  survey_times = NULL,
+  kernel_scale = 1,
+  fixed_endpoints = TRUE
+)
 
 centerTrajectories(d, sites, exclude = integer(0), verbose = FALSE)
 
@@ -21,6 +31,14 @@ is.metric(d, tol = 1e-04)
 
 \item{selection}{A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.}
 
+\item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
+
+\item{survey_times}{A vector indicating the survey time for all surveys (if \code{NULL}, time between consecutive surveys is considered to be one)}
+
+\item{kernel_scale}{Scale of the Gaussian kernel, related to survey times}
+
+\item{fixed_endpoints}{A logical flag to force keeping the location of trajectory endpoints unmodified}
+
 \item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation}
 
 \item{verbose}{Provides console output informing about process (useful for large dataset).}
@@ -28,12 +46,13 @@ is.metric(d, tol = 1e-04)
 \item{tol}{Tolerance value for metricity}
 }
 \value{
-Function \code{centerTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
+Function \code{centerTrajectories}, \code{trajectorySmoothing} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
 }
 \description{
 The set following set of utility functions are provided:
 \itemize{
 \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
+\item{Function \code{trajectorySmoothing} performs trajectory smoothing using a Gaussian kernel.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
 \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
 }
@@ -52,4 +71,6 @@ Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wi
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF
+
+Nicolas Djeghri, UBO
 }

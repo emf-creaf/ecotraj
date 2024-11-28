@@ -10,7 +10,7 @@
 #' \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-#' \item{Function \code{trajectoryProjection} projects a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
+#' \item{Function \code{trajectoryProjection} performs an orthogonal projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 #' \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 #' }
@@ -86,7 +86,8 @@
 #' \itemize{
 #'   \item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection (\code{NA} for target points whose projection is outside the trajectory).}
 #'   \item{\code{segment}: Segment that includes the projected point (\code{NA} for target points whose projection is outside the trajectory).}
-#'   \item{\code{relativePosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing the end (\code{NA} for target points whose projection is outside the trajectory).}
+#'   \item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
+#'   \item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
 #' }
 #' 
 #' Function \code{trajectoryConvergence} returns a list with two elements:
@@ -821,6 +822,7 @@ trajectoryAngles2D<-function(xy,sites,surveys,relativeToInitial=FALSE, betweenSe
 #' @export
 trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {
   if(length(trajectory)<2) stop("Trajectory needs to include at least two states")
+  if(length(trajectory)!=length(unique(trajectory))) stop("Trajectory states must be different")
   dmat = as.matrix(d)
   npoints = length(target)
   nsteps = length(trajectory) -1
@@ -842,7 +844,8 @@ trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) 
   projA2 = matrix(NA, nrow=npoints, ncol = nsteps)
   whichstep = rep(NA, npoints)
   dgrad = rep(NA, npoints)
-  posgrad = rep(NA, npoints)
+  posgradseg = rep(NA, npoints)
+  posgradtraj = rep(NA, npoints)
   
   for(i in 1:npoints) {
     for(j in 1:nsteps) {
@@ -854,20 +857,22 @@ trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) 
         if(is.na(dgrad[i])) {
           dgrad[i] = p[3]
           whichstep[i] = j
+          posgradseg[i] = p[1]/dsteps[j]
         } else {
           if(p[3]<dgrad[i]) {
             dgrad[i] = p[3]
             whichstep[i] = j
+            posgradseg[i] = p[1]/dsteps[j]
           }
         }
       }
     }
     if(!is.na(whichstep[i])) {
       dg = dstepcum[whichstep[i]]+projA1[i,whichstep[i]]
-      posgrad[i] = dg/sum(dsteps)
+      posgradtraj[i] = dg/sum(dsteps)
     }
   }
-  res = data.frame(distanceToTrajectory=dgrad, segment = whichstep, relativePosition = posgrad)
+  res = data.frame(distanceToTrajectory=dgrad, segment = whichstep, relativeSegmentPosition = posgradseg, relativeTrajectoryPosition = posgradtraj)
   row.names(res)<-row.names(d2ref)
   return(res)
 }

@@ -8,7 +8,6 @@
 #' BuildTrajectorySections
 #' BuildCycles
 
-
 # InterpolateEcolStates: Function for interpolating ecological states:-------------------
 #I think of this one more as something internal to the package, not normally advertised to the user
 #MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED, OTHERWISE I DON'T KNOW TOO MUCH...
@@ -48,19 +47,6 @@ InterpolateEcolStates <- function(d,ToInterpolate)
   dInt=as.dist(dInt)
   return(dInt)
 }
-
-#Little test:
-As=c(1,3,5)
-Bs=c(2,4,6)
-Ints=c(0.5,0.7,0.2)
-MatrixTest=cbind(As,Bs,Ints)
-
-Newdists=InterpolateEcolStates(ToyDist,MatrixTest)
-
-pcoa=pcoa(Newdists)
-
-plot(pcoa$vectors,las=1,col=c("red","red","blue","blue","green3","green3","black","black","black","black","red","blue","green3"),pch=c(16,16,16,16,16,16,1,1,1,1,17,17,17))
-text(pcoa$vectors,rownames(pcoa$vectors),pos=1)
 
 
 # BuildTrajectorySections: Function to generate trajectory sections-----------------------
@@ -188,7 +174,7 @@ BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend
 #
 #Uses: BuildTrajectorySections
 
-BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEcolStates=0)
+BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEcolStates=3)
 {
   if (any((times%%DurC)-(dates%%DurC)!=0))
     stop("provided times and dates are not compatible given cycle duration DurC")
@@ -245,5 +231,17 @@ BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEco
   
   #Now feed this into BuildTrajectorySections
   output=BuildTrajectorySections(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=namesCycles)
+  
+  #Add dates to the output
+  offset=tapply((times%%DurC-dates),sites,min)#computing a potential offset between times and dates (the min function here is just to give a singular output, the values should be the same for a given site)
+  
+  output$CompleteTS$dates=rep(NA,length(output$CompleteTS$times))
+  output$InternalOnly$dates=rep(NA,length(output$InternalOnly$times))
+  for (i in unique(sites)){
+    output$CompleteTS$dates[output$CompleteTS$sites==i]=((output$CompleteTS$times[output$CompleteTS$sites==i]%%DurC)-offset[i])%%DurC
+    output$InternalOnly$dates[output$InternalOnly$sites==i]=((output$InternalOnly$times[output$InternalOnly$sites==i]%%DurC)-offset[i])%%DurC
+  }
+  
   return(output)
 }
+

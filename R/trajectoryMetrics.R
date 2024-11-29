@@ -10,7 +10,7 @@
 #' \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-#' \item{Function \code{trajectoryProjection} performs an orthogonal projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
+#' \item{Function \code{trajectoryProjection} performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 #' \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 #' }
@@ -59,7 +59,8 @@
 #' If \code{all = TRUE} angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 #' If \code{betweenSegments = TRUE} angles are calculated between segments of trajectory, otherwise, If \code{betweenSegments = FALSE}, angles are calculated considering Y axis as the North (0°).
 #' 
-#' @return Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
+#' @return
+#' Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
 #' 
 #' Function \code{trajectorySegments} returns a list with the following elements:
 #' \itemize{
@@ -84,10 +85,10 @@
 #' 
 #' Function \code{trajectoryProjection} returns a data frame with the following columns:
 #' \itemize{
-#'   \item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection (\code{NA} for target points whose projection is outside the trajectory).}
-#'   \item{\code{segment}: Segment that includes the projected point (\code{NA} for target points whose projection is outside the trajectory).}
-#'   \item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
-#'   \item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
+#'   \item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection. If there is no orthogonal projection the distance corresponds to the minimum distance to the trajectory.}
+#'   \item{\code{segment}: Segment that includes the projected point or the closest state.}
+#'   \item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end.}
+#'   \item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end.}
 #' }
 #' 
 #' Function \code{trajectoryConvergence} returns a list with two elements:
@@ -823,56 +824,53 @@ trajectoryAngles2D<-function(xy,sites,surveys,relativeToInitial=FALSE, betweenSe
 trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {
   if(length(trajectory)<2) stop("Trajectory needs to include at least two states")
   if(length(trajectory)!=length(unique(trajectory))) stop("Trajectory states must be different")
-  dmat = as.matrix(d)
-  npoints = length(target)
-  nsteps = length(trajectory) -1
-  #Distance betwen target points and trajectory points
-  d2ref = dmat[target, trajectory, drop=FALSE]
+  dmat <- as.matrix(d)
+  npoints <- length(target)
+  nsteps <- length(trajectory) -1
+  #Distance between target points and trajectory points
+  d2ref <- dmat[target, trajectory, drop=FALSE]
   #Distance between trajectory steps
-  dsteps = diag(dmat[trajectory[1:(length(trajectory)-1)], trajectory[2:length(trajectory)]])
+  dsteps <- diag(dmat[trajectory[1:(length(trajectory)-1)], trajectory[2:length(trajectory)]])
   #Cumulative distance between steps
-  dstepcum = rep(0,nsteps+1)
+  dstepcum <- rep(0,nsteps+1)
   if(nsteps>1) {
     for(i in 2:nsteps) {
-      dstepcum[i] = dstepcum[i-1]+dsteps[i-1]
+      dstepcum[i] <- dstepcum[i-1]+dsteps[i-1]
     }
   }
-  dstepcum[nsteps+1] = sum(dsteps)
+  dstepcum[nsteps+1] <- sum(dsteps)
   
-  projH = matrix(NA, nrow=npoints, ncol = nsteps)
-  projA1 = matrix(NA, nrow=npoints, ncol = nsteps)
-  projA2 = matrix(NA, nrow=npoints, ncol = nsteps)
-  whichstep = rep(NA, npoints)
-  dgrad = rep(NA, npoints)
-  posgradseg = rep(NA, npoints)
-  posgradtraj = rep(NA, npoints)
+  projA1 <- matrix(NA, nrow=npoints, ncol = nsteps)
+  whichstep <- rep(NA, npoints)
+  dgrad <- rep(NA, npoints)
+  posgradseg <- rep(NA, npoints)
+  posgradtraj <- rep(NA, npoints)
   
   for(i in 1:npoints) {
     for(j in 1:nsteps) {
-      p <-.projectionC(dsteps[j], d2ref[i, j], d2ref[i, j+1], add)
-      if((!is.na(p[3])) & (p[1]>-tol) & (p[2]>-tol)) {
-        projA1[i,j] = p[1]
-        projA2[i,j] = p[2]
-        projH[i,j] = p[3]
+      p <- .distanceToSegmentC(dsteps[j], d2ref[i, j], d2ref[i, j+1], add)
+      if((p[1]>-tol) & (p[2]>-tol)) {
+        projA1[i,j] <- p[1]
         if(is.na(dgrad[i])) {
-          dgrad[i] = p[3]
-          whichstep[i] = j
-          posgradseg[i] = p[1]/dsteps[j]
+          dgrad[i] <- p[3]
+          whichstep[i] <- j
+          posgradseg[i] <- p[1]/dsteps[j]
         } else {
-          if(p[3]<dgrad[i]) {
-            dgrad[i] = p[3]
-            whichstep[i] = j
-            posgradseg[i] = p[1]/dsteps[j]
+          if(p[3]<dgrad[i]) { # Replace if closer
+            dgrad[i] <- p[3]
+            whichstep[i] <- j
+            posgradseg[i] <- p[1]/dsteps[j]
           }
         }
       }
     }
-    if(!is.na(whichstep[i])) {
-      dg = dstepcum[whichstep[i]]+projA1[i,whichstep[i]]
-      posgradtraj[i] = dg/sum(dsteps)
+    if(!is.na(whichstep[i])) { # If we determined a closest segment determine trajectory relative postion 
+      dg <- dstepcum[whichstep[i]]+projA1[i,whichstep[i]]
+      posgradtraj[i] <- dg/sum(dsteps)
     }
   }
-  res = data.frame(distanceToTrajectory=dgrad, segment = whichstep, relativeSegmentPosition = posgradseg, relativeTrajectoryPosition = posgradtraj)
+  # Assemble output
+  res <- data.frame(distanceToTrajectory=dgrad, segment = whichstep, relativeSegmentPosition = posgradseg, relativeTrajectoryPosition = posgradtraj)
   row.names(res)<-row.names(d2ref)
   return(res)
 }

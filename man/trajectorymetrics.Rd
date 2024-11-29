@@ -153,10 +153,10 @@ Function \code{trajectoryAngles2D} returns a data frame with angle values on eac
 
 Function \code{trajectoryProjection} returns a data frame with the following columns:
 \itemize{
-\item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection (\code{NA} for target points whose projection is outside the trajectory).}
-\item{\code{segment}: Segment that includes the projected point (\code{NA} for target points whose projection is outside the trajectory).}
-\item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
-\item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end (\code{NA} for target points whose projection is outside the trajectory).}
+\item{\code{distanceToTrajectory}: Distances to the trajectory, i.e. rejection. If there is no orthogonal projection the distance corresponds to the minimum distance to the trajectory.}
+\item{\code{segment}: Segment that includes the projected point or the closest state.}
+\item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end.}
+\item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end.}
 }
 
 Function \code{trajectoryConvergence} returns a list with two elements:
@@ -179,7 +179,7 @@ Given a distance matrix between ecosystem states, the set of functions that prov
 \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.}
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-\item{Function \code{trajectoryProjection} performs an orthogonal projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
+\item{Function \code{trajectoryProjection} performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 }

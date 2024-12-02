@@ -12,7 +12,12 @@
 #I think of this one more as something internal to the package, not normally advertised to the user
 #MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED, OTHERWISE I DON'T KNOW TOO MUCH...
 #
-#The idea of the function is to interpolate an ecological state X between ecological states A and B and computing the distances to all other ecological states in the distance matrix (noted C). This is done usinng the cosines law in triangles ABC and AXC. The function takes as input the distance matrix d and another matrix "ToInterpolate" with: first column: ecological states A, second column: ecological states B, third column: an "interpolation coefficient" (i.e. at what proportion of directed segment AB X needs to be). The function returns a new distance matrix that includes the interpolated ecological states.
+#The idea of the function is to interpolate an ecological state X between ecological states A and B and computing the distances to all other ecological states in the distance matrix (noted C).
+#This is done using the cosines law in triangles ABC and AXC.
+#The function takes as input the distance matrix d and another matrix "ToInterpolate" with:
+#first column: ecological states A,
+#second column: ecological states B,
+#third column: an "interpolation coefficient" (i.e. at what proportion of directed segment AB X needs to be). The function returns a new distance matrix that includes the interpolated ecological states.
 
 InterpolateEcolStates <- function(d,ToInterpolate)
 {
@@ -30,13 +35,23 @@ InterpolateEcolStates <- function(d,ToInterpolate)
     int=ToInterpolate[i,3]
     
     AB=dInt[A,B]
-    AC=dInt[A,]
-    BC=dInt[B,]
-    AX=int*AB
-    alpha=acos((AB^2+AC^2-BC^2)/(2*AC*AB))
-    CX=sqrt(AX^2+AC^2-2*AX*AC*cos(alpha))
-    CX[A]=AX
-    CX[B]=(1-int)*AB
+    if (AB == 0){#this is to cover the case where A and B are confounded
+      CX=dInt[A,]
+    }else{#otherwise, use trigonometry
+      AC=dInt[A,]
+      BC=dInt[B,]
+      AX=int*AB
+      
+      #add a small value to 0 AC distances so that trigonometry can still be computed
+      AC[which(AC==0)]=10^-6
+      
+      alpha=(AB^2+AC^2-BC^2)/(2*AC*AB)
+      alpha[alpha>=1]=1#If I'm not mistaken, this forces the places where triangle inequality is not respected to respected it (MIQUEL I'M NOT SUR THIS IS THE BEST WAY TO DO IT!!!)
+      alpha=acos(alpha)
+      CX=sqrt(AX^2+AC^2-2*AX*AC*cos(alpha))
+      CX[A]=AX
+      CX[B]=(1-int)*AB
+    }
     
     dInt=cbind(dInt,CX)
     dInt=rbind(dInt,c(CX,0))
@@ -176,7 +191,8 @@ BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend
 
 BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEcolStates=3)
 {
-  if (any((times%%DurC)-(dates%%DurC)!=0))
+  check=(times%%DurC-(dates%%DurC))%%DurC
+  if (any(round(check-check[1],12)!=0))
     stop("provided times and dates are not compatible given cycle duration DurC")
   
   #Goal of the function: reshape its inputs to give them to BuildTrajectorySections
@@ -191,9 +207,7 @@ BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEco
     colnames(truc)=c("times","dates")
     truc=truc[order(truc$times),]
     
-    firsttime=truc$times[min(which(truc$dates>=startdate%%DurC))]
-    tstarti=firsttime-(truc$dates[truc$times==firsttime]-startdate%%DurC)
-    
+    tstarti=truc$times[1]+((startdate+DurC)-truc$dates[1])%%DurC
     tstarti=seq(from=tstarti,to=max(truc$times),by=DurC)
     
     tendi=tstarti[2:length(tstarti)]
@@ -245,3 +259,73 @@ BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEco
   return(output)
 }
 
+# CyclicalShifts: Function to compute cyclical shifts----------------
+#
+#This function is quite long to execute (computes internally many trajectories, centering and projections) so be patient!
+#
+#Uses: BuildCycles, centerTrajectories, trajectoryProjection
+
+
+CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+{
+  Output=integer(0)#this will contain the final output
+  
+  #for each date in datesCS, we compute all possible non-overlapping Cycles starting and ending DurC/2 before and after the date.
+  #those cycles will become the cycles for which a cyclical shift will be computed and the reference cycles
+  
+  for (i in datesCS){
+    #Cycles=BuildCycles(d,sites,times,dates,startdate=(i-DurC/2)%%DurC,DurC,extBound="end",minEcolStates)
+    Cycles=BuildCycles(dZoo,sitesZoo,timesZoo,datesZoo,startdate=(i-DurC/2)%%DurC,DurC,extBound="end",minEcolStates)
+    
+    #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
+    if (centering==T){
+      Cycles$CompleteTS$d=centerTrajectories(d=Cycles$CompleteTS$d,sites=Cycles$CompleteTS$TrajSec,exclude=which(Cycles$CompleteTS$IntExt=="external"))
+    }
+    
+    
+    for (j in unique(sites)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
+      siteTag <- which(Cycles$CompleteTS$sites==j)
+      dateTag <- which(Cycles$CompleteTS$dates==i)
+      dateTag <- intersect(siteTag,dateTag)
+      
+      AllRefCycles=unique(Cycles$CompleteTS$TrajSec[siteTag])
+      AllRefCycles=AllRefCycles[1:(length(AllRefCycles)-1)]
+      for (k in AllRefCycles){#This loop goes through all the Cycles that will be used as reference.
+        CrefTag <- which(Cycles$CompleteTS$TrajSec==k)
+        CrefTag <- CrefTag[order(Cycles$CompleteTS$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
+        drefTag <- dateTag[dateTag%in%CrefTag]#a tag for the reference date
+        dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
+        
+        if (length(drefTag)==1&length(dateTag)>0){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
+          #Note: there is no need to reorder the cycles as BuildCycles always output them in chronological order for a given site
+          
+          #Find out onto which segment of Cref the ecological states of interest are projected
+          projCS=trajectoryProjection(d=Cycles$CompleteTS$d,
+                                      target=dateTag,
+                                      trajectory=CrefTag)
+          
+          segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
+          
+          #get the "times" of the projection of the ecological states
+          timesProj=Cycles$CompleteTS$times[segmentsTag[,1]]+
+            ((Cycles$CompleteTS$times[segmentsTag[,2]]-Cycles$CompleteTS$times[segmentsTag[,1]])*segmentsTag[,3])
+          
+          #get the Cyclical shifts:
+          Dt=timesProj-Cycles$CompleteTS$times[drefTag]
+          
+          #Add some "metadata" to accompany Dt
+          timeRef=rep(Cycles$CompleteTS$times[drefTag],length(dateTag))
+          timeCS=Cycles$CompleteTS$times[dateTag]
+          timescale=timeCS-timeRef
+          dateCS=rep(i,length(timeRef))
+          site=rep(j,length(timeRef))
+          
+          PartialOutput=data.frame(site,dateCS,timeRef,timeCS,timescale,Dt)
+          Output=rbind(Output,PartialOutput)
+          
+        }
+      }
+    }
+  }
+  return(Output)
+}

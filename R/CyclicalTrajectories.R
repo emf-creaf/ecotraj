@@ -76,6 +76,9 @@ InterpolateEcolStates <- function(d,ToInterpolate)
 
 BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS)
 {
+  if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times))
+    stop("The lengths of sites and times must corespond to the dimension of d")
+  
   #those two will contain the sites and times of all ecological states including the interpolated ones
   sitesTS=sites
   timesTS=times
@@ -189,8 +192,11 @@ BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend
 #
 #Uses: BuildTrajectorySections
 
-BuildCycles <- function(d,sites,times,dates,startdate,DurC,extBound="end",minEcolStates=3)
+BuildCycles <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
 {
+  if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
+    stop("The lengths of sites, times, and dates must corespond to the dimension of d")
+  
   check=(times%%DurC-(dates%%DurC))%%DurC
   if (any(round(check-check[1],12)!=0))
     stop("provided times and dates are not compatible given cycle duration DurC")
@@ -274,8 +280,7 @@ CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcol
   #those cycles will become the cycles for which a cyclical shift will be computed and the reference cycles
   
   for (i in datesCS){
-    #Cycles=BuildCycles(d,sites,times,dates,startdate=(i-DurC/2)%%DurC,DurC,extBound="end",minEcolStates)
-    Cycles=BuildCycles(dZoo,sitesZoo,timesZoo,datesZoo,startdate=(i-DurC/2)%%DurC,DurC,extBound="end",minEcolStates)
+    Cycles=BuildCycles(d,sites,times,dates,DurC,startdate=(i-DurC/2)%%DurC,extBound="end",minEcolStates)
     
     #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
     if (centering==T){
@@ -329,3 +334,44 @@ CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcol
   }
   return(Output)
 }
+
+
+# CycleSmoothness: a function to compute a smoothness index for cycles------------
+# The coding is a bit sloppy on this one I feel (particularly the part to make the outputs of BuildCycles match with the outputs of trajectoryAngles)
+#Uses BuildCycles, trajectoryAngles
+
+CycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
+{
+  Cycles=BuildCycles(d,sites,times,dates,DurC,startdate,extBound,minEcolStates)
+  Angles=trajectoryAngles(d,sites,surveys=times)
+  
+  SC=integer(0)
+  
+  for (i in unique(sites)){
+    Anglesi=Angles[i,]
+    Anglesi=Anglesi[1:(length(Anglesi)-3)]
+    Anglesi=Anglesi[is.na(Anglesi)==F]
+    
+    timesi=times[sites==i]
+    timesi=timesi[2:(length(timesi)-1)]
+    
+    bidule=data.frame(timesi,Anglesi)
+    bidule=bidule[order(bidule$timesi),]
+    
+    timesCyclesi=Cycles$InternalOnly$times[Cycles$InternalOnly$sites==i]
+    Cyclesi=Cycles$InternalOnly$TrajSec[Cycles$InternalOnly$sites==i]
+    anglesCyclesi=rep(NA,length(Cyclesi))
+    truc=data.frame(Cyclesi,timesCyclesi,anglesCyclesi)
+    truc=truc[order(truc$timesCyclesi),]
+    
+    toreplace=truc$timesCyclesi%in%bidule$timesi
+    replacewith=bidule$timesi%in%truc$timesCyclesi[toreplace]
+    truc$anglesCyclesi [toreplace]=bidule$Anglesi[replacewith]
+    
+    
+    SC=c(SC,360/tapply(truc$anglesCyclesi,truc$Cyclesi,sum))
+  }
+  return(SC)
+}
+
+

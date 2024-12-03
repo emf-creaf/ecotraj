@@ -4,11 +4,13 @@
 #' 
 #' #' The set following set of utility functions are provided:
 #' Three functions are available here:
-#' InterpolateEcolStates
-#' BuildTrajectorySections
-#' BuildCycles
+#' interpolateEcolStates
+#' trajectorysectionBuild
+#' cycleBuild
+#' cycleShift
+#' cycleSmoothness
 
-# InterpolateEcolStates: Function for interpolating ecological states:-------------------
+# interpolateEcolStates: Function for interpolating ecological states:-------------------
 #I think of this one more as something internal to the package, not normally advertised to the user
 #MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED, OTHERWISE I DON'T KNOW TOO MUCH...
 #
@@ -19,7 +21,7 @@
 #second column: ecological states B,
 #third column: an "interpolation coefficient" (i.e. at what proportion of directed segment AB X needs to be). The function returns a new distance matrix that includes the interpolated ecological states.
 
-InterpolateEcolStates <- function(d,ToInterpolate)
+interpolateEcolStates <- function(d,ToInterpolate)
 {
   if (any(c(ToInterpolate[,3]>1),ToInterpolate[,3]<0)) 
     stop("Interpolation coefficients in ToInterpolate need to be between 0 and 1")
@@ -64,17 +66,17 @@ InterpolateEcolStates <- function(d,ToInterpolate)
 }
 
 
-# BuildTrajectorySections: Function to generate trajectory sections-----------------------
+# trajectorysectionBuild: Function to generate trajectory sections-----------------------
 #
 #This function generates, or more accurately formats, the data so that it describes trajectory sections from existing trajectories and is easy to use for existing ETA functions (mostly, centering will need a specific one though...). The idea is that the user describes which trajectory section he/she wants to that function, and then the functions gives the data tags and so on in the shape that is good for the use of other functions.
 #
 #This one seems particularly cumbersome to me but I don't really see a way around.
 #
-#Uses: InterpolateEcolStates
+#Uses: interpolateEcolStates
 #Note: The function allows to specify overlapping trajectory sections. This generates duplication of ecological states. Analyses such as PCoA should not be done on the outputs of this function but on the input distance matrix instead!!!
 
 
-BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS)
+trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS)
 {
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times))
     stop("The lengths of sites and times must corespond to the dimension of d")
@@ -116,7 +118,7 @@ BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend
   }
   dTS=d
   if(length(ToInterpolate)>0){
-    dTS=InterpolateEcolStates(dTS,ToInterpolate)
+    dTS=interpolateEcolStates(dTS,ToInterpolate)
   }
   dTS=as.matrix(dTS)
   
@@ -186,13 +188,13 @@ BuildTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend
   return(TS)
 }
 
-# BuildCycles: Function to build all (or most) possible consecutive, non-overlapping cycles from one or more cyclical trajectory----------------
+# cycleBuild: Function to build all (or most) possible consecutive, non-overlapping cycles from one or more cyclical trajectory----------------
 #
-#This function is an easier implementation of BuildTrajectorySections specifically designed for cyclical trajectories
+#This function is an easier implementation of trajectorysectionBuild specifically designed for cyclical trajectories
 #
-#Uses: BuildTrajectorySections
+#Uses: trajectorysectionBuild
 
-BuildCycles <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
+cycleBuild <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
 {
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
@@ -201,13 +203,13 @@ BuildCycles <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="
   if (any(round(check-check[1],12)!=0))
     stop("provided times and dates are not compatible given cycle duration DurC")
   
-  #Goal of the function: reshape its inputs to give them to BuildTrajectorySections
+  #Goal of the function: reshape its inputs to give them to trajectorysectionBuild
   Traj=integer(0)
   tstart=integer(0)
   tend=integer(0)
   namesCycles=integer(0)
   
-  #This loops build Traj, tstart and tend that will be fed into BuildTrajectorySections
+  #This loops build Traj, tstart and tend that will be fed into trajectorysectionBuild
   for (i in unique(sites)){
     truc=data.frame(times[sites==i],dates[sites==i])
     colnames(truc)=c("times","dates")
@@ -249,8 +251,8 @@ BuildCycles <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="
     BCend=rep("internal",length(tend))
   }
   
-  #Now feed this into BuildTrajectorySections
-  output=BuildTrajectorySections(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=namesCycles)
+  #Now feed this into trajectorysectionBuild
+  output=trajectorysectionBuild(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=namesCycles)
   
   #Add dates to the output
   offset=tapply((times%%DurC-dates),sites,min)#computing a potential offset between times and dates (the min function here is just to give a singular output, the values should be the same for a given site)
@@ -265,14 +267,14 @@ BuildCycles <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="
   return(output)
 }
 
-# CyclicalShifts: Function to compute cyclical shifts----------------
+# cycleShift: Function to compute cyclical shifts----------------
 #
 #This function is quite long to execute (computes internally many trajectories, centering and projections) so be patient!
 #
-#Uses: BuildCycles, centerTrajectories, trajectoryProjection
+#Uses: cycleBuild, centerTrajectories, trajectoryProjection
 
 
-CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+cycleShift <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
 {
   Output=integer(0)#this will contain the final output
   
@@ -280,7 +282,7 @@ CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcol
   #those cycles will become the cycles for which a cyclical shift will be computed and the reference cycles
   
   for (i in datesCS){
-    Cycles=BuildCycles(d,sites,times,dates,DurC,startdate=(i-DurC/2)%%DurC,extBound="end",minEcolStates)
+    Cycles=cycleBuild(d,sites,times,dates,DurC,startdate=(i-DurC/2)%%DurC,extBound="end",minEcolStates)
     
     #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
     if (centering==T){
@@ -302,7 +304,7 @@ CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcol
         dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
         
         if (length(drefTag)==1&length(dateTag)>0){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
-          #Note: there is no need to reorder the cycles as BuildCycles always output them in chronological order for a given site
+          #Note: there is no need to reorder the cycles as cycleBuild always output them in chronological order for a given site
           
           #Find out onto which segment of Cref the ecological states of interest are projected
           projCS=trajectoryProjection(d=Cycles$CompleteTS$d,
@@ -336,13 +338,13 @@ CyclicalShifts <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcol
 }
 
 
-# CycleSmoothness: a function to compute a smoothness index for cycles------------
-# The coding is a bit sloppy on this one I feel (particularly the part to make the outputs of BuildCycles match with the outputs of trajectoryAngles)
-#Uses BuildCycles, trajectoryAngles
+# cycleSmoothness: a function to compute a smoothness index for cycles------------
+# The coding is a bit sloppy on this one I feel (particularly the part to make the outputs of cycleBuild match with the outputs of trajectoryAngles)
+#Uses cycleBuild, trajectoryAngles
 
-CycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
+cycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
 {
-  Cycles=BuildCycles(d,sites,times,dates,DurC,startdate,extBound,minEcolStates)
+  Cycles=cycleBuild(d,sites,times,dates,DurC,startdate,extBound,minEcolStates)
   Angles=trajectoryAngles(d,sites,surveys=times)
   
   SC=integer(0)

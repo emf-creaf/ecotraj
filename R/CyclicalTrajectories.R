@@ -1,9 +1,8 @@
-#' Utility functions for Cyclical Ecological Trajectory Analysis
+#' Functions for Cyclical Ecological Trajectory Analysis
 #'
 #' @author Nicolas Djeghri, UBO
 #' 
-#' #' The set following set of utility functions are provided:
-#' Three functions are available here:
+#' Five functions are available here:
 #' interpolateEcolStates
 #' trajectorysectionBuild
 #' cycleBuild
@@ -12,7 +11,7 @@
 
 # interpolateEcolStates: Function for interpolating ecological states:-------------------
 #I think of this one more as something internal to the package, not normally advertised to the user
-#MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED, OTHERWISE I DON'T KNOW TOO MUCH...
+#MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED (-ISH), OTHERWISE I DON'T KNOW TOO MUCH...
 #
 #The idea of the function is to interpolate an ecological state X between ecological states A and B and computing the distances to all other ecological states in the distance matrix (noted C).
 #This is done using the cosines law in triangles ABC and AXC.
@@ -80,6 +79,10 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
 {
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times))
     stop("The lengths of sites and times must corespond to the dimension of d")
+  if (any(BCstart%in%c("internal","external")==F))
+    stop("BCstart and BCend can only take values 'internal' and 'external'")
+  if (any(BCend%in%c("internal","external")==F))
+    stop("BCstart and BCend can only take values 'internal' and 'external'")
   
   #those two will contain the sites and times of all ecological states including the interpolated ones
   sitesTS=sites
@@ -126,23 +129,15 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
   
   #prepare the list that will store everything
   TS=list()
-  #containing the complete trajectory sections
-  TS$CompleteTS$d=integer(0)
-  TS$CompleteTS$sites=integer(0)
-  TS$CompleteTS$TrajSec=integer(0)
-  TS$CompleteTS$times=integer(0)
-  TS$CompleteTS$surveys=integer(0)
-  TS$CompleteTS$IntExt=integer(0)
+  TS$d=integer(0)
+  TS$metadata=integer(0)
   
-  #containing only the internal ecological states
-  TS$InternalOnly$d=integer(0)
-  TS$InternalOnly$sites=integer(0)
-  TS$InternalOnly$TrajSec=integer(0)
-  TS$InternalOnly$times=integer(0)
-  TS$InternalOnly$surveys=integer(0)
+  #and the element that will go into TS$metadata
+  IntExt=integer(0)
+  TrajSec=integer(0)
+  surveys=integer(0)
   
-  Allselec=integer(0)
-  InternalOnlyselec=integer(0)
+  selec=integer(0)
   
   for (i in 1:length(Traj)){
     selection=intersect(
@@ -150,40 +145,32 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
                 which(timesTS<=tend[i])),
       which(sitesTS==Traj[i]))
     
-    Allselec=c(Allselec,selection)
+    selec=c(selec,selection)
     
     #Find out which are the external ecological states
-    IntExt=rep("internal",length(selection))
+    IntExti=rep("internal",length(selection))
     #boundary conditions
     if (BCstart[i]=="external"){
-      IntExt[timesTS[selection]==tstart[i]]="external"
+      IntExti[timesTS[selection]==tstart[i]]="external"
     }
     if (BCend[i]=="external"){
-      IntExt[timesTS[selection]==tend[i]]="external"
+      IntExti[timesTS[selection]==tend[i]]="external"
     }
     #and consider anything interpolated as external
-    IntExt[interpolated[selection]=="Y"]="external"
+    IntExti[interpolated[selection]=="Y"]="external"
     
     #starting filling TS
-    TS$CompleteTS$IntExt=c(TS$CompleteTS$IntExt,IntExt)
-    TS$CompleteTS$TrajSec=c(TS$CompleteTS$TrajSec,rep(namesTS[i],length(selection)))
-    TS$CompleteTS$surveys=c(TS$CompleteTS$surveys,rank(timesTS[selection]))
-    
-    InternalOnlyselec=c(InternalOnlyselec,selection[IntExt=="internal"])
-    
-    TS$InternalOnly$TrajSec=c(TS$InternalOnly$TrajSec,rep(namesTS[i],length(selection[IntExt=="internal"])))
-    TS$InternalOnly$surveys=c(TS$InternalOnly$surveys,rank(timesTS[selection[IntExt=="internal"]]))
+    IntExt=c(IntExt,IntExti)
+    TrajSec=c(TrajSec,rep(namesTS[i],length(selection)))
+    surveys=c(surveys,rank(timesTS[selection]))
   }
-  #Finish filling TS
-  #completeTS
-  TS$CompleteTS$d=as.dist(dTS[Allselec,Allselec])
-  TS$CompleteTS$sites=sitesTS[Allselec]
-  TS$CompleteTS$times=timesTS[Allselec]
+  #get the corresponding sites and times
+  sites=sitesTS[selec]
+  times=timesTS[selec]
   
-  #only internal TS
-  TS$InternalOnly$d=as.dist(dTS[InternalOnlyselec,InternalOnlyselec])
-  TS$InternalOnly$sites=sitesTS[InternalOnlyselec]
-  TS$InternalOnly$times=timesTS[InternalOnlyselec]
+  #Filling TS
+  TS$d=as.dist(dTS[selec,selec])
+  TS$metadata=data.frame(sites,TrajSec,times,surveys,IntExt)
   
   return(TS)
 }
@@ -255,14 +242,14 @@ cycleBuild <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="e
   output=trajectorysectionBuild(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=namesCycles)
   
   #Add dates to the output
-  offset=tapply((times%%DurC-dates),sites,min)#computing a potential offset between times and dates (the min function here is just to give a singular output, the values should be the same for a given site)
+  offset=tapply((times%%DurC-dates%%DurC),sites,min)#computing a potential offset between times and dates (the min function here is just to give a singular output, the values should be the same for a given site)
   
-  output$CompleteTS$dates=rep(NA,length(output$CompleteTS$times))
-  output$InternalOnly$dates=rep(NA,length(output$InternalOnly$times))
+  dates=rep(NA,nrow(output$metadata))
+  
   for (i in unique(sites)){
-    output$CompleteTS$dates[output$CompleteTS$sites==i]=((output$CompleteTS$times[output$CompleteTS$sites==i]%%DurC)-offset[i])%%DurC
-    output$InternalOnly$dates[output$InternalOnly$sites==i]=((output$InternalOnly$times[output$InternalOnly$sites==i]%%DurC)-offset[i])%%DurC
+    dates[output$metadata$sites==i]=((output$metadata$times[output$metadata$sites==i]%%DurC)-offset[i])%%DurC
   }
+  output$metadata=data.frame(output$metadata,dates)
   
   return(output)
 }
@@ -286,20 +273,20 @@ cycleShift <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStat
     
     #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
     if (centering==T){
-      Cycles$CompleteTS$d=centerTrajectories(d=Cycles$CompleteTS$d,sites=Cycles$CompleteTS$TrajSec,exclude=which(Cycles$CompleteTS$IntExt=="external"))
+      Cycles$d=centerTrajectories(d=Cycles$d,sites=Cycles$metadata$TrajSec,exclude=which(Cycles$metadata$IntExt=="external"))
     }
     
     
     for (j in unique(sites)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
-      siteTag <- which(Cycles$CompleteTS$sites==j)
-      dateTag <- which(Cycles$CompleteTS$dates==i)
+      siteTag <- which(Cycles$metadata$sites==j)
+      dateTag <- which(Cycles$metadata$dates==i)
       dateTag <- intersect(siteTag,dateTag)
       
-      AllRefCycles=unique(Cycles$CompleteTS$TrajSec[siteTag])
+      AllRefCycles=unique(Cycles$metadata$TrajSec[siteTag])
       AllRefCycles=AllRefCycles[1:(length(AllRefCycles)-1)]
       for (k in AllRefCycles){#This loop goes through all the Cycles that will be used as reference.
-        CrefTag <- which(Cycles$CompleteTS$TrajSec==k)
-        CrefTag <- CrefTag[order(Cycles$CompleteTS$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
+        CrefTag <- which(Cycles$metadata$TrajSec==k)
+        CrefTag <- CrefTag[order(Cycles$metadata$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
         drefTag <- dateTag[dateTag%in%CrefTag]#a tag for the reference date
         dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
         
@@ -307,27 +294,27 @@ cycleShift <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStat
           #Note: there is no need to reorder the cycles as cycleBuild always output them in chronological order for a given site
           
           #Find out onto which segment of Cref the ecological states of interest are projected
-          projCS=trajectoryProjection(d=Cycles$CompleteTS$d,
+          projCS=trajectoryProjection(d=Cycles$d,
                                       target=dateTag,
                                       trajectory=CrefTag)
           
           segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
           
           #get the "times" of the projection of the ecological states
-          timesProj=Cycles$CompleteTS$times[segmentsTag[,1]]+
-            ((Cycles$CompleteTS$times[segmentsTag[,2]]-Cycles$CompleteTS$times[segmentsTag[,1]])*segmentsTag[,3])
+          timesProj=Cycles$metadata$times[segmentsTag[,1]]+
+            ((Cycles$metadata$times[segmentsTag[,2]]-Cycles$metadata$times[segmentsTag[,1]])*segmentsTag[,3])
           
           #get the Cyclical shifts:
-          Dt=timesProj-Cycles$CompleteTS$times[drefTag]
+          Cyclical_Shift=timesProj-Cycles$metadata$times[drefTag]
           
           #Add some "metadata" to accompany Dt
-          timeRef=rep(Cycles$CompleteTS$times[drefTag],length(dateTag))
-          timeCS=Cycles$CompleteTS$times[dateTag]
+          timeRef=rep(Cycles$metadata$times[drefTag],length(dateTag))
+          timeCS=Cycles$metadata$times[dateTag]
           timescale=timeCS-timeRef
           dateCS=rep(i,length(timeRef))
           site=rep(j,length(timeRef))
           
-          PartialOutput=data.frame(site,dateCS,timeRef,timeCS,timescale,Dt)
+          PartialOutput=data.frame(site,dateCS,timeRef,timeCS,timescale,Cyclical_Shift)
           Output=rbind(Output,PartialOutput)
           
         }
@@ -360,8 +347,8 @@ cycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBo
     bidule=data.frame(timesi,Anglesi)
     bidule=bidule[order(bidule$timesi),]
     
-    timesCyclesi=Cycles$InternalOnly$times[Cycles$InternalOnly$sites==i]
-    Cyclesi=Cycles$InternalOnly$TrajSec[Cycles$InternalOnly$sites==i]
+    timesCyclesi=Cycles$metadata$times[Cycles$metadata$sites==i&Cycles$metadata$IntExt=="internal"]
+    Cyclesi=Cycles$metadata$TrajSec[Cycles$metadata$sites==i&Cycles$metadata$IntExt=="internal"]
     anglesCyclesi=rep(NA,length(Cyclesi))
     truc=data.frame(Cyclesi,timesCyclesi,anglesCyclesi)
     truc=truc[order(truc$timesCyclesi),]

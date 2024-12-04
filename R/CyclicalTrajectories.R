@@ -2,12 +2,13 @@
 #'
 #' @author Nicolas Djeghri, UBO
 #' 
-#' Five functions are available here:
+#' Six functions are available here:
 #' interpolateEcolStates
 #' trajectorysectionBuild
 #' cycleBuild
 #' cycleShift
 #' cycleSmoothness
+#' fdtrajBuild
 
 # interpolateEcolStates: Function for interpolating ecological states:-------------------
 #I think of this one more as something internal to the package, not normally advertised to the user
@@ -63,7 +64,6 @@ interpolateEcolStates <- function(d,ToInterpolate)
   dInt=as.dist(dInt)
   return(dInt)
 }
-
 
 # trajectorysectionBuild: Function to generate trajectory sections-----------------------
 #
@@ -181,7 +181,7 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
 #
 #Uses: trajectorysectionBuild
 
-cycleBuild <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
+cycleBuild <- function(d,sites,times,DurC,dates=times%%DurC,startdate=min(dates),extBound="end",minEcolStates=3)
 {
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
@@ -261,7 +261,7 @@ cycleBuild <- function(d,sites,times,dates,DurC,startdate=min(dates),extBound="e
 #Uses: cycleBuild, centerTrajectories, trajectoryProjection
 
 
-cycleShift <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+cycleShift <- function (d,sites,times,DurC,dates=times%%DurC,datesCS=unique(dates),centering=T,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
 {
   Output=integer(0)#this will contain the final output
   
@@ -329,7 +329,7 @@ cycleShift <- function (d,sites,times,dates,DurC,datesCS,centering=T,minEcolStat
 # The coding is a bit sloppy on this one I feel (particularly the part to make the outputs of cycleBuild match with the outputs of trajectoryAngles)
 #Uses cycleBuild, trajectoryAngles
 
-cycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBound="end",minEcolStates=3)
+cycleSmoothness <- function (d,sites,times,DurC,dates=times%%DurC,startdate=min(dates),extBound="end",minEcolStates=3)
 {
   Cycles=cycleBuild(d,sites,times,dates,DurC,startdate,extBound,minEcolStates)
   Angles=trajectoryAngles(d,sites,surveys=times)
@@ -363,4 +363,27 @@ cycleSmoothness <- function (d,sites,times,dates,DurC,startdate=min(dates),extBo
   return(SC)
 }
 
+
+# fdtrajBuild: sister function of cycleBuild, does the same job but for fixed-dates trajectories-----------
+# 
+times=timesToy
+d=dToy
+DurC=DurCToy
+sites=sitesToy
+
+fdtrajBuild <- function (d,sites,times,DurC,dates=times%%DurC,fixed_dates=unique(dates%%DurC),minEcolStates=2,names_fdtraj=as.character(round(fixed_dates,2)))
+{
+  output=list()
+  
+  #first: same data matrix (that was hard!!!)
+  output$d=d
+  
+  #second: a convenient "metadata" to find what's needed easily to compute stuff on fixed dates trajectories
+  metadata=integer(0)
+  for (i in unique(sites)){
+    
+    
+  }
+  
+}
 

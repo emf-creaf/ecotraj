@@ -4,8 +4,8 @@
 #' CETA operates by subdividing a trajectory presenting cyclical dynamics into two types of sub-trajectories of interest: cycles and fixed-dates trajectories
 #' 
 #' CETA functions achieve one of two goals:
-#' 1)Reformating data to analyse either cycles or fixed-dates trajectories. The reformated data can then be fed into existing ETA functions to obtain desired metrics.
-#' 2)Providing new metrics relevant to cycles complementing other ETA functions
+#' 1) Reformating data to analyse either cycles or fixed-dates trajectories. The reformated data can then be fed into existing ETA functions to obtain desired metrics.
+#' 2) Providing new metrics relevant to cycles complementing other ETA functions
 #' 
 #' CETA functions:
 #' \itemize{
@@ -39,7 +39,7 @@
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
 #' @param DurC A value indicating the duration of a cycle. Must be in the same units as times.
-#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to \code{times%%DurC} (see details).
+#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo DurC (see details).
 #' @param startdate An optional value indicating at which date the cycles must begin. Must be in the same units as times. Defaults to \code{min(dates)}.
 #' @param extBound An optional value, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
@@ -125,8 +125,8 @@ cycleBuild <- function(d,sites,times,DurC,dates=times%%DurC,startdate=min(dates)
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
 #' @param DurC A value indicating the duration of a cycle. Must be in the same units as times.
-#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to \code{times%%DurC} (see details).
-#' @param fixed_dates An optional vector of dates for which fixed-dates trajectories must be computed. Defaults to \code{unique(dates%%DurC)}, resulting in returning all possible fixed-dates trajectories.
+#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo DurC (see details).
+#' @param fixed_dates An optional vector of dates for which fixed-dates trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-dates trajectories.
 #' @param names_fixed_dates An optional vector of names associated to each \code{fixed_dates}. Defaults to round(fixed_dates,2).
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a fixed-date trajectory. Fixed-dates trajectories comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 2.
 #' @export 
@@ -175,7 +175,7 @@ fdtrajBuild <- function (d,sites,times,DurC,dates=times%%DurC,fixed_dates=unique
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
 #' @param DurC A value indicating the duration of a cycle. Must be in the same units as times.
-#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to \code{times%%DurC} (see details).
+#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo DurC (see details).
 #' @param datesCS An optional vector indicating the dates for which a cyclical shift must be computed. Default to unique(dates) resulting in the computation of all possible cyclical shifts.
 #' @param centering An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{T}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
@@ -243,16 +243,12 @@ cycleShift <- function (d,sites,times,DurC,dates=times%%DurC,datesCS=unique(date
   return(Output)
 }
 
-
-# cycleSmoothness: a function to compute a smoothness index for cycles------------
-# The coding is a bit sloppy on this one I feel (particularly the part to make the outputs of cycleBuild match with the outputs of trajectoryAngles)
-#Uses cycleBuild, trajectoryAngles
 #' @rdname cyclicaltrajectories
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
 #' @param DurC A value indicating the duration of a cycle. Must be in the same units as times.
-#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to \code{times%%DurC} (see details).
+#' @param dates An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo DurC (see details).
 #' @param startdate An optional value indicating at which date the cycles must begin. Must be in the same units as times. Defaults to \code{min(dates)}.
 #' @param extBound An optional value, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.

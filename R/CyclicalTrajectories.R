@@ -135,7 +135,6 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
   #and the element that will go into TS$metadata
   IntExt=integer(0)
   TrajSec=integer(0)
-  surveys=integer(0)
   
   selec=integer(0)
   
@@ -162,7 +161,6 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
     #starting filling TS
     IntExt=c(IntExt,IntExti)
     TrajSec=c(TrajSec,rep(namesTS[i],length(selection)))
-    surveys=c(surveys,rank(timesTS[selection]))
   }
   #get the corresponding sites and times
   sites=sitesTS[selec]
@@ -170,7 +168,7 @@ trajectorysectionBuild <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,
   
   #Filling TS
   TS$d=as.dist(dTS[selec,selec])
-  TS$metadata=data.frame(sites,TrajSec,times,surveys,IntExt)
+  TS$metadata=data.frame(sites,TrajSec,times,IntExt)
   
   return(TS)
 }
@@ -365,25 +363,44 @@ cycleSmoothness <- function (d,sites,times,DurC,dates=times%%DurC,startdate=min(
 
 
 # fdtrajBuild: sister function of cycleBuild, does the same job but for fixed-dates trajectories-----------
-# 
-times=timesToy
-d=dToy
-DurC=DurCToy
-sites=sitesToy
 
-fdtrajBuild <- function (d,sites,times,DurC,dates=times%%DurC,fixed_dates=unique(dates%%DurC),minEcolStates=2,names_fdtraj=as.character(round(fixed_dates,2)))
+fdtrajBuild <- function (d,sites,times,DurC,dates=times%%DurC,fixed_dates=unique(dates%%DurC),minEcolStates=2,names_fixed_dates=as.character(round(fixed_dates,2)))
 {
-  output=list()
+  if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
+    stop("The lengths of sites, times, and dates must corespond to the dimension of d")
   
-  #first: same data matrix (that was hard!!!)
-  output$d=d
+  check=(times%%DurC-(dates%%DurC))%%DurC
+  if (any(round(check-check[1],12)!=0))
+    stop("provided times and dates are not compatible given cycle duration DurC")
   
-  #second: a convenient "metadata" to find what's needed easily to compute stuff on fixed dates trajectories
-  metadata=integer(0)
+  if (length(fixed_dates)!=length(names_fixed_dates))
+    stop("fixed_dates and names_fixed_dates must have the same length")
+  
+  #build a convenient "metadata" to find what's needed easily to compute stuff on fixed dates trajectories
+  fdT=rep(NA,length(sites))
+  metadata=data.frame(sites,fdT,times,dates)
   for (i in unique(sites)){
-    
-    
+    for (j in 1:length(fixed_dates)){
+      selec=(sites==i)&(dates==fixed_dates[j])
+      if (sum(selec)>=minEcolStates){
+        metadata$fdT[selec]=paste(i,"fdT",names_fixed_dates[j])
+      }
+    }
   }
+  #remove the lines not belonging to any fixed_dates_trajectories
+  selec=is.na(metadata$fdT)==F
   
+  d=as.matrix(d)
+  d=d[selec,selec]
+  d=dist(d)
+  
+  metadata=metadata[selec,]
+  
+  #build and return the output
+  output=list()
+  output$d<-d
+  output$metadata<-metadata
+  
+  return(output)
 }
 

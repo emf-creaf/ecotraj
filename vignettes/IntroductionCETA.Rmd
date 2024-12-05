@@ -1,0 +1,40 @@
+---
+title: "Introduction to Cyclical Ecological Trajectory Analysis (CETA)"
+author: "Nicolas Djeghri"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Introduction to Cyclical Ecological Trajectory Analysis (CETA)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+### 1.1 When trajectories go 'round in circles: making ETA able to handle cyclical dynamics
+BlaBlaBliBlou
+
+### 1.2 About this vignette
+BlaBlaBliBlou
+
+## 2. General approach of the CETA extension for ecotraj
+
+### 2.1 The "Build" functions
+BlaBlaBliBlou
+
+### 2.2 Beware of the external ecological states
+BlaBlaBliBlou
+
+## 3. Simple example
+```{r}
+#Put some code in there!
+plot(0,0)
+```
+

@@ -1,6 +1,6 @@
 #' Functions for building Trajectory Sections
 #'
-#' Trajectory sections are flexible way to cut longer trajectories. They are presently used chiefly in building cycles for cyclical ecological trajectory analysis(CETA) but might have other applications.
+#' Trajectory sections are flexible way to cut longer trajectories. They are presently used chiefly in building cycles for cyclical ecological trajectory analysis (CETA) but might have other applications.
 #' 
 #' Trajectory sections functions:
 #' \itemize{
@@ -23,7 +23,7 @@
 #' IMPORTANT: Trajectory sections comprises both \code{"internal"} and \code{"external"} ecological states (see the output of function \code{cycleBuild}).
 #' \code{"external"} ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
 #' \itemize{
-#'  \item{centering (see function \code{centerTrajectories})}
+#'  \item{centering, where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
 #'  \item{trajectory BDiv (NOT AVAILABLE YET BUT I SWEAR IT'S COMING!!!)}
 #' }
 #' Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{trajectorysectionBuild}.

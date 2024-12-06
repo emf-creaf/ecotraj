@@ -12,8 +12,8 @@
 #' 
 #' CETA functions:
 #' \itemize{
-#' \item{Function \code{cycleBuild} reformats a dataset describing one or more trajectories with cyclical dynamics for the analysis of their cycles.}
-#' \item{Function \code{fdtrajBuild} reformats a dataset describing one or more trajectories with cyclical dynamics for the analysis of their fixed-dates trajectories.}
+#' \item{Function \code{cycleBuild} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
+#' \item{Function \code{fdtrajBuild} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-dates trajectories.}
 #' \item{Function \code{cycleSmoothness} computes the "smoothness" of the cycles embedded in one or more cyclical trajectories.}
 #' \item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
 #' }
@@ -30,7 +30,7 @@
 #' IMPORTANT: Cycles within CETA comprises both \code{"internal"} and \code{"external"} ecological states (see the output of function \code{cycleBuild}). This distinction is a solution to what we call the "December-to-January segment problem". Taking the example of a monthly resolved multi-annual time series, a way to make cycles would be to take the set of ecological states representing months from January to December of each year. However, this omits the segment linking December of year Y to January of year Y+1. However, including this segments means having two Janury months in the same cycle.
 #' The proposed solution in CETA (in the case of this specific example) is to set the January month of year Y+1 as \code{"external"}. \code{"external"} ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
 #' \itemize{
-#'  \item{centering (see function \code{centerTrajectories})}
+#'  \item{centering where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
 #'  \item{cycle smoothness (readily handled within the function \code{cycleSmoothness}, see below)}
 #'  \item{trajectory BDiv (NOT AVAILABLE YET BUT I SWEAR IT'S COMING!!!)}
 #' }

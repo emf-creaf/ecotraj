@@ -19,17 +19,23 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Introduction
 
 ### 1.1 When trajectories go 'round in circles: making ETA able to handle cyclical dynamics
-BlaBlaBliBlou
+*Cyclical Ecological Trajectory Analysis* (CETA) is an extension of *Ecological Trajectory Analysis* (ETA) allowing it to handle trajectories presenting regular cyclical dynamics (e.g. seasons, day-night cycle). 
+Before starting, it is important to clarify what CETA does and what it does not, as well as what we mean by "regular cyclical dynamics".  
+Unlike many statistical procedures dedicated to time series, CETA does not aims to detect cyclicity. Rather, CETA aims at describing it, as well as gain insights into long-term changes in cyclical dynamics. Cyclicity must be known *a priori* from knowledge of the system under study or from another statistical analysis (e.g. eigenvector maps).  
+By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the product of the very regularly paced astronomic forcings (seasons, day-night cycles, tides). Describing seasonal dynamics was in fact the prime motivation in designing CETA. CETA is therefore not well tuned to address many other dynamics that ecologists would refer to as "cyclical" such as disturbance-recovery cycles. These may be better addressed with clever use of the more general ETA framework. The primary research field we envision for CETA use lies in a middle ground between phenology, community, and ecosystem ecology.
 
 ### 1.2 About this vignette
+In this vignette you will learn how to use CETA functions, and combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.
+
+## 2. General approach of CETA
+
+### 2.1 The vocabulary of CETA
+CETA is perhaps a bit heavy-handed on the vocabulary. We recognize no less than three different types of trajectories and have two words for time!
+
+### 2.2 The "Build" functions
 BlaBlaBliBlou
 
-## 2. General approach of the CETA extension for ecotraj
-
-### 2.1 The "Build" functions
-BlaBlaBliBlou
-
-### 2.2 Beware of the external ecological states
+### 2.3 Beware of the external ecological states: the "December-to-January segment problem"
 BlaBlaBliBlou
 
 ## 3. Simple example

@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Cyclical Ecological Trajectory Analysis (CETA)"
-author: "Nicolas Djeghri"
+author: "Nicolas Djeghri/Miquel De Cáceres"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -25,20 +25,90 @@ Unlike many statistical procedures dedicated to time series, CETA does not aims 
 By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the product of the very regularly paced astronomic forcings (seasons, day-night cycles, tides). Describing seasonal dynamics was in fact the prime motivation in designing CETA. CETA is therefore not well tuned to address many other dynamics that ecologists would refer to as "cyclical" such as disturbance-recovery cycles. These may be better addressed with clever use of the more general ETA framework. The primary research field we envision for CETA use lies in a middle ground between phenology, community, and ecosystem ecology.
 
 ### 1.2 About this vignette
-In this vignette you will learn how to use CETA functions, and combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.
+In this vignette you will learn how to use CETA functions, and combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.  
+Let's first call the package:
+```{r}
+#library(ecotraj)
+library(devtools)
+load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
+```
 
 ## 2. General approach of CETA
 
 ### 2.1 The vocabulary of CETA
-CETA is perhaps a bit heavy-handed on the vocabulary. We recognize no less than three different types of trajectories and have two words for time!
+CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories!  
+Let's start with the way we refer to time: CETA distinguishes "times", representing linear time, and "dates" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once, and BBC radio is grateful.  
+Then, there is the three type of trajectories that CETA distinguishes an characterizes:
+
+* **Cyclical trajectories**: Long-trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA.
+* **Cycles**: Sub-divisions of cyclical trajectories of duration equal to its periodicity. 
+* **Fixed-dates trajectories**: Trajectories joining the ecological states sampled at the same date in a given cyclical trajectory (for instance, in a multi-annual monthly sampled time series, the trajectory joining the ecological states obtained for March of year 1, March of year 2 etc...)
+
+Let's build a toy dataset to visualize this:
+```{r}
+#Let's define our toy sampling times:
+timesToy <- 0:30 #The sampling times of the time series
+cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
+datesToy <- timesToy%%cycleDurationToy #The dates associated to each times
+
+#And state where the sampling occured, for now let' only use one site "A"
+sitesToy <- rep(c("A"),length(timesToy))
+
+#Then prepare some toy data:
+#Prepare a noise and trend term to make the data more interesting
+noise <- 0.05
+trend <- 0.05
+
+#Make cyclical data (note that we apply the trend only to x:
+x <- sin((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)+trend*timesToy
+y <- cos((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)
+matToy <- cbind(x,y)
+
+#And express it as a distance matrix (ETA is based on distances, increasing its generality)
+dToy <- dist(matToy)
+```
+
+Let's then visualize the **cyclical trajectory** using the function $trajectoryPCoa$ as we would do for any trajectory within ETA.
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(d = dToy,sites = sitesToy,surveys = timesToy, lwd = 2,length = 0.2)
+```
+
+We see that the cyclical trajectory is composed of three cycles but they are not yet separated. Similarly, the fixed-dates trajectories are not isolated. This is the goal of the "Build" functions in CETA.
 
 ### 2.2 The "Build" functions
-BlaBlaBliBlou
+In CETA the Build functions take one or more **cyclical trajectories** and return a distance matrix $d$ and associated descriptors allowing to isolate **cycles** or **fixed-dates trajectories** (respectively function $cycleBuild$ and $fdtrajBuild$) for further analysis.  
+Let's start with $fdtrajBuild$ as it is the simplest one to handle.
+```{r}
+fdtrajToy <- fdtrajBuild(d = dToy,sites = sitesToy,times = timesToy, cycleDuration = cycleDurationToy,namesFixedDates = paste("M",1:10))
+```
+Note that we haven't put the $datesToy$ as an argument, this is because the CETA function assume a default values for dates as $times%%cycleDuration$ which works perfectly fine here. In cas there is an offset between dates and times (e.g. times = 0 does not correspond to dates = 0), dates must be provided.
+Let's look at the output given by $fdtrajBuild$
+```{r}
+names(fdtrajToy)
+```
+$d$ is a modified distance matrix and $metadata$ contains the information necessary to read it as a descriptor of **fixed-dates trajectories**.
+```{r}
+head(fdtrajToy$metadata)
+```
+The column $fdT$ (for fixed-dates trajectories) indicates to which fixed-dates trajectories the different ecological states in $d$ belong. $fdT$ is built by pasting the site (especially usefull if several cyclical trajectory are studied in parallel) with the string "fdT" and the name given as argument in $fdtrajBuild$.
+
+Using a combination a the new distance matrix $d$ and it's descriptors in $metadata$, the output of $fdtrajBuild$ can be fed in other ETA functions to study fixed-dates trajectories. The key is to use the $fdtT$ column as substitute for $sites$ instance one can visualize the fixed-dates trajectories as follows:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(d = fdtrajToy$d,sites = fdtrajToy$metadata$fdT,surveys = fdtrajToy$metadata$times, lwd = 2,length = 0.2,traj.colors = rep(c("blue","red"),5))
+```
+
+One can also compute the directionality or the distance matrix between fixed-dates trajectories,:
+```{r}
+trajectoryDirectionality(d = fdtrajToy$d,sites = fdtrajToy$metadata$fdT,surveys = fdtrajToy$metadata$times)
+trajectoryDistances(d = fdtrajToy$d,sites = fdtrajToy$metadata$fdT,surveys = fdtrajToy$metadata$times)
+```
 
 ### 2.3 Beware of the external ecological states: the "December-to-January segment problem"
 BlaBlaBliBlou
 
-## 3. Simple example
+### 2.4 Summary of the CETA approach
+
+## 3. More realistic example
 ```{r}
 #Put some code in there!
 plot(0,0)

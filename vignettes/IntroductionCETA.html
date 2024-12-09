@@ -10,9 +10,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Nicolas Djeghri" />
+<meta name="author" content="Nicolas Djeghri/Miquel De Cáceres" />
 
-<meta name="date" content="2024-12-06" />
+<meta name="date" content="2024-12-09" />
 
 <title>Introduction to Cyclical Ecological Trajectory Analysis (CETA)</title>
 
@@ -340,8 +340,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introduction to Cyclical Ecological
 Trajectory Analysis (CETA)</h1>
-<h4 class="author">Nicolas Djeghri</h4>
-<h4 class="date">2024-12-06</h4>
+<h4 class="author">Nicolas Djeghri/Miquel De Cáceres</h4>
+<h4 class="date">2024-12-09</h4>
 
 
 <div id="TOC">
@@ -359,11 +359,14 @@ About this vignette</a></li>
 <li><a href="#the-vocabulary-of-ceta" id="toc-the-vocabulary-of-ceta">2.1 The vocabulary of CETA</a></li>
 <li><a href="#the-build-functions" id="toc-the-build-functions">2.2 The
 “Build” functions</a></li>
-<li><a href="#beware-of-the-external-ecological-states" id="toc-beware-of-the-external-ecological-states">2.3 Beware of the
-external ecological states</a></li>
+<li><a href="#beware-of-the-external-ecological-states-the-december-to-january-segment-problem" id="toc-beware-of-the-external-ecological-states-the-december-to-january-segment-problem">2.3
+Beware of the external ecological states: the “December-to-January
+segment problem”</a></li>
+<li><a href="#summary-of-the-ceta-approach" id="toc-summary-of-the-ceta-approach">2.4 Summary of the CETA
+approach</a></li>
 </ul></li>
-<li><a href="#simple-example" id="toc-simple-example">3. Simple
-example</a></li>
+<li><a href="#more-realistic-example" id="toc-more-realistic-example">3.
+More realistic example</a></li>
 </ul>
 </div>
 
@@ -382,45 +385,172 @@ Unlike many statistical procedures dedicated to time series, CETA does
 not aims to detect cyclicity. Rather, CETA aims at describing it, as
 well as gain insights into long-term changes in cyclical dynamics.
 Cyclicity must be known <em>a priori</em> from knowledge of the system
-under study or from another statistical analysis
-(e.g. eigenvectormaps).<br />
+under study or from another statistical analysis (e.g. eigenvector
+maps).<br />
 By “regular cyclical dynamics” we mean cycles that are ‒ <em>most
 often</em> ‒ the product of the very regularly paced astronomic forcings
 (seasons, day-night cycles, tides). Describing seasonal dynamics was in
 fact the prime motivation in designing CETA. CETA is therefore not well
 tuned to address many other dynamics that ecologists would refer to as
-“cyclical” such as disturbance-recovery cycles. The primary research
-field we envision for CETA use lies in a middle ground between
+“cyclical” such as disturbance-recovery cycles. These may be better
+addressed with clever use of the more general ETA framework. The primary
+research field we envision for CETA use lies in a middle ground between
 phenology, community, and ecosystem ecology.</p>
 </div>
 <div id="about-this-vignette" class="section level3">
 <h3>1.2 About this vignette</h3>
 <p>In this vignette you will learn how to use CETA functions, and
 combine them with the wider ETA framework to obtain metrics describing
-cyclical trajectories.</p>
+cyclical trajectories.<br />
+Let’s first call the package:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#library(ecotraj)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(devtools)</span></code></pre></div>
+<pre><code>## Warning: le package &#39;devtools&#39; a été compilé avec la version R 4.4.2</code></pre>
+<pre><code>## Le chargement a nécessité le package : usethis</code></pre>
+<pre><code>## Warning: le package &#39;usethis&#39; a été compilé avec la version R 4.4.2</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">load_all</span>(<span class="st">&quot;C:/Users/djeghri/Documents/GitHub/ecotraj&quot;</span>)</span></code></pre></div>
+<pre><code>## ℹ Loading ecotraj</code></pre>
+<pre><code>## Le chargement a nécessité le package : Rcpp</code></pre>
+<pre><code>## Warning: le package &#39;testthat&#39; a été compilé avec la version R 4.4.2</code></pre>
 </div>
 </div>
 <div id="general-approach-of-ceta" class="section level2">
 <h2>2. General approach of CETA</h2>
 <div id="the-vocabulary-of-ceta" class="section level3">
 <h3>2.1 The vocabulary of CETA</h3>
-<p>CETA is perhaps a bit heavy-handed on the vocabulary. We recognize no
-less than three different types of trajectories and have two words for
-time!</p>
+<p>CETA is perhaps a bit heavy-handed on the vocabulary. We have two
+words for time and recognize no less than three different types of
+trajectories!<br />
+Let’s start with the way we refer to time: CETA distinguishes “times”,
+representing linear time, and “dates” representing circular time. For
+instance, the 17th of December recurs every year, in that sense, we call
+it a date. However, the 17th of December 2009 occurred only once, and
+BBC radio is grateful.<br />
+Then, there is the three type of trajectories that CETA distinguishes an
+characterizes:</p>
+<ul>
+<li><strong>Cyclical trajectories</strong>: Long-trajectories presenting
+cyclical dynamics of a given periodicity (e.g. annual). They are the
+basis of CETA.</li>
+<li><strong>Cycles</strong>: Sub-divisions of cyclical trajectories of
+duration equal to its periodicity.</li>
+<li><strong>Fixed-dates trajectories</strong>: Trajectories joining the
+ecological states sampled at the same date in a given cyclical
+trajectory (for instance, in a multi-annual monthly sampled time series,
+the trajectory joining the ecological states obtained for March of year
+1, March of year 2 etc…)</li>
+</ul>
+<p>Let’s build a toy dataset to visualize this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#Let&#39;s define our toy sampling times:</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>timesToy <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">30</span> <span class="co">#The sampling times of the time series</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>cycleDurationToy <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co">#The duration of the cycles (i.e. the periodicity of the time series)</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>datesToy <span class="ot">&lt;-</span> timesToy<span class="sc">%%</span>cycleDurationToy <span class="co">#The dates associated to each times</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#And state where the sampling occured, for now let&#39; only use one site &quot;A&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>sitesToy <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>),<span class="fu">length</span>(timesToy))</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#Then prepare some toy data:</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#Prepare a noise and trend term to make the data more interesting</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>noise <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>trend <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#Make cyclical data (note that we apply the trend only to x:</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sin</span>((timesToy<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">/</span>cycleDurationToy)<span class="sc">+</span><span class="fu">rnorm</span>(<span class="fu">length</span>(timesToy),<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span>noise)<span class="sc">+</span>trend<span class="sc">*</span>timesToy</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">cos</span>((timesToy<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>pi)<span class="sc">/</span>cycleDurationToy)<span class="sc">+</span><span class="fu">rnorm</span>(<span class="fu">length</span>(timesToy),<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span>noise)</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>matToy <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x,y)</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#And express it as a distance matrix (ETA is based on distances, increasing its generality)</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>dToy <span class="ot">&lt;-</span> <span class="fu">dist</span>(matToy)</span></code></pre></div>
+<p>Let’s then visualize the <strong>cyclical trajectory</strong> using
+the function <span class="math inline">\(trajectoryPCoa\)</span> as we
+would do for any trajectory within ETA.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">trajectoryPCoA</span>(<span class="at">d =</span> dToy,<span class="at">sites =</span> sitesToy,<span class="at">surveys =</span> timesToy, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">length =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>We see that the cyclical trajectory is composed of three cycles but
+they are not yet separated. Similarly, the fixed-dates trajectories are
+not isolated. This is the goal of the “Build” functions in CETA.</p>
 </div>
 <div id="the-build-functions" class="section level3">
 <h3>2.2 The “Build” functions</h3>
+<p>In CETA the Build functions take one or more <strong>cyclical
+trajectories</strong> and return a distance matrix <span class="math inline">\(d\)</span> and associated descriptors allowing to
+isolate <strong>cycles</strong> or <strong>fixed-dates
+trajectories</strong> (respectively function <span class="math inline">\(cycleBuild\)</span> and <span class="math inline">\(fdtrajBuild\)</span>) for further analysis.<br />
+Let’s start with <span class="math inline">\(fdtrajBuild\)</span> as it
+is the simplest one to handle.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>fdtrajToy <span class="ot">&lt;-</span> <span class="fu">fdtrajBuild</span>(<span class="at">d =</span> dToy,<span class="at">sites =</span> sitesToy,<span class="at">times =</span> timesToy, <span class="at">cycleDuration =</span> cycleDurationToy,<span class="at">namesFixedDates =</span> <span class="fu">paste</span>(<span class="st">&quot;M&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code></pre></div>
+<p>Note that we haven’t put the <span class="math inline">\(datesToy\)</span> as an argument, this is because
+the CETA function assume a default values for dates as <span class="math inline">\(times%%cycleDuration\)</span> which works
+perfectly fine here. In cas there is an offset between dates and times
+(e.g. times = 0 does not correspond to dates = 0), dates must be
+provided. Let’s look at the output given by <span class="math inline">\(fdtrajBuild\)</span></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">names</span>(fdtrajToy)</span></code></pre></div>
+<pre><code>## [1] &quot;d&quot;        &quot;metadata&quot;</code></pre>
+<p><span class="math inline">\(d\)</span> is a modified distance matrix
+and <span class="math inline">\(metadata\)</span> contains the
+information necessary to read it as a descriptor of <strong>fixed-dates
+trajectories</strong>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">head</span>(fdtrajToy<span class="sc">$</span>metadata)</span></code></pre></div>
+<pre><code>##   sites       fdT times dates
+## 1     A A fdT M 1     0     0
+## 2     A A fdT M 2     1     1
+## 3     A A fdT M 3     2     2
+## 4     A A fdT M 4     3     3
+## 5     A A fdT M 5     4     4
+## 6     A A fdT M 6     5     5</code></pre>
+<p>The column <span class="math inline">\(fdT\)</span> (for fixed-dates
+trajectories) indicates to which fixed-dates trajectories the different
+ecological states in <span class="math inline">\(d\)</span> belong.
+<span class="math inline">\(fdT\)</span> is built by pasting the site
+(especially usefull if several cyclical trajectory are studied in
+parallel) with the string “fdT” and the name given as argument in <span class="math inline">\(fdtrajBuild\)</span>.</p>
+<p>Using a combination a the new distance matrix <span class="math inline">\(d\)</span> and it’s descriptors in <span class="math inline">\(metadata\)</span>, the output of <span class="math inline">\(fdtrajBuild\)</span> can be fed in other ETA
+functions to study fixed-dates trajectories. The key is to use the <span class="math inline">\(fdtT\)</span> column as substitute for <span class="math inline">\(sites\)</span> instance one can visualize the
+fixed-dates trajectories as follows:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">trajectoryPCoA</span>(<span class="at">d =</span> fdtrajToy<span class="sc">$</span>d,<span class="at">sites =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>fdT,<span class="at">surveys =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>times, <span class="at">lwd =</span> <span class="dv">2</span>,<span class="at">length =</span> <span class="fl">0.2</span>,<span class="at">traj.colors =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="dv">5</span>))</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>One can also compute the directionality or the distance matrix
+between fixed-dates trajectories,:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">trajectoryDirectionality</span>(<span class="at">d =</span> fdtrajToy<span class="sc">$</span>d,<span class="at">sites =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>fdT,<span class="at">surveys =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>times)</span></code></pre></div>
+<pre><code>##  A fdT M 1  A fdT M 2  A fdT M 3  A fdT M 4  A fdT M 5  A fdT M 6  A fdT M 7 
+##  0.9215372  0.9784380  0.9854842  0.9956786  0.9918139  0.9268444  0.9758102 
+##  A fdT M 8  A fdT M 9 A fdT M 10 
+##  0.9456460  0.9151491  0.9491617</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">trajectoryDistances</span>(<span class="at">d =</span> fdtrajToy<span class="sc">$</span>d,<span class="at">sites =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>fdT,<span class="at">surveys =</span> fdtrajToy<span class="sc">$</span>metadata<span class="sc">$</span>times)</span></code></pre></div>
+<pre><code>##            A fdT M 1 A fdT M 2 A fdT M 3 A fdT M 4 A fdT M 5 A fdT M 6
+## A fdT M 2  0.3037268                                                  
+## A fdT M 3  0.8336714 0.6201177                                        
+## A fdT M 4  1.4220288 1.1784065 0.6207529                              
+## A fdT M 5  1.8255130 1.6321220 1.1024781 0.5995707                    
+## A fdT M 6  2.0436319 1.8326454 1.4553995 1.0252549 0.5018457          
+## A fdT M 7  1.8486663 1.7294552 1.5326676 1.3083146 0.9253972 0.4171218
+## A fdT M 8  1.5598785 1.5932799 1.5749118 1.5683093 1.3490198 0.8860570
+## A fdT M 9  0.9202044 1.0927990 1.3513790 1.5657788 1.6436123 1.4401154
+## A fdT M 10 0.3618993 0.5533597 1.0473652 1.4712073 1.7556693 1.8355743
+##            A fdT M 7 A fdT M 8 A fdT M 9
+## A fdT M 2                               
+## A fdT M 3                               
+## A fdT M 4                               
+## A fdT M 5                               
+## A fdT M 6                               
+## A fdT M 7                               
+## A fdT M 8  0.5170756                    
+## A fdT M 9  1.1480944 0.6924718          
+## A fdT M 10 1.6294273 1.2642025 0.6387975</code></pre>
+</div>
+<div id="beware-of-the-external-ecological-states-the-december-to-january-segment-problem" class="section level3">
+<h3>2.3 Beware of the external ecological states: the
+“December-to-January segment problem”</h3>
 <p>BlaBlaBliBlou</p>
 </div>
-<div id="beware-of-the-external-ecological-states" class="section level3">
-<h3>2.3 Beware of the external ecological states</h3>
-<p>BlaBlaBliBlou</p>
+<div id="summary-of-the-ceta-approach" class="section level3">
+<h3>2.4 Summary of the CETA approach</h3>
 </div>
 </div>
-<div id="simple-example" class="section level2">
-<h2>3. Simple example</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#Put some code in there!</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span></code></pre></div>
+<div id="more-realistic-example" class="section level2">
+<h2>3. More realistic example</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co">#Put some code in there!</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span></code></pre></div>
 <p><img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAARVBMVEUAAAAAADoAAGYAOpAAZrY6AAA6ADo6AGY6Ojo6kNtmAABmtv+QOgCQ2/+2ZgC2///bkDrb////tmb/25D//7b//9v////+cdidAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAEdUlEQVR4nO3da1vaMABA4e7iNtExVmH//6cOqKDdTA9pEhLoeT/5CIR6nl6oDdD90aSu9gK0zkDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEAgLtDuuTv6/KvQ4rQnKtCmexx+6E8/3L+YQLvnc5bNl98FFqZFMYG2q6fTj/1iNjLXIBC5D3pdhdwHBWxXw1EsuP50N6NMoGsPV46BQOlAm8BRzECBUaI37drcxICBgIGAgUCRQKeXiQcexT6ye6Zz1IUH2hf6mnO4ikrtg/ruafL2xQe68nDlGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAh4ZRW4BgEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQOBYlPwJqdwLj4Qv2d12YEueMfhsgNd8J7VZQdyDSL8ntWFB7rgPatRw1UUHSjTh06UCFTkYlJsoFwfOlHoT8k/bGSg6I8MuN57Vrsy40YGSv3QiYJXVtsIlO1DJ+41ULYPnbjXfdAFB/CjKierTRzFLuPJ6jRPNYAnq8A1iHiyShZ8snrt563NQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDgyoF8z2ql4coxEDAQMBAwEDAQMBAwEDAQMBAwEDAQKBTIN9RNc47iNGeYAecoAtcg4hxF4hzFqz1vbQYCpQP5JZCln7c2AwEvHALXIGAgUOhczC+BnOaXQBL+EsibUSYQfglk3KAX3q/K3WbePe+gBspzv1sL9O7/ZomDGijP/QzU4t1m3v3AQMBAyQy0IAYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGArkDvXw/Xznru+7Tz4ShRo8PD/b+luHSZuDS1LxFyxxouzpfWuz3i9AnFBo9PjzY6JaXb+Hnm7loeQP1b9ekh3+rreFCY9jo8eHBxrdMfFr43EXLGqjvHs+L+PJwuMQYmonGRo8PDza+ZRP8o2cvWu590NtSHNf2WR8A///jw4ONb1n/2O+CQv8QnrdoxQIN2/j8ndDo8eHBRrdsV4f5yetAoXmLdleB/lmELIt2X5vY8KuHjydYVN3ENqdtv+5OevhV4Fjf2E66xmF++MtxE6t3mH+/FFVeKB7/aNxJV3yh+LoUw0S0TeKpxuvjabDR3db7TT00xWveonmyCgwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDAQMBAwEDASaD5Q6mThV64FS54gkazxQ6iyjdI0HSp2nlq71QIkzHdM1Hih1rmw6A4HGA7mJAXfSwMM88YUiSZ1MnKr5QLUZCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgIGAgYCBgI/AWsznZ1nyFhlgAAAABJRU5ErkJggg==" /><!-- --></p>
 </div>
 

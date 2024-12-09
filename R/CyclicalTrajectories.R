@@ -210,7 +210,7 @@ fdtrajBuild <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,
   
   d <- as.matrix(d)
   d <- d[selec,selec]
-  d <- dist(d)
+  d <- as.dist(d)
   
   metadata <- metadata[selec,]
   

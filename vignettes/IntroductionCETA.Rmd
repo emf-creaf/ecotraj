@@ -175,7 +175,25 @@ trajectoryDistances(d = cycleToy_cent$d,
                     sites = cycleToy_cent$metadata$Cycles,
                     surveys = cycleToy_cent$metadata$times)
 ```
-The distinction between internal and external ecological states also complicates graphic representation as we want to compute PCoA only based on internal ecological states but display nonetheless all points to see all segments. A special function is thus (NOT YET!!!) available within CETA for this purpose.
+The distinction between internal and external ecological states also complicates graphic representation as we want to compute a weighted PCoA taking in account the internal vs external nature of ecological states. A special function is thus available within CETA for this purpose **(-ish, I'm not super sure of the function)**.
+This can be done using the original cycles:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+cyclePCoA(d = cycleToy$d,
+          cycles = cycleToy$metadata$Cycles,
+          times = cycleToy$metadata$times,
+          IntExt = cycleToy$metadata$IntExt,
+          cycle.colors = c("blue","red","black"))
+
+```
+
+As well as the centered cycles:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+cyclePCoA(d = cycleToy_cent$d,
+          cycles = cycleToy_cent$metadata$Cycles,
+          times = cycleToy_cent$metadata$times,
+          IntExt = cycleToy_cent$metadata$IntExt,
+          cycle.colors = c("blue","red","black"))
+```
 
 ### 2.4 Summary of the CETA approach
 

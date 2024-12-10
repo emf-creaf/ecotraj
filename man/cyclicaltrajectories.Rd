@@ -7,6 +7,7 @@
 \alias{fdtrajBuild}
 \alias{cycleSmoothness}
 \alias{cycleShift}
+\alias{cyclePCoA}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
 \usage{
 cycleBuild(
@@ -52,6 +53,18 @@ cycleShift(
   centering = TRUE,
   minEcolStates = 3
 )
+
+cyclePCoA(
+  d,
+  cycles,
+  times,
+  IntExt,
+  selection = NULL,
+  cycle.colors = NULL,
+  axes = c(1, 2),
+  time.labels = FALSE,
+  ...
+)
 }
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
@@ -77,6 +90,20 @@ cycleShift(
 \item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
 \item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.}
+
+\item{cycles}{A vector indicating the cycles corresponding to each ecosystem state.}
+
+\item{IntExt}{A vector indicating whether each ecosystem state is "internal" or "external".}
+
+\item{selection}{A character vector of cycles, a numeric vector of cycle indices or logical vector of the same length as \code{cycles}, indicating a subset of cycle trajectories to be selected.}
+
+\item{cycle.colors}{A vector of colors (one per cycle). If \code{selection != NULL} the length of the color vector should be equal to the number of cycles selected.}
+
+\item{axes}{The pair of principal coordinates to be plotted.}
+
+\item{time.labels}{A boolean flag to indicate whether times should be plotted as text next to arrow endpoints}
+
+\item{...}{Additional parameters for function \code{\link{arrows}}.}
 }
 \value{
 Function \code{cycleBuild} returns the base information needed to describe cycles. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within cycles, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{cycleBuild} returns a list containing:
@@ -117,6 +144,8 @@ Function \code{cycleShift} returns an object of class \code{\link{data.frame}} d
 \item{\code{timeScale}: the time difference between the reference and the projected ecological state.}
 \item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
 }
+
+Function \code{cyclePCoA} returns a list similar to the calling \code{\link{cmdscale}}.
 }
 \description{
 The Cyclical extension of Ecological Trajectory Analysis (CETA) aims at allowing ETA to describe ecological trajectories presenting cyclical dynamics such as seasonal or day/night cycles. We call such trajectories "cyclical".
@@ -138,6 +167,7 @@ CETA functions:
 \item{Function \code{fdtrajBuild} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-dates trajectories.}
 \item{Function \code{cycleSmoothness} computes the "smoothness" of the cycles embedded in one or more cyclical trajectories.}
 \item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
+\item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to cycles (taking in account internal vs external ecosystem states.}
 }
 
 CETA is a little more time-expicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.

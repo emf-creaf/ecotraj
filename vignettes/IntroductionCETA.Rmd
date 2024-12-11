@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction
 
-### 1.1 When trajectories go 'round in circles: making ETA able to handle cyclical dynamics
+### 1.1 Going round in cycles ok... but go somewhere! What CETA does, and where it sits
 *Cyclical Ecological Trajectory Analysis* (CETA) is an extension of *Ecological Trajectory Analysis* (ETA) allowing it to handle trajectories presenting regular cyclical dynamics (e.g. seasons, day-night cycle). 
 Before starting, it is important to clarify what CETA does and what it does not, as well as what we mean by "regular cyclical dynamics".  
 Unlike many statistical procedures dedicated to time series, CETA does not aims to detect cyclicity. Rather, CETA aims at describing it, as well as gain insights into long-term changes in cyclical dynamics. Cyclicity must be known *a priori* from knowledge of the system under study or from another statistical analysis (e.g. eigenvector maps).  
@@ -40,7 +40,7 @@ CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time
 Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once, and BBC radio is grateful.  
 Then, there is the three type of trajectories that CETA distinguishes an characterizes:
 
-* **Cyclical trajectories**: Long-trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA.
+* **Cyclical trajectories**: Long-trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA. They also constitute the inputs from which the two other types of trajectories will be derived.
 * **Cycles**: Sub-divisions of a cyclical trajectory of duration equal to its periodicity. 
 * **Fixed-dates trajectories**: Trajectories joining the ecological states sampled at the same date in a given cyclical trajectory (for instance, in a multi-annual monthly sampled time series, the trajectory joining the ecological states obtained for March of year 1, March of year 2 etc...).
 
@@ -121,7 +121,7 @@ trajectoryDistances(d = fdtrajToy$d,
                     surveys = fdtrajToy$metadata$times)
 ```
 
-Ok let's now look at how this works for **cycles**. The functions `cycleBuild` work very similarly to `fdtrajBuild`. Few differences include: it does not allows to specify names for cycles (they are by default named C1, C2 etc...); it allows to change the `startdate` of the cycle (for instance allowing to flexibility in where cycle start: annual cycle do not have to start in January).
+Ok let's now look at how this works for **cycles**. The functions `cycleBuild` works very similarly to `fdtrajBuild`. Few differences include: it does not allows to specify names for cycles (they are by default named C1, C2 etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle do not have to start in January*).
 ```{r}
 cycleToy <- cycleBuild(d = dToy,
                        sites = sitesToy,
@@ -134,29 +134,31 @@ Just like `fdtrajBuild`, `cycleBuild` has outputs `d` and `metadata`:
 names(cycleToy)
 ```
 
-When inspecting `metadata`, we find the column `Cycles` containing the unique names of all cycles similar to column `fdT` in the output of `fdtrajBuild`. However, encounters an additional column `IntExt`:
+When inspecting `metadata`, we find the column `Cycles` containing the unique names of all cycles similar to column `fdT` in the output of `fdtrajBuild`. In addition and importantly, `cycleBuild` returns the column named `IntExt` that has no parallel in `fdtrajBuild`:
 ```{r}
 head(cycleToy$metadata)
 ```
 
-The `IntExt` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the "December-to-January segment problem" and that ‒ *unfortunately* ‒ complicates a bit the use of the outputs of `cycleBuild`. We explain this below.
+The `IntExt` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the **"December-to-January segment problem"** and that ‒ *unfortunately* ‒ complicates a bit the use of the outputs of `cycleBuild`. We explain this below.
 
 ### 2.3 Beware of the external ecological states: the "December-to-January segment problem"
-Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years (Y, Y+1 ...). How do we cut this trajectory into cycles? One possibility is two make cycles out of the segments joining all the months of year Y, from January to December (12 ecological states, joined by 11 segments). The problem then is that the segment joining December of year Y to January of year Y+1 is systematically ignored. We can then extend the cycles to the first ecological state of the next cycle (January of year Y+1, 13 ecological states 12 segments). This correctly includes the 12 segments in the cycle but implies that the cycle contains twice the month of January. This is the "December-to-January segment problem".  
-In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January if year Y+1 could be consider "external" whereas other ecological states would be "internal". Broadly, external ecological states are included in computations relying on the concept of segments, but excluded in computations relying on the concept of point. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
+Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years (Y, Y+1 ...). How do we cut this cyclical trajectory into cycles? One possibility is to make cycles out of the segments joining all the months of year Y, from January to December (12 ecological states, joined by 11 segments). The problem then is that the segment joining December of year Y to January of year Y+1 is ignored. We can then extend the cycles to the first ecological state of the next cycle (January of year Y+1, 13 ecological states 12 segments). This correctly includes the 12 segments in the cycle but implies that the cycle contains twice the month of January. This is the **"December-to-January segment problem"**.  
+In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January of year Y+1 would be consider "external" whereas other ecological states would be "internal". Broadly, external ecological states are included in computations relying on the concept of segments, but excluded in computations relying on the concept of point. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
 
 * Centering.
-* PCoA (particularly for graphic representation).
-* Computation of Cycle Smoothness.
+* PCoA (particularly for graphic representation) MAYBE NOT I'M NOT THAT SURE ANYMORE!!!.
+* Computation of Cycle Smoothness (But don't worry, a function will do it for you!).
 * Computation of Bdiv for cycles.
 
-We will detail these below, but first, let's explore the outputs of `cycleBuild` to make all this more palatable:
+In addition, you might have ideas to study cycles outside of the CETA/ETA framework. If so, please go ahead! But remember that most approaches rely on the concept of points, not segments, so external ecological states should probably be removed beforehand.  
+
+We will detail how to treat external ecological states within CETA below, but first, let's explore the outputs of `cycleBuild` to make all this more palatable:
 ```{r}
-nrow(as.matrix(dToy))#Number of ecological states in the orginal distance matrix.
+nrow(as.matrix(dToy))#Number of ecological states in the original distance matrix.
 nrow(as.matrix(cycleToy$d))#Number of ecological states in the matrix returned by cycleBuild.
 ```
-Note that, in this example, the distance matrix return by `cycleBuild` describe two more ecological states than the original distance matrix. This is because `cycleBuild` duplicates ecological states if they are shared by two cycles (coming back to the example above, January of year Y +1 belongs to the cycle describing year Y AND the cycle describing year Y+1). Such duplicated ecological states exist always in an "internal" and an "external" version.
-This duplication allows to easily, and correctly, compute most of the ETA metrics for cycles such as, for instance, distances:
+Note that, in this example, the distance matrix returned by `cycleBuild` describes two more ecological states than the original distance matrix. This is because `cycleBuild` duplicates ecological states if they are shared by two cycles (coming back to the example above, January of year Y +1 belongs to the cycle describing year Y AND the cycle describing year Y+1). Such duplicated ecological states exist always in an "internal" and an "external" version.
+This duplication allows to easily, and correctly, compute most of the ETA metrics for cycles such as, for instance, distances. Akin to what we did with fixed-dates trajectories, the key is to use the column `Cycles` as input for `sites` in the ETA function :
 ```{r}
 trajectoryDistances(d = cycleToy$d,
                     sites = cycleToy$metadata$Cycles,
@@ -171,6 +173,7 @@ cycleToy_cent$d <- centerTrajectories(cycleToy$d,
                                       exclude = which(cycleToy$metadata$IntExt=="external"))
 #Note that the centering function is explicitly asked to exclude external ecological states of computations
 
+#Computing the distances again but on centered cycles
 trajectoryDistances(d = cycleToy_cent$d,
                     sites = cycleToy_cent$metadata$Cycles,
                     surveys = cycleToy_cent$metadata$times)
@@ -195,11 +198,33 @@ cyclePCoA(d = cycleToy_cent$d,
           cycle.colors = c("blue","red","black"))
 ```
 
-### 2.4 Summary of the CETA approach
+Another metric that need special handling in CETA is cycle smoothness (function `cycleSmoothness`). This metric is the cyclical equivalent of directionality for non-cyclical trajectories. Smoothness is related to convexity. A cycle with high smoothness is interpreted as simpler (more convex) than a cycle with low smoothness. Low smoothness is due to concavities or "bends" in more than two dimension indicative of a more complex (or nosier) cyclical dynamic.  
+The function `cycleSmoothness` does not uses the outputs of `cycleBuild`. This is because the original full trajectory is needed for computation. Instead, `cycleSmoothness` take the same inputs as `cycleBuild`:
+```{r}
+cycleSmoothness(d = dToy,
+                sites = sitesToy,
+                times = timesToy,
+                cycleDuration = cycleDurationToy)
+```
+Note that the function returns a `NA` for the first cycle. This is because the function needs to associate an angle to each internal ecological states of the cycles. Because the first cycle starts with the first ecological state of the whole time series, its associated angle cannot be computed neither the smoothness of the cycle.
+
+### 2.4 Computing cyclical shifts: advances and delays
+
+A last contribution of CETA is to provide a way to generalize the concept of phenological advances and delays for multidimensional data such as those used in community ecology. The function that compute cyclical shifts is `cycleShift` and compute by default all the shifts that are possible to compute on a given cyclical trajectory. The computation relies on projection and comparison of an ecological states of interest to a reference cycle. The computation time can be long for large datasets. The function takes the same inputs as `cycleBuild`:
+```{r}
+cycleShift(d = dToy,
+           sites = sitesToy,
+           times = timesToy,
+           cycleDuration = cycleDurationToy)
+```
+The output gives the `cyclicalShift` computed (positive meaning advance and negative meaning delay) in the same units as the input `time`. The other columns give information on what exactly was compared. We will come back on this output in the more detailed example below. 
+
+### 2.5 Summary of the CETA approach
+Here is a visual summary of the CETA approach:
+
+![The CETA functions (blue) allow to format data to describe fixed-dates trajectories or cycles. The reformated data (Output of functions `fdtrajBuild` and `cycleBuild`) can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. However, when woking on cycles, keep in mind that external ecological states must be treated with care for some applications and that some metrics (obtained with functions `cycleSmoothness` and `cycleShift`) are obtained directly from the original data, not from the output of `cycleBuild`.](CETA_workflow.png){width="100%"}
 
 ## 3. More realistic example
-```{r}
-#Put some code in there!
-plot(0,0)
-```
+
+To be written...
 

@@ -7,18 +7,17 @@
 \alias{fdtrajBuild}
 \alias{cycleSmoothness}
 \alias{cycleShift}
-\alias{trajectorysectionBuild}
-\alias{interpolateEcolStates}
+\alias{cyclePCoA}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
 \usage{
 cycleBuild(
   d,
   sites,
   times,
-  DurC,
-  dates = times\%\%DurC,
+  cycleDuration,
+  dates = times\%\%cycleDuration,
   startdate = min(dates),
-  extBound = "end",
+  externalBoundary = "end",
   minEcolStates = 3
 )
 
@@ -26,48 +25,46 @@ fdtrajBuild(
   d,
   sites,
   times,
-  DurC,
-  dates = times\%\%DurC,
-  fixed_dates = unique(dates\%\%DurC),
-  names_fixed_dates = as.character(round(fixed_dates, 2)),
+  cycleDuration,
+  dates = times\%\%cycleDuration,
+  fixedDates = unique(dates\%\%cycleDuration),
+  namesFixedDates = as.character(round(fixedDates, 2)),
   minEcolStates = 2
-)
-
-cycleShift(
-  d,
-  sites,
-  times,
-  DurC,
-  dates = times\%\%DurC,
-  datesCS = unique(dates),
-  centering = T,
-  minEcolStates = 3
 )
 
 cycleSmoothness(
   d,
   sites,
   times,
-  DurC,
-  dates = times\%\%DurC,
+  cycleDuration,
+  dates = times\%\%cycleDuration,
   startdate = min(dates),
-  extBound = "end",
+  externalBoundary = "end",
   minEcolStates = 3
 )
 
-trajectorysectionBuild(
+cycleShift(
   d,
   sites,
   times,
-  Traj,
-  tstart,
-  tend,
-  BCstart,
-  BCend,
-  namesTS = 1:length(Traj)
+  cycleDuration,
+  dates = times\%\%cycleDuration,
+  datesCS = unique(dates),
+  centering = TRUE,
+  minEcolStates = 3
 )
 
-interpolateEcolStates(d, ToInterpolate)
+cyclePCoA(
+  d,
+  cycles,
+  times,
+  IntExt,
+  selection = NULL,
+  cycle.colors = NULL,
+  axes = c(1, 2),
+  time.labels = FALSE,
+  ...
+)
 }
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
@@ -76,66 +73,121 @@ interpolateEcolStates(d, ToInterpolate)
 
 \item{times}{A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).}
 
-\item{DurC}{A value indicating the duration of a cycle. Must be in the same units as times.}
+\item{cycleDuration}{A value indicating the duration of a cycle. Must be in the same units as times.}
 
-\item{dates}{An optional vector indicating the dates (< \code{DurC}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo DurC (see details).}
+\item{dates}{An optional vector indicating the dates (< \code{cycleDuration}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo cycleDuration (see details).}
 
 \item{startdate}{An optional value indicating at which date the cycles must begin. Must be in the same units as times. Defaults to \code{min(dates)}.}
 
-\item{extBound}{An optional value, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.}
+\item{externalBoundary}{An optional string, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.}
 
 \item{minEcolStates}{An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.}
 
-\item{fixed_dates}{An optional vector of dates for which fixed-dates trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-dates trajectories.}
+\item{fixedDates}{An optional vector of dates for which fixed-dates trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-dates trajectories.}
 
-\item{names_fixed_dates}{An optional vector of names associated to each \code{fixed_dates}. Defaults to round(fixed_dates,2).}
+\item{namesFixedDates}{An optional vector of names associated to each \code{fixedDates}. Defaults to \code{round(fixedDates,2)}.}
 
-\item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to unique(dates) resulting in the computation of all possible cyclical shifts.}
+\item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
-\item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{T}.}
+\item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.}
 
-\item{Traj}{A vector of length equal to the number of desired trajectory sections indicating the trajectories from which trajectory sections must be build (see details).}
+\item{cycles}{A vector indicating the cycles corresponding to each ecosystem state.}
 
-\item{tstart}{A vector of start times for each of the desired trajectory sections (see details).}
+\item{IntExt}{A vector indicating whether each ecosystem state is "internal" or "external".}
 
-\item{tend}{A vector of end times for each of the desired trajectory sections (see details).}
+\item{selection}{A character vector of cycles, a numeric vector of cycle indices or logical vector of the same length as \code{cycles}, indicating a subset of cycle trajectories to be selected.}
 
-\item{BCstart}{A vector of start boundary conditions (either \code{"internal"} or \code{"external"}) for each of the desired trajectory sections (see details).}
+\item{cycle.colors}{A vector of colors (one per cycle). If \code{selection != NULL} the length of the color vector should be equal to the number of cycles selected.}
 
-\item{BCend}{A vector of end boundary conditions (either \code{"internal"} or \code{"external"}) for each of the desired trajectory sections (see details).}
+\item{axes}{The pair of principal coordinates to be plotted.}
 
-\item{namesTS}{An optional vector giving a name for each of the desired trajectory sections (by default trajectory sections are simply numbered).}
+\item{time.labels}{A boolean flag to indicate whether times should be plotted as text next to arrow endpoints}
 
-\item{ToInterpolate}{a matrix with three columns: 1) the positions of ecosystem states A in d; 2) the positions of ecosystem states B in d; 3) an interpolation coefficient (i.e. at what proportion of directed segment AB the interpolate ecosystem state X needs to be).}
+\item{...}{Additional parameters for function \code{\link{arrows}}.}
+}
+\value{
+Function \code{cycleBuild} returns the base information needed to describe cycles. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within cycles, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{cycleBuild} returns a list containing:
+\itemize{
+\item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the cycles. To take in account ecological states that are both the end of a cycle and the start of another,\code{d} contains duplications. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any cycles (e.g. due to \code{minEcolStates}))}
+\item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
+\itemize{
+\item{\code{sites}: the sites associated to  each ecological states.}
+\item{\code{Cycles}: the names of the cycle each ecological states belongs to. The cycle name is built by combining the site name with C1, C2, C3... in chronological order.}
+\item{\code{times}: the times associated to each ecological states.}
+\item{\code{IntExt}: a vector containing two possible strings indicating whether the associated ecological state is \code{"internal"} or \code{"external"}. This has important implications for the use of \code{cycleBuild} outputs (see details).}
+\item{\code{dates}: the dates associated to each ecological states.}
+}
+}
+}
+
+Function \code{fdtrajBuild} returns the base information needed to describe fixed-dates trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Unlike cycles,fixed-dates trajectories do not include \code{"internal"} or \code{"external"} ecological states and can be treated as any trajectories. Function \code{fdtrajBuild} returns a list containing:
+\itemize{
+\item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the fixed-dates trajectories. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any fixed-dates trajectories (e.g. due to \code{minEcolStates}))}
+\item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
+\itemize{
+\item{\code{sites}: the sites to  each ecological states.}
+\item{\code{fdT}: the names of the fixed-dates trajectory each ecological states belongs to. The fixed-dates trajectory name is built by combining the site name with "fdT" and the name of the fixed date (from \code{namesFixedDates}).}
+\item{\code{times}: the times associated to each ecological states.}
+\item{\code{dates}: the dates associated to each ecological states.}
+}
+}
+}
+
+Function \code{cycleSmoothness} returns the a vector containing values between 0 and 1 describing the smoothness of cycles. Importantly, outputs of \code{cycleBuild} should not be used as inputs for \code{cycleSmoothness} (see details).
+
+Function \code{cycleShift} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{cycleBuild} should not be used as inputs for \code{cycleShift} (see details). The columns of the \code{\link{data.frame}} are:
+\itemize{
+\item{\code{site}: the site for which each cycle shift has been computed.}
+\item{\code{dateCS}: the date for which a cycle shift has been computed.}
+\item{\code{timeCS}: the time of the ecological state for which a cycle shift has been computed (i.e. the time associated to the projected ecological state).}
+\item{\code{timeRef}: the time associated to the reference ecological state.}
+\item{\code{timeScale}: the time difference between the reference and the projected ecological state.}
+\item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
+}
+
+Function \code{cyclePCoA} returns a list similar to the calling \code{\link{cmdscale}}.
 }
 \description{
-The Cyclical extension of Ecological Trajectory Analysis (CETA) aims at allowing ETA to describe ecological trajectories presenting cyclical dynamics such as seasonal or day/night cycles.
-CETA operates by subdividing a trajectory presenting cyclical dynamics into two types of sub-trajectories of interest: cycles and fixed-dates trajectories
+The Cyclical extension of Ecological Trajectory Analysis (CETA) aims at allowing ETA to describe ecological trajectories presenting cyclical dynamics such as seasonal or day/night cycles. We call such trajectories "cyclical".
+CETA operates by subdividing cyclical trajectories into two types of sub-trajectories of interest: cycles and fixed-dates trajectories.
+\itemize{
+\item{Cycles are sub-trajectories joining the ecological states belonging to the same cycle.}
+\item{Fixed-dates trajectories are sub-trajectories joining the ecological states of the same date in different cycles (e.g. in a multi-annual cyclical trajectory with seasonality, a fixed-date trajectory might join all the ecological states associated with the January months of the different years).}
+}
+We recommend reading the vignette on CETA prior to use it.The CETA functions provided here achieve one of two goals:
+\enumerate{
+\item Reformatting data to analyze either cycles or fixed-dates trajectories. The reformatted data can then be fed into existing ETA functions to obtain desired metrics (although special care need to be taken with cycles, see details).
+\item Providing new metrics relevant to cycles complementing other ETA functions.
+}
 }
 \details{
-CETA functions achieve one of two goals:
-\enumerate{
-\item Reformating data to analyse either cycles or fixed-dates trajectories. The reformated data can then be fed into existing ETA functions to obtain desired metrics.
-\item Providing new metrics relevant to cycles complementing other ETA functions
-}
-
 CETA functions:
 \itemize{
-\item{Function \code{cycleBuild} reformates a dataset describing one or more trajectories with cyclical dynamics for the analysis of their cycles.}
-\item{Function \code{fdtrajBuild} reformates a dataset describing one or more trajectories with cyclical dynamics for the analysis of their fixed-dates trajectories.}
+\item{Function \code{cycleBuild} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
+\item{Function \code{fdtrajBuild} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-dates trajectories.}
 \item{Function \code{cycleSmoothness} computes the "smoothness" of the cycles embedded in one or more cyclical trajectories.}
 \item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
-\item{Function \code{trajectorysectionBuild} reformates a dataset describing one or more trajectories into specified trajectory sections. Trajectory sections represent a way to subset trajectories flexibly. Cycles are a particular case of trajectory sections.}
-\item{Function \code{interpolateEcolStates} compute interpolated ecological states and the new distance matrix associated (used in trajectorysectionBuild).}
+\item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to cycles (taking in account internal vs external ecosystem states.}
 }
 
-CETA is a little more time-expicit than the rest of ETA. Hence the parameters "surveys" having only an ordinal meaning in other ETA functions is replaced by "times".
-CETA also distinguishes between times and dates. Times represent linear time whereas dates represent circular time (e.g. the month of year). Dates are circular variables, coming back to zero when reaching their maximum value DurC corresponding to the duration of a cycle.
-In CETA, dates are by default assumed to be times modulo DurC. This should fit many applications but if this is not the case (i.e. if there is an offset between times and dates), dates can be specified. Dates however need to remain compatible with times and DurC (i.e. (times modulo DurC) - (dates modulo DurC) needs to be a constant).
+CETA is a little more time-expicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.
+CETA also distinguishes between times and dates. Times represent linear time whereas dates represent circular time (e.g. the month of year). Dates are circular variables, coming back to zero when reaching their maximum value \code{cycleDuration} corresponding to the duration of a cycle.
+In CETA, dates are by default assumed to be \code{times} modulo \code{cycleDuration}. This should fit many applications but if this is not the case (i.e. if there is an offset between times and dates), dates can be specified. \code{dates} however need to remain compatible with \code{times} and \code{cycleDuration} (i.e. (times modulo cycleDuration) - (dates modulo cycleDuration) needs to be a constant).
 
-Trajectory sections can be obtained using trajectorysectionBuild. Trajectory sections allow to cut a longer trajectory into parts for further analyses. Cycles are specical case of trajectory sections.
-A trajectory section TS(Traj,(tstart, BCstart),(tend, BCend)) is defined by the trajectory (Traj) it is obtained from, by an start and end times (tstart and tend) and start and end boundary conditions (BCstart, BCend).
-The function trajectorysectionBuild builds trajectory sections as a function of its arguments \code{Traj}, \code{tstart}, \code{tend}, \code{BCstart}, \code{BCend}.
+IMPORTANT: Cycles within CETA comprises both \code{"internal"} and \code{"external"} ecological states (see the output of function \code{cycleBuild}). This distinction is a solution to what we call the "December-to-January segment problem". Taking the example of a monthly resolved multi-annual time series, a way to make cycles would be to take the set of ecological states representing months from January to December of each year. However, this omits the segment linking December of year Y to January of year Y+1. However, including this segments means having two Janury months in the same cycle.
+The proposed solution in CETA (in the case of this specific example) is to set the January month of year Y+1 as \code{"external"}. \code{"external"} ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
+\itemize{
+\item{centering where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
+\item{cycle smoothness (readily handled within the function \code{cycleSmoothness}, see below)}
+\item{trajectory BDiv (NOT AVAILABLE YET BUT I SWEAR IT'S COMING!!!)}
+}
+Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{cycleBuild}. A SPECIAL FUNCTION FOR PCoA ON CYCLE IS IN THE MAKING!!!
+
+As a general rule the outputs of \code{cycleBuild} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleSmoothness} and \code{cycleShift}. Instead, the inputs of these two functions should parallel the inputs of \code{cycleBuild} in a given analysis. For \code{cycleSmoothness}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShift}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
+
+Note: Function \code{cycleShift} is computation intensive for large datasets, it may not execute immediately.
+
+Further information and detailed examples of the use of CETA functions can be found in the associated vignette.
 }
 \author{
 Nicolas Djeghri, UBO

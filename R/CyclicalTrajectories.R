@@ -184,7 +184,7 @@ cycleBuild <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration,st
 #' @param namesFixedDates An optional vector of names associated to each \code{fixedDates}. Defaults to \code{round(fixedDates,2)}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a fixed-date trajectory. Fixed-dates trajectories comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 2.
 #' @export 
-fdtrajBuild <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,fixedDates=unique(dates%%cycleDuration),namesFixedDates=as.character(round(fixedDates,2)),minEcolStates=2)
+fdtrajBuild <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,fixedDates=sort(unique(dates%%cycleDuration)),namesFixedDates=as.character(round(fixedDates,2)),minEcolStates=2)
 {
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
@@ -265,6 +265,7 @@ cycleSmoothness <- function (d,sites,times,cycleDuration,dates=times%%cycleDurat
     
     SC <- c(SC,360/tapply(truc$anglesCyclesi,truc$Cyclesi,sum))
   }
+  SC <- SC[unique(Cycles$metadata$Cycles)]
   return(SC)
 }
 
@@ -278,7 +279,7 @@ cycleSmoothness <- function (d,sites,times,cycleDuration,dates=times%%cycleDurat
 #' @param centering An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
 #' @export
-cycleShift <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,datesCS=unique(dates),centering=TRUE,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+cycleShift <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,datesCS=sort(unique(dates%%cycleDuration)),centering=TRUE,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
 {
   Output <- integer(0)#this will contain the final output
   

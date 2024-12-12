@@ -224,7 +224,326 @@ Here is a visual summary of the CETA approach:
 
 ![The CETA functions (blue) allow to format data to describe fixed-dates trajectories or cycles. The reformated data (Output of functions `fdtrajBuild` and `cycleBuild`) can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. However, when woking on cycles, keep in mind that external ecological states must be treated with care for some applications and that some metrics (obtained with functions `cycleSmoothness` and `cycleShift`) are obtained directly from the original data, not from the output of `cycleBuild`.](CETA_workflow.png){width="100%"}
 
-## 3. More realistic example
+## 3. Real data example: Zooplankton of the North Sea 1958-2021
 
-To be written...
+### 3.1 About the data
+The data present here describes the zooplankton community in the North Sea sampled by the [Continuous Plankton Recorder (CPR)](https://www.cprsurvey.org/) survey. We re-worked the raw data provided by the CPR survey [(DOI: 10.17031/66f12be296d70)](https://doi.org/10.17031/66f12be296d70) into two monthly resolved time series of the commonest zooplankton taxa in the Northern North Sea (`NNS`) and the Southern North Sea (`SNS`). In our data processing, we performed a smoothing by taking a rolling average (for each month, we averaged 5 values: a 3 months window + the corresponding month of the previous and next years). We finally Hellinger-transformed the abundance data to make them amenable to ecological diversity study. Hellinger transformation implies that only relative variations in abundances are studied here.
+
+Let's call the data:
+```{r load northseaZoo, echo=T}
+data("northseaZoo")
+```
+
+```{r}
+names(northseaZoo)
+head(northseaZoo$times)
+```
+`northseaZoo` contains three elements: `Hellinger` with the Hellinger-transformed abundances, `times` with time expressed in years (the decimals actually correspond to a way of encoding the months as fractions of years: `1:12/12-1/24`), and `sites` describing whether a community sample is from the Northern `NNS` or Southern `SNS` North Sea.
+
+### 3.2 Get a dissimilarity matrix
+
+ETA works from dissimilarity matrices. So a first step in analyzing the North Sea zooplankton data is to go from the `Hellinger` matrix to a distance matrix. Luckily for us, euclidean distances computed on Hellinger-transformed community data yield Hellinger distances between communities. We can therefore use the `dist` function from base R.
+```{r}
+northseaZoo$Dist <- dist(northseaZoo$Hellinger)
+```
+
+### 3.3 Visualize the cyclical trajectories
+
+From now on, if you are executing the code live, bear with us a little bit as the time series are rather long, so you computer may need some time to display the graphics or compute certain metrics.  
+As before, we can use the `trajectoryPCoA` function to display the two cyclical trajectories
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(d = northseaZoo$Dist,
+               sites = northseaZoo$sites,
+               surveys = northseaZoo$times,
+               traj.colors = c("blue","red"),
+               length = 0.05)
+legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
+```
+Things indeed seem to turn and present clear cycles: This is not surprising as seasonality is a very prominent factor in driving zooplankton community dynamics. But from such a representation it is hard to distinguish clear patterns. Let's use CETA!
+
+### 3.4 Look at the cycles:
+
+We can use the function `cycleBuild` to get data in a format describing the cycles:
+```{r}
+cyclesNSZoo <- cycleBuild(d = northseaZoo$Dist,
+                          sites = northseaZoo$sites,
+                          times = northseaZoo$times,
+                          cycleDuration = 1,
+                          minEcolStates = 12)
+#Note that we use here a cycleDuration of 1 (everything is expressed in years),
+#we also use the minEcolStates argument to say that we want to only keep cycles that
+#have at least 12 ecological states: In our case this is as complete as it gets
+```
+
+From there, we can use the outputs of `cycleBuild` contained in`cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. Again, this done by using the `Cycles` column of `metadata` as a surrogate for `sites` in other ETA functions. For instance one can obtain cycle length:
+```{r}
+cyclesZooLengths <- trajectoryLengths(d = cyclesNSZoo$d,
+                                      sites = cyclesNSZoo$metadata$Cycles,
+                                      surveys = cyclesNSZoo$metadata$times)
+
+```
+
+However, remember that cycle smoothness is not obtain using the output of `cycleBuild`, instead we get it using the same inputs as for `cycleBuild` such as:
+```{r}
+cyclesZooSmooth <- cycleSmoothness(d = northseaZoo$Dist,
+                                   sites = northseaZoo$sites,
+                                   times = northseaZoo$times,
+                                   cycleDuration = 1,
+                                   minEcolStates = 12)
+
+```
+
+Cycle length and cycle smoothness help describing the shapes of cycles in a way mirroring trajectory length and directionality in non-cyclical ETA. Let's graph the outputs:
+```{r}
+#First let's build some broad descriptive statistics for individual cycles: what year, and what site? (MAYBE THAT COULD BE DONE AUTOMATICALLY BY cycleBuild???):
+yearCycles <- floor(tapply(cyclesNSZoo$metadata$times,cyclesNSZoo$metadata$Cycles,min))
+sitesCycles <- tapply(cyclesNSZoo$metadata$sites,cyclesNSZoo$metadata$Cycles,unique)
+
+#Doing some reordering
+yearCycles <- yearCycles[unique(cyclesNSZoo$metadata$Cycles)]
+sitesCycles <- sitesCycles[unique(cyclesNSZoo$metadata$Cycles)]
+
+#put all descriptors together
+StatCyclesZoo <- data.frame(sitesCycles,yearCycles,cyclesZooLengths$Trajectory,cyclesZooSmooth)
+SNScycles <- subset(StatCyclesZoo,sitesCycles=="SNS")
+NNScycles <- subset(StatCyclesZoo,sitesCycles=="NNS")
+
+#put that in the format of a complete time serie (recreating the holes if any)
+rownames(SNScycles) <- SNScycles$yearCycles
+rownames(NNScycles) <- NNScycles$yearCycles
+
+SNScycles <- SNScycles[as.character(1958:2021),]
+NNScycles <- NNScycles[as.character(1958:2021),]
+```
+
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+#First figure: Lengths
+plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Trajectory,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,4.1),col="red")
+points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Trajectory,type="l",col="blue")
+```
+
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+#Second figure: Smoothness
+plot(SNScycles$yearCycles,SNScycles$cyclesZooSmooth,type="l",las=1,ylab="Cycle smoothness",xlab="Years",ylim=c(0.3,0.5),col="red")
+points(NNScycles$yearCycles,NNScycles$cyclesZooSmooth,type="l",col="blue")
+```
+
+Cycle length may not tell much with those data, but in smoothness, there seems to be a "jump" around year 2000. From previous studies on the CPR time series, it is known that echinoderm larvae became seasonally dominant around this time in the North Sea. It is possible that this "jump" is linked to this event, a great dominance of one taxa in a given season would indeed pull the cycles towards one dimension only, possibly reducing concavities and thus increasing smoothness.
+
+Let's now look at the distances between cycles:
+```{r}
+cyclesZooDistances <- trajectoryDistances(d = cyclesNSZoo$d,
+                                          sites = cyclesNSZoo$metadata$Cycles,
+                                          surveys = cyclesNSZoo$metadata$times)
+```
+
+Distances between cycles can then be visualized by principal coordinates analysis (PCoA) putting us in the "space of cycles":
+```{r}
+library(ape)
+PCoAZoo <- pcoa(cyclesZooDistances)
+```
+
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+colPoints <- c("red","blue")
+names(colPoints) <- c("SNS","NNS")
+plot(PCoAZoo$vectors[,1:2],asp=1,col=NA,
+     xlab=paste("PCoA 1 (",round(PCoAZoo$values$Relative_eig[1]*100,2)," %)",sep=""),
+     ylab=paste("PCoA 2 (",round(PCoAZoo$values$Relative_eig[2]*100,2)," %)",sep=""))
+text(PCoAZoo$vectors[,1:2],as.character(yearCycles),col=colPoints[sitesCycles])
+legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
+```
+
+We can see from this graph that the Northern and Southern North Sea present parallel changes in seasonal dynamics while maintaining their differences during the whole time series. An important change seem to have occurred around year 2000 in agreement with what has already been said from those data using other methods.  
+
+You know what's fun? We now have two sets of time-ordered "ecological states" (more ecological dynamics to be fair) defined in a distance matrix. This is all we need to do some trajectory analysis. We can thus perform what we call "second-order" trajectory analysis using the distance between cycles as our distance matrix. We wont go in the details here but here is the corresponding graph as an appetizer:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(d = cyclesZooDistances,
+               sites = sitesCycles,
+               surveys = yearCycles,
+               traj.colors=c("blue","red"),
+               length=0.05)
+legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
+```
+
+Note that the two PCoA do not represent the same variance on their first and second axes. This is due to differences in the correction method used for negative eigenvalues (ignored in the first case, application of Cailliez correction in the second case).
+
+### 3.5 Look at the fixed-dates trajectories:
+
+Let's now look at the fixed-dates trajectories. First prepare the data using `fdtrajBuild`:
+```{r}
+fdtrajNSZoo <- fdtrajBuild(d = northseaZoo$Dist,
+                           sites = northseaZoo$sites,
+                           times = northseaZoo$times,
+                           cycleDuration = 1,
+                           namesFixedDates =
+                             c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
+
+As we did for cycles, we can compute shape metrics on fixed-dates trajectories (length and directionality):
+```{r}
+fdtrajZooLengths <- trajectoryLengths(d = fdtrajNSZoo$d,
+                                      sites = fdtrajNSZoo$metadata$fdT,
+                                      surveys = fdtrajNSZoo$metadata$times)
+fdtrajZooDir <- trajectoryDirectionality(d = fdtrajNSZoo$d,
+                                         sites = fdtrajNSZoo$metadata$fdT,
+                                         surveys = fdtrajNSZoo$metadata$times)
+
+```
+
+And put them in a convenient dataframe:
+```{r}
+#descriptive stats (MAYBE THAT COULD BE DONE AUTOMATICALLY BY fdtrajBuild???):
+monthFDT <- tapply(fdtrajNSZoo$metadata$dates,fdtrajNSZoo$metadata$fdT,min)
+sitesFDT <- tapply(fdtrajNSZoo$metadata$sites,fdtrajNSZoo$metadata$fdT,unique)
+
+#reordering
+monthFDT <- monthFDT[unique(fdtrajNSZoo$metadata$fdT)]
+sitesFDT <- sitesFDT[unique(fdtrajNSZoo$metadata$fdT)]
+
+#put all descriptors together
+StatFDTZoo <- data.frame(sitesFDT,monthFDT,fdtrajZooLengths$Trajectory,fdtrajZooDir)
+SNSfdT <- subset(StatFDTZoo,sitesFDT=="SNS")
+NNSfdT <- subset(StatFDTZoo,sitesFDT=="NNS")
+
+#put them in month order
+SNSfdT <- SNSfdT[order(SNSfdT$monthFDT),]
+NNSfdT <- NNSfdT[order(NNSfdT$monthFDT),]
+
+#and put the month in a convenient format:
+SNSfdT$monthFDT <- SNSfdT$monthFDT*12+0.5
+NNSfdT$monthFDT <- NNSfdT$monthFDT*12+0.5
+```
+
+Before graphing them:
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+#First figure: Lengths
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Trajectory,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,22),col="red")
+points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Trajectory,type="l",col="blue")
+```
+
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+#Second figure: Directionality
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Years",ylim=c(0.36,0.47),col="red")
+points(NNSfdT$monthFDT,NNSfdT$fdtrajZooDir,type="l",col="blue")
+```
+
+There is tendency of fixed-dates trajectories to have high directionality and low length in summer months and conversely in winter. This is likely to be a sampling effect. Although the sampling effort is rather continuous throughout the year in CPR data, winter communities are less abundant making their measured composition more stochastic. This is reflected in more noisy fixed-dates trajectories in winter.
+
+Nonetheless, a metric of peculiar interest in fixed-dates trajectories might be convergence:
+```{r}
+#We will do it for the two sites (NNS and SNS) separately, so lets pull them apart
+SNSfdtraj <- fdtrajNSZoo
+NNSfdtraj <- fdtrajNSZoo
+
+#change the distance matrices
+SNSfdtraj$d <- as.dist(as.matrix(SNSfdtraj$d)[SNSfdtraj$metadata$sites=="SNS",SNSfdtraj$metadata$sites=="SNS"])
+NNSfdtraj$d <- as.dist(as.matrix(NNSfdtraj$d)[NNSfdtraj$metadata$sites=="NNS",NNSfdtraj$metadata$sites=="NNS"])
+
+#change metadata
+SNSfdtraj$metadata <- SNSfdtraj$metadata[SNSfdtraj$metadata$sites=="SNS",]
+NNSfdtraj$metadata <- NNSfdtraj$metadata[NNSfdtraj$metadata$sites=="NNS",]
+
+#Then we need to keep only the years during which the fixed-dates trajectories all have associated ecological states (this is because we want to perform a symmetric convergence test)
+selecSNS <- as.numeric(names(which(table(SNSfdtraj$metadata$times-SNSfdtraj$metadata$dates)==12)))
+selecNNS <- as.numeric(names(which(table(NNSfdtraj$metadata$times-NNSfdtraj$metadata$dates)==12)))
+
+#change the distance matrices again
+SNSfdtraj$d <- as.dist(as.matrix(SNSfdtraj$d)[floor(SNSfdtraj$metadata$times)%in%selecSNS,floor(SNSfdtraj$metadata$times)%in%selecSNS])
+NNSfdtraj$d <- as.dist(as.matrix(NNSfdtraj$d)[floor(NNSfdtraj$metadata$times)%in%selecNNS,floor(NNSfdtraj$metadata$times)%in%selecNNS])
+
+# and change metadata again
+SNSfdtraj$metadata <- SNSfdtraj$metadata[floor(SNSfdtraj$metadata$times)%in%selecSNS,]
+NNSfdtraj$metadata <- NNSfdtraj$metadata[floor(NNSfdtraj$metadata$times)%in%selecNNS,]
+
+#Now we can compute the convergence!
+SNSfdtrajConv <- trajectoryConvergence(d = SNSfdtraj$d,
+                                       sites = SNSfdtraj$metadata$fdT,
+                                       surveys = SNSfdtraj$metadata$times,
+                                       symmetric = TRUE)
+NNSfdtrajConv <- trajectoryConvergence(d = NNSfdtraj$d,
+                                       sites = NNSfdtraj$metadata$fdT,
+                                       surveys = NNSfdtraj$metadata$times,
+                                       symmetric = TRUE)
+
+library(corrplot)
+```
+
+Let's now visualize it for SNS:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+corrplot(matrix(as.vector(SNSfdtrajConv$tau)*as.numeric(SNSfdtrajConv$p.value<0.05),12,12))
+```
+And for NNS:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+corrplot(matrix(as.vector(NNSfdtrajConv$tau)*as.numeric(NNSfdtrajConv$p.value<0.05),12,12))
+```
+In those graphs, blue indicates divergence while red indicates convergence. In both part of the North Sea, we see a convergence of spring and summer months and a divergence winter month with summer months. One possible interpretation is that summers and winters are getting more contrasted.
+
+### 3.6 Finally, compute cyclical shifts:
+
+The last aspect that CETA allows to investigate is cyclical shifts (e.g. advances and delays similar to approaches in phenology). The function that does it is `cycleShift`. This one will take a bit long to compute, it works a lot!
+```{r}
+CSNSZoo <- cycleShift(d = northseaZoo$Dist,
+                      sites = northseaZoo$sites,
+                      times = northseaZoo$times,
+                      cycleDuration = 1)
+```
+
+We can then extract a trend for each month in each site (and in the process make one example graph):
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+slopes <- integer(0)
+for (i in c("SNS","NNS")){
+  for (j in unique(CSNSZoo$dateCS)){
+    #prepare the relevant subset
+    subsetCS <- subset(CSNSZoo,site==i)|>subset(dateCS==j)
+    
+    #compute a slope
+    model <- lm((subsetCS$cyclicalShift*365)~subsetCS$timeScale)
+    #Note that we multiply the shift by 365 to get in days
+    sum <- summary(model)
+    slopes <- rbind(slopes,data.frame(i,j,model$coefficients[2]))
+    
+    if (i=="NNS"&j==unique(CSNSZoo$dateCS)[5]){
+      plot(x=subsetCS$timeScale,y=subsetCS$cyclicalShift*365,ylim=c(-182.5,182.5),
+       col=rgb(0,0,0,0.2),
+       las=1,
+       pch=16,
+       xlab="Time scale (Years)",
+       ylab="Seasonal offset (days)",
+       main="Cyclical shifts for May in NNS")
+      abline(h=0)
+      abline(model,lwd=2,col="orangered")
+      moys <- tapply(subsetCS$cyclicalShift*365,subsetCS$timeScale,mean)
+      points(x=as.numeric(names(moys)),y=moys,pch=21,type="b",bg="dodgerblue2",cex=1.2)
+    }
+  }
+}
+colnames(slopes) <- c("site","month","slope")
+
+```
+
+The graph gives an example of how trends of cyclical shifts can be computed across the whole time series for a given month. Let's now synthesize this information first for SNS:
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+plot(x=slopes$month[slopes$site=="SNS"]*12+0.5,
+     y=slopes$slope[slopes$site=="SNS"]*10,
+     las=1,type="b",
+     ylab="Cyclical shift in SNS (days/decade)",
+     xlab="Month")
+#note the multiplication by ten to get a slope in days per decade
+abline(h=0)
+
+```
+
+Same for the NNS
+```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
+plot(x=slopes$month[slopes$site=="NNS"]*12+0.5,
+     y=slopes$slope[slopes$site=="NNS"]*10,
+     las=1,type="b",
+     ylab="Cyclical shift in NNS (days/decade)",
+     xlab="Month")
+#note the multiplication by ten to get a slope in days per decade
+abline(h=0)
+
+```
+
+The two region of the North Sea exhibit a similar pattern of cyclical shift: there is maximal advance (positive shift) in spring and autumn. The advance computed is not negligible, communities take up to 6-10 days of advance every decade at those months (at least in term of composition)!
 

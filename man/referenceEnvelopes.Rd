@@ -69,7 +69,7 @@ compareToStateEnvelope(
 }
 \value{
 \itemize{
-\item{Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the}
+\item{Functions \code{stateEnvelopeVariability} and \code{trajectoryEnvelopeVariability} are used to assess the variability of reference envelopes.}
 \item{Functions \code{compareToStateEnvelope} and \code{compareToTrajectoryEnvelope} return data frame with columns identifying the envelope and the Q statistic for the ecological quality with respect to the
 envelope. If \code{nboot.ci != NULL} extra columns are added to indicate the boundaries of a confidence interval for Q, built
 using bootstrap samples of the reference envelope.}

@@ -13,6 +13,7 @@
 #' \item{Function \code{trajectoryProjection} performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 #' \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
+#' \item{Function \code{trajectoryVariability} returns (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
 #' }
 #'  
 #' 
@@ -99,6 +100,7 @@
 #' 
 #' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
 #' 
+#' Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
@@ -140,7 +142,6 @@
 #' segmentDistances(d, sites, surveys)$Dseg
 #' trajectoryDistances(d, sites, surveys, distance.type = "Hausdorff")
 #' trajectoryDistances(d, sites, surveys, distance.type = "DSPD")
-#'   
 #'   
 #' #Should give the same results if surveys are not in order 
 #' #(here we switch surveys for site 2)
@@ -243,7 +244,14 @@ segmentDistances<-function(d, sites, surveys=NULL, distance.type ="directed-segm
 trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symmetrization = "mean" , add=TRUE, verbose=FALSE) {
   distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff"))
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
-  if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  if(!is.null(surveys)) {
+    if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  } else {
+    surveys <- rep(NA, length(sites))
+    for(s in unique(sites)) {
+      surveys[sites==s] <- 1:sum(sites==s)
+    }
+  }
   siteIDs = unique(sites)
   nsite = length(siteIDs)
   nsurveysite<-numeric(nsite)
@@ -394,8 +402,15 @@ trajectoryDistances<-function(d, sites, surveys=NULL, distance.type="DSPD", symm
 #' @export
 trajectoryLengths<-function(d, sites, surveys=NULL, relativeToInitial = FALSE, all=FALSE, verbose= FALSE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
-  if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
-  
+  if(!is.null(surveys)) {
+    if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  } else {
+    surveys <- rep(NA, length(sites))
+    for(s in unique(sites)) {
+      surveys[sites==s] <- 1:sum(sites==s)
+    }
+  }
+
   siteIDs = unique(sites)
   nsite = length(siteIDs)
   surveyIDs<-unique(surveys)
@@ -486,23 +501,33 @@ rownames(lengths)<-c(siteIDs)
 #' @rdname trajectorymetrics
 #' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
 #' @export
-trajectoryLengths2D<-function(xy,sites,surveys, relativeToInitial=FALSE, all=FALSE, verbose = FALSE) {
+trajectoryLengths2D<-function(xy, sites, surveys = NULL, relativeToInitial=FALSE, all=FALSE, verbose = FALSE) {
+  if(length(sites)!=nrow(xy)) stop("'sites' needs to be of length equal to the number of rows in xy")
+  if(!is.null(surveys)) {
+    if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  } else {
+    surveys <- rep(NA, length(sites))
+    for(s in unique(sites)) {
+      surveys[sites==s] <- 1:sum(sites==s)
+    }
+  }
   
   #order inputs by sites and surveys
-xy_temp<-as.data.frame(xy)
-xy_temp$sites<-sites
-xy_temp$surveys<-surveys
-xy_temp<-xy_temp[order(xy_temp$sites,xy_temp$surveys),]
-xy<-xy_temp[,1:2]
-sites<-c(xy_temp$sites)
-surveys<-c(xy_temp$surveys)
+  xy_temp<-as.data.frame(xy)
+  xy_temp$sites<-sites
+  xy_temp$surveys<-surveys
+  xy_temp<-xy_temp[order(xy_temp$sites,xy_temp$surveys),]
+  xy<-xy_temp[,1:2]
+  sites<-c(xy_temp$sites)
+  surveys<-c(xy_temp$surveys)
   
-  siteIDs = unique(sites)
+  siteIDs <- unique(sites)
   surveyIDs<-unique(surveys)
   nsite<-length(siteIDs)
   nsurvey<-length(surveyIDs)
   if(nsite!=nrow(xy)/nsurvey) stop("'sites' needs to be of length equal in xy")
   if(nrow(xy)!=nsurvey*nsite) stop("All sites need to be surveyed at least twice")
+  
   #prep all
   D<-dist(xy)
   return(trajectoryLengths(D,sites,surveys,relativeToInitial = relativeToInitial, all = all, verbose = verbose))
@@ -991,4 +1016,27 @@ trajectoryDirectionality<-function(d, sites, surveys = NULL, add=TRUE, verbose =
     }
   }
   return(dir)
+}
+
+
+#' @rdname trajectorymetrics
+#' @export
+trajectoryVariability<-function(d, sites) {
+  if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
+  siteIDs <- unique(sites)
+  nsite <- length(siteIDs)
+  nsurveysite<-numeric(nsite)
+  for(i in 1:nsite) nsurveysite[i] = sum(sites==siteIDs[i])
+  if(sum(nsurveysite<2)>0) stop("All sites need to be surveyed at least twice")
+  
+  dmat <- as.matrix(d)
+  var <- rep(NA, nsite)
+  names(var) <- siteIDs
+  for(i in 1:nsite) {
+    ind_surv = which(sites==siteIDs[i])
+    dsub <- dmat[ind_surv, ind_surv]
+    r <- ncol(dsub)
+    var[i] <- sum(as.vector(as.dist(dsub))^2)/(r^2)
+  }
+  return(var)
 }

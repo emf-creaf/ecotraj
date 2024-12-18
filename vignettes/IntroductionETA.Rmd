@@ -116,7 +116,7 @@ par(oldpar)
 
 While `trajectoryPCoA` uses PCoA (also known as classical Multidimensional Scaling) to display trajectories, users can display ecosystem trajectories using other ordination techniques such as metric Multidimensional Scaling (mMDS; see function *mds* of package **smacof**) or non-metric MDS (nMDS; see function *metaMDS* in package **vegan** or function *isoMDS* in package **MASS**). Function `trajectoryPlot` will help drawing arrows between segments to represent trajectories on the ordination space given by any of these methods. 
 
-Functions `trajectoryPCoA`and `trajectoryPlot` allow selecting the subset of trajectories to be displayed, so that the representation can focus on particular pathways (see also function `trajectorySelection`).
+Functions `trajectoryPCoA`and `trajectoryPlot` allow selecting the subset of trajectories to be displayed, so that the representation can focus on particular pathways (see also function `extractTrajectories`).
 
 ### 2.3 Trajectory lengths, angles and overall directionality
 

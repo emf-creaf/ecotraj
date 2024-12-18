@@ -13,18 +13,20 @@ changes in ecosystems defined on a chosen multivariate space.
 
 ETA is related to the following publications:
 
-- Presentation of the community trajectory analysis framework (De
-  Cáceres et al. 2019).
+- Initial presentation of the **Ecological Trajectory Analysis (ETA)**
+  framework (De Cáceres et al. 2019).
 
-- Extension of community trajectory analysis (Sturbois et al. 2021a).
+- ETA extension of **metrics** and **visualisation modes** (Sturbois et
+  al. 2021a).
 
-- Presentation of the cyclical ecological trajectory analysis framework
-  (Djeghri et al. in prep.).
+- ETA extension to **cyclical** trajectory data (Djeghri et al. in
+  prep.).
 
-- Generalization to stable isotope data (Sturbois et al. 2021b).
+- Application to a multivariate space defined by **stable isotope** data
+  (Sturbois et al. 2021b).
 
-- Application of ETA framework for the assessment of ecological quality
-  (Sturbois et al. 2023).
+- Application of ETA framework for the **assessment of ecological
+  quality** (Sturbois et al. 2023).
 
 ## Package installation and documentation
 
@@ -46,7 +48,7 @@ explaining how to use the package can be found at
 The following lists the main package functions, grouped by analysis
 framework:
 
-#### Ecological Trajectory Analysis (ETA)
+**Functions for Ecological Trajectory Analysis (ETA)**
 
 | Name | Short description |
 |----|----|
@@ -58,13 +60,14 @@ framework:
 | `trajectoryAngles()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points. |
 | `trajectoryAngles2D()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points from 2D coordinates. |
 | `trajectoryConvergence()` | Performs the Mann-Kendall trend test on the distances between trajectories or the distance between points of one trajectory to the other. |
-| `trajectoryDirectionality()` | Assesses the level directionality of the each trajectory. |
-| `trajectoryVariability()` | Assesses the internal variability of the each trajectory. |
+| `trajectoryDirectionality()` | Assesses the level directionality of each trajectory. |
+| `trajectoryVariability()` | Assesses the internal variability within each trajectory. |
 | `trajectoryDistances()` | Estimates distances between pairs of ecosystem trajectories. |
 | `trajectoryPlot()` | Draws trajectories in a 2D-plot corresponding to the input coordinates. |
 | `trajectoryPCoA()` | Performs principal coordinates analysis and draws trajectories in the ordination scatterplot. |
 
-#### Cyclical Ecological Trajectory Analysis (CETA)
+**Functions specific for Cyclical Ecological Trajectory Analysis
+(CETA)**
 
 | Name | Short description |
 |----|----|
@@ -74,14 +77,14 @@ framework:
 | `cycleConvexity()` | Estimates the degree of convexity of cycles. |
 | `cyclePCoA()` | Performs Principal Coordinates Analysis and draws cycles in the ordination scatter plot. |
 
-#### Ecological Quality Assessment (EQA)
+**Functions for Ecological Quality Assessment (EQA)**
 
 | Name | Short description |
 |----|----|
-| `stateEnvelopeVariability()` | Assess the variability of a set of **states** taken as reference envelope. |
-| `trajectoryEnvelopeVariability()` | Assess the variability of a set of **trajectories** taken as reference envelope. |
-| `compareToStateEnvelope()` | Evaluate the ecological quality of stations/observations with respect to a set of **states** taken as reference envelope. |
-| `compareToTrajectoryEnvelope()` | Evaluate the ecological quality of stations/observations with respect to a set of **trajectories** taken as reference envelope. |
+| `stateEnvelopeVariability()` | Assess the variability of a set of *states* taken as reference envelope. |
+| `trajectoryEnvelopeVariability()` | Assess the variability of a set of *trajectories* taken as reference envelope. |
+| `compareToStateEnvelope()` | Evaluate the ecological quality of stations/observations with respect to a set of *states* taken as reference envelope. |
+| `compareToTrajectoryEnvelope()` | Evaluate the ecological quality of stations/observations with respect to a set of *trajectories* taken as reference envelope. |
 
 ## Related package
 

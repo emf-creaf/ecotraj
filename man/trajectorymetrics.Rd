@@ -12,6 +12,7 @@
 \alias{trajectoryProjection}
 \alias{trajectoryConvergence}
 \alias{trajectoryDirectionality}
+\alias{trajectoryVariability}
 \title{Metrics for Ecological Trajectory Analysis}
 \usage{
 segmentDistances(
@@ -45,7 +46,7 @@ trajectoryLengths(
 trajectoryLengths2D(
   xy,
   sites,
-  surveys,
+  surveys = NULL,
   relativeToInitial = FALSE,
   all = FALSE,
   verbose = FALSE
@@ -82,6 +83,8 @@ trajectoryConvergence(
 )
 
 trajectoryDirectionality(d, sites, surveys = NULL, add = TRUE, verbose = FALSE)
+
+trajectoryVariability(d, sites)
 }
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
@@ -166,6 +169,8 @@ Function \code{trajectoryConvergence} returns a list with two elements:
 }
 
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
+
+Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 }
 \description{
 Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
@@ -182,6 +187,7 @@ Given a distance matrix between ecosystem states, the set of functions that prov
 \item{Function \code{trajectoryProjection} performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 \item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
+\item{Function \code{trajectoryVariability} returns (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
 }
 
 Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
@@ -230,7 +236,6 @@ trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
 segmentDistances(d, sites, surveys)$Dseg
 trajectoryDistances(d, sites, surveys, distance.type = "Hausdorff")
 trajectoryDistances(d, sites, surveys, distance.type = "DSPD")
-  
   
 #Should give the same results if surveys are not in order 
 #(here we switch surveys for site 2)

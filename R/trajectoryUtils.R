@@ -2,7 +2,7 @@
 #' 
 #' The set following set of utility functions are provided:
 #' \itemize{
-#' \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
+#' \item{Function \code{extractTrajectories} allows selecting a subset of trajectories corresponding to specific sites.}
 #' \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 #' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
 #' \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
@@ -11,7 +11,7 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryutils
-#' @aliases centerTrajectories trajectorySelection is.metric
+#' @aliases centerTrajectories smoothTrajectories extractTrajectories is.metric
 #' 
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
@@ -22,7 +22,17 @@
 #' Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
 #'
 #' @return 
-#' Function \code{centerTrajectories}, \code{smoothTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
+#' Function \code{extractTrajectories} return a list of two elements:
+#' \itemize{
+#'  \item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing resemblance between states of the selected trajectories.}
+#'  \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
+#'    \itemize{
+#'      \item{\code{sites}: The site associated to each ecological state.}
+#'      \item{\code{surveys}: The survey associated to each ecological state.}
+#'      }
+#'    }
+#' }
+#' Functions \code{centerTrajectories}, \code{smoothTrajectories} return an object of class \code{\link{dist}}.
 #' 
 #' @author 
 #' Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -39,20 +49,32 @@
 
 #' @rdname trajectoryutils
 #' @param selection A character vector of sites, a numeric vector of site indices or logical vector of the same length as \code{sites}, indicating a subset of site trajectories to be selected.
+#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
 #' @export
-trajectorySelection<-function(d, sites, selection) {
-  siteIDs = unique(sites)
-  nsite = length(siteIDs)
+extractTrajectories<-function(d, sites, selection, surveys = NULL) {
+  if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
+  if(!is.null(surveys)) {
+    if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+  } else {
+    surveys <- rep(NA, length(sites))
+    for(s in unique(sites)) {
+      surveys[sites==s] <- 1:sum(sites==s)
+    }
+  }
+  siteIDs <- unique(sites)
+  nsite <- length(siteIDs)
   
   #Apply site selection
-  if(is.null(selection)) selection = 1:nsite 
+  if(is.null(selection)) selection <- 1:nsite 
   else {
-    if(is.character(selection)) selection = (siteIDs %in% selection)
+    if(is.character(selection)) selection <- (siteIDs %in% selection)
   }
-  selIDs = siteIDs[selection]
+  selIDs <- siteIDs[selection]
   
-  dsel =as.dist(as.matrix(d)[sites %in% selIDs, sites %in% selIDs])
-  return(dsel)
+  dsel <- as.dist(as.matrix(d)[sites %in% selIDs, sites %in% selIDs])
+  df <- data.frame(sites = sites[sites %in% selIDs],
+                   surveys = surveys[sites %in% selIDs])
+  return(list(d = dsel, metadata = df))
 }
 
 #' @rdname trajectoryutils

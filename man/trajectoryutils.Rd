@@ -3,13 +3,13 @@
 \encoding{UTF-8}
 \name{trajectoryutils}
 \alias{trajectoryutils}
-\alias{trajectorySelection}
+\alias{extractTrajectories}
 \alias{centerTrajectories}
-\alias{is.metric}
 \alias{smoothTrajectories}
+\alias{is.metric}
 \title{Utility functions for Ecological Trajectory Analysis}
 \usage{
-trajectorySelection(d, sites, selection)
+extractTrajectories(d, sites, selection, surveys = NULL)
 
 smoothTrajectories(
   d,
@@ -46,12 +46,22 @@ is.metric(d, tol = 1e-04)
 \item{tol}{Tolerance value for metricity}
 }
 \value{
-Function \code{centerTrajectories}, \code{smoothTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
+Function \code{extractTrajectories} return a list of two elements:
+\itemize{
+\item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing resemblance between states of the selected trajectories.}
+\item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
+\itemize{
+\item{\code{sites}: The site associated to each ecological state.}
+\item{\code{surveys}: The survey associated to each ecological state.}
+}
+}
+}
+Functions \code{centerTrajectories}, \code{smoothTrajectories} return an object of class \code{\link{dist}}.
 }
 \description{
 The set following set of utility functions are provided:
 \itemize{
-\item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
+\item{Function \code{extractTrajectories} allows selecting a subset of trajectories corresponding to specific sites.}
 \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
 \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}

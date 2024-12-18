@@ -35,6 +35,9 @@ articles:
     - starts_with("IntroductionETA")
     - starts_with("Transformation")
     - starts_with("SITA")
+- title: Cyclical Ecological Trajectory Analysis
+  contents:
+    - starts_with("IntroductionCETA")
 - title: Ecological Quality Assessment
   contents:
     - starts_with("IntroductionEQA")
@@ -73,5 +76,5 @@ reference:
   desc:  Utility functions for trajectory analysis
   contents:
   - starts_with("centerTrajectories")
-  - starts_with("trajectorySmoothing")
+  - starts_with("smoothTrajectories")
 

@@ -24,11 +24,11 @@ Trajectory centering removes differences in (e.g. initial or overall) *position*
 
 ### 1.2 What is trajectory smoothing?
 
-Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `trajectorySmoothing()`.
+Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `smoothTrajectories()`.
 
 ### 1.3 About this vignette
 
-In this vignette you will learn how to center trajectories, in different ways, using function `centerTrajectories()`, and how to perform trajectory smoothing using `trajectorySmoothing()`. 
+In this vignette you will learn how to center trajectories, in different ways, using function `centerTrajectories()`, and how to perform trajectory smoothing using `smoothTrajectories()`. 
 
 First of all, we load `ecotraj`:
 
@@ -194,7 +194,7 @@ par(oldpar)
 
 ### 3.1 Smoothing kernel
 
-Function `trajectorySmoothing()` smoothes out noise from trajectories by applying a Gaussian kernel over each trajectory:
+Function `smoothTrajectories()` smoothes out noise from trajectories by applying a Gaussian kernel over each trajectory:
 \begin{equation}
 K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
 \end{equation}
@@ -202,10 +202,10 @@ where $x$ is the survey time of the target location, $x_r$ is the survey time of
 
 ### 3.2 Smoothing effect
 
-Function `trajectorySmoothing()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
+Function `smoothTrajectories()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
 
 ```{r trajectory_smooth}
-avoca_D_man_smooth <- trajectorySmoothing(avoca_D_man, avoca_sites, avoca_surveys)
+avoca_D_man_smooth <- smoothTrajectories(avoca_D_man, avoca_sites, avoca_surveys)
 ```
 
 The following figure illustrates the effect of trajectory smoothing:

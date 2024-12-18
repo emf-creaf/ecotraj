@@ -3,8 +3,8 @@
 #' The set following set of utility functions are provided:
 #' \itemize{
 #' \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
-#' \item{Function \code{trajectorySmoothing} performs trajectory smoothing using a Gaussian kernel.}
-#' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
+#' \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
+#' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
 #' \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
 #' }
 #'  
@@ -22,7 +22,7 @@
 #' Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
 #'
 #' @return 
-#' Function \code{centerTrajectories}, \code{trajectorySmoothing} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
+#' Function \code{centerTrajectories}, \code{smoothTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
 #' 
 #' @author 
 #' Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -63,7 +63,7 @@ trajectorySelection<-function(d, sites, selection) {
 #' @param kernel_scale Scale of the Gaussian kernel, related to survey times
 #' @param fixed_endpoints A logical flag to force keeping the location of trajectory endpoints unmodified
 #' @export
-trajectorySmoothing<-function(d, sites, surveys = NULL, survey_times = NULL, kernel_scale = 1, fixed_endpoints = TRUE) {
+smoothTrajectories<-function(d, sites, surveys = NULL, survey_times = NULL, kernel_scale = 1, fixed_endpoints = TRUE) {
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
   if(!is.null(surveys)) if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
   siteIDs = unique(sites)

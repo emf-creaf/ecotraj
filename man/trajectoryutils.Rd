@@ -6,12 +6,12 @@
 \alias{trajectorySelection}
 \alias{centerTrajectories}
 \alias{is.metric}
-\alias{trajectorySmoothing}
+\alias{smoothTrajectories}
 \title{Utility functions for Ecological Trajectory Analysis}
 \usage{
 trajectorySelection(d, sites, selection)
 
-trajectorySmoothing(
+smoothTrajectories(
   d,
   sites,
   surveys = NULL,
@@ -46,14 +46,14 @@ is.metric(d, tol = 1e-04)
 \item{tol}{Tolerance value for metricity}
 }
 \value{
-Function \code{centerTrajectories}, \code{trajectorySmoothing} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
+Function \code{centerTrajectories}, \code{smoothTrajectories} and \code{trajectorySelection} return an object of class \code{\link{dist}}.
 }
 \description{
 The set following set of utility functions are provided:
 \itemize{
 \item{Function \code{trajectorySelection} allows selecting the submatrix of distances corresponding to a given subset of trajectories.}
-\item{Function \code{trajectorySmoothing} performs trajectory smoothing using a Gaussian kernel.}
-\item{Function \code{centerTrajectories} shifts all trajectories to the center of the compositional space and returns a modified distance matrix.}
+\item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
+\item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
 \item{Function \code{is.metric} checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).}
 }
 }

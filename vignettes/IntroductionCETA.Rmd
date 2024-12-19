@@ -80,13 +80,13 @@ We see that the cyclical trajectory is composed of three cycles that are not yet
 
 ### 2.2 Extracting cycles and fixed-date trajectories
 
-In CETA the "extract" functions take one or more **cyclical trajectories** and return a distance matrix `d` and associated descriptors allowing to isolate **cycles** or **fixed-date trajectories** (respectively functions `extractCycles()` and `extractFixedDateTrjaectories()`) for further analysis.  
+In CETA the "extract" functions take one or more **cyclical trajectories** and return a distance matrix `d` and associated descriptors allowing to isolate **cycles** or **fixed-date trajectories** (respectively functions `extractCycles()` and `extractFixedDateTrajectories()`) for further analysis.  
 
 #### 2.2.1 Fixed-date trajectories
 
-Let's start with `extractFixedDateTrjaectories()` as it is the simplest one to handle:
+Let's start with `extractFixedDateTrajectories()` as it is the simplest one to handle:
 ```{r}
-fdtrajToy <- extractFixedDateTrjaectories(d = dToy,
+fdtrajToy <- extractFixedDateTrajectories(d = dToy,
                                           sites = sitesToy,
                                           times = timesToy,
                                           cycleDuration = cycleDurationToy,
@@ -94,7 +94,7 @@ fdtrajToy <- extractFixedDateTrjaectories(d = dToy,
 ```
 Note that we haven't specified  `datesToy` as a value for argument `dates`. This is because the CETA functions assume default values `times%%cycleDuration` which means the taking the modulo of cycle duration and works perfectly fine here. In cases there is an offset between dates and times (e.g. times = 0 does not correspond to dates = 0), a different `dates` argument must be provided.
 
-Let's look at the output given by `extractFixedDateTrjaectories()`:
+Let's look at the output given by `extractFixedDateTrajectories()`:
 ```{r}
 names(fdtrajToy)
 ```
@@ -102,9 +102,9 @@ names(fdtrajToy)
 ```{r}
 head(fdtrajToy$metadata)
 ```
-The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectory are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrjaectories` (if not provided, the date is used as default).
+The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectory are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrajectories` (if not provided, the date is used as default).
 
-Using a combination a the new distance matrix `d` and it's descriptors in `metadata`, the output of `extractFixedDateTrjaectories` can be fed in other ETA functions to study fixed-date trajectories. The key is to use the values of `fdT` column as substitute for `sites`. For instance we can visualize the fixed-date trajectories as follows:
+Using a combination a the new distance matrix `d` and it's descriptors in `metadata`, the output of `extractFixedDateTrajectories` can be fed in other ETA functions to study fixed-date trajectories. The key is to use the values of `fdT` column as substitute for `sites`. For instance we can visualize the fixed-date trajectories as follows:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(d = fdtrajToy$d,
                sites = fdtrajToy$metadata$fdT,
@@ -131,7 +131,7 @@ trajectoryDistances(d = fdtrajToy$d,
 
 #### 2.2.2 Trajectory cycles
 
-Ok let's now look at how extraction works for **cycles**. The function `extractCycles()` works very similarly to `extractFixedDateTrjaectories()`. Few differences are that: it does not allows to specify names for cycles (they are by default the concatenation of site names and "C1", "C2" etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle does not always need to start in January*).
+Ok let's now look at how extraction works for **cycles**. The function `extractCycles()` works very similarly to `extractFixedDateTrajectories()`. Few differences are that: it does not allows to specify names for cycles (they are by default the concatenation of site names and "C1", "C2" etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle does not always need to start in January*).
 ```{r}
 cycleToy <- extractCycles(d = dToy,
                           sites = sitesToy,
@@ -139,17 +139,17 @@ cycleToy <- extractCycles(d = dToy,
                           cycleDuration = cycleDurationToy)
 ```
 
-Just like `extractFixedDateTrjaectories()`, `extractCycles()` has outputs `d` and `metadata`:
+Just like `extractFixedDateTrajectories()`, `extractCycles()` has outputs `d` and `metadata`:
 ```{r}
 names(cycleToy)
 ```
 
-When inspecting `metadata`, we find the column `Cycles` <!-- MCA: I would use lowercase for consistency -->, containing the unique names of all cycles, analogously to column `fdT` in the output of `extractFixedDateTrjaectories()`. In addition and importantly, `extractCycles()` returns the column named `IntExt` <!-- MCA: this could be a logical vector indicating external states, instead -->, which has no analog in `extractFixedDateTrjaectories()`:
+When inspecting `metadata`, we find the column `Cycles` <!-- MCA: I would use lowercase for consistency -->, containing the unique names of all cycles, analogously to column `fdT` in the output of `extractFixedDateTrajectories()`. In addition and importantly, `extractCycles()` returns the column named `internal`, which has no analog in `extractFixedDateTrajectories()`:
 ```{r}
 head(cycleToy$metadata)
 ```
 
-The `IntExt` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the **"December-to-January segment problem"** and that ‒ *unfortunately* ‒ complicates a bit the use of the outputs of `extractCycles()`. We explain this in the following section.
+The `internal` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the **"December-to-January segment problem"** and that ‒ *unfortunately* ‒ complicates a bit the use of the outputs of `extractCycles()`. We explain this in the following section.
 
 #### 2.2.3 Beware of the external ecological states: the "December-to-January segment problem"
 Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years ($Y$, $Y+1$ ...). How do we cut this cyclical trajectory into cycles? One possibility is to make cycles out of the segments joining all the months of year $Y$, from January to December (12 ecological states, joined by 11 segments). The problem then is that the segment joining December of year $Y$ to January of year $Y+1$ is ignored. We can then extend the cycles to the first ecological state of the next cycle (January of year $Y+1$, 13 ecological states 12 segments). This correctly includes the 12 segments in the cycle but implies that the cycle contains twice the month of January. We refer to this as the **"December-to-January segment problem"**.  
@@ -157,11 +157,9 @@ Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years (
 In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January of year $Y+1$ would be considered "external" whereas other ecological states would be "internal". Broadly speaking, external ecological states are included in computations relying on the **cycle segments**, but excluded in computations relying on **cycle states**. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
 
 * Centering, where internal states are used for determining cycle center but the centering operation applies to external states as well.
-* PCoA (particularly for graphic representation) MAYBE NOT I'M NOT THAT SURE ANYMORE!!!. 
-<!-- according to the above definitions, PCoA would exclude external segments. Another thing is the arrow representation -->
+* PCoA for visualization.
 * Computation of cycle smoothness or cyclical shifts, where external segments are required.
-
-<!-- * Computation of Bdiv for cycles. MCA: I think that a general function for ETA would be more appropriate -->
+* Computation of trajectory variability.
 
 In addition, you might have ideas to study cycles outside of the CETA/ETA framework. If so, please go ahead! But remember that most approaches rely on the concept of points, not segments, so external ecological states should probably be removed beforehand.  
 
@@ -177,13 +175,13 @@ trajectoryDistances(d = cycleToy$d,
                     sites = cycleToy$metadata$Cycles,
                     surveys = cycleToy$metadata$times)
 ```
-But if we want to center our cycles before computing the distances (for instance, if we are not interested in the trend but want to focus on changes of shape of the cycles) we need to take the distinction between internal and external ecological states in account and center all the distance matrix with respect to a centroid defined using ONLY internal ecological states:
+But if we want to center our cycles before computing the distances (for instance, if we are not interested in the trend but want to focus on changes of shape of the cycles) we need to take the distinction between internal and external ecological states in account and center all the distance matrix with respect to a centroid defined using ONLY internal ecological states. To do so we use the `internal` column. This column is a boolean set to `TRUE`if the associated ecological state is "internal":
 ```{r}
 #two lines to obtain cycleToy_cent with the correctly centered matrix d describing cycles
 cycleToy_cent <- cycleToy
 cycleToy_cent$d <- centerTrajectories(cycleToy$d,
                                       sites = cycleToy$metadata$Cycles,
-                                      exclude = which(cycleToy$metadata$IntExt=="external"))
+                                      exclude = which(cycleToy$metadata$internal==FALSE))
 #Note that the centering function is explicitly asked to exclude external ecological states of computations
 ```
 
@@ -242,7 +240,7 @@ The output gives the `cyclicalShift()` computed in the same units as the input `
 ### 2.5 Summary of the CETA approach
 Here is a visual summary of the CETA approach:
 
-![The CETA functions (blue) allow to format data to describe fixed-date trajectories or cycles. The reformated data (Output of functions `extractFixedDateTrjaectories()` and `extractCycles()`) can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. However, when woking on cycles, keep in mind that external ecological states must be treated with care for some applications and that some metrics (obtained with functions `cycleConvexity` and `cycleShift()`) are obtained directly from the original data, not from the output of `extractCycles()`.](CETA_workflow.png){width="100%"}
+![The CETA functions (blue) allow to format data to describe fixed-date trajectories or cycles. The reformated data (Output of functions `extractFixedDateTrajectories()` and `extractCycles()`) can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. However, when woking on cycles, keep in mind that external ecological states must be treated with care for some applications and that some metrics (obtained with functions `cycleConvexity` and `cycleShift()`) are obtained directly from the original data, not from the output of `extractCycles()`.](CETA_workflow.png){width="100%"}
 
 ## 3. Real data example: Zooplankton of the North Sea 1958-2021
 
@@ -389,9 +387,9 @@ Note that the two PCoA do not represent the same variance on their first and sec
 
 ### 3.5 Look at the fixed-date trajectories:
 
-Let's now look at the fixed-date trajectories. First prepare the data using `extractFixedDateTrjaectories`:
+Let's now look at the fixed-date trajectories. First prepare the data using `extractFixedDateTrajectories`:
 ```{r}
-fdtrajNSZoo <- extractFixedDateTrjaectories(d = northseaZoo$Dist,
+fdtrajNSZoo <- extractFixedDateTrajectories(d = northseaZoo$Dist,
                                             sites = northseaZoo$sites,
                                             times = northseaZoo$times,
                                             cycleDuration = 1,
@@ -412,7 +410,7 @@ fdtrajZooDir <- trajectoryDirectionality(d = fdtrajNSZoo$d,
 
 And put them in a convenient dataframe:
 ```{r}
-#descriptive stats (MAYBE THAT COULD BE DONE AUTOMATICALLY BY extractFixedDateTrjaectories???):
+#descriptive stats (MAYBE THAT COULD BE DONE AUTOMATICALLY BY extractFixedDateTrajectories???):
 monthFDT <- tapply(fdtrajNSZoo$metadata$dates,fdtrajNSZoo$metadata$fdT,min)
 sitesFDT <- tapply(fdtrajNSZoo$metadata$sites,fdtrajNSZoo$metadata$fdT,unique)
 

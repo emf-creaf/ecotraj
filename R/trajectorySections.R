@@ -20,11 +20,11 @@
 #' 
 #' Function \code{interpolateEcolStates} is called within \code{extractTrajectorySections} to interpolate ecological states when \code{tstart} and or \code{tend} do not have an associated measured ecological state within matrix \code{d}.
 #' 
-#' IMPORTANT: Trajectory sections comprises both \code{"internal"} and \code{"external"} ecological states (see the output of function \code{cycleBuild}).
-#' \code{"external"} ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
+#' IMPORTANT: Trajectory sections comprises both "internal" and "external" ecological states (indicated in vector \code{internal}, see the output of function \code{extractTrajectorySections}).
+#' "external" ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
 #' \itemize{
 #'  \item{centering, where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
-#'  \item{trajectory BDiv (NOT AVAILABLE YET BUT I SWEAR IT'S COMING!!!)}
+#'  \item{trajectory variability (only internal ecological states must be taken in account)}
 #' }
 #' Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{extractTrajectorySections}.
 #' 
@@ -38,7 +38,7 @@
 #'      \item{\code{sites}: the sites associated to each ecological states.}
 #'      \item{\code{TrajSec}: the names of the trajectory sections each ecological states belongs to.}
 #'      \item{\code{times}: the times associated to each ecological states.}
-#'      \item{\code{IntExt}: a vector containing two possible strings indicating whether the associated ecological state is \code{"internal"} or \code{"external"}. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
+#'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
 #'      }
 #'    }
 #' }
@@ -74,7 +74,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   
   #first, check if there is ecological states to interpolate
   ToInterpolate <- integer(0)
-  interpolated <- rep("N",length(sites))
+  interpolated <- rep(FALSE,length(sites))
   for (i in unique(Traj)){
     timesTraj <- times[which(sites==i)]
     timesInt <- c(tstart[which(Traj==i)],tend[which(Traj==i)])
@@ -100,7 +100,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
       }
       sitesTS <- c(sitesTS,rep(i,length(timesInt)))
       timesTS <- c(timesTS,timesInt)
-      interpolated <- c(interpolated,rep("Y",length(timesInt)))
+      interpolated <- c(interpolated,rep(TRUE,length(timesInt)))
     }
   }
   dTS <- d
@@ -117,7 +117,6 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   TS$metadata <- integer(0)
   
   #and the element that will go into TS$metadata
-  IntExt <- integer(0)
   TrajSec <- integer(0)
   
   selec <- integer(0)
@@ -131,19 +130,23 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
     selec <- c(selec,selection)
     
     #Find out which are the external ecological states
-    IntExti <- rep("internal",length(selection))
+    internali <- rep(TRUE,length(selection))
     #boundary conditions
     if (BCstart[i]=="external"){
-      IntExti[timesTS[selection]==tstart[i]] <- "external"
+      internali[timesTS[selection]==tstart[i]] <- FALSE
     }
     if (BCend[i]=="external"){
-      IntExti[timesTS[selection]==tend[i]] <- "external"
+      internali[timesTS[selection]==tend[i]] <- FALSE
     }
     #and consider anything interpolated as external
-    IntExti[interpolated[selection]=="Y"] <- "external"
+    internali[interpolated[selection]] <- FALSE
     
     #starting filling TS
-    IntExt <- c(IntExt,IntExti)
+    if (i==1){
+      internal <- internali
+    }else{
+      internal <- c(internal,internali)
+    }
     TrajSec <- c(TrajSec,rep(namesTS[i],length(selection)))
   }
   #get the corresponding sites and times
@@ -152,13 +155,12 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   
   #Filling TS
   TS$d <- as.dist(dTS[selec,selec])
-  TS$metadata <- data.frame(sites,TrajSec,times,IntExt)
+  TS$metadata <- data.frame(sites,TrajSec,times,internal)
   
   return(TS)
 }
 
 
-#MIQUEL, THIS ONE WILL NEED AMENDMENTS, FOR NOW, IT WILL ONLY WORK IF THE TRIANGLE INEQUALITY IS VERIFIED (-ISH), OTHERWISE I DON'T KNOW TOO MUCH...
 #' @rdname trajectorySections
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
 #' @param ToInterpolate a matrix with three columns: 1) the positions of ecosystem states A in d; 2) the positions of ecosystem states B in d; 3) an interpolation coefficient (i.e. at what proportion of directed segment AB the interpolate ecosystem state X needs to be).

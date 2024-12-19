@@ -55,7 +55,7 @@
 #'      \item{\code{sites}: the sites associated to  each ecological states.}
 #'      \item{\code{Cycles}: the names of the cycle each ecological states belongs to. The cycle name is built by combining the site name with C1, C2, C3... in chronological order.}
 #'      \item{\code{times}: the times associated to each ecological states.}
-#'      \item{\code{IntExt}: a vector containing two possible strings indicating whether the associated ecological state is \code{"internal"} or \code{"external"}. This has important implications for the use of \code{extractCycles} outputs (see details).}
+#'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractCycles} outputs (see details).}
 #'      \item{\code{dates}: the dates associated to each ecological states.}
 #'      }
 #'    }
@@ -136,7 +136,7 @@ extractCycles <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration
       selec <- table(cut(truc$times,c(tstarti,tendi[length(tendi)])))>=minEcolStates
       
     }else{
-      stop("externalBoundary value invalid, it can only be 'end' or 'start'")
+      stop("externalBoundary string invalid, it can only be 'end' or 'start'")
     }
     
     tstarti <- tstarti[selec]
@@ -242,7 +242,7 @@ cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDurati
   Cycles <- extractCycles(d=d,sites=sites,times=times,dates=dates,cycleDuration=cycleDuration,startdate=startdate,externalBoundary=externalBoundary,minEcolStates=minEcolStates)
   Angles <- trajectoryAngles(d,sites,surveys=times)
   
-  SC <- integer(0)
+  Convexity <- integer(0)
   
   for (i in unique(sites)){
     Anglesi <- Angles[i,]
@@ -255,8 +255,8 @@ cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDurati
     bidule <- data.frame(timesi,Anglesi)
     bidule <- bidule[order(bidule$timesi),]
     
-    timesCyclesi <- Cycles$metadata$times[Cycles$metadata$sites==i&Cycles$metadata$IntExt=="internal"]
-    Cyclesi <- Cycles$metadata$Cycles[Cycles$metadata$sites==i&Cycles$metadata$IntExt=="internal"]
+    timesCyclesi <- Cycles$metadata$times[Cycles$metadata$sites==i&Cycles$metadata$internal]
+    Cyclesi <- Cycles$metadata$Cycles[Cycles$metadata$sites==i&Cycles$metadata$internal]
     anglesCyclesi <- rep(NA,length(Cyclesi))
     truc <- data.frame(Cyclesi,timesCyclesi,anglesCyclesi)
     truc <- truc[order(truc$timesCyclesi),]
@@ -266,10 +266,10 @@ cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDurati
     truc$anglesCyclesi[toreplace] <- bidule$Anglesi[replacewith]
     
     
-    SC <- c(SC,360/tapply(truc$anglesCyclesi,truc$Cyclesi,sum))
+    Convexity <- c(Convexity,360/tapply(truc$anglesCyclesi,truc$Cyclesi,sum))
   }
-  SC <- SC[unique(Cycles$metadata$Cycles)]
-  return(SC)
+  Convexity <- Convexity[unique(Cycles$metadata$Cycles)]
+  return(Convexity)
 }
 
 #' @rdname trajectoryCyclical
@@ -294,7 +294,7 @@ cycleShift <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,d
     
     #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
     if (centering==T){
-      Cycles$d <- centerTrajectories(d=Cycles$d,sites=Cycles$metadata$Cycles,exclude=which(Cycles$metadata$IntExt=="external"))
+      Cycles$d <- centerTrajectories(d=Cycles$d,sites=Cycles$metadata$Cycles,exclude=which(Cycles$metadata$internal==FALSE))
     }
     
     

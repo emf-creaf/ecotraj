@@ -41,6 +41,7 @@
 #'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
 #'      }
 #'    }
+#'  \item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used by plotting functions (see \code{cyclePCoA}) but is not intended to be of interest to the end user.}
 #' }
 #' 
 #' Function \code{interpolateEcolStates} returns an object of class \code{\link{dist}} including the desired interpolated ecological states.
@@ -72,6 +73,9 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   sitesTS <- sites
   timesTS <- times
   
+  #this one will contain the interpolation coefficients
+  intCoef <- rep(NA,length(sites))
+  
   #first, check if there is ecological states to interpolate
   ToInterpolate <- integer(0)
   interpolated <- rep(FALSE,length(sites))
@@ -83,6 +87,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
       stop(paste("tstart and/or tend out of bounds for trajectory",i))
     
     timesInt <- timesInt[timesInt%in%timesTraj==F]
+    timesInt <- unique(timesInt)#this prevents computing several times the same interpolated ecological state
     if (length(timesInt)>0){
       for (j in 1:length(timesInt)){
         truc <- timesTraj-timesInt[j]
@@ -93,14 +98,15 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
         truc[truc<0] <- NA
         B <- timesTraj[which(truc==min(truc,na.rm=T))]
         
-        ToInterpolate <- rbind(ToInterpolate,c(
-          intersect(which(times==A),which(sites==i)),
-          intersect(which(times==B),which(sites==i)),
-          (timesInt[j]-A)/(B-A)))
+        newline <- c(intersect(which(times==A),which(sites==i)),
+                     intersect(which(times==B),which(sites==i)),
+                     (timesInt[j]-A)/(B-A))
+        ToInterpolate <- rbind(ToInterpolate,newline)
       }
       sitesTS <- c(sitesTS,rep(i,length(timesInt)))
       timesTS <- c(timesTS,timesInt)
       interpolated <- c(interpolated,rep(TRUE,length(timesInt)))
+      intCoef <- c(intCoef,ToInterpolate[,3])
     }
   }
   dTS <- d
@@ -110,15 +116,11 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   dTS <- as.matrix(dTS)
   
   #Now build distances matrices and associated tags describing the trajectory sections
-  
   #prepare the list that will store everything
   TS <- list()
-  TS$d <- integer(0)
-  TS$metadata <- integer(0)
   
   #and the element that will go into TS$metadata
   TrajSec <- integer(0)
-  
   selec <- integer(0)
   
   for (i in 1:length(Traj)){
@@ -156,6 +158,13 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   #Filling TS
   TS$d <- as.dist(dTS[selec,selec])
   TS$metadata <- data.frame(sites,TrajSec,times,internal)
+  
+  #adding interpolation information if appropriate
+  if (sum(interpolated)>0){
+    #interpolated <- interpolated[selec]
+    intCoef <- intCoef[selec]
+    TS$interpolationInfo <- intCoef
+  }
   
   return(TS)
 }

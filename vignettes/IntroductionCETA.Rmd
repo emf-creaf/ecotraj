@@ -194,8 +194,9 @@ trajectoryDistances(d = cycleToy_cent$d,
                     surveys = cycleToy_cent$metadata$times)
 ```
 
-The distinction between internal and external ecological states also complicates graphic representation as we want to compute a weighted PCoA taking in account the internal vs external nature of ecological states. <!-- MCA: See my comment above. I think that if trajectories have not been centered, PCoA should use only internal states, whereas if they have been centered, then external states are different because their positions will differ for the two cycles. Perhaps there should be a boolean parameter to include external states in the PCoA representation. If not included, the segments that the two cycles have in common could be drawn using dashed arrows. We should perhaps discuss this. -->
-A special function is thus available within CETA for this purpose **(-ish, I'm not super sure of the function)**.
+BLABLAH PCoA Cycles 
+
+A special function is thus available within CETA for this purpose.
 This can be done using the original cycles:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 cyclePCoA(d = cycleToy$d,
@@ -267,7 +268,7 @@ northseaZoo$Dist <- dist(northseaZoo$Hellinger)
 
 ### 3.3 Visualize the cyclical trajectories
 
-From now on, if you are executing the code live, bear with us a little bit as the time series are rather long, so you computer may need some time to display the graphics or compute certain metrics.  
+From now on, if you are executing the code live, bear with us a little bit as the time series are rather long, so your computer may need some time to display the graphics or compute some metrics.  
 As before, we can use the `trajectoryPCoA` function to display the two cyclical trajectories
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(d = northseaZoo$Dist,

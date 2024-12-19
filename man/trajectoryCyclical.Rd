@@ -83,7 +83,7 @@ cyclePCoA(
 
 \item{minEcolStates}{An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.}
 
-\item{fixedDate}{An optional vector of dates for which fixed-dates trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-dates trajectories.}
+\item{fixedDate}{An optional vector of dates for which fixed-date trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-date trajectories.}
 
 \item{namesFixedDate}{An optional vector of names associated to each \code{fixedDate}. Defaults to \code{round(fixedDate,2)}.}
 
@@ -114,26 +114,27 @@ Function \code{extractCycles} returns the base information needed to describe cy
 \item{\code{sites}: the sites associated to  each ecological states.}
 \item{\code{Cycles}: the names of the cycle each ecological states belongs to. The cycle name is built by combining the site name with C1, C2, C3... in chronological order.}
 \item{\code{times}: the times associated to each ecological states.}
-\item{\code{IntExt}: a vector containing two possible strings indicating whether the associated ecological state is \code{"internal"} or \code{"external"}. This has important implications for the use of \code{extractCycles} outputs (see details).}
+\item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractCycles} outputs (see details).}
 \item{\code{dates}: the dates associated to each ecological states.}
 }
 }
+\item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used by plotting functions (see \code{cyclePCoA}) but is not intended to be of interest to the end user.}
 }
 
-Function \code{extractFixedDateTrajectories} returns the base information needed to describe fixed-dates trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Unlike cycles,fixed-dates trajectories do not include \code{"internal"} or \code{"external"} ecological states and can be treated as any trajectories. Function \code{extractFixedDateTrajectories} returns a list containing:
+Function \code{extractFixedDateTrajectories} returns the base information needed to describe fixed-date trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Unlike cycles,fixed-date trajectories do not include \code{"internal"} or \code{"external"} ecological states and can be treated as any trajectories. Function \code{extractFixedDateTrajectories} returns a list containing:
 \itemize{
-\item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the fixed-dates trajectories. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any fixed-dates trajectories (e.g. due to \code{minEcolStates}))}
+\item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the fixed-date trajectories. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any fixed-date trajectories (e.g. due to \code{minEcolStates}))}
 \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
 \itemize{
 \item{\code{sites}: the sites to  each ecological states.}
-\item{\code{fdT}: the names of the fixed-dates trajectory each ecological states belongs to. The fixed-dates trajectory name is built by combining the site name with "fdT" and the name of the fixed date (from \code{namesFixedDate}).}
+\item{\code{fdT}: the names of the fixed-date trajectory each ecological states belongs to. The fixed-date trajectory name is built by combining the site name with "fdT" and the name of the fixed date (from \code{namesFixedDate}).}
 \item{\code{times}: the times associated to each ecological states.}
 \item{\code{dates}: the dates associated to each ecological states.}
 }
 }
 }
 
-Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the smoothness of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
+Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the convexity of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
 
 Function \code{cycleShift} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShift} (see details). The columns of the \code{\link{data.frame}} are:
 \itemize{
@@ -149,14 +150,14 @@ Function \code{cyclePCoA} returns a list similar to the calling \code{\link{cmds
 }
 \description{
 The Cyclical extension of Ecological Trajectory Analysis (CETA) aims at allowing ETA to describe ecological trajectories presenting cyclical dynamics such as seasonal or day/night cycles. We call such trajectories "cyclical".
-CETA operates by subdividing cyclical trajectories into two types of sub-trajectories of interest: cycles and fixed-dates trajectories.
+CETA operates by subdividing cyclical trajectories into two types of sub-trajectories of interest: cycles and fixed-date trajectories.
 \itemize{
 \item{Cycles are sub-trajectories joining the ecological states belonging to the same cycle.}
-\item{Fixed-dates trajectories are sub-trajectories joining the ecological states of the same date in different cycles (e.g. in a multi-annual cyclical trajectory with seasonality, a fixed-date trajectory might join all the ecological states associated with the January months of the different years).}
+\item{Fixed-date trajectories are sub-trajectories joining the ecological states of the same date in different cycles (e.g. in a multi-annual cyclical trajectory with seasonality, a fixed-date trajectory might join all the ecological states associated with the January months of the different years).}
 }
 We recommend reading the vignette on CETA prior to use it.The CETA functions provided here achieve one of two goals:
 \enumerate{
-\item Reformatting data to analyze either cycles or fixed-dates trajectories. The reformatted data can then be fed into existing ETA functions to obtain desired metrics (although special care need to be taken with cycles, see details).
+\item Reformatting data to analyze either cycles or fixed-date trajectories. The reformatted data can then be fed into existing ETA functions to obtain desired metrics (although special care need to be taken with cycles, see details).
 \item Providing new metrics relevant to cycles complementing other ETA functions.
 }
 }
@@ -164,10 +165,10 @@ We recommend reading the vignette on CETA prior to use it.The CETA functions pro
 CETA functions:
 \itemize{
 \item{Function \code{extractCycles} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
-\item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-dates trajectories.}
-\item{Function \code{cycleConvexity} computes the "smoothness" of the cycles embedded in one or more cyclical trajectories.}
+\item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-date trajectories.}
+\item{Function \code{cycleConvexity} computes the "convexity" of the cycles embedded in one or more cyclical trajectories.}
 \item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
-\item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to cycles (taking in account internal vs external ecosystem states.}
+\item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to cycles.}
 }
 
 CETA is a little more time-explicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.
@@ -178,12 +179,14 @@ IMPORTANT: Cycles within CETA comprises both \code{"internal"} and \code{"extern
 The proposed solution in CETA (in the case of this specific example) is to set the January month of year Y+1 as \code{"external"}. \code{"external"} ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
 \itemize{
 \item{centering where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
-\item{cycle smoothness (readily handled within the function \code{cycleConvexity}, see below)}
-\item{trajectory BDiv (NOT AVAILABLE YET BUT I SWEAR IT'S COMING!!!)}
+\item{cycle convexity (readily handled within the function \code{cycleConvexity}, see below)}
+\item{trajectory variability (see the CETA vignette for the use of the function \code{trajectoryVariability} in the CETA context)}
+\item{Visualization through principal coordinate analysis of the cycles. The dedicated function \code{cyclePCoA} must be preferred over \code{trajectoryPCoA} (see details below).}
 }
-Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{extractCycles}. A SPECIAL FUNCTION FOR PCoA ON CYCLE IS IN THE MAKING!!!
 
 As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShift}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShift}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
+
+Visualization of cycles through principal coordinate analysis is handled by the function \code{cyclePCoA} ADD DETAILS HERE!!!
 
 Note: Function \code{cycleShift} is computation intensive for large datasets, it may not execute immediately.
 

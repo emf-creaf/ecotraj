@@ -59,6 +59,7 @@
 #'      \item{\code{dates}: the dates associated to each ecological states.}
 #'      }
 #'    }
+#'  \item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used by plotting functions (see \code{cyclePCoA}) but is not intended to be of interest to the end user.}
 #' }
 #' 
 #' Function \code{extractFixedDateTrajectories} returns the base information needed to describe fixed-date trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Unlike cycles,fixed-date trajectories do not include \code{"internal"} or \code{"external"} ecological states and can be treated as any trajectories. Function \code{extractFixedDateTrajectories} returns a list containing:
@@ -74,7 +75,7 @@
 #'    }
 #' }
 #' 
-#' Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the smoothness of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
+#' Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the convexity of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
 #'
 #' Function \code{cycleShift} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShift} (see details). The columns of the \code{\link{data.frame}} are:
 #' \itemize{
@@ -106,7 +107,7 @@ extractCycles <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
   
-  check=(times%%cycleDuration-(dates%%cycleDuration))%%cycleDuration
+  check <- (times%%cycleDuration-(dates%%cycleDuration))%%cycleDuration
   if (any(round(check-check[1],12)!=0))
     stop("provided times and dates are not compatible given cycleDuration")
   

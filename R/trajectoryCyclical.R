@@ -20,7 +20,7 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclical
-#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShift cyclePCoA
+#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShift
 #' 
 #' @details
 #' CETA is a little more time-explicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.

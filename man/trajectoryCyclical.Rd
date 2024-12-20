@@ -7,7 +7,6 @@
 \alias{extractFixedDateTrajectories}
 \alias{cycleConvexity}
 \alias{cycleShift}
-\alias{cyclePCoA}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
 \usage{
 extractCycles(

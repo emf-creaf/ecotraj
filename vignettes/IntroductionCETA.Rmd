@@ -31,8 +31,8 @@ In this vignette you will learn how to use the specific functions designed for C
 Let's first call the package:
 ```{r}
 library(ecotraj)
- library(devtools)
- load_all("C:/Users/djeghri/Documents/GitHub/ecotraj") 
+#library(devtools)
+#load_all("C:/Users/djeghri/Documents/GitHub/ecotraj") 
 ```
 
 ## 2. General approach of CETA
@@ -51,7 +51,7 @@ timesToy <- 0:30 #The sampling times of the time series
 cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
 datesToy <- timesToy%%cycleDurationToy #The dates associated to each times
 
-#And state where the sampling occured, for now let' only use one site "A"
+#And state where the sampling occurred, for now let's only use one site "A"
 sitesToy <- rep(c("A"),length(timesToy))
 
 #Then prepare some toy data:

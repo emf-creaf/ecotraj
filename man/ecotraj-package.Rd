@@ -9,7 +9,7 @@
 Assists ecologists in the analysis of temporal changes of ecosystems, defined as trajectories on a chosen multivariate space
 }
 \references{
-De Caceres et al., 2019 (\doi{10.1002/ecm.1350}), Sturbois et al., 2021 (\doi{10.1016/j.ecolmodel.2020.109400})
+De Caceres et al., 2019 (\doi{10.1002/ecm.1350}), Sturbois et al., 2021 (\doi{10.1016/j.ecolmodel.2020.109400}), Sturbois et al., 2023 (\doi{10.1002/ecs2.4726}).
 }
 \seealso{
 Useful links: \itemize{ \item{
@@ -21,6 +21,7 @@ Useful links: \itemize{ \item{
 \href{https://orcid.org/0000-0001-7132-2080}{ORCID}
 
 Authors: \itemize{
+\item{ Nicolas Djeghri}
 \item{ Anthony Sturbois}
 }
 Contributors: \itemize{

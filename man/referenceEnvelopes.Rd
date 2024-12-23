@@ -107,7 +107,7 @@ Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a gene
 the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.
 }
 \seealso{
-\code{\link{trajectorymetrics}}, \code{\link{glomel}}
+\code{\link{trajectoryMetrics}}, \code{\link{glomel}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

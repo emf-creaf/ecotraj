@@ -49,7 +49,7 @@ Briefly, fur seals [the Antarctic fur seal *Arctocephalus gazella* (AFS) and sub
 
 
 
-### 3.2 Trajectory metrics
+### 3.2 Trajectory metrics on stable isotope 2D space
 
 In this section, we illustrate how to calculate trajectory metrics to characterize the foraging strategy of each fur seal. In the following sections, we show how to use these metrics as data to create plots. 
 
@@ -84,8 +84,9 @@ head(Angles)
 Here we aim to define groups of fur seals depending on the similarity of their foraging strategy. We need first to calculate distances between pairs of complete trajectories in the stable isotope space:
 ```{r, echo=T}
 D <- dist(furseals[,c("d13C","d15N")])
-Ds<-trajectoryDistances(D, furseals$ID_SITA, surveys = NULL, distance.type = "DSPD",
-                        symmetrization = "mean", add = TRUE, verbose = FALSE)
+furseals_x <- defineTrajectories(D, furseals$ID_SITA)
+Ds<-trajectoryDistances(furseals_x, distance.type = "DSPD",
+                        symmetrization = "mean", add = TRUE)
 ```
 
 Then, we can use function `hclust()` to conduct a hierarchiacl clustering on the symmetric matrix `D`:
@@ -235,11 +236,12 @@ colnames(Net_changes)<-c("Net_changes", "Trajectory")
 pike$Net_Changes<-Net_changes$Net_changes
 ```
 
-Then, we can use function `hclust()` to conduct a hierarchiacl clustering on the symmetric matrix `D`:
+Then, we can use function `hclust()` to conduct a hierarchical clustering on the symmetric matrix `D`:
 ```{r}
 D=dist(pike[,7:8])
-Ds<-trajectoryDistances(D,pike$ID, surveys = NULL, distance.type = "DSPD",
-                        symmetrization = "mean", add = TRUE, verbose = FALSE)
+pike_x <- defineTrajectories(D, pike$ID)
+Ds<-trajectoryDistances(pike_x, distance.type = "DSPD",
+                        symmetrization = "mean", add = TRUE)
 ```
 
 We cut the dendrogram at height `Hst` to obtain a vector of cluster membership and copy it in `pike`:

@@ -1,5 +1,5 @@
 .trajectoryEnvelopeVar<-function(d, sites, surveys, ...){
-  D_T <- trajectoryDistances(d = d, sites = sites, surveys = surveys, ...)
+  D_T <- trajectoryDistances(defineTrajectories(d = d, sites = sites, surveys = surveys), ...)
   r <- ncol(as.matrix(D_T))
   return(sum(as.vector(as.dist(D_T))^2)/(r^2))
 }
@@ -57,7 +57,7 @@
 #' Robert, A., Schaal, G., Desroy, N. (2023). Ecological Quality Assessment: a general multivariate framework to report 
 #' the quality of ecosystems and their dynamics with respect to reference conditions. Ecosphere.
 #' 
-#' @seealso \code{\link{trajectorymetrics}}, \code{\link{glomel}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{glomel}}
 #' 
 #' @examples 
 #' data(glomel)
@@ -169,7 +169,7 @@ compareToTrajectoryEnvelope<-function(d, sites, envelope, surveys = NULL, m = 1.
   }   
   if(comparison_target == "trajectories") {
     
-    D_T <- trajectoryDistances(d = d, sites = sites, surveys = surveys, ...)
+    D_T <- trajectoryDistances(defineTrajectories(d = d, sites = sites, surveys = surveys), ...)
     r <- length(envelope)
     sites_T <- colnames(as.matrix(D_T))
     sel_T_env <- sites_T %in% envelope

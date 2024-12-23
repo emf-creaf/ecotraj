@@ -42,7 +42,7 @@ library(ecotraj)
 
 We will employ the same simple example used in the introduction to trajectory analysis. Let us first define the vectors that describe the state of each site:
 ```{r}
-sites = c(1,1,1,1,2,2,2,2,3,3,3,3)
+sites = c("1","1","1","1","2","2","2","2","3","3","3","3")
 ```
 We do not define `surveys`, so that they are assumed to be consecutive for the each site. However, we do define a matrix whose coordinates correspond to the set of ecosystem states observed. We assume that the ecosystem space $\Omega$ has two dimensions:
 ```{r}
@@ -61,26 +61,33 @@ xy[11,1] <- 1.0
 xy[12,1] <-1.5
 xy[9:10,2] <- xy[5:6,2]
 xy[11:12,2]<-c(1.25,1.0)
-D = dist(xy)
 ```
+
+We define trajectories using:
+
+```{r}
+D <- dist(xy)
+x <- defineTrajectories(D, sites)
+```
+
 
 The trajectories can be displayed using a PCoA on the distance matrix as follows:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-trajectoryPCoA(D, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+trajectoryPCoA(x, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
-Centering trajectories is straightforward using function `centerTrajectories()`, which requires a distance matrix and the vector grouping states into trajectories:
+Centering trajectories is straightforward using function `centerTrajectories()`:
 
 ```{r}
-Dcent <- centerTrajectories(D, sites)
+x_cent <- centerTrajectories(x)
 ```
 
-The effect of centering can be shown by repeating PCoA on the centered distance matrix:
+The function will return an object of class `trajectories` where the distance matrix has been modified to represent the distances after centering. The effect of centering can be shown by repeating PCoA on the modified object:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-trajectoryPCoA(Dcent, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+trajectoryPCoA(x_cent, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
@@ -99,7 +106,7 @@ xy_cent
 
 We can compare the equivalence of the two approaches using:
 ```{r}
-max(as.vector(Dcent) - as.vector(dist(xy_cent)))
+max(as.vector(x_cent$d) - as.vector(dist(xy_cent)))
 ```
 
 
@@ -113,13 +120,12 @@ excluded <- c(3:4,7:8,11:12)
 
 Then we can call again `centerTrajectories()`, but supplying the vector we created to parameter `exclude`:
 ```{r}
-Dcent_excluded <- centerTrajectories(D, sites, 
-                                     exclude = excluded)
+x_cent_excluded <- centerTrajectories(x, exclude = excluded)
 ```
 
 We can see the effect of the new centering using:
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-trajectoryPCoA(Dcent_excluded, sites, traj.colors = c("black","red", "blue"), lwd = 2,
+trajectoryPCoA(x_cent_excluded, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
@@ -139,21 +145,26 @@ Before starting, we have to use function `vegdiststruct` from package **vegclust
 avoca_D_man <- vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
 ```
 
-Distances in `avoca_D_man` are calculated using the Manhattan metric. As before we use `trajectoryPCoA` to display the relations between forest plot states in this space and to draw the (uncentered) trajectory of each plot:
+Distances in `avoca_D_man` are calculated using the Manhattan metric. We start ETA by defining our trajectories, which implies combining the information about distances, sites and surveys:
+
+```{r}
+avoca_x <- defineTrajectories(avoca_D_man,  avoca_sites, avoca_surveys)
+```
+
+As before we use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the (uncentered) trajectory of each plot:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
 oldpar <- par(mar=c(4,4,1,1))
-trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
+trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 ```
-
 Although it is not particularly useful, we can see the effect of centering in this real data set:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
 oldpar <- par(mar=c(4,4,1,1))
-avoca_D_man_cent <- centerTrajectories(avoca_D_man, avoca_sites)
-trajectoryPCoA(avoca_D_man_cent,  avoca_sites, avoca_surveys,
+avoca_cent <- centerTrajectories(avoca_x)
+trajectoryPCoA(avoca_cent,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 ```
@@ -168,21 +179,21 @@ all_but_last <- 1:(length(avoca_sites)-8)
 Then we conduct the two centerings:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-avoca_D_man_cent_initial <- centerTrajectories(avoca_D_man, avoca_sites, 
-                                               exclude = all_but_first) 
-avoca_D_man_cent_final <- centerTrajectories(avoca_D_man, avoca_sites, 
-                                             exclude = all_but_last) 
+avoca_cent_initial <- centerTrajectories(avoca_x, 
+                                         exclude = all_but_first) 
+avoca_cent_final <- centerTrajectories(avoca_x, 
+                                       exclude = all_but_last) 
 ```
 
 We can compare their effect using:
 
 ```{r, echo=T, fig=TRUE, fig.height=4, fig.width=8, fig.align = "center"}
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
-trajectoryPCoA(avoca_D_man_cent_initial,  avoca_sites, avoca_surveys,
+trajectoryPCoA(avoca_cent_initial,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("Reference: initial state")
-trajectoryPCoA(avoca_D_man_cent_final,  avoca_sites, avoca_surveys,
+trajectoryPCoA(avoca_cent_final,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("Reference: final state")
@@ -205,18 +216,18 @@ where $x$ is the survey time of the target location, $x_r$ is the survey time of
 Function `smoothTrajectories()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
 
 ```{r trajectory_smooth}
-avoca_D_man_smooth <- smoothTrajectories(avoca_D_man, avoca_sites, avoca_surveys)
+avoca_smooth <- smoothTrajectories(avoca_x)
 ```
 
 The following figure illustrates the effect of trajectory smoothing:
 
 ```{r trajectory_smooth_plot, echo=TRUE, warning = FALSE, fig.height=4, fig.width=8, fig.align = "center"}
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
-trajectoryPCoA(avoca_D_man,  avoca_sites, avoca_surveys,
+trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("Before smoothing")
-trajectoryPCoA(avoca_D_man_smooth,  avoca_sites, avoca_surveys,
+trajectoryPCoA(avoca_smooth,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("After smoothing")
@@ -226,15 +237,15 @@ par(oldpar)
 Trajectory smoothing logically alters several trajectory metrics. In particular, overall trajectory length is reduced:
 
 ```{r trajectory_length_smooth, echo=T}
-trajectoryLengths(avoca_D_man, avoca_sites, avoca_surveys)$Trajectory
-trajectoryLengths(avoca_D_man_smooth, avoca_sites, avoca_surveys)$Trajectory
+trajectoryLengths(avoca_x)$Trajectory
+trajectoryLengths(avoca_smooth)$Trajectory
 ```
 
 while trajectory directionality is increased:
 
 ```{r trajectory_dir_smooth, echo=T}
-trajectoryDirectionality(avoca_D_man, avoca_sites, avoca_surveys)
-trajectoryDirectionality(avoca_D_man_smooth, avoca_sites, avoca_surveys)
+trajectoryDirectionality(avoca_x)
+trajectoryDirectionality(avoca_smooth)
 ```
 
 Whether these effects are desirable or not, will depend on the application.

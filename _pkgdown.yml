@@ -20,10 +20,16 @@ navbar:
       - text: Ecological Trajectory Analysis
       - text: Introduction to Ecological Trajectory Analysis (ETA)
         href: articles/IntroductionETA.html
+      - text: Transforming trajectories
+        href: articles/TransformingTrajectories.html
       - text: Transformation of dissimilarities in community data
         href: articles/Transformation.html
       - text: Stable Isotope Trajectory Analysis (SITA)
         href: articles/SITA.html
+      - text: -------
+      - text: Cyclical Ecological Trajectory Analysis
+      - text: Introduction to Cyclical Ecological Trajectory Analysis (CETA)
+        href: articles/IntroductionCETA.html
       - text: -------
       - text: Ecological Quality Assessment
       - text: Introduction to Ecological Quality Assessment (EQA)
@@ -33,6 +39,7 @@ articles:
 - title: Ecological Trajectory Analysis
   contents:
     - starts_with("IntroductionETA")
+    - starts_with("TransformingTrajectories")
     - starts_with("Transformation")
     - starts_with("SITA")
 - title: Cyclical Ecological Trajectory Analysis
@@ -57,7 +64,8 @@ reference:
 - title: Trajectory metrics
   desc:  Set of functions to calculate trajectory metrics
   contents:
-  - starts_with("trajectoryDistances")
+  - starts_with("trajectoryMetrics")
+  - starts_with("trajectoryProjection")
   - starts_with("segment")
 
 - title: Trajectory plots
@@ -72,9 +80,13 @@ reference:
   - starts_with("trajectoryEnvelope")
   - starts_with("compareTo")
 
-- title: Utility functions
-  desc:  Utility functions for trajectory analysis
+- title: Transform functions
+  desc:  Transforming trajectories
   contents:
   - starts_with("centerTrajectories")
   - starts_with("smoothTrajectories")
 
+- title: Miscellaneous
+  desc:  Miscellaneous functions
+  contents:
+  - starts_with("is.metric")

@@ -56,8 +56,9 @@ framework:
 | `extractTrajectories()` | Extracts (sub-)trajectories corresponding to selected set of sites from a dataset containing multiple trajectories. |
 | `smoothTrajectories()` | Performs multivariate smoothing on trajectory data using a Gaussian kernel. |
 | `centerTrajectories()` | Shifts all trajectories to the center of the multivariate space and returns a modified distance matrix. |
-| `trajectoryLengths()` | Calculates lengths of directed segments and total path lengths of trajectories. |
+| `trajectoryLengths()` | Calculates lengths of directed segments and total path length of trajectories. |
 | `trajectoryLengths2D()` | Calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input. |
+| `trajectorySpeeds()` | Calculates speeds of directed segments and total path speed of trajectories. |
 | `trajectoryAngles()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points. |
 | `trajectoryAngles2D()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points from 2D coordinates. |
 | `trajectoryConvergence()` | Performs the Mann-Kendall trend test on the distances between trajectories or the distance between points of one trajectory to the other. |

@@ -8,6 +8,7 @@
 #' \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 #' \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 #' \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.} 
+#' \item{Function \code{trajectorySpeeds} calculates speeds of directed segments and total path speed of trajectories.}
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
@@ -18,7 +19,7 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryMetrics
-#' @aliases trajectoryDistances trajectoryLengths trajectoryLengths2D trajectoryAngles trajectoryAngles2D
+#' @aliases trajectoryDistances trajectoryLengths trajectoryLengths2D trajectorySpeeds trajectoryAngles trajectoryAngles2D
 #'          trajectoryConvergence trajectoryDirectionality trajectoryVariability
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
@@ -60,6 +61,8 @@
 #' If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 #' If \code{all = TRUE} lengths are calculated for all segments.
 #' 
+#' Function \code{trajectorySpeeds} returns a data frame with the speed of each segment on each trajectory and the total speeds of all trajectories. Units depend on the units of distance matrix and the units of \code{times} of the input trajectory data.
+#'
 #' Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned. 
 #' 
 #' Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
@@ -89,6 +92,7 @@
 #' #Description of sites and surveys
 #' sites <- c("1","1","1","2","2","2")
 #' surveys <- c(1, 2, 3, 1, 2, 3)
+#' times <- c(0, 1.5, 3, 0, 1.5, 3)
 #'   
 #' #Raw data table
 #' xy <- matrix(0, nrow=6, ncol=2)
@@ -99,7 +103,7 @@
 #' xy[6,1]<-1
 #'   
 #' #Draw trajectories
-#' trajectoryPlot(xy, sites, surveys, 
+#' trajectoryPlot(xy, sites, surveys,  
 #'                traj.colors = c("black","red"), lwd = 2)
 #' 
 #' #Distance matrix
@@ -107,12 +111,15 @@
 #' d
 #'   
 #' #Trajectory data
-#' x <- defineTrajectories(d, sites, surveys)
+#' x <- defineTrajectories(d, sites, surveys, times)
 #' 
 #' #Trajectory lengths
 #' trajectoryLengths(x)
 #' trajectoryLengths2D(xy, sites, surveys)
 #' 
+#' #Trajectory speeds
+#' trajectorySpeeds(x)
+#'
 #' #Trajectory angles
 #' trajectoryAngles(x)
 #' trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
@@ -129,13 +136,16 @@
 #' xy[6,] = temp
 #' surveys[5] = 3
 #' surveys[6] = 2
+#' times[5] = 3
+#' times[6] = 2
 #' d <- dist(xy)
-#' x <- defineTrajectories(d, sites, surveys)
+#' x <- defineTrajectories(d, sites, surveys, times)
 #'   
 #' trajectoryPlot(xy, sites, surveys, 
 #'                traj.colors = c("black","red"), lwd = 2)   
 #' trajectoryLengths(x)
 #' trajectoryLengths2D(xy, sites, surveys)
+#' trajectorySpeeds(x)
 #' trajectoryAngles(x)
 #' trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
 #' trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
@@ -316,8 +326,8 @@ trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
     surveys <- x$metadata$times
   }
   
-  siteIDs = unique(sites)
-  nsite = length(siteIDs)
+  siteIDs <- unique(sites)
+  nsite <- length(siteIDs)
   surveyIDs<-unique(surveys)
   nsurvey<-length(surveyIDs)
   
@@ -326,10 +336,11 @@ trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
     nsurveysite[i] = sum(sites==siteIDs[i])
   }
   if(sum(nsurveysite==1)>0) stop("All sites need to be surveyed at least twice")
-  dmat = as.matrix(d)
-  n = nrow(dmat)
+  
+  dmat <- as.matrix(d)
+  n <- nrow(dmat)
 
-  maxnsurveys = max(nsurveysite)
+  maxnsurveys <- max(nsurveysite)
 
   if(!all) {
     lengths = as.data.frame(matrix(NA, nrow=nsite, ncol=maxnsurveys))
@@ -398,6 +409,7 @@ rownames(lengths)<-c(siteIDs)
   return(lengths)
 }
 
+
 #' @rdname trajectoryMetrics
 #' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
@@ -435,6 +447,47 @@ trajectoryLengths2D<-function(xy, sites, surveys = NULL, relativeToInitial=FALSE
   return(trajectoryLengths(x,relativeToInitial = relativeToInitial, all = all))
 }
 
+#' @rdname trajectoryMetrics
+#' @export
+trajectorySpeeds<-function(x) {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  d <- x$d
+  sites <- x$metadata$sites
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
+  
+  siteIDs <- unique(sites)
+  nsite <- length(siteIDs)
+  surveyIDs<-unique(surveys)
+  nsurvey<-length(surveyIDs)
+  
+  nsurveysite<-numeric(nsite)
+  for(i in 1:nsite) {
+    nsurveysite[i] = sum(sites==siteIDs[i])
+  }
+  if(sum(nsurveysite==1)>0) stop("All sites need to be surveyed at least twice")
+  maxnsurveys <- max(nsurveysite)
+  
+  tl <- trajectoryLengths(x, relativeToInitial = FALSE, all = FALSE)
+  speeds <- tl
+  for(i in 1:nsite) {
+    ind_surv <- which(sites==siteIDs[i])
+    #Surveys may not be in order
+    ind_surv <- ind_surv[order(surveys[sites==siteIDs[i]])]
+    for(s in 1:(nsurveysite[i]-1)) {
+      speeds[i,s] <- speeds[i,s]/(times[ind_surv[s+1]] - times[ind_surv[s]])
+    }
+    speeds[i, maxnsurveys] <- speeds[i, maxnsurveys]/(times[ind_surv[maxnsurveys]] - times[ind_surv[1]])
+  }
+  return(speeds)
+}
 #' @rdname trajectoryMetrics
 #' @param all A flag to indicate that angles are desired for all triangles (i.e. all pairs of segments) in the trajectory. If FALSE, angles are calculated for consecutive segments only.
 #' @param stats A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)

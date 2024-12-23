@@ -6,6 +6,7 @@
 \alias{trajectoryDistances}
 \alias{trajectoryLengths}
 \alias{trajectoryLengths2D}
+\alias{trajectorySpeeds}
 \alias{trajectoryAngles}
 \alias{trajectoryAngles2D}
 \alias{trajectoryConvergence}
@@ -29,6 +30,8 @@ trajectoryLengths2D(
   relativeToInitial = FALSE,
   all = FALSE
 )
+
+trajectorySpeeds(x)
 
 trajectoryAngles(
   x,
@@ -93,6 +96,8 @@ Function \code{trajectoryLengths2D} returns a data frame with the length of each
 If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 If \code{all = TRUE} lengths are calculated for all segments.
 
+Function \code{trajectorySpeeds} returns a data frame with the speed of each segment on each trajectory and the total speeds of all trajectories. Units depend on the units of distance matrix and the units of \code{times} of the input trajectory data.
+
 Function \code{trajectoryAngles} returns a data frame with angle values on each trajectory. If \code{stats=TRUE}, then the mean, standard deviation and mean resultant length of those angles are also returned.
 
 Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
@@ -117,6 +122,7 @@ Given a distance matrix between ecosystem states, the set of functions that prov
 \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.}
+\item{Function \code{trajectorySpeeds} calculates speeds of directed segments and total path speed of trajectories.}
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
@@ -145,6 +151,7 @@ If \code{betweenSegments = TRUE} angles are calculated between segments of traje
 #Description of sites and surveys
 sites <- c("1","1","1","2","2","2")
 surveys <- c(1, 2, 3, 1, 2, 3)
+times <- c(0, 1.5, 3, 0, 1.5, 3)
   
 #Raw data table
 xy <- matrix(0, nrow=6, ncol=2)
@@ -155,7 +162,7 @@ xy[4:6,2] <- xy[1:3,2]
 xy[6,1]<-1
   
 #Draw trajectories
-trajectoryPlot(xy, sites, surveys, 
+trajectoryPlot(xy, sites, surveys,  
                traj.colors = c("black","red"), lwd = 2)
 
 #Distance matrix
@@ -163,11 +170,14 @@ d <- dist(xy)
 d
   
 #Trajectory data
-x <- defineTrajectories(d, sites, surveys)
+x <- defineTrajectories(d, sites, surveys, times)
 
 #Trajectory lengths
 trajectoryLengths(x)
 trajectoryLengths2D(xy, sites, surveys)
+
+#Trajectory speeds
+trajectorySpeeds(x)
 
 #Trajectory angles
 trajectoryAngles(x)
@@ -185,13 +195,16 @@ xy[5,] = xy[6,]
 xy[6,] = temp
 surveys[5] = 3
 surveys[6] = 2
+times[5] = 3
+times[6] = 2
 d <- dist(xy)
-x <- defineTrajectories(d, sites, surveys)
+x <- defineTrajectories(d, sites, surveys, times)
   
 trajectoryPlot(xy, sites, surveys, 
                traj.colors = c("black","red"), lwd = 2)   
 trajectoryLengths(x)
 trajectoryLengths2D(xy, sites, surveys)
+trajectorySpeeds(x)
 trajectoryAngles(x)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)

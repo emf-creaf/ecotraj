@@ -22,9 +22,6 @@
 #'          trajectoryConvergence trajectoryDirectionality trajectoryVariability
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
 #' @param distance.type The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. 2019):
 #'   \itemize{
 #'     \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
@@ -389,6 +386,8 @@ rownames(lengths)<-c(siteIDs)
 
 #' @rdname trajectoryMetrics
 #' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
+#' @param sites A vector indicating the site corresponding to each ecosystem state.
+#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
 #' @export
 trajectoryLengths2D<-function(xy, sites, surveys = NULL, relativeToInitial=FALSE, all=FALSE) {
   if(length(sites)!=nrow(xy)) stop("'sites' needs to be of length equal to the number of rows in xy")

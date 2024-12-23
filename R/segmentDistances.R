@@ -9,7 +9,7 @@
 #'     \item{\code{directed-segment}: Directed segment distance (default).}
 #'     \item{\code{PPA}: Perpendicular-parallel-angle distance.}
 #'   }
-#' @param add 
+#' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #'
 #' @details 
 #' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 

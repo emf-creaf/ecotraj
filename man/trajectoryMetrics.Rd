@@ -81,8 +81,6 @@ trajectoryVariability(x)
 \item{betweenSegments}{Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.}
 
 \item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
-
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).

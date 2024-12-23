@@ -16,7 +16,7 @@ segmentDistances(x, distance.type = "directed-segment", add = TRUE)
 \item{\code{PPA}: Perpendicular-parallel-angle distance.}
 }}
 
-\item{add}{}
+\item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 }
 \value{
 A list with the following elements:

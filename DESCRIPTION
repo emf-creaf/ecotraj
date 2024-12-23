@@ -17,7 +17,7 @@ Description: Assists ecologists in the analysis of temporal changes of
     metrics to relate pairs of trajectories (dissimilarity and convergence). Functions are also
     provided to estimate the ecological quality of ecosystem with respect to reference conditions 
     [Sturbois et al. (2023)  <doi:10.1002/ecs2.4726>].
-Depends: R (>= 3.4.0), Rcpp (>= 0.12.12)
+Depends: R (>= 3.5.0), Rcpp (>= 0.12.12)
 Imports: Kendall, MASS
 LinkingTo: Rcpp
 License: GPL (>= 2)

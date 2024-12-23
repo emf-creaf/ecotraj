@@ -22,8 +22,8 @@ navbar:
         href: articles/IntroductionETA.html
       - text: Transforming trajectories
         href: articles/TransformingTrajectories.html
-      - text: Transformation of dissimilarities in community data
-        href: articles/Transformation.html
+      - text: Dissimilarities in community data
+        href: articles/Dissimilarities.html
       - text: Stable Isotope Trajectory Analysis (SITA)
         href: articles/SITA.html
       - text: -------
@@ -40,7 +40,7 @@ articles:
   contents:
     - starts_with("IntroductionETA")
     - starts_with("TransformingTrajectories")
-    - starts_with("Transformation")
+    - starts_with("Dissimilarities")
     - starts_with("SITA")
 - title: Cyclical Ecological Trajectory Analysis
   contents:

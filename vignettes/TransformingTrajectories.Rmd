@@ -1,12 +1,12 @@
 ---
-title: "Centering and smoothing trajectories"
+title: "Transforming trajectories"
 author: "Miquel De Cáceres / Nicolas Djeghri"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: TRUE
 vignette: >
-  %\VignetteIndexEntry{Centering and smoothing trajectories}
+  %\VignetteIndexEntry{Transforming trajectories}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignettePackage{ecotraj}
   \usepackage[utf8]{inputenc}
@@ -18,17 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction
 
-### 1.1 What is trajectory centering?
-
-Trajectory centering removes differences in (e.g. initial or overall) *position* between trajectories, without changing their shape, to focus on the direction of temporal changes. It is done using function `centerTrajectories()`. Trajectory centering will normally imply subtracting the coordinate values of the trajectory centroid from the states conforming each trajectory. However, one may decide that the original trajectory centers do not correspond to the centroid, but to a specific subset of states, for example the state corresponding to the first or last observation. In this cases, trajectories are shifted with respect to particular reference states. Trajectory centering is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. It can also be useful when trajectories are defined as subtrajectories of a trajectory with cyclical patterns.
-
-### 1.2 What is trajectory smoothing?
-
-Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `smoothTrajectories()`.
-
-### 1.3 About this vignette
-
-In this vignette you will learn how to center trajectories, in different ways, using function `centerTrajectories()`, and how to perform trajectory smoothing using `smoothTrajectories()`. 
+In this vignette you will learn to **transform** trajectory data in two different ways. By transforming, we mean **modifying the distance matrix** that represents the resemblance between ecosystem states. This is equivalent to (implicitly) modifying the coordinates (position) of ecosystem states in the $\Omega$ space.
 
 First of all, we load `ecotraj`:
 
@@ -36,9 +26,13 @@ First of all, we load `ecotraj`:
 library(ecotraj)
 ```
 
+## 2. Centering trajectories
 
-## 2. Trajectory centering
-### 2.1 Simple centering example
+### 2.1 What is trajectory centering?
+
+Trajectory centering removes differences in (e.g. initial or overall) *position* between trajectories, without changing their shape, to focus on the direction of temporal changes. It is done using function `centerTrajectories()`. Trajectory centering will normally imply subtracting the coordinate values of the trajectory centroid from the states conforming each trajectory. However, one may decide that the original trajectory centers do not correspond to the centroid, but to a specific subset of states, for example the state corresponding to the first or last observation. In this cases, trajectories are shifted with respect to particular reference states. Trajectory centering is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. It can also be useful when trajectories are defined as subtrajectories of a trajectory with cyclical patterns.
+
+### 2.2 Simple centering example
 
 We will employ the same simple example used in the introduction to trajectory analysis. Let us first define the vectors that describe the state of each site:
 ```{r}
@@ -110,7 +104,7 @@ max(as.vector(x_cent$d) - as.vector(dist(xy_cent)))
 ```
 
 
-### 2.2 Trajectory centering excluding observations
+### 2.3 Trajectory centering excluding observations
 
 As explained in the introduction, centering can be performed with respect to different states beyond the trajectory centroid. Say we want to align the first segment of the three trajectories to focus on the changes that occur later. To do so, first define ecosystem states that are to be *excluded* from the computation of the trajectory position taken as reference (its center). In our case these are the states of trajectories that were surveyed later than the first segment (i.e. the third and fourth observations of each trajectory):
 
@@ -131,7 +125,7 @@ trajectoryPCoA(x_cent_excluded, traj.colors = c("black","red", "blue"), lwd = 2,
 
 As before, we could check the equivalence with a centering using explicit coordinates, but this is not needed at this stage.
 
-### 2.3 Centering in a real example
+### 2.4 Centering in a real example
 
 In this example we analyze the dynamics of 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).  Forests plots are almost monospecific, being the mountain beech (*Fuscospora cliffortioides*) the main dominant tree species. Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys. We begin our example by loading the data set, which includes 72 plot observations:
 
@@ -203,7 +197,12 @@ par(oldpar)
 
 ## 3 Smoothing trajectories
 
-### 3.1 Smoothing kernel
+### 3.1 What is trajectory smoothing?
+
+Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `smoothTrajectories()`.
+
+
+### 3.2 Smoothing kernel
 
 Function `smoothTrajectories()` smoothes out noise from trajectories by applying a Gaussian kernel over each trajectory:
 \begin{equation}
@@ -211,7 +210,7 @@ K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
 \end{equation}
 where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecosystem observations. The kernel application turns consecutive ecosystem states more similar. 
 
-### 3.2 Smoothing effect
+### 3.3 Smoothing effect
 
 Function `smoothTrajectories()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
 

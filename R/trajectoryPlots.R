@@ -77,7 +77,10 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
-  
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  }
   siteIDs <- unique(sites)
 
   cmd_D2 <- cmdscale(d,eig=TRUE, add=TRUE, k=nrow(as.matrix(d))-1)

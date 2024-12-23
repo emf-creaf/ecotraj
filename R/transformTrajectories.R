@@ -103,6 +103,12 @@ centerTrajectories<-function(x, exclude = integer(0)) {
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   if(length(exclude)>0) {
     if(!is.numeric(exclude)) stop("`exclude` needs to be an integer vector")

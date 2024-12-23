@@ -59,20 +59,32 @@
 #' @param BCstart A vector of start boundary conditions (either \code{"internal"} or \code{"external"}) for each of the desired trajectory sections (see details).
 #' @param BCend A vector of end boundary conditions (either \code{"internal"} or \code{"external"}) for each of the desired trajectory sections (see details). 
 #' @param namesTS An optional vector giving a name for each of the desired trajectory sections (by default trajectory sections are simply numbered). 
-#' @noRd
-extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=1:length(Traj))
+#' 
+#' @export
+#' @keywords internal
+extractTrajectorySections <- function(x,
+                                      Traj,
+                                      tstart,tend,BCstart,BCend,
+                                      namesTS=1:length(Traj))
 {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  
+  d <- x$d
+  sites <- x$metadata$sites
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times))
     stop("The lengths of sites and times must corespond to the dimension of d")
-  if (any(BCstart%in%c("internal","external")==F))
+  if (any(BCstart%in%c("internal","external")==FALSE))
     stop("BCstart and BCend can only take values 'internal' and 'external'")
-  if (any(BCend%in%c("internal","external")==F))
+  if (any(BCend%in%c("internal","external")==FALSE))
     stop("BCstart and BCend can only take values 'internal' and 'external'")
   
   #those two will contain the sites and times of all ecological states including the interpolated ones
   sitesTS <- sites
   timesTS <- times
-  
+
   #this one will contain the interpolation coefficients
   intCoef <- rep(NA,length(sites))
   
@@ -83,20 +95,20 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
     timesTraj <- times[which(sites==i)]
     timesInt <- c(tstart[which(Traj==i)],tend[which(Traj==i)])
     
-    if (any(is.na(cut(timesInt,range(timesTraj),include.lowest=T)))) 
+    if (any(is.na(cut(timesInt,range(timesTraj),include.lowest=TRUE)))) 
       stop(paste("tstart and/or tend out of bounds for trajectory",i))
     
-    timesInt <- timesInt[timesInt%in%timesTraj==F]
+    timesInt <- timesInt[timesInt%in%timesTraj==FALSE]
     timesInt <- unique(timesInt)#this prevents computing several times the same interpolated ecological state
     if (length(timesInt)>0){
       for (j in 1:length(timesInt)){
         truc <- timesTraj-timesInt[j]
         truc[truc>0] <- NA
-        A <- timesTraj[which(truc==max(truc,na.rm=T))]
+        A <- timesTraj[which(truc==max(truc,na.rm=TRUE))]
         
         truc <- timesTraj-timesInt[j]
         truc[truc<0] <- NA
-        B <- timesTraj[which(truc==min(truc,na.rm=T))]
+        B <- timesTraj[which(truc==min(truc,na.rm=TRUE))]
         
         newline <- c(intersect(which(times==A),which(sites==i)),
                      intersect(which(times==B),which(sites==i)),
@@ -120,7 +132,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   TS <- list()
   
   #and the element that will go into TS$metadata
-  TrajSec <- integer(0)
+  sections <- integer(0)
   selec <- integer(0)
   
   for (i in 1:length(Traj)){
@@ -149,7 +161,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
     }else{
       internal <- c(internal,internali)
     }
-    TrajSec <- c(TrajSec,rep(namesTS[i],length(selection)))
+    sections <- c(sections,rep(namesTS[i],length(selection)))
   }
   #get the corresponding sites and times
   sites <- sitesTS[selec]
@@ -157,7 +169,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
   
   #Filling TS
   TS$d <- as.dist(dTS[selec,selec])
-  TS$metadata <- data.frame(sites,TrajSec,times,internal)
+  TS$metadata <- data.frame(sites,sections,times,internal)
   
   #adding interpolation information if appropriate
   if (sum(interpolated)>0){
@@ -165,7 +177,7 @@ extractTrajectorySections <- function(d,sites,times,Traj,tstart,tend,BCstart,BCe
     intCoef <- intCoef[selec]
     TS$interpolationInfo <- intCoef
   }
-  
+  class(TS) <- c("sections","trajectories", "list")
   return(TS)
 }
 

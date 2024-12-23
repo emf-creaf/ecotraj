@@ -6,59 +6,47 @@
 \alias{extractCycles}
 \alias{extractFixedDateTrajectories}
 \alias{cycleConvexity}
-\alias{cycleShift}
+\alias{cycleShifts}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
 \usage{
 extractCycles(
-  d,
-  sites,
-  times,
+  x,
   cycleDuration,
-  dates = times\%\%cycleDuration,
-  startdate = min(dates),
+  dates = NULL,
+  startdate = NA,
   externalBoundary = "end",
   minEcolStates = 3
 )
 
 extractFixedDateTrajectories(
-  d,
-  sites,
-  times,
+  x,
   cycleDuration,
-  dates = times\%\%cycleDuration,
-  fixedDate = sort(unique(dates\%\%cycleDuration)),
-  namesFixedDate = as.character(round(fixedDate, 2)),
+  dates = NULL,
+  fixedDate = NULL,
+  namesFixedDate = NULL,
   minEcolStates = 2
 )
 
 cycleConvexity(
-  d,
-  sites,
-  times,
+  x,
   cycleDuration,
-  dates = times\%\%cycleDuration,
-  startdate = min(dates),
+  dates = NULL,
+  startdate = NA,
   externalBoundary = "end",
   minEcolStates = 3
 )
 
-cycleShift(
-  d,
-  sites,
-  times,
+cycleShifts(
+  x,
   cycleDuration,
-  dates = times\%\%cycleDuration,
-  datesCS = sort(unique(dates\%\%cycleDuration)),
+  dates = NULL,
+  datesCS = NULL,
   centering = TRUE,
   minEcolStates = 3
 )
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
-
-\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
-
-\item{times}{A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).}
+\item{x}{An object of class \code{\link{trajectories}}.}
 
 \item{cycleDuration}{A value indicating the duration of a cycle. Must be in the same units as times.}
 
@@ -77,6 +65,12 @@ cycleShift(
 \item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
 \item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.}
+
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
+
+\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
+
+\item{times}{A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).}
 }
 \value{
 Function \code{extractCycles} returns the base information needed to describe cycles. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within cycles, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{extractCycles} returns a list containing:
@@ -109,7 +103,7 @@ Function \code{extractFixedDateTrajectories} returns the base information needed
 
 Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the convexity of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
 
-Function \code{cycleShift} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShift} (see details). The columns of the \code{\link{data.frame}} are:
+Function \code{cycleShifts} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShifts} (see details). The columns of the \code{\link{data.frame}} are:
 \itemize{
 \item{\code{site}: the site for which each cycle shift has been computed.}
 \item{\code{dateCS}: the date for which a cycle shift has been computed.}
@@ -138,7 +132,7 @@ CETA functions:
 \item{Function \code{extractCycles} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
 \item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-date trajectories.}
 \item{Function \code{cycleConvexity} computes the "convexity" of the cycles embedded in one or more cyclical trajectories.}
-\item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
+\item{Function \code{cycleShifts} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
 }
 
 CETA is a little more time-explicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.
@@ -154,11 +148,11 @@ The proposed solution in CETA (in the case of this specific example) is to set t
 \item{Visualization through principal coordinate analysis of the cycles. The dedicated function \code{\link{cyclePCoA}} must be preferred over \code{\link{trajectoryPCoA}} (see details below).}
 }
 
-As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShift}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShift}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
+As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShifts}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
 
 Visualization of cycles through principal coordinate analysis is handled by the function \code{cyclePCoA} ADD DETAILS HERE!!!
 
-Note: Function \code{cycleShift} is computation intensive for large datasets, it may not execute immediately.
+Note: Function \code{cycleShifts} is computation intensive for large datasets, it may not execute immediately.
 
 Further information and detailed examples of the use of CETA functions can be found in the associated vignette.
 }

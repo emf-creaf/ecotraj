@@ -52,6 +52,7 @@ framework:
 
 | Name | Short description |
 |----|----|
+| `defineTrajectories()` | Defines trajectory objects to be analyzed. |
 | `extractTrajectories()` | Extracts (sub-)trajectories corresponding to selected set of sites from a dataset containing multiple trajectories. |
 | `smoothTrajectories()` | Performs multivariate smoothing on trajectory data using a Gaussian kernel. |
 | `centerTrajectories()` | Shifts all trajectories to the center of the multivariate space and returns a modified distance matrix. |
@@ -73,7 +74,7 @@ framework:
 |----|----|
 | `extractCycles()` | Extracts (i.e. subsets) cycles from cyclical trajectories. |
 | `extractFixedDateTrajectories()` | Extracts fixed-date trajectories from cyclical trajectories. |
-| `cycleShift()` | Estimates cyclical shifts (i.e. advances or delays). |
+| `cycleShifts()` | Estimates cyclical shifts (i.e. advances or delays). |
 | `cycleConvexity()` | Estimates the degree of convexity of cycles. |
 | `cyclePCoA()` | Performs Principal Coordinates Analysis and draws cycles in the ordination scatter plot. |
 

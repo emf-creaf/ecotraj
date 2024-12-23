@@ -150,6 +150,13 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)
@@ -301,6 +308,13 @@ trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   siteIDs = unique(sites)
   nsite = length(siteIDs)
@@ -431,6 +445,13 @@ trajectoryAngles<-function(x, all = FALSE, relativeToInitial = FALSE, stats = TR
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)
@@ -738,6 +759,10 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  }
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)
@@ -803,6 +828,13 @@ trajectoryDirectionality <- function(x, add=TRUE) {
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys  
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)
@@ -853,6 +885,13 @@ trajectoryVariability<-function(x) {
   d <- x$d
   sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
+  }
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)

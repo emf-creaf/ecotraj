@@ -22,7 +22,7 @@
 #' @name trajectories
 #' @examples 
 #' #Description of sites and surveys
-#' sites = c(1,1,1,2,2,2)
+#' sites = c("1","1","1","2","2","2")
 #' surveys=c(1,2,3,1,2,3)
 #'   
 #' #Raw data table

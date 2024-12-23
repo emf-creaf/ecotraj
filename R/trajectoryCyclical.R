@@ -15,12 +15,12 @@
 #' \item{Function \code{extractCycles} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
 #' \item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-date trajectories.}
 #' \item{Function \code{cycleConvexity} computes the "convexity" of the cycles embedded in one or more cyclical trajectories.}
-#' \item{Function \code{cycleShift} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
+#' \item{Function \code{cycleShifts} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
 #' }
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclical
-#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShift
+#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShifts
 #' 
 #' @details
 #' CETA is a little more time-explicit than the rest of ETA. Hence the parameter \code{surveys} having only an ordinal meaning in other ETA functions is replaced by \code{times}.
@@ -37,11 +37,11 @@
 #' }
 #' 
 #' 
-#' As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShift}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShift}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
+#' As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShifts}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
 #' 
 #' Visualization of cycles through principal coordinate analysis is handled by the function \code{cyclePCoA} ADD DETAILS HERE!!!
 #' 
-#' Note: Function \code{cycleShift} is computation intensive for large datasets, it may not execute immediately.
+#' Note: Function \code{cycleShifts} is computation intensive for large datasets, it may not execute immediately.
 #' 
 #' Further information and detailed examples of the use of CETA functions can be found in the associated vignette.
 #' 
@@ -76,7 +76,7 @@
 #' 
 #' Function \code{cycleConvexity} returns the a vector containing values between 0 and 1 describing the convexity of cycles. Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleConvexity} (see details).
 #'
-#' Function \code{cycleShift} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShift} (see details). The columns of the \code{\link{data.frame}} are:
+#' Function \code{cycleShifts} returns an object of class \code{\link{data.frame}} describing cyclical shifts (i.e. advances and delays). Importantly, outputs of \code{extractCycles} should not be used as inputs for \code{cycleShifts} (see details). The columns of the \code{\link{data.frame}} are:
 #' \itemize{
 #'      \item{\code{site}: the site for which each cycle shift has been computed.}
 #'      \item{\code{dateCS}: the date for which a cycle shift has been computed.}
@@ -100,8 +100,23 @@
 #' @param externalBoundary An optional string, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
 #' @export
-extractCycles <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration,startdate=min(dates),externalBoundary="end",minEcolStates=3)
+extractCycles <- function(x,
+                          cycleDuration,
+                          dates = NULL,
+                          startdate = NA,
+                          externalBoundary="end",
+                          minEcolStates=3)
 {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  
+  d <- x$d
+  sites <- x$metadata$sites
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  
+  if(is.null(dates)) dates <- times%%cycleDuration
+  if(is.na(startdate)) startdate <- min(dates)
+  
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
   
@@ -158,7 +173,10 @@ extractCycles <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration
   }
   
   #Now feed this into extractTrajectorySections
-  output <- extractTrajectorySections(d,sites,times,Traj,tstart,tend,BCstart,BCend,namesTS=namesCycles)
+  output <- extractTrajectorySections(x,
+                                      Traj,
+                                      tstart,tend,BCstart,BCend,
+                                      namesTS=namesCycles)
   
   #Add dates to the output
   offset <- tapply((times%%cycleDuration-dates%%cycleDuration),sites,min)#computing a potential offset between times and dates (the min function here is just to give a singular output, the values should be the same for a given site)
@@ -168,26 +186,42 @@ extractCycles <- function(d,sites,times,cycleDuration,dates=times%%cycleDuration
   for (i in unique(sites)){
     dates[output$metadata$sites==i] <- ((output$metadata$times[output$metadata$sites==i]%%cycleDuration)-offset[i])%%cycleDuration
   }
-  output$metadata <- data.frame(output$metadata,dates)
+  output$metadata <- data.frame(sites = output$metadata$sites,
+                                cycles = output$metadata$sections,
+                                times = output$metadata$times,
+                                dates = dates,
+                                internal = output$metadata$internal)
   
-  #change the name of the "TrajSec" column in output$metadata to "Cycles"
-  colnames(output$metadata)[2] <- "Cycles"
-  
+  class(output) <- c("cycles","trajectories", "list")
   return(output)
 }
 
 #' @rdname trajectoryCyclical
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
+#' @param x An object of class \code{\link{trajectories}}.
 #' @param cycleDuration A value indicating the duration of a cycle. Must be in the same units as times.
-#' @param dates An optional vector indicating the dates (< \code{cycleDuration}) corresponding to each ecosystem state. Must be in the same units as times. Defaults to times modulo cycleDuration (see details).
+#' @param dates An optional vector indicating the dates (< \code{cycleDuration}) corresponding to each ecosystem state. Must be in the same units as times. When \code{NULL}, it defaults to times modulo cycleDuration (see details).
 #' @param fixedDate An optional vector of dates for which fixed-date trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-date trajectories.
 #' @param namesFixedDate An optional vector of names associated to each \code{fixedDate}. Defaults to \code{round(fixedDate,2)}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a fixed-date trajectory. Fixed-date trajectories comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 2.
 #' @export 
-extractFixedDateTrajectories <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,fixedDate=sort(unique(dates%%cycleDuration)),namesFixedDate=as.character(round(fixedDate,2)),minEcolStates=2)
+extractFixedDateTrajectories <- function (x,
+                                          cycleDuration, 
+                                          dates=NULL,
+                                          fixedDate= NULL,
+                                          namesFixedDate=NULL,
+                                          minEcolStates=2)
 {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+
+  d <- x$d
+  sites <- x$metadata$sites
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  
+  if(is.null(dates)) dates <- times%%cycleDuration
+  if(is.null(fixedDate)) fixedDate <- sort(unique(dates%%cycleDuration))
+  if(is.null(namesFixedDate)) namesFixedDate <- as.character(round(fixedDate,2))
+  
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times)|length(sites)!=length(dates))
     stop("The lengths of sites, times, and dates must corespond to the dimension of d")
   
@@ -200,7 +234,7 @@ extractFixedDateTrajectories <- function (d,sites,times,cycleDuration,dates=time
   
   #build a convenient "metadata" to find what's needed easily to compute stuff on fixed dates trajectories
   fdT <- rep(NA,length(sites))
-  metadata <- data.frame(sites,fdT,times,dates)
+  metadata <- data.frame(sites,fdT,surveys, times,dates)
   for (i in unique(sites)){
     for (j in 1:length(fixedDate)){
       selec <- (sites==i)&(dates==fixedDate[j])
@@ -210,10 +244,12 @@ extractFixedDateTrajectories <- function (d,sites,times,cycleDuration,dates=time
     }
   }
   #remove the lines not belonging to any fixedDate_trajectories
-  selec <- is.na(metadata$fdT)==F
+  selec <- is.na(metadata$fdT)==FALSE
   
   d <- as.matrix(d)
   d <- d[selec,selec]
+  rownames(d) <- NULL
+  colnames(d) <- NULL
   d <- as.dist(d)
   
   metadata <- metadata[selec,]
@@ -222,7 +258,7 @@ extractFixedDateTrajectories <- function (d,sites,times,cycleDuration,dates=time
   output <- list()
   output$d <- d
   output$metadata <- metadata
-  
+  class(output) <- c("fd.trajectories","trajectories", "list")
   return(output)
 }
 
@@ -236,26 +272,41 @@ extractFixedDateTrajectories <- function (d,sites,times,cycleDuration,dates=time
 #' @param externalBoundary An optional string, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
 #' @export
-cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,startdate=min(dates),externalBoundary="end",minEcolStates=3)
+cycleConvexity <- function(x,
+                           cycleDuration,
+                           dates = NULL,
+                           startdate = NA,
+                           externalBoundary="end",
+                           minEcolStates=3)
 {
-  Cycles <- extractCycles(d=d,sites=sites,times=times,dates=dates,cycleDuration=cycleDuration,startdate=startdate,externalBoundary=externalBoundary,minEcolStates=minEcolStates)
-  Angles <- trajectoryAngles(d,sites,surveys=times)
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  
+  sites <- x$metadata$sites
+  siteIDs <- unique(sites)
+  times <- x$metadata$times
+  
+  Cycles <- extractCycles(x,
+                          cycleDuration=cycleDuration,
+                          dates=dates,
+                          startdate=startdate,
+                          externalBoundary=externalBoundary,
+                          minEcolStates=minEcolStates)
+  Angles <- trajectoryAngles(x)
   
   Convexity <- integer(0)
-  
-  for (i in unique(sites)){
+  for(i in 1:length(siteIDs)){
     Anglesi <- Angles[i,]
     Anglesi <- Anglesi[1:(length(Anglesi)-3)]
-    Anglesi <- Anglesi[is.na(Anglesi)==F]
+    Anglesi <- Anglesi[is.na(Anglesi)==FALSE]
     
-    timesi <- times[sites==i]
+    timesi <- times[sites==siteIDs[i]]
     timesi <- timesi[2:(length(timesi)-1)]
     
     bidule <- data.frame(timesi,Anglesi)
     bidule <- bidule[order(bidule$timesi),]
     
-    timesCyclesi <- Cycles$metadata$times[Cycles$metadata$sites==i&Cycles$metadata$internal]
-    Cyclesi <- Cycles$metadata$Cycles[Cycles$metadata$sites==i&Cycles$metadata$internal]
+    timesCyclesi <- Cycles$metadata$times[(Cycles$metadata$sites==siteIDs[i]) & Cycles$metadata$internal]
+    Cyclesi <- Cycles$metadata$cycles[(Cycles$metadata$sites==siteIDs[i]) & Cycles$metadata$internal]
     anglesCyclesi <- rep(NA,length(Cyclesi))
     truc <- data.frame(Cyclesi,timesCyclesi,anglesCyclesi)
     truc <- truc[order(truc$timesCyclesi),]
@@ -267,7 +318,7 @@ cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDurati
     
     Convexity <- c(Convexity,360/tapply(truc$anglesCyclesi,truc$Cyclesi,sum))
   }
-  Convexity <- Convexity[unique(Cycles$metadata$Cycles)]
+  Convexity <- Convexity[unique(Cycles$metadata$cycles)]
   return(Convexity)
 }
 
@@ -281,42 +332,62 @@ cycleConvexity <- function (d,sites,times,cycleDuration,dates=times%%cycleDurati
 #' @param centering An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.
 #' @param minEcolStates An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.
 #' @export
-cycleShift <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,datesCS=sort(unique(dates%%cycleDuration)),centering=TRUE,minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+cycleShifts <- function (x,
+                         cycleDuration,
+                         dates = NULL,
+                         datesCS = NULL,
+                         centering=TRUE,
+                         minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
 {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  
+  d <- x$d
+  sites <- x$metadata$sites
+  siteIDs <- unique(sites)
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  
+  if(is.null(dates)) dates <- times%%cycleDuration
+  if(is.null(datesCS)) datesCS <- sort(unique(dates%%cycleDuration))
+  
   Output <- integer(0)#this will contain the final output
   
   #for each date in datesCS, we compute all possible non-overlapping Cycles starting and ending cycleDuration/2 before and after the date.
   #those cycles will become the cycles for which a cyclical shift will be computed and the reference cycles
   
   for (i in datesCS){
-    Cycles <- extractCycles(d=d,sites=sites,times=times,dates=dates,cycleDuration=cycleDuration,startdate=(i-cycleDuration/2)%%cycleDuration,externalBoundary="end",minEcolStates)
+    Cycles <- extractCycles(x,
+                            dates=dates,
+                            cycleDuration=cycleDuration,
+                            startdate=(i-cycleDuration/2)%%cycleDuration,
+                            externalBoundary="end",
+                            minEcolStates)
     
-    #optional (but advised) centering (only done on complete cycles, the internal only cycles are not needed for this application)
-    if (centering==T){
-      Cycles$d <- centerTrajectories(d=Cycles$d,sites=Cycles$metadata$Cycles,exclude=which(Cycles$metadata$internal==FALSE))
+    if (centering){
+      Cycles <- centerTrajectories(Cycles,
+                                     exclude=which(Cycles$metadata$internal==FALSE))
     }
     
-    
-    for (j in unique(sites)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
-      siteTag <- which(Cycles$metadata$sites==j)
+    for (j in 1:length(siteIDs)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
+      siteTag <- which(Cycles$metadata$sites==siteIDs[j])
       dateTag <- which(Cycles$metadata$dates==i)
       dateTag <- intersect(siteTag,dateTag)
       
-      AllRefCycles <- unique(Cycles$metadata$Cycles[siteTag])
+      AllRefCycles <- unique(Cycles$metadata$cycles[siteTag])
       AllRefCycles <- AllRefCycles[1:(length(AllRefCycles)-1)]
       for (k in AllRefCycles){#This loop goes through all the Cycles that will be used as reference.
-        CrefTag <- which(Cycles$metadata$Cycles==k)
+        CrefTag <- which(Cycles$metadata$cycles==k)
         CrefTag <- CrefTag[order(Cycles$metadata$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
         drefTag <- dateTag[dateTag%in%CrefTag]#a tag for the reference date
         dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
         
-        if (length(drefTag)==1&length(dateTag)>0){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
+        if ((length(drefTag)==1) & (length(dateTag)>0)){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
           #Note: there is no need to reorder the cycles as extractCycles always output them in chronological order for a given site
           
           #Find out onto which segment of Cref the ecological states of interest are projected
           projCS <- trajectoryProjection(d=Cycles$d,
-                                      target=dateTag,
-                                      trajectory=CrefTag)
+                                         target=dateTag,
+                                         trajectory=CrefTag)
           
           segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
           
@@ -326,15 +397,15 @@ cycleShift <- function (d,sites,times,cycleDuration,dates=times%%cycleDuration,d
           
           #get the Cyclical shifts:
           cyclicalShift <- timesProj-Cycles$metadata$times[drefTag]
-          
-          #Add some "metadata" to accompany Dt
           timeRef <- rep(Cycles$metadata$times[drefTag],length(dateTag))
           timeCS <- Cycles$metadata$times[dateTag]
-          timeScale <- timeCS-timeRef
-          dateCS <- rep(i,length(timeRef))
-          site <- rep(j,length(timeRef))
-          
-          PartialOutput <- data.frame(site,dateCS,timeCS,timeRef,timeScale,cyclicalShift)
+          #Add some "metadata" to accompany Dt
+          PartialOutput <- data.frame(sites = rep(siteIDs[j],length(timeRef)),
+                                      dateCS = rep(i,length(timeRef)),
+                                      timeCS = timeCS,
+                                      timeRef = timeRef,
+                                      timeScale = timeCS - timeRef,
+                                      cyclicalShift = cyclicalShift)
           Output <- rbind(Output,PartialOutput)
         }
       }

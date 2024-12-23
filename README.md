@@ -53,7 +53,7 @@ framework:
 | Name | Short description |
 |----|----|
 | `defineTrajectories()` | Defines trajectory objects to be analyzed. |
-| `extractTrajectories()` | Extracts (sub-)trajectories corresponding to selected set of sites from a dataset containing multiple trajectories. |
+| `subsetTrajectories()` | Subsets trajectories corresponding to selected set of sites or surveys from a dataset containing multiple trajectories. |
 | `smoothTrajectories()` | Performs multivariate smoothing on trajectory data using a Gaussian kernel. |
 | `centerTrajectories()` | Shifts all trajectories to the center of the multivariate space and returns a modified distance matrix. |
 | `trajectoryLengths()` | Calculates lengths of directed segments and total path length of trajectories. |

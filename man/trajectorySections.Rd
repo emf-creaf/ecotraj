@@ -18,6 +18,8 @@ extractTrajectorySections(
 )
 }
 \arguments{
+\item{x}{An object of class \code{\link{trajectories}} describing a cyclical trajectory.}
+
 \item{Traj}{A vector of length equal to the number of desired trajectory sections indicating the trajectories from which trajectory sections must be build (see details).}
 
 \item{tstart}{A vector of start times for each of the desired trajectory sections (see details).}
@@ -29,12 +31,6 @@ extractTrajectorySections(
 \item{BCend}{A vector of end boundary conditions (either \code{"internal"} or \code{"external"}) for each of the desired trajectory sections (see details).}
 
 \item{namesTS}{An optional vector giving a name for each of the desired trajectory sections (by default trajectory sections are simply numbered).}
-
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
-
-\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
-
-\item{times}{A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).}
 }
 \value{
 Function \code{extractTrajectorySections} returns the base information needed to describe trajectory sections. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within trajectory sections, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{extractTrajectorySections} returns a list containing:

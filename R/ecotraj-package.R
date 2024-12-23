@@ -27,9 +27,10 @@
 ## usethis namespace: start
 #' @importFrom Kendall MannKendall
 #' @importFrom MASS ginv
-#' @importFrom graphics arrows text
+#' @importFrom graphics arrows text segments
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
+#' @importFrom grDevices col2rgb rgb
 #' @importFrom stats as.dist cmdscale dist model.matrix quantile
 #' @importFrom utils combn setTxtProgressBar txtProgressBar
 #' @useDynLib ecotraj, .registration = TRUE

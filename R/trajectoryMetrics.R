@@ -762,6 +762,9 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
   # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)

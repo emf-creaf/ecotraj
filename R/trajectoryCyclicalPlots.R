@@ -9,13 +9,6 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclicalPlots
-#' @aliases cyclePCoA fixedDateTrajectoryPCoA
-#' 
-#' CETA plotting functions:
-#' \itemize{
-#'  \item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to cycles.}
-#'  \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed-date trajectories in the ordination scatterplot. Sister function of \code{trajectoryPCoA} adapted to fixed date-trajectories.}
-#' }
 #' 
 #' @details
 #' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
@@ -33,42 +26,43 @@
 #' 
 #' @seealso \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 #' 
-#' 
 #' @rdname trajectoryCyclicalPlots
-#' @param inputCyclePCoA The full output of function \code{\link{extractCycles}}.
+#' @param x The output of function \code{\link{extractCycles}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.
 #' @param sites.colors The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
 #' @export
-cyclePCoA <- function (inputCyclePCoA,centered=FALSE,sites.colors=NULL,print.names=FALSE,axes=c(1,2),...){
-  if (is.list(inputCyclePCoA)==FALSE)
+cyclePCoA <- function (x, 
+                       centered=FALSE,
+                       sites.colors=NULL,
+                       print.names=FALSE,
+                       axes=c(1,2), ...){
+  if (!inherits(x, "cycles"))
     stop ("cyclePCoA takes as main input the whole output of function extractCycles")
-  if (is.null(inputCyclePCoA$metadata$Cycles))
-    stop ("cyclePCoA takes as main input the whole output of function extractCycles")
-  
+
   if (is.null(sites.colors)==FALSE){
-    if (length(sites.colors)!=length(unique(inputCyclePCoA$metadata$sites)))
+    if (length(sites.colors)!=length(unique(x$metadata$sites)))
       stop ("sites.colors must have the same number of colors as the number of sites")
-    names(sites.colors) <- unique(inputCyclePCoA$metadata$sites)
+    names(sites.colors) <- unique(x$metadata$sites)
   }
   
   #first isolate the subset of the data on which the PCoA must be performed
   if (centered){
-    D <- inputCyclePCoA$d
+    D <- x$d
     PCoA <- cmdscale(D,eig=TRUE, add=TRUE, k=nrow(as.matrix(D))-1)
     
-    metadataD <- inputCyclePCoA$metadata
+    metadataD <- x$metadata
     
-  }else{
+  } else{
     selec <- integer(0)
     #this loop will first isolate the non-duplicated external ecological states
     #then it will add the internal ecological states (and removing possible overlap)
-    for (i in unique(inputCyclePCoA$metadata$sites)){
-      sitei <- inputCyclePCoA$metadata$sites==i
-      timesi <- inputCyclePCoA$metadata$times[sitei]
-      inti <- (inputCyclePCoA$metadata$internal)[sitei]
+    for (i in unique(x$metadata$sites)){
+      sitei <- x$metadata$sites==i
+      timesi <- x$metadata$times[sitei]
+      inti <- (x$metadata$internal)[sitei]
       
       #In there we will have the non-duplicated external ecological states
       nonDuplExt <- table(timesi[inti==FALSE])
@@ -76,32 +70,32 @@ cyclePCoA <- function (inputCyclePCoA,centered=FALSE,sites.colors=NULL,print.nam
       
       #Here we ensure the external ecological states do not correspond to already existing internal ecological states
       TimesExtToKeepi <- setdiff(nonDuplExt,timesi[inti])
-      selec <- c(selec,which(inputCyclePCoA$metadata$times%in%TimesExtToKeepi
+      selec <- c(selec,which(x$metadata$times%in%TimesExtToKeepi
                              &
-                             inputCyclePCoA$metadata$sites==i))
+                             x$metadata$sites==i))
     }
-    selec <- sort(c(selec,which(inputCyclePCoA$metadata$internal)))#and add all internal ecological states
+    selec <- sort(c(selec,which(x$metadata$internal)))#and add all internal ecological states
     
-    D <- as.dist(as.matrix(inputCyclePCoA$d)[selec,selec])
+    D <- as.dist(as.matrix(x$d)[selec,selec])
     
     PCoA <- cmdscale(D,eig=TRUE, add=TRUE, k=nrow(as.matrix(D))-1)
     
-    metadataD <- inputCyclePCoA$metadata[selec,]
+    metadataD <- x$metadata[selec,]
   }
   
   #Plotting
-  x <- PCoA$points[,axes[1]]
-  y <- PCoA$points[,axes[2]]
+  xp <- PCoA$points[,axes[1]]
+  yp <- PCoA$points[,axes[2]]
   
-  plot(x,y, type="n", asp=1, xlab=paste0("PCoA ",axes[1]," (", round(100*PCoA$eig[axes[1]]/sum(PCoA$eig)),"%)"), 
+  plot(xp,yp, type="n", asp=1, xlab=paste0("PCoA ",axes[1]," (", round(100*PCoA$eig[axes[1]]/sum(PCoA$eig)),"%)"), 
        ylab=paste0("PCoA ",axes[2]," (", round(100*PCoA$eig[axes[2]]/sum(PCoA$eig)),"%)"))
   
-  for (i in unique(metadataD$sites)){
-    sitei <- metadataD$sites==i
-    cyclesi <- unique(metadataD$Cycles[sitei])
+  for (i in 1:length(unique(metadataD$sites))){
+    sitei <- metadataD$sites==metadataD$sites[i]
+    cyclesi <- unique(metadataD$cycles[sitei])
     
     #add a (simple) color ramp for cycle
-    if (is.null(sites.colors)==FALSE){
+    if (!is.null(sites.colors)){
       colorCycles <- rep(sites.colors[i],length(cyclesi))
       colorCycles <- rgb(t(col2rgb(colorCycles)/255)+t(c(1,1,1)-col2rgb(colorCycles)/255)*seq(0,0.5,length.out=length(cyclesi)))
       names(colorCycles) <- cyclesi
@@ -112,15 +106,15 @@ cyclePCoA <- function (inputCyclePCoA,centered=FALSE,sites.colors=NULL,print.nam
     }
     
     for (j in cyclesi){
-      cyclejinput <- inputCyclePCoA$metadata$Cycles==j
+      cyclejinput <- x$metadata$cycles==j
       
-      timesjinput <- inputCyclePCoA$metadata$times[cyclejinput]
+      timesjinput <- x$metadata$times[cyclejinput]
       
-      selec <- metadataD$times%in%timesjinput&metadataD$sites==i
+      selec <- (metadataD$times%in%timesjinput) & sitei
       
       timesj <- metadataD$times[selec]
-      xarrows <- x[selec][order(timesj)]
-      yarrows <- y[selec][order(timesj)]
+      xarrows <- xp[selec][order(timesj)]
+      yarrows <- yp[selec][order(timesj)]
       
       #main arrows
       arrows(x0=xarrows[1:(length(xarrows)-1)],y0=yarrows[1:(length(yarrows)-1)],
@@ -132,18 +126,18 @@ cyclePCoA <- function (inputCyclePCoA,centered=FALSE,sites.colors=NULL,print.nam
         text(x=xarrows[1],y=yarrows[1],j,col=colorCycles[j])
       }
       #add the interpolated ecological states if any
-      if (is.null(inputCyclePCoA$interpolationInfo)==FALSE){
+      if (is.null(x$interpolationInfo)==FALSE){
         #addition may be made at the start and/or at the end of the cycle
         #for the start:
         if ((min(timesjinput)%in%timesj)==FALSE){
-          selecInt <- inputCyclePCoA$metadata$times==min(timesjinput)&inputCyclePCoA$metadata$Cycles==j
-          IntCoef <- inputCyclePCoA$interpolationInfo[selecInt]
+          selecInt <- x$metadata$times==min(timesjinput)&x$metadata$cycles==j
+          IntCoef <- x$interpolationInfo[selecInt]
           
-          timeprevious <- max(metadataD$times[metadataD$times<min(timesjinput)&metadataD$sites==i])
-          EcolStatePrevious <- metadataD$times==timeprevious&metadataD$sites==i
+          timeprevious <- max(metadataD$times[(metadataD$times<min(timesjinput)) & sitei])
+          EcolStatePrevious <- (metadataD$times==timeprevious) & sitei
           
-          xprevious <- x[EcolStatePrevious]
-          yprevious <- y[EcolStatePrevious]
+          xprevious <- xp[EcolStatePrevious]
+          yprevious <- yp[EcolStatePrevious]
           
           x1Int <- xarrows[1]
           y1Int <- yarrows[1]
@@ -155,14 +149,14 @@ cyclePCoA <- function (inputCyclePCoA,centered=FALSE,sites.colors=NULL,print.nam
         }
         #for the end:
         if ((max(timesjinput)%in%timesj)==FALSE){
-          selecInt <- inputCyclePCoA$metadata$times==max(timesjinput)&inputCyclePCoA$metadata$Cycles==j
-          IntCoef <- inputCyclePCoA$interpolationInfo[selecInt]
+          selecInt <- (x$metadata$times==max(timesjinput)) & (x$metadata$cycles==j)
+          IntCoef <- x$interpolationInfo[selecInt]
           
-          timenext <- min(metadataD$times[metadataD$times>max(timesjinput)&metadataD$sites==i])
-          EcolStateNext <- metadataD$times==timenext&metadataD$sites==i
+          timenext <- min(metadataD$times[metadataD$times>max(timesjinput) & (metadataD$sites==i)])
+          EcolStateNext <- (metadataD$times==timenext) & (metadataD$sites==i)
           
-          xnext <- x[EcolStateNext]
-          ynext <- y[EcolStateNext]
+          xnext <- xp[EcolStateNext]
+          ynext <- yp[EcolStateNext]
           
           x0Int <- xarrows[length(xarrows)]
           y0Int <- yarrows[length(yarrows)]

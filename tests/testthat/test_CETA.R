@@ -30,6 +30,7 @@ test_that("Fixed date trajectories can be build and analyzed",{
   expect_type(trajectoryDirectionality(fdtrajToy), "double")
   expect_type(trajectoryVariability(fdtrajToy), "double")
   expect_s3_class(trajectoryDistances(fdtrajToy), "dist")
+  expect_type(trajectoryConvergence(fdtrajToy), "list")
 })
 
 test_that("Cycles can be build and analyzed",{

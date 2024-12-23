@@ -185,21 +185,12 @@ BLABLAH PCoA Cycles
 A special function is thus available within CETA for this purpose.
 This can be done using the original cycles:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-cyclePCoA(d = cycleToy$d,
-          cycles = cycleToy$metadata$Cycles,
-          times = cycleToy$metadata$times,
-          IntExt = cycleToy$metadata$IntExt,
-          cycle.colors = c("blue","red","black"))
-
+cyclePCoA(x = cycleToy, sites.colors = "blue")
 ```
 
 As well as the centered cycles:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-cyclePCoA(d = cycleToy_cent$d,
-          cycles = cycleToy_cent$metadata$Cycles,
-          times = cycleToy_cent$metadata$times,
-          IntExt = cycleToy_cent$metadata$IntExt,
-          cycle.colors = c("blue","red","black"))
+cyclePCoA(x = cycleToy_cent, centered = TRUE, sites.colors = "blue")
 ```
 
 ### 2.3 Assessing the degree of convexity in cycles
@@ -239,18 +230,18 @@ head(northseaZoo$times)
 ```
 `northseaZoo` contains three elements: `Hellinger` with the Hellinger-transformed abundances, `times` with time expressed in years (the decimals actually correspond to a way of encoding the months as fractions of years: `1:12/12-1/24`), and `sites` describing whether a community sample is from the Northern `NNS` or Southern `SNS` North Sea.
 
-### 3.2 Get a dissimilarity matrix and build cyclical trajectories
+### 3.2 Get a dissimilarity matrix and define cyclical trajectories
 
 ETA works from dissimilarity matrices. So a first step in analyzing the North Sea zooplankton data is to go from the `Hellinger` matrix to a distance matrix. Luckily for us, euclidean distances computed on Hellinger-transformed community data yield Hellinger distances between communities. We can therefore use the `dist` function from base R.
 ```{r}
 northseaZoo$Dist <- dist(northseaZoo$Hellinger)
 ```
 
-
+To be analyzed using ETA, the distance matrix has to be complemented with information regarding sites and surveys. 
 ```{r}
 x_northseaZoo <- defineTrajectories(d = northseaZoo$Dist,
                                     sites = northseaZoo$sites,
-                                    surveys = northseaZoo$times)
+                                    times = northseaZoo$times)
 ```
 
 
@@ -365,7 +356,7 @@ Note that the two PCoA do not represent the same variance on their first and sec
 
 ### 3.5 Look at the fixed-date trajectories:
 
-Let's now look at the fixed-date trajectories. First prepare the data using `extractFixedDateTrajectories`:
+Let's now look at the fixed-date trajectories. First prepare the data using `extractFixedDateTrajectories()`:
 ```{r}
 fdtrajNSZoo <- extractFixedDateTrajectories(x_northseaZoo,
                                             cycleDuration = 1,
@@ -377,7 +368,6 @@ As we did for cycles, we can compute shape metrics on fixed-date trajectories:
 ```{r}
 fdtrajZooLengths <- trajectoryLengths(fdtrajNSZoo)
 fdtrajZooDir <- trajectoryDirectionality(fdtrajNSZoo)
-
 ```
 
 And put them in a convenient dataframe:
@@ -446,13 +436,9 @@ SNSfdtraj$metadata <- SNSfdtraj$metadata[floor(SNSfdtraj$metadata$times)%in%sele
 NNSfdtraj$metadata <- NNSfdtraj$metadata[floor(NNSfdtraj$metadata$times)%in%selecNNS,]
 
 #Now we can compute the convergence!
-SNSfdtrajConv <- trajectoryConvergence(d = SNSfdtraj$d,
-                                       sites = SNSfdtraj$metadata$fdT,
-                                       surveys = SNSfdtraj$metadata$times,
+SNSfdtrajConv <- trajectoryConvergence(SNSfdtraj,
                                        symmetric = TRUE)
-NNSfdtrajConv <- trajectoryConvergence(d = NNSfdtraj$d,
-                                       sites = NNSfdtraj$metadata$fdT,
-                                       surveys = NNSfdtraj$metadata$times,
+NNSfdtrajConv <- trajectoryConvergence(NNSfdtraj,
                                        symmetric = TRUE)
 
 library(corrplot)
@@ -482,7 +468,7 @@ slopes <- integer(0)
 for (i in c("SNS","NNS")){
   for (j in unique(CSNSZoo$dateCS)){
     #prepare the relevant subset
-    subsetCS <- subset(CSNSZoo,site==i)|>subset(dateCS==j)
+    subsetCS <- subset(CSNSZoo,sites==i)|>subset(dateCS==j)
     
     #compute a slope
     model <- lm((subsetCS$cyclicalShift*365)~subsetCS$timeScale)
@@ -505,14 +491,14 @@ for (i in c("SNS","NNS")){
     }
   }
 }
-colnames(slopes) <- c("site","month","slope")
+colnames(slopes) <- c("sites","month","slope")
 
 ```
 
 The graph gives an example of how trends of cyclical shifts can be computed across the whole time series for a given month. Let's now synthesize this information first for SNS:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
-plot(x=slopes$month[slopes$site=="SNS"]*12+0.5,
-     y=slopes$slope[slopes$site=="SNS"]*10,
+plot(x=slopes$month[slopes$sites=="SNS"]*12+0.5,
+     y=slopes$slope[slopes$sites=="SNS"]*10,
      las=1,type="b",
      ylab="Cyclical shift in SNS (days/decade)",
      xlab="Month")
@@ -523,8 +509,8 @@ abline(h=0)
 
 Same for the NNS
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
-plot(x=slopes$month[slopes$site=="NNS"]*12+0.5,
-     y=slopes$slope[slopes$site=="NNS"]*10,
+plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
+     y=slopes$slope[slopes$sites=="NNS"]*10,
      las=1,type="b",
      ylab="Cyclical shift in NNS (days/decade)",
      xlab="Month")

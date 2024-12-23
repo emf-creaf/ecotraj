@@ -50,9 +50,7 @@
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' @rdname trajectorySections
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param times A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).
+#' @param x An object of class \code{\link{trajectories}} describing a cyclical trajectory.
 #' @param Traj A vector of length equal to the number of desired trajectory sections indicating the trajectories from which trajectory sections must be build (see details).
 #' @param tstart A vector of start times for each of the desired trajectory sections (see details).
 #' @param tend A vector of end times for each of the desired trajectory sections (see details).

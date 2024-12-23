@@ -46,7 +46,7 @@ cycleShifts(
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link{trajectories}}.}
+\item{x}{An object of class \code{\link{trajectories}} describing a cyclical trajectory.}
 
 \item{cycleDuration}{A value indicating the duration of a cycle. Must be in the same units as times.}
 
@@ -56,7 +56,7 @@ cycleShifts(
 
 \item{externalBoundary}{An optional string, either \code{"end"} or \code{"start"}, indicating whether the start or end of the cycles must be considered "external". Defaults to \code{"end"}.}
 
-\item{minEcolStates}{An optional integer indicating the minimum number of ecological states to return a cycle. Cycle comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 3.}
+\item{minEcolStates}{An optional integer indicating the minimum number of ecological states to return a fixed-date trajectory. Fixed-date trajectories comprising less ecological states than minEcolStates are discarded and do not appear in the output of the function. Defaults to 2.}
 
 \item{fixedDate}{An optional vector of dates for which fixed-date trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-date trajectories.}
 
@@ -65,12 +65,6 @@ cycleShifts(
 \item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
 \item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.}
-
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
-
-\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
-
-\item{times}{A vector indicating the times corresponding to each ecosystem state (equivalent to "surveys" in other ETA function but more time-explicit).}
 }
 \value{
 Function \code{extractCycles} returns the base information needed to describe cycles. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within cycles, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{extractCycles} returns a list containing:

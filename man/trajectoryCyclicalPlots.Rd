@@ -5,41 +5,10 @@
 \alias{trajectoryCyclicalPlots}
 \alias{cyclePCoA}
 \alias{fixedDateTrajectoryPCoA}
-\alias{CETA}
-\alias{plotting}
-\alias{functions:}
-\alias{\itemize{}
-\alias{\item{Function}
-\alias{\code{cyclePCoA}}
-\alias{performs}
-\alias{principal}
-\alias{coordinates}
-\alias{analysis}
-\alias{(\code{\link{cmdscale}})}
-\alias{and}
-\alias{draws}
-\alias{cycles}
-\alias{in}
-\alias{the}
-\alias{ordination}
-\alias{scatterplot.}
-\alias{Sister}
-\alias{function}
-\alias{of}
-\alias{\code{trajectoryPCoA}}
-\alias{adapted}
-\alias{to}
-\alias{cycles.}}
-\alias{\code{fixedDateTrajectoryPCoA}}
-\alias{fixed-date}
-\alias{trajectories}
-\alias{fixed}
-\alias{date-trajectories.}}
-\alias{}}
 \title{Cyclical trajectory plots}
 \usage{
 cyclePCoA(
-  inputCyclePCoA,
+  x,
   centered = FALSE,
   sites.colors = NULL,
   print.names = FALSE,
@@ -56,7 +25,7 @@ fixedDateTrajectoryPCoA(
 )
 }
 \arguments{
-\item{inputCyclePCoA}{The full output of function \code{\link{extractCycles}}.}
+\item{x}{The output of function \code{\link{extractCycles}}.}
 
 \item{centered}{Boolean. Have the cycles been centered? Default to FALSE.}
 

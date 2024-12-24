@@ -45,13 +45,18 @@
 defineTrajectories<-function(d, sites, surveys = NULL, times = NULL) {
   if(!inherits(d,"dist") && !inherits(d, "matrix")) {
     stop("'d' should be of class `dist` or `matrix`")
-  }
-  if(inherits(d, "matrix")){
-    if(nrow(d)!=ncol(d)) stop("Number of rows should be equal to number of columns in 'x'")
+  } else {
+    if(inherits(d, "matrix")){
+      if(nrow(d)!=ncol(d)) stop("Number of rows should be equal to number of columns in 'x'")
+      d <- as.dist(d)
+    } 
   }
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
+  if(!is.character(sites)) stop("'sites' should be a character vector")
   if(!is.null(surveys)) {
     if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
+    if(!is.numeric(surveys)) stop("'surveys' should be a numeric vector of integers")
+    if(!all(as.integer(surveys)==surveys)) stop("'surveys' should be a numeric vector of integers")
   } else {
     surveys <- rep(NA, length(sites))
     for(s in unique(sites)) {
@@ -60,6 +65,7 @@ defineTrajectories<-function(d, sites, surveys = NULL, times = NULL) {
   }
   if(!is.null(times)) {
     if(length(sites)!=length(times)) stop("'sites' and 'times' need to be of the same length")
+    if(!is.numeric(times)) stop("'times' should be a numeric vector")
   } else {
     times <- surveys
   }

@@ -312,7 +312,9 @@ Distances in `avoca_D_man` are calculated using the Manhattan metric, after appl
 We start by defining our trajectories, which implies combining the information about distances, sites and surveys (survey times are omitted):
 
 ```{r}
-avoca_x <- defineTrajectories(avoca_D_man,  avoca_sites, avoca_surveys)
+avoca_x <- defineTrajectories(d = avoca_D_man,  
+                              sites = avoca_sites, 
+                              surveys = avoca_surveys)
 ```
 
 ### 3.1 Displaying trajectories in PCoA

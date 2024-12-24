@@ -3,7 +3,7 @@
 #' Defines or subsets data structures for trajectory analysis
 #'
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states..
-#' @param sites A character vector indicating the site corresponding to each ecosystem state.
+#' @param sites A character vector indicating the site corresponding to each ecosystem state (other types are converted to character).
 #' @param surveys An integer vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
 #' @param times A numeric vector indicating survey times (if missing, survey times are made equal to surveys).
 #'
@@ -52,7 +52,6 @@ defineTrajectories<-function(d, sites, surveys = NULL, times = NULL) {
     } 
   }
   if(length(sites)!=nrow(as.matrix(d))) stop("'sites' needs to be of length equal to the number of rows/columns in d")
-  if(!is.character(sites)) stop("'sites' should be a character vector")
   if(!is.null(surveys)) {
     if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
     if(!is.numeric(surveys)) stop("'surveys' should be a numeric vector of integers")

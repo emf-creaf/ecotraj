@@ -13,7 +13,7 @@ subsetTrajectories(x, site_selection, survey_selection = NULL)
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states..}
 
-\item{sites}{A character vector indicating the site corresponding to each ecosystem state.}
+\item{sites}{A character vector indicating the site corresponding to each ecosystem state (other types are converted to character).}
 
 \item{surveys}{An integer vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 

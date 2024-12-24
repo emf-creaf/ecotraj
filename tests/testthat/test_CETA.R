@@ -27,19 +27,27 @@ test_that("Fixed date trajectories can be build and analyzed",{
   fdtrajToy <- extractFixedDateTrajectories(xToy,
                                             cycleDuration = cycleDurationToy)
   expect_s3_class(fdtrajToy, "fd.trajectories")
+  expect_s3_class(centerTrajectories(fdtrajToy), "fd.trajectories")
+  expect_s3_class(smoothTrajectories(fdtrajToy), "fd.trajectories")
+  expect_s3_class(trajectoryLengths(fdtrajToy), "data.frame")
+  expect_s3_class(trajectorySpeeds(fdtrajToy), "data.frame")
   expect_type(trajectoryDirectionality(fdtrajToy), "double")
   expect_type(trajectoryVariability(fdtrajToy), "double")
+  expect_type(segmentDistances(fdtrajToy), "list")
   expect_s3_class(trajectoryDistances(fdtrajToy), "dist")
-  expect_type(trajectoryConvergence(fdtrajToy), "list")
 })
 
 test_that("Cycles can be build and analyzed",{
   cycleToy <- extractCycles(xToy,
                             cycleDuration = cycleDurationToy)
   expect_s3_class(cycleToy, "cycles")
+  expect_s3_class(centerTrajectories(cycleToy), "cycles")
+  expect_s3_class(smoothTrajectories(cycleToy), "cycles")
   expect_s3_class(trajectoryLengths(cycleToy), "data.frame")
+  expect_s3_class(trajectorySpeeds(cycleToy), "data.frame")
   expect_type(trajectoryDirectionality(cycleToy), "double")
   expect_type(trajectoryVariability(cycleToy), "double")
+  expect_type(segmentDistances(cycleToy), "list")
   expect_s3_class(trajectoryDistances(cycleToy), "dist")
 
   expect_type(cycleConvexity(xToy, cycleDuration = cycleDurationToy), "double")

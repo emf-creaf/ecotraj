@@ -19,7 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Introduction
 
 ### 1.1 What is Ecological Trajectory Analysis?
-*Ecological Trajectory Analysis* (ETA) is a framework to analyze ecosystem dynamics described as trajectories in a chosen space of ecosystem resemblance. ETA takes trajectories as objects to be analyzed and compared geometrically. The framework was presented for community ecology in:
+*Ecological Trajectory Analysis* (ETA) is a framework to analyze ecosystem dynamics described as trajectories in a chosen space of ecosystem resemblance. ETA takes trajectories as objects to be analyzed and compared geometrically. 
+
+The framework was presented for community ecology in:
 
 + De Cáceres M, Coll L, Legendre P, et al (2019) Trajectory analysis in community ecology. Ecol Monographs 89:e01350. https://doi.org/10.1002/ecm.1350.
 
@@ -27,7 +29,12 @@ The framework was then extended with new metrics and visualisation modes in:
 
 + Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400. https://doi.org/10.1016/j.ecolmodel.2020.109400.
 
-Procedures of trajectory analysis can be applied to data beyond community data tables. For this reason we now call the framework 'Ecological Trajectory Analysis' and provide a package **ecotraj** that offers a set of functions to calculate metrics and produce plots. 
+Procedures of trajectory analysis can be applied to data beyond community data tables. For example, the same framework was applied to stable isotope data in:
+
++ Sturbois, A., Cucherousset, J., De Cáceres, M., Desroy, N., Riera, P., Carpentier, A., Quillien, N., Grall,
+J., Espinasse, B., Cherel, Y., Schaal, G. (2021). Stable Isotope Trajectory Analysis (SITA) : A new approach to quantify and visualize dynamics in stable isotope studies. Ecological Monographs, 92, e1501  (https://doi.org/10.1002/ecm.1501). 
+
+Since it can be applied to multiple spaces, we now call the framework *Ecological Trajectory Analysis* and provide a package **ecotraj** that offers a set of functions to calculate metrics and produce plots. 
 
 ### 1.2 About this vignette
 
@@ -45,13 +52,21 @@ library(ecotraj)
 In this section we describe how to study the trajectories of three sites that have been surveyed four times each. We use a small dataset where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily.
 
 ### 2.1 Trajectory data
-To specify ecosystem dynamics, we need three data items: 
 
-a. A set of ecosystem states (i.e. coordinates in a space $\Omega$), described using a distance matrix $d$;
-b. A vector specifying the site (i.e. sampling unit) corresponding to each ecosystem state; 
-c. A vector specifying the survey (i.e. time point) corresponding to the sampling of each ecosystem state. 
+#### 2.1.1 Trajectory data items
 
-In ETA, sampling units do not need to be surveyed synchronously nor the same number of times. However, in this example we assume all three sites have been surveyed synchronously four times. 
+To specify ecosystem dynamics, the following data items need to be distinguished: 
+
+a. A set of ecosystem states (i.e. coordinates in a space $\Omega$) implicitly described using a distance matrix $d$;
+b. A *character vector* specifying the site (i.e. sampling unit) corresponding to each ecosystem state; 
+c. An *integer vector* specifying the survey (i.e. census) corresponding to the sampling of each ecosystem state. 
+d. A *numeric vector* specifying the survey time corresponding to each ecosystem state.
+
+In ETA, sampling units do not need to be surveyed synchronously nor the same number of times. 
+
+However, in this example we assume all three sites have been surveyed synchronously four times. 
+
+#### 2.1.2 Example data set
 
 Let us first define the vectors that describe the site and the survey of each ecosystem state:
 ```{r}
@@ -88,66 +103,95 @@ d
 
 ETA is based on the analysis of information in the distance matrix $\Delta = [d]$. Therefore, it does not require explicit coordinates. This is an advantage because it allows the analysis to be conducted on arbitrary metric (or semi-metric) spaces. The choice of $d$ is left to the user and will depend on the problem at hand.
 
+### 2.2 Defining trajectories
+
 To perform ETA, we need to combine the distance matrix and the site/survey information in a single object using function `defineTrajectories()`:
 
 ```{r}
 x <- defineTrajectories(d, sites, surveys)
 ```
 
-Note that `surveys` may be omitted, and in this case site surveys are assumed to be in order. The function returns an object of class `trajectories` that contains all the information for analysis:
+Note that `surveys` may be omitted, and in this case site surveys are assumed to be in order. The function returns an object (a list) of class `trajectories` that contains all the information for analysis:
 
 ```{r}
-x
+class(x)
+```
+
+This object contains two elements:
+```{r}
+names(x)
+```
+Element `d` contains the input distance matrix, whereas `metadata` is a data frame including information of observations:
+
+```{r}
+x$metadata
+```
+
+Note that columns `surveys` and `times` have exactly the same values. This happens because we did not supplied a vector for `times` so that surveys are assumed to happen every time step (of whatever units). Moreover, the `surveys` vector itself can be omitted in calls to `defineTrajectories()`. If so, the function will (correctly, in this case) interpret that every repetition of a given site corresponds to a new survey:
+
+```{r}
+x <- defineTrajectories(d, sites)
+x$metadata
+```
+
+Let us assume the following sampling times, in units of years:
+```{r}
+times <- c(1.0,2.2,3.1,4.2,1.0,1.5,2.8,3.9,1.6,2.8,3.9,4.3)
+```
+
+The call to `defineTrajectories()` using all the information would be:
+```{r}
+x <- defineTrajectories(d, sites, surveys, times)
+x$metadata
 ```
 
 
-### 2.2 Displaying trajectories
+### 2.3 Displaying trajectories
 
 To begin our analysis of the three trajectories, we display them in an ordination space, using function `trajectoryPCoA()`. Since $\Omega$ has only two dimensions in this example, the Principal Coordinates Analysis (PCoA) on $d$ displays the complete space:
 
-```{r pcoa, fig = TRUE, fig.height=4, fig.width=4, fig.align = "center"}
-oldpar <- par(mar=c(4,4,1,1))
+```{r pcoa, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
-legend("topleft", col=c("black","red", "blue"), 
+legend("topright", col=c("black","red", "blue"), 
        legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
-par(oldpar)
 ```
 
 While trajectory of site '1' (black arrows) is made of three segments of the same length and direction, trajectory of site '2' (red arrows) has a second and third segments that bend and are shorter than that of the segond segment of site '1'. Trajectory of site '3' includes a stronger change in direction and shorter segments. 
 
 As this example has two dimensions and we used Euclidean distance, the same plot (albeit rotated) can be straightforwardly obtained using matrix `xy` and function `trajectoryPlot()`:
 
-```{r xy, fig = TRUE, fig.height=4, fig.width=4, fig.align = "center"}
-oldpar<-par(mar=c(4,4,1,1))
+```{r xy, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPlot(xy, sites, surveys, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
 legend("topright", col=c("black","red", "blue"), 
        legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
-par(oldpar)
 ```
 
 While `trajectoryPCoA()` uses PCoA (also known as classical Multidimensional Scaling) to display trajectories, users can display ecosystem trajectories using other ordination techniques such as metric Multidimensional Scaling (mMDS; see function *mds* of package **smacof**) or non-metric MDS (nMDS; see function *metaMDS* in package **vegan** or function *isoMDS* in package **MASS**). Function `trajectoryPlot()` will help drawing arrows between segments to represent trajectories on the ordination space given by any of these methods. 
 
-Functions `trajectoryPCoA()`and `trajectoryPlot()` can be used to display a subset of trajectories if we apply function `subsetTrajectories()`:
+Functions `trajectoryPCoA()`and `trajectoryPlot()` can be used to display a subset of trajectories if we combine them with function `subsetTrajectories()`:
 
-```{r}
-oldpar <- par(mar=c(4,4,1,1))
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(subsetTrajectories(x, site_selection = c("2", "3")), 
                traj.colors = c("red", "blue"), lwd = 2,
                survey.labels = T)
-legend("topleft", col=c("red", "blue"), 
+legend("topright", col=c("red", "blue"), 
        legend=c("Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
-par(oldpar)
 ```
 
-### 2.3 Trajectory lengths, angles and overall directionality
+### 2.4 Trajectory lengths, speeds, angles and directionality
 
 One may be interested in studying the geometric properties of particular trajectories. For example, one can obtain the length of trajectory segments and the total pathway length using function `trajectoryLengths()`:
 ```{r} 
 trajectoryLengths(x)
 ```
+When survey times are available, it may be of interest to calculate segment or trajectory speeds. One can obtain the speed of trajectory segments and the total pathway speed using function `trajectorySpeeds()`:
 
+```{r} 
+trajectorySpeeds(x)
+```
+Note that the units of lengths and speeds will depend on the definition of the $\Omega$ space and, in the latter case, on the units of `times`.
 
 In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix $\Delta$ may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics. Function `trajectoryAngles()` allows calculating the angles between consecutive segments:
 
@@ -172,7 +216,7 @@ trajectoryDirectionality(x)
 
 As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. Note that function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality.
 
-### 2.4 Relative positions within trajectories
+### 2.5 Relative positions within trajectories
 Ecosystem states occupy a position within their trajectory that depends on the total pathway length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the ecosystem state. Function `trajectoryProjection()` allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:
 
 ```{r} 
@@ -193,7 +237,7 @@ If we project the points of the trajectory of site '3' onto the trajectory of si
 trajectoryProjection(d, 9:12, 1:4)
 ```  
 
-### 2.5 Trajectory convergence
+### 2.6 Trajectory convergence
 
 When trajectories have been sampled the same number of times, one can study their symmetric convergence or divergence (see Fig. 3a of De Cáceres et al. 2019). Function `trajectoryConvergence()` allows performing tests of convergence based on the trend analysis of the sequences of distances between points of the two trajectories (i.e. first-first, second-second, ...):
 
@@ -209,7 +253,7 @@ trajectoryConvergence(x, symmetric = FALSE)
 
 The asymmetric test is useful to determine if one trajectory is becoming closer to the other or if it is departing from the other.
 
-### 2.6 Distances between segments and trajectories
+### 2.7 Distances between segments and trajectories
 
 To start comparing trajectories between sites (i.e. between sampling units), one important step is the calculation of distances between directed segments (see Fig. 4 of De Cáceres et al. 2019), which can be obtained by calling function `segmentDistances`:
 ```{r} 
@@ -224,13 +268,11 @@ One can display distances between segments in two dimensions using mMDS.
 mMDS <- smacof::mds(Ds)
 mMDS
 xret <- mMDS$conf
-oldpar<-par(mar=c(4,4,1,1))
 plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
      bg=c(rep("black",3), rep("red",3), rep("blue",3)), 
      xlim=c(-1.5,1), ylim=c(-1,1.5))
 text(xret, labels=rep(paste0("s",1:3),3), pos=1)
 legend("topleft", pt.bg=c("black","red","blue"), pch=21, bty="n", legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"))
-par(oldpar)
 ```
 
 
@@ -258,45 +300,43 @@ Community data is in form of an object `stratifiedvegdata`. To account for diffe
 
 Before starting ETA, we have to use function `vegdiststruct` from package **vegclust** to calculate distances between forest plot states in terms of structure and composition (see De Cáceres M, Legendre P, He F (2013) Dissimilarity measurements and the size structure of ecological communities. Methods Ecol Evol 4:1167–1177. https://doi.org/10.1111/2041-210X.12116):
 ```{r distance, echo=TRUE}
-avoca_D_man <- vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
+avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
+                                       method="manhattan", 
+                                       transform = function(x){log(x+1)})
 ```
 
-Distances in `avoca_D_man` are calculated using the Manhattan metric. 
+Distances in `avoca_D_man` are calculated using the Manhattan metric, after applying a logarithm transformation to abundance data. 
 
 ### 3.1 Defining trajectories
 
-We start by defining our trajectories, which implies combining the information about distances, sites and surveys:
+We start by defining our trajectories, which implies combining the information about distances, sites and surveys (survey times are omitted):
 
 ```{r}
 avoca_x <- defineTrajectories(avoca_D_man,  avoca_sites, avoca_surveys)
 ```
 
-### 3.1 Display trajectories in PCoA
+### 3.1 Displaying trajectories in PCoA
 
 The distance matrix `avoca_D_man` conforms our definition of $\Omega$. We use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the trajectory of each plot:
 
-```{r avoca_pcoa, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-oldpar <- par(mar=c(4,4,1,1))
+```{r avoca_pcoa, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
-par(oldpar)
 ```
 
 Note that in this case, the full $\Omega$ includes more than two dimensions, and PCoA is representing 43% of total variance (correction for negative eigenvalues is included in the call to `cmdscale` from `trajectoryPCoA()`), so one has to be careful when interpreting trajectories visually.
 
 Another option is to use mMDS to represent trajectories, which in this case produces a similar result:
 
-```{r avoca_mmds, echo=T, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+```{r avoca_mmds, fig=TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 mMDS <- smacof::mds(avoca_D_man)
 mMDS
-oldpar  <- par(mar=c(4,4,1,1))
 trajectoryPlot(mMDS$conf,  avoca_sites, avoca_surveys,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
-par(oldpar)
 ```
 
 ```{r int1, echo=FALSE}
@@ -366,7 +406,7 @@ This second trajectory is less straight and seems to include a turn by the end o
 
 While trajectory lengths and angles can be inspected visually in ordination diagrams, it is better to calculate them using the full $\Omega$ space (i.e., from matrix `avoca_D_man`). Using function `trajectoryLengths()` we can see that the trajectory of forest plot '4' is lengthier than that of plot '3', mostly because includes a lengthier last segment (i.e. the recruitment of new individuals):
 
-```{r trajectory lengths, echo=T}
+```{r trajectory lengths}
 trajectoryLengths(avoca_x)
 ```
 
@@ -388,16 +428,14 @@ The following code displays the relationship between the statistic in `trajector
 
 ```{r, echo=TRUE, fig = TRUE, fig.height=5, fig.width=5, fig.align="center"}
 avoca_rho <- trajectoryAngles(avoca_x, all=TRUE)$rho
-oldpar <- par(mar=c(4,4,1,1))
 plot(avoca_rho, avoca_dir, xlab = "rho(T)", ylab = "dir(T)", type="n")
 text(avoca_rho, avoca_dir, as.character(1:8))
-par(oldpar)
 ```
 
 ### 3.3 Distances between trajectories
 
 We can calculate the resemblance between forest plot trajectories using `trajectoryDistances()`:
-```{r avoca DT, echo=FALSE}
+```{r}
 avoca_D_traj_man <- trajectoryDistances(avoca_x, distance.type="DSPD")
 print(round(avoca_D_traj_man,3))
 ```
@@ -408,12 +446,10 @@ mMDS<-smacof::mds(avoca_D_traj_man)
 mMDS
 x<-mMDS$conf[,1]
 y<-mMDS$conf[,2]
-oldpar <- par(mar=c(4,4,1,1))
 plot(x,y, type="p", asp=1, xlab=paste0("Axis 1"), 
      ylab=paste0("Axis 2"), col="black",
      bg= RColorBrewer::brewer.pal(8,"Accent"), pch=21)
 text(x,y, labels=1:8, pos=1)
-par(oldpar)
 ```
 
 Distances between trajectories can be calculated after centering them (i.e. after bringing all trajectories to the center of the $\Omega$ space). This is done using function `centerTrajectories()`, which returns a new dissimilarity matrix and is illustrated in a different vignette. 

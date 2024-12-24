@@ -32,7 +32,7 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom grDevices col2rgb rgb
 #' @importFrom stats as.dist cmdscale dist model.matrix quantile
-#' @importFrom utils combn setTxtProgressBar txtProgressBar
+#' @importFrom utils combn
 #' @useDynLib ecotraj, .registration = TRUE
 ## usethis namespace: end
 NULL

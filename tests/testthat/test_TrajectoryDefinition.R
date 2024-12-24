@@ -15,8 +15,14 @@ xy[6,1]<-1
 d <- dist(xy)
 
 
+x <- defineTrajectories(d, sites, surveys)
+
 test_that("Trajectories are well defined",{
-  x <- defineTrajectories(d, sites, surveys)
   expect_s3_class(x, "trajectories")
   expect_s3_class(subsetTrajectories(x, "2"), "trajectories")
+})
+
+test_that("Trajectories can be transformed", {
+  expect_s3_class(centerTrajectories(x),"trajectories")
+  expect_s3_class(smoothTrajectories(x),"trajectories")
 })

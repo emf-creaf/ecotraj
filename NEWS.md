@@ -1,6 +1,7 @@
 # ecotraj 1.0.0
 * Trajectory data structures have been introduced.
 * New functions for cyclical trajectory analysis.
+* New ETA metrics trajectoryVariability() and trajectorySpeeds().
 
 # ecotraj 0.2.1
 * Update of function 'centerTrajectories' to add flexibility in trajectory centroid definition.

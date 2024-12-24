@@ -59,6 +59,7 @@ framework:
 | `trajectoryLengths()` | Calculates lengths of directed segments and total path length of trajectories. |
 | `trajectoryLengths2D()` | Calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input. |
 | `trajectorySpeeds()` | Calculates speeds of directed segments and total path speed of trajectories. |
+| `trajectorySpeeds2D()` | Calculates speeds of directed segments and total path speed of trajectories from 2D coordinates given as input. |
 | `trajectoryAngles()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points. |
 | `trajectoryAngles2D()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points from 2D coordinates. |
 | `trajectoryConvergence()` | Performs the Mann-Kendall trend test on the distances between trajectories or the distance between points of one trajectory to the other. |

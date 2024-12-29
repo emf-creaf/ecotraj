@@ -38,6 +38,7 @@ test_that("Trajectories can be analyzed",{
   expect_type(segmentDistances(x), "list")
   expect_s3_class(trajectoryDistances(x), "dist")
   expect_type(trajectoryConvergence(x), "list")
+  expect_s3_class(subtrajectoryMetrics(x, 1), "data.frame")
 })
 
 # Shuffle surveys and check if the results are the same

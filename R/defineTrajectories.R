@@ -90,7 +90,7 @@ subsetTrajectories<-function(x, site_selection, survey_selection = NULL) {
   if(!all(site_selection %in% x$metadata$sites)) stop("At least one element in `site_selection` is not a trajectory site.")
   selection <- (x$metadata$sites %in% site_selection)
   if(!is.null(survey_selection)) {
-    if(!inherits(survey_selection, "numeric")) stop("`survey_selection` must be a numeric (integer) vector")
+    if(!is.numeric(survey_selection)) stop("`survey_selection` must be a numeric (integer) vector")
     selection <- selection & (x$metadata$surveys %in% as.integer(survey_selection))
   }
   msel <- as.matrix(x$d)[selection, selection]

@@ -13,6 +13,7 @@
 \alias{trajectoryDirectionality}
 \alias{trajectoryVariability}
 \alias{trajectorySpeeds2D}
+\alias{subtrajectoryMetrics}
 \title{Metrics for Ecological Trajectory Analysis}
 \usage{
 trajectoryDistances(
@@ -57,6 +58,8 @@ trajectoryConvergence(x, symmetric = FALSE, add = TRUE)
 trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
 trajectoryVariability(x)
+
+subtrajectoryMetrics(x, bandwidth, type = "surveys")
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -91,6 +94,10 @@ trajectoryVariability(x)
 \item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
 
 \item{nperm}{The number of permutations to be used in the directionality test.}
+
+\item{bandwidth}{Bandwidth of the moving windows (in units of surveys or times, depending on \code{type})}
+
+\item{type}{A string, either "surveys" or "times", indicating how windows are defined.}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).
@@ -115,6 +122,8 @@ Function \code{trajectoryDirectionality} returns a vector with directionality va
 with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
 Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
+
+Function \code{subtrajectoryMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 }
 \description{
 Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
@@ -128,8 +137,9 @@ ETA takes trajectories as objects to be analyzed and compared geometrically. Giv
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
-\item{Function \code{trajectoryDirectionality} returns (for each trajectory) a statistic that measures directionality of the whole trajectory.}
-\item{Function \code{trajectoryVariability} returns (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+\item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
+\item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+\item{Function \code{subtrajectoryMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 }
 }
 \details{

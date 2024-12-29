@@ -54,7 +54,7 @@ trajectoryAngles2D(
 
 trajectoryConvergence(x, symmetric = FALSE, add = TRUE)
 
-trajectoryDirectionality(x, add = TRUE)
+trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
 trajectoryVariability(x)
 }
@@ -89,6 +89,8 @@ trajectoryVariability(x)
 \item{betweenSegments}{Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.}
 
 \item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
+
+\item{nperm}{The number of permutations to be used in the directionality test.}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).
@@ -109,7 +111,8 @@ Function \code{trajectoryConvergence} returns a list with two elements:
 \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
 }
 
-Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
+Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
+with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
 Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 }
@@ -146,6 +149,10 @@ Function \code{trajectoryAngles2D} calculates angles between consecutive segment
 Angles are always positive (O to 360), with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions.
 If \code{all = TRUE} angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 If \code{betweenSegments = TRUE} angles are calculated between segments of trajectory, otherwise, If \code{betweenSegments = FALSE}, angles are calculated considering Y axis as the North (0°).
+
+Function \code{trajectoryDirectionality} evaluates the directionality metric proposed in De \enc{Cáceres}{Caceres} et al (2019). If \code{nperm} is supplied, then the function
+performs a permutational test to evaluate the significance of directionality, where the null hypothesis entails a random order of surveys within each trajectory. The p-value corresponds to the proportion of
+permutations with a directional value equal or larger than the observed.
 }
 \examples{
 #Description of sites and surveys

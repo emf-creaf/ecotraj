@@ -49,12 +49,16 @@
 #' If \code{all = TRUE} angles are calculated between the segments corresponding to all ordered triplets. Alternatively, if \code{relativeToInitial = TRUE} angles are calculated for each segment with respect to the initial survey.
 #' If \code{betweenSegments = TRUE} angles are calculated between segments of trajectory, otherwise, If \code{betweenSegments = FALSE}, angles are calculated considering Y axis as the North (0°).
 #' 
+#' Function \code{trajectoryDirectionality} evaluates the directionality metric proposed in De \enc{Cáceres}{Caceres} et al (2019). If \code{nperm} is supplied, then the function
+#' performs a permutational test to evaluate the significance of directionality, where the null hypothesis entails a random order of surveys within each trajectory. The p-value corresponds to the proportion of
+#' permutations with a directional value equal or larger than the observed.
+#'
 #' @return
 #' Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
 #' 
 #' Functions \code{trajectoryLengths} and  \code{trajectoryLengths2D} return a data frame with the length of each segment on each trajectory and the total length of all trajectories. 
 #' If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
-#' If \code{all = TRUE} lengths are calculated for all segments.
+#' If \code{all = TRUE} lengths are calculated for all segments. 
 #' 
 #' Functions \code{trajectorySpeeds} and \code{trajectorySpeeds2D} return a data frame with the speed of each segment on each trajectory and the total speeds of all trajectories. Units depend on the units of distance matrix and the units of \code{times} of the input trajectory data.
 #'
@@ -68,7 +72,8 @@
 #'   \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
 #' }
 #' 
-#' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory).
+#' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
+#' with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 #' 
 #' Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 #' 
@@ -835,8 +840,9 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
 
 
 #' @rdname trajectoryMetrics
+#' @param nperm The number of permutations to be used in the directionality test.
 #' @export
-trajectoryDirectionality <- function(x, add=TRUE) {
+trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
   d <- x$d
@@ -856,38 +862,60 @@ trajectoryDirectionality <- function(x, add=TRUE) {
   for(i in 1:nsite) nsurveysite[i] <- sum(sites==siteIDs[i])
   if(sum(nsurveysite<3)>0) stop("All sites need to be surveyed at least three times")
   
-  dmat <- as.matrix(d)
-  #Init output
-  dir <- rep(NA, nsite)
-  names(dir) <- siteIDs
-
-  for(i1 in 1:nsite) {
-    ind_surv1 <- which(sites==siteIDs[i1])
-    #Surveys may not be in order
-    if(!is.null(surveys)) ind_surv1 <- ind_surv1[order(surveys[sites==siteIDs[i1]])]
-    dsub <- dmat[ind_surv1, ind_surv1]
-    n <- length(ind_surv1)
-    den <- 0
-    num <- 0
-    if(n>2) {
-      for(i in 1:(n-2)) {
-        for(j in (i+1):(n-1)) {
-          for(k in (j+1):n) {
-            da <- dsub[i,j]
-            db <- dsub[j,k]
-            dab <- dsub[i,k]
-            theta <- .angleConsecutiveC(da,db,dab, add)
-            if(!is.na(theta)) {
-              den <- den + (da + db)
-              num <- num + (da + db)*((180-theta)/180)
+  dir_traj <- function(d, sites, surveys, add = TRUE) {
+    siteIDs <- unique(sites)
+    nsite <- length(siteIDs)
+    dmat <- as.matrix(d)
+    #Init output
+    dir <- rep(NA, nsite)
+    for(s in 1:nsite) {
+      ind_surv <- which(sites==siteIDs[s])
+      #Surveys may not be in order
+      if(!is.null(surveys)) ind_surv <- ind_surv[order(surveys[sites==siteIDs[s]])]
+      dsub <- dmat[ind_surv, ind_surv]
+      n <- length(ind_surv)
+      den <- 0
+      num <- 0
+      if(n>2) {
+        for(i in 1:(n-2)) {
+          for(j in (i+1):(n-1)) {
+            for(k in (j+1):n) {
+              da <- dsub[i,j]
+              db <- dsub[j,k]
+              dab <- dsub[i,k]
+              theta <- .angleConsecutiveC(da,db,dab, add)
+              if(!is.na(theta)) {
+                den <- den + (da + db)
+                num <- num + (da + db)*((180-theta)/180)
+              }
             }
           }
         }
+        dir[s] <- num/den
       }
-      dir[i1] <- num/den
     }
+    return(dir)
   }
-  return(dir)
+  
+  if(is.na(nperm)) {
+    dir <- dir_traj(d, sites, surveys, add)
+    names(dir) <- siteIDs
+    return(dir)
+  } else {
+    if(!is.numeric(nperm)) stop("'nperm' should be an integer")
+    if(length(nperm)>1) stop("'nperm' should be a single number")
+    if(nperm<1) stop("'nperm' should be larger than 0")
+    nperm <- as.integer(nperm)
+    dir <- dir_traj(d, sites, surveys, add)
+    dirp <- matrix(NA, nperm, nsite)
+    for(p in 1:nperm) {
+      surveysp <- surveys
+      for(i in 1:nsite) surveysp[sites==siteIDs[i]] <- sample(surveysp[sites==siteIDs[i]])
+      dirp[p,] <- dir_traj(d,sites,surveysp, add)
+    }
+    p.value <- (colSums(sweep(dirp,2,dir, "-")>=0)+1)/(nperm+1)
+    return(data.frame(dir = dir, p.value = p.value, row.names = siteIDs))
+  }
 }
 
 

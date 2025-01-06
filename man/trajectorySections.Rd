@@ -39,7 +39,8 @@ Function \code{extractTrajectorySections} returns the base information needed to
 \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
 \itemize{
 \item{\code{sites}: the sites associated to each ecological states.}
-\item{\code{TrajSec}: the names of the trajectory sections each ecological states belongs to.}
+\item{\code{sections}: the names of the trajectory sections each ecological states belongs to.}
+\item{\code{surveys}: renumbering of the surveys to describe individual trajectory sections.}
 \item{\code{times}: the times associated to each ecological states.}
 \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
 }
@@ -55,7 +56,7 @@ Trajectory sections are flexible way to cut longer trajectories. They are presen
 \details{
 Trajectory sections functions:
 \itemize{
-\item{Function \code{extractTrajectorySections} reformats a dataset describing one or more trajectories into specified trajectory sections. Trajectory sections represent a way to subset trajectories flexibly. Cycles (see CETA documentation) are a particular case of trajectory sections.}
+\item{Function \code{extractTrajectorySections} reformats an object of class \code{\link{trajectories}} describing one or more trajectories into another object of class \code{\link{trajectories}} describing specified trajectory sections. Trajectory sections represent a way to subset trajectories flexibly. Cycles (see \code{\link{extractCycles}}) are a particular case of trajectory sections.}
 \item{Function \code{interpolateEcolStates} compute interpolated ecological states and the new distance matrix associated (used in extractTrajectorySections).}
 }
 

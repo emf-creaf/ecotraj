@@ -80,6 +80,7 @@ framework:
 | `cycleShifts()` | Estimates cyclical shifts (i.e. advances or delays). |
 | `cycleConvexity()` | Estimates the degree of convexity of cycles. |
 | `cyclePCoA()` | Performs Principal Coordinates Analysis and draws cycles in the ordination scatter plot. |
+| `fixedDateTrajectoryPCoA()` | Performs Principal Coordinates Analysis and draws fixed date trajectories in the ordination scatter plot. |
 
 **Functions for Ecological Quality Assessment (EQA)**
 

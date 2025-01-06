@@ -5,6 +5,7 @@
 \alias{trajectoryCyclicalPlots}
 \alias{cyclePCoA}
 \alias{fixedDateTrajectoryPCoA}
+\alias{customCircularPalette}
 \title{Cyclical trajectory plots}
 \usage{
 cyclePCoA(
@@ -17,7 +18,8 @@ cyclePCoA(
 )
 
 fixedDateTrajectoryPCoA(
-  inputFixedDateTrajectoryPCoA,
+  x,
+  fixedDates.colors = NULL,
   sites.lty = NULL,
   print.names = FALSE,
   axes = c(1, 2),
@@ -25,7 +27,7 @@ fixedDateTrajectoryPCoA(
 )
 }
 \arguments{
-\item{x}{The output of function \code{\link{extractCycles}}.}
+\item{x}{The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.}
 
 \item{centered}{Boolean. Have the cycles been centered? Default to FALSE.}
 
@@ -37,9 +39,9 @@ fixedDateTrajectoryPCoA(
 
 \item{...}{Additional parameters for function \code{\link{arrows}}.}
 
-\item{inputFixedDateTrajectoryPCoA}{The full output of function \code{\link{extractFixedDateTrajectories}}.}
+\item{fixedDates.colors}{The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.}
 
-\item{sites.lty}{The line type for the different sites (see \code{\link{par}}, \code{"lty"}). The fixed-date trajectories will be distinguished by a default circular color palette.}
+\item{sites.lty}{The line type for the different sites (see \code{\link{par}}, \code{"lty"}).}
 }
 \value{
 Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results of calling of \code{\link{cmdscale}}.
@@ -49,14 +51,13 @@ Set of plotting functions for Cyclical Ecological Trajectory Analysis:
 }
 \details{
 \itemize{
-\item{Function \code{cyclePCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws trajectories in the ordination scatterplot.}
-\item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws trajectories in the ordination scatterplot.}
+\item{Function \code{cyclePCoA} removes unwanted points (see details) and performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot.}
+\item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
 }
 
 The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
-Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these point will grow as they will not correspond to duplications anymore.
+Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.
-Function \code{fixedDateTrajectoryPCoA} has no flexibility for the colors as it defaults to a circular color palette adapted to representation of cyclical processes.
 }
 \seealso{
 \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}

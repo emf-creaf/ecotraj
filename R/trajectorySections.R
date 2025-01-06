@@ -4,7 +4,7 @@
 #' 
 #' Trajectory sections functions:
 #' \itemize{
-#' \item{Function \code{extractTrajectorySections} reformats a dataset describing one or more trajectories into specified trajectory sections. Trajectory sections represent a way to subset trajectories flexibly. Cycles (see CETA documentation) are a particular case of trajectory sections.}
+#' \item{Function \code{extractTrajectorySections} reformats an object of class \code{\link{trajectories}} describing one or more trajectories into another object of class \code{\link{trajectories}} describing specified trajectory sections. Trajectory sections represent a way to subset trajectories flexibly. Cycles (see \code{\link{extractCycles}}) are a particular case of trajectory sections.}
 #' \item{Function \code{interpolateEcolStates} compute interpolated ecological states and the new distance matrix associated (used in extractTrajectorySections).}
 #' }
 #' 
@@ -36,7 +36,8 @@
 #'  \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
 #'    \itemize{
 #'      \item{\code{sites}: the sites associated to each ecological states.}
-#'      \item{\code{TrajSec}: the names of the trajectory sections each ecological states belongs to.}
+#'      \item{\code{sections}: the names of the trajectory sections each ecological states belongs to.}
+#'      \item{\code{surveys}: renumbering of the surveys to describe individual trajectory sections.}
 #'      \item{\code{times}: the times associated to each ecological states.}
 #'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
 #'      }
@@ -69,7 +70,6 @@ extractTrajectorySections <- function(x,
   
   d <- x$d
   sites <- x$metadata$sites
-  surveys <- x$metadata$surveys
   times <- x$metadata$times
   
   if (nrow(as.matrix(d))!=length(sites)|length(sites)!=length(times))
@@ -79,7 +79,7 @@ extractTrajectorySections <- function(x,
   if (any(BCend%in%c("internal","external")==FALSE))
     stop("BCstart and BCend can only take values 'internal' and 'external'")
   
-  #those two will contain the sites and times of all ecological states including the interpolated ones
+  #those will contain the sites, and times of all ecological states including the interpolated ones
   sitesTS <- sites
   timesTS <- times
 
@@ -161,13 +161,19 @@ extractTrajectorySections <- function(x,
     }
     sections <- c(sections,rep(namesTS[i],length(selection)))
   }
-  #get the corresponding sites and times
+  #get the corresponding sites, and times
   sites <- sitesTS[selec]
   times <- timesTS[selec]
   
+  #renumber the surveys
+  surveys <- integer(0)
+  for (i in unique(sections)){
+    surveys <- c(surveys,order(times[sections==i]))
+  }
+  
   #Filling TS
   TS$d <- as.dist(dTS[selec,selec])
-  TS$metadata <- data.frame(sites,sections,times,internal)
+  TS$metadata <- data.frame(sites,sections,surveys,times,internal)
   
   #adding interpolation information if appropriate
   if (sum(interpolated)>0){

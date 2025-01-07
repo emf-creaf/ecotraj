@@ -74,6 +74,7 @@ Function \code{extractCycles} returns the base information needed to describe cy
 \itemize{
 \item{\code{sites}: the sites associated to  each ecological states.}
 \item{\code{Cycles}: the names of the cycle each ecological states belongs to. The cycle name is built by combining the site name with C1, C2, C3... in chronological order.}
+\item{\code{surveys}: renumbering of the surveys to describe individual Cycles.}
 \item{\code{times}: the times associated to each ecological states.}
 \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractCycles} outputs (see details).}
 \item{\code{dates}: the dates associated to each ecological states.}
@@ -89,6 +90,7 @@ Function \code{extractFixedDateTrajectories} returns the base information needed
 \itemize{
 \item{\code{sites}: the sites to  each ecological states.}
 \item{\code{fdT}: the names of the fixed-date trajectory each ecological states belongs to. The fixed-date trajectory name is built by combining the site name with "fdT" and the name of the fixed date (from \code{namesFixedDate}).}
+\item{\code{surveys}: renumbering of the surveys to describe individual fixed date trajectories.}
 \item{\code{times}: the times associated to each ecological states.}
 \item{\code{dates}: the dates associated to each ecological states.}
 }
@@ -123,8 +125,8 @@ We recommend reading the vignette on CETA prior to use it.The CETA functions pro
 \details{
 CETA functions:
 \itemize{
-\item{Function \code{extractCycles} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
-\item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-date trajectories.}
+\item{Function \code{extractCycles} reformats an object of class \code{\link{trajectories}} describing one or more cyclical trajectories into a new object of class \code{\link{trajectories}} designed for the analysis cycles.}
+\item{Function \code{extractFixedDateTrajectories} reformats an object of class \code{\link{trajectories}} describing one or more cyclical trajectories into a new object of class \code{\link{trajectories}} designed for the analysis fixed-date trajectories.}
 \item{Function \code{cycleConvexity} computes the "convexity" of the cycles embedded in one or more cyclical trajectories.}
 \item{Function \code{cycleShifts} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
 }

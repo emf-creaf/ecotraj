@@ -30,7 +30,9 @@ By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the 
 In this vignette you will learn how to use the specific functions designed for CETA, and how to combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.  
 Let's first call the package:
 ```{r}
-library(ecotraj)
+#library(ecotraj)
+library(devtools)
+load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
 ```
 
 ## 2. General approach of CETA
@@ -107,7 +109,7 @@ head(fdtrajToy$metadata)
 ```
 The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectory are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrajectories()` (if not provided, the date is used as default).
 
-Using a combination a the new distance matrix `d` and it's descriptors in `metadata`, the output of `extractFixedDateTrajectories()` can be fed in other ETA functions to study fixed-date trajectories. Whenever they identify the input object as one of class `fd.trajectories`, they use the values of `fdT` column as substitute for `sites`. For instance we can visualize the fixed-date trajectories using `trajectoryPCoA()` as follows:
+Using a combination a the new distance matrix `d` and its descriptors in `metadata`, the output of `extractFixedDateTrajectories()` can be fed in other ETA functions to study fixed-date trajectories. Whenever they identify the input object as one of class `fd.trajectories`, they use the values of `fdT` column as substitute for `sites`. For instance we can visualize the fixed-date trajectories using `trajectoryPCoA()` as follows:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(fdtrajToy,
                lwd = 2,length = 0.2,

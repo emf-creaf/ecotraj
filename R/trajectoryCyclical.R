@@ -12,8 +12,8 @@
 #' 
 #' CETA functions:
 #' \itemize{
-#' \item{Function \code{extractCycles} reformats a dataset describing one or more cyclical trajectories for the analysis of their cycles.}
-#' \item{Function \code{extractFixedDateTrajectories} reformats a dataset describing one or more cyclical trajectories for the analysis of their fixed-date trajectories.}
+#' \item{Function \code{extractCycles} reformats an object of class \code{\link{trajectories}} describing one or more cyclical trajectories into a new object of class \code{\link{trajectories}} designed for the analysis cycles.}
+#' \item{Function \code{extractFixedDateTrajectories} reformats an object of class \code{\link{trajectories}} describing one or more cyclical trajectories into a new object of class \code{\link{trajectories}} designed for the analysis fixed-date trajectories.}
 #' \item{Function \code{cycleConvexity} computes the "convexity" of the cycles embedded in one or more cyclical trajectories.}
 #' \item{Function \code{cycleShifts} computes the cyclical shifts (i.e. advances and delays) that can be obtain from one or more cyclical trajectories.}
 #' }
@@ -53,6 +53,7 @@
 #'    \itemize{
 #'      \item{\code{sites}: the sites associated to  each ecological states.}
 #'      \item{\code{Cycles}: the names of the cycle each ecological states belongs to. The cycle name is built by combining the site name with C1, C2, C3... in chronological order.}
+#'      \item{\code{surveys}: renumbering of the surveys to describe individual Cycles.}
 #'      \item{\code{times}: the times associated to each ecological states.}
 #'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractCycles} outputs (see details).}
 #'      \item{\code{dates}: the dates associated to each ecological states.}
@@ -68,6 +69,7 @@
 #'    \itemize{
 #'      \item{\code{sites}: the sites to  each ecological states.}
 #'      \item{\code{fdT}: the names of the fixed-date trajectory each ecological states belongs to. The fixed-date trajectory name is built by combining the site name with "fdT" and the name of the fixed date (from \code{namesFixedDate}).}
+#'      \item{\code{surveys}: renumbering of the surveys to describe individual fixed date trajectories.}
 #'      \item{\code{times}: the times associated to each ecological states.}
 #'      \item{\code{dates}: the dates associated to each ecological states.}
 #'      }
@@ -109,7 +111,6 @@ extractCycles <- function(x,
   
   d <- x$d
   sites <- x$metadata$sites
-  surveys <- x$metadata$surveys
   times <- x$metadata$times
   
   if(is.null(dates)) dates <- times%%cycleDuration
@@ -186,6 +187,7 @@ extractCycles <- function(x,
   }
   output$metadata <- data.frame(sites = output$metadata$sites,
                                 cycles = output$metadata$sections,
+                                surveys = output$metadata$surveys,
                                 times = output$metadata$times,
                                 dates = dates,
                                 internal = output$metadata$internal)
@@ -227,7 +229,7 @@ extractFixedDateTrajectories <- function (x,
   if (length(fixedDate)!=length(namesFixedDate))
     stop("fixedDate and namesFixedDate must have the same length")
   
-  #build a convenient "metadata" to find what's needed easily to compute stuff on fixed dates trajectories
+  #build metadata to index everything
   fdT <- rep(NA,length(sites))
   metadata <- data.frame(sites,fdT,surveys, times,dates)
   for (i in unique(sites)){
@@ -248,6 +250,13 @@ extractFixedDateTrajectories <- function (x,
   d <- as.dist(d)
   
   metadata <- metadata[selec,]
+  
+  #renumber surveys
+  surveys <- rep(NA,nrow(metadata))
+  for (i in unique(metadata$fdT)){
+    surveys[metadata$fdT==i] <- order(metadata$times[metadata$fdT==i])
+  }
+  metadata$surveys <- surveys
   
   #build and return the output
   output <- list()
@@ -318,7 +327,7 @@ cycleShifts <- function (x,
                          dates = NULL,
                          datesCS = NULL,
                          centering=TRUE,
-                         minEcolStates=3)#add xCS and DeltaCS at some point to allow more targeted computations!
+                         minEcolStates=3)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   

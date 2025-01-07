@@ -147,7 +147,6 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -305,7 +304,6 @@ trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -417,7 +415,6 @@ trajectorySpeeds<-function(x) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -469,7 +466,6 @@ trajectoryAngles<-function(x, all = FALSE, relativeToInitial = FALSE, stats = TR
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -783,7 +779,6 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -856,7 +851,6 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -935,7 +929,6 @@ trajectoryVariability<-function(x) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)
@@ -982,7 +975,6 @@ subtrajectoryMetrics <- function(x, bandwidth, type = "surveys") {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   siteIDs <- unique(sites)

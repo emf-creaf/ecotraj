@@ -47,7 +47,7 @@ fixedDateTrajectoryPCoA(
 Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results of calling of \code{\link{cmdscale}}.
 }
 \description{
-Set of plotting functions for Cyclical Ecological Trajectory Analysis:
+Plotting functions for Cyclical Ecological Trajectory Analysis:
 }
 \details{
 \itemize{

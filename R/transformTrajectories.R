@@ -107,7 +107,6 @@ centerTrajectories<-function(x, exclude = integer(0)) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
-    surveys <- x$metadata$times
   }
   
   if(length(exclude)>0) {

@@ -30,9 +30,9 @@ By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the 
 In this vignette you will learn how to use the specific functions designed for CETA, and how to combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.  
 Let's first call the package:
 ```{r}
-#library(ecotraj)
-library(devtools)
-load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
+library(ecotraj)
+# library(devtools)
+# load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
 ```
 
 ## 2. General approach of CETA

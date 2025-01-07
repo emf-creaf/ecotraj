@@ -21,6 +21,9 @@ test_that("Trajectories are well defined",{
   expect_s3_class(defineTrajectories(d, sites, surveys, times), "trajectories")
   expect_s3_class(defineTrajectories(d, sites, times = times), "trajectories")
   expect_s3_class(subsetTrajectories(defineTrajectories(d, sites, surveys, times), "2"), "trajectories")
+  expect_s3_class(subsetTrajectories(defineTrajectories(d, sites, surveys, times), 
+                                     site_selection = c("1", "2"), 
+                                     survey_selection = c(1,3)), "trajectories")
   expect_s3_class(defineTrajectories(as.matrix(d), sites), "trajectories")
   expect_s3_class(defineTrajectories(as.matrix(d), sites, surveys), "trajectories")
   expect_s3_class(defineTrajectories(as.matrix(d), sites, surveys, times), "trajectories")

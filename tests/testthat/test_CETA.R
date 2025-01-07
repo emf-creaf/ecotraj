@@ -23,10 +23,11 @@ dToy <- dist(matToy)
 # Define cyclical trajectory
 xToy <- defineTrajectories(dToy, sites = sitesToy, times = timesToy)
 
-test_that("Fixed date trajectories can be build and analyzed",{
+test_that("Fixed date trajectories can be build, subset and analyzed",{
   fdtrajToy <- extractFixedDateTrajectories(xToy,
                                             cycleDuration = cycleDurationToy)
   expect_s3_class(fdtrajToy, "fd.trajectories")
+  expect_s3_class(subsetTrajectories(fdtrajToy, "A fdT 3"), "fd.trajectories")
   expect_s3_class(centerTrajectories(fdtrajToy), "fd.trajectories")
   expect_s3_class(smoothTrajectories(fdtrajToy), "fd.trajectories")
   expect_s3_class(trajectoryLengths(fdtrajToy), "data.frame")
@@ -37,10 +38,11 @@ test_that("Fixed date trajectories can be build and analyzed",{
   expect_s3_class(trajectoryDistances(fdtrajToy), "dist")
 })
 
-test_that("Cycles can be build and analyzed",{
+test_that("Cycles can be build, subset and analyzed",{
   cycleToy <- extractCycles(xToy,
                             cycleDuration = cycleDurationToy)
   expect_s3_class(cycleToy, "cycles")
+  expect_s3_class(subsetTrajectories(cycleToy, "A C3"), "cycles")
   expect_s3_class(centerTrajectories(cycleToy), "cycles")
   expect_s3_class(smoothTrajectories(cycleToy), "cycles")
   expect_s3_class(trajectoryLengths(cycleToy), "data.frame")

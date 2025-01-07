@@ -40,8 +40,16 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
   d <- x$d
-  sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
+  }
   
   siteIDs = unique(sites)
   nsite = length(siteIDs)

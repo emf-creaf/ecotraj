@@ -21,7 +21,7 @@ subsetTrajectories(x, site_selection, survey_selection = NULL)
 
 \item{x}{An object of class \code{trajectories}}
 
-\item{site_selection}{A character vector indicating the subset of site trajectories to be selected.}
+\item{site_selection}{A character vector indicating the subset of site trajectories to be selected.  A different interpretation is used for cycles or fixed date trajectories (see details).}
 
 \item{survey_selection}{An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).}
 }
@@ -41,10 +41,14 @@ An object (list) of class \code{trajectories} with the following elements:
 \description{
 Defines or subsets data structures for trajectory analysis
 }
+\details{
+When using function \code{subsetTrajectories} on cycles or fixed-date trajectories then the subsetting operation
+is assumed to operate on those geometry elements. Hence, the parameter \code{site_selection} applies to cycles or fixed-date trajectories, respectively.
+}
 \examples{
 #Description of sites and surveys
-sites = c("1","1","1","2","2","2")
-surveys=c(1,2,3,1,2,3)
+sites <- c("1","1","1","2","2","2")
+surveys <- c(1,2,3,1,2,3)
   
 #Raw data table
 xy<-matrix(0, nrow=6, ncol=2)

@@ -44,9 +44,16 @@ smoothTrajectories<-function(x, survey_times = NULL, kernel_scale = 1, fixed_end
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
 
   d <- x$d
-  sites <- x$metadata$sites
   surveys <- x$metadata$surveys
-  
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
+  }  
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)
   nsurveysite<-numeric(nsite)
@@ -101,12 +108,15 @@ centerTrajectories<-function(x, exclude = integer(0)) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
   d <- x$d
-  sites <- x$metadata$sites
   surveys <- x$metadata$surveys
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
   }
   
   if(length(exclude)>0) {

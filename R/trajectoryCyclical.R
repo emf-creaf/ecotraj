@@ -159,7 +159,7 @@ extractCycles <- function(x,
     tend <- c(tend,tendi)
     Traj <- c(Traj,rep(i,length(tstarti)))
     
-    namesCycles <- c(namesCycles,paste(i,paste("C",1:length(tstarti),sep="")))
+    namesCycles <- c(namesCycles,paste0(i,paste0("_C",1:length(tstarti))))
   }
   
   #End of the loop, we then add the vectors for the boundary conditions
@@ -236,11 +236,11 @@ extractFixedDateTrajectories <- function (x,
     for (j in 1:length(fixedDate)){
       selec <- (sites==i)&(dates==fixedDate[j])
       if (sum(selec)>=minEcolStates){
-        metadata$fdT[selec] <- paste(i,"fdT",namesFixedDate[j])
+        metadata$fdT[selec] <- paste0(i,"_fdT_",namesFixedDate[j])
       }
     }
   }
-  #remove the lines not belonging to any fixedDate_trajectories
+  #remove the lines not belonging to any fixed date trajectory
   selec <- is.na(metadata$fdT)==FALSE
   
   d <- as.matrix(d)

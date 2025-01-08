@@ -13,7 +13,7 @@
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 #' \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 #' \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
-#' \item{Function \code{subtrajectoryMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
+#' \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 #' }
 #'  
 #' 
@@ -78,7 +78,7 @@
 #' 
 #' Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 #' 
-#' Function \code{subtrajectoryMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
+#' Function \code{trajectoryWindowMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
@@ -982,7 +982,7 @@ trajectoryVariability<-function(x) {
 #' @param bandwidth Bandwidth of the moving windows (in units of surveys or times, depending on \code{type})
 #' @param type A string, either "surveys" or "times", indicating how windows are defined.
 #' @export
-subtrajectoryMetrics <- function(x, bandwidth, type = "surveys") {
+trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys") {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   match.arg(type, c("surveys", "times"))
   if(!is.numeric(bandwidth)) stop("'bandwidth' should be an numeric value")

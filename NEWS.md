@@ -3,7 +3,7 @@
 * New functions for cyclical trajectory analysis.
 * New ETA metrics trajectoryVariability() and trajectorySpeeds().
 * Permutational test added for trajectoryDirectionality().
-* New function for subtrajectoryMetrics() for metrics evaluated over moving windows.
+* New function for trajectoryWindowMetrics() for metrics evaluated over moving windows.
 
 # ecotraj 0.2.1
 * Update of function 'centerTrajectories' to add flexibility in trajectory centroid definition.

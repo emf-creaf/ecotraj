@@ -63,7 +63,7 @@ The following lists the main package functions, grouped by analysis framework:
 | `trajectoryDistances()` |  Estimates distances between pairs of ecosystem trajectories.  |
 | `trajectoryPlot()` | Draws trajectories in a 2D-plot corresponding to the input coordinates.       |
 | `trajectoryPCoA()` | Performs principal coordinates analysis and draws trajectories in the ordination scatterplot.            |
-| `subtrajectoryMetrics()` | Calculates several metrics on subtrajectories defined using moving windows. |
+| `trajectoryWindowMetrics()` | Calculates several metrics on subtrajectories defined using moving windows. |
 
 **Functions specific for Cyclical Ecological Trajectory Analysis (CETA)**
 

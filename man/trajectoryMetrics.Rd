@@ -13,7 +13,7 @@
 \alias{trajectoryDirectionality}
 \alias{trajectoryVariability}
 \alias{trajectorySpeeds2D}
-\alias{subtrajectoryMetrics}
+\alias{trajectoryWindowMetrics}
 \title{Metrics for Ecological Trajectory Analysis}
 \usage{
 trajectoryDistances(
@@ -59,7 +59,7 @@ trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
 trajectoryVariability(x)
 
-subtrajectoryMetrics(x, bandwidth, type = "surveys")
+trajectoryWindowMetrics(x, bandwidth, type = "surveys")
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -123,7 +123,7 @@ with a column of directional values and a column of p-values corresponding to th
 
 Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 
-Function \code{subtrajectoryMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
+Function \code{trajectoryWindowMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 }
 \description{
 Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
@@ -139,7 +139,7 @@ ETA takes trajectories as objects to be analyzed and compared geometrically. Giv
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
-\item{Function \code{subtrajectoryMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
+\item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 }
 }
 \details{

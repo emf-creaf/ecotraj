@@ -179,6 +179,7 @@ cyclePCoA <- function (x,
 #' @param fixedDates.colors The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.
 #' @param sites.lty The line type for the different sites (see \code{\link{par}}, \code{"lty"}).
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
+#' @param add.cyclicalTrajectory A boolean flag to indicate whether the original cyclical trajectory should also be drawn as background.
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
 #' @export
@@ -186,6 +187,7 @@ fixedDateTrajectoryPCoA <- function (x,
                                      fixedDates.colors=NULL,
                                      sites.lty=NULL,
                                      print.names=FALSE,
+                                     add.cyclicalTrajectory=TRUE,
                                      axes=c(1,2),...)
 {
   if (!inherits(x, "fd.trajectories"))
@@ -220,13 +222,27 @@ fixedDateTrajectoryPCoA <- function (x,
     names(fixedDates.colors) <- unique(metadataD$fdT)
   }
   
-  
+  #(optional) loop to plot the original cyclical trajectory
+  if (add.cyclicalTrajectory==TRUE){
+    for (i in unique(metadataD$sites)){
+      sitei <- metadataD$sites==i
+      selec <- metadataD$sites==i
+      timesi <- metadataD$times[selec]
+      
+      xarrows <- x[selec][order(timesi)]
+      yarrows <- y[selec][order(timesi)]
+      
+      arrows(x0=xarrows[1:(length(xarrows)-1)],y0=yarrows[1:(length(yarrows)-1)],
+             x1=xarrows[2:length(xarrows)],y1=yarrows[2:length(yarrows)],
+             col="grey70",lty=sites.lty[i],length=0.1)
+    }
+  }
   
   for (i in unique(metadataD$sites)){
     sitei <- metadataD$sites==i
     fdTi <- unique(metadataD$fdT[sitei])
-    
     colorsfdTi <- fixedDates.colors[fdTi]
+    
     for (j in fdTi){
       selec <- metadataD$fdT==j
       timesj <- metadataD$times[selec]
@@ -247,7 +263,7 @@ fixedDateTrajectoryPCoA <- function (x,
 }
 
 #' @rdname trajectoryCyclicalPlots
-#' @param x the metadata \code{\link{data.frame}} of an object of class \code{\link{trajectories}}.
+#' @param x the metadata \code{\link{data.frame}} of an object of class \code{\link{fd.trajectories}}.
 #' @noRd
 customCircularPalette <- function(x)
 {

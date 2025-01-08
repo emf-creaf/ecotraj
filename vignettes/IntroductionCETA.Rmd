@@ -30,13 +30,15 @@ By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the 
 In this vignette you will learn how to use the specific functions designed for CETA, and how to combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.  
 Let's first call the package:
 ```{r}
-library(ecotraj)
+library(devtools)
+load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
+#library(ecotraj)
 ```
 
 ## 2. General approach of CETA
 
 ### 2.1 The vocabulary of CETA
-CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once, and BBC radio is grateful. Then, there is the three type of trajectories that CETA distinguishes an characterizes:
+CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once (and BBC radio is grateful). Then, there is the three type of trajectories that CETA distinguishes and characterizes:
 
 * **Cyclical trajectories**: Long trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA. They also constitute the inputs from which the two other types of trajectories will be derived.
 * **Cycles**: Sub-divisions of a cyclical trajectory of duration equal to its periodicity. 
@@ -101,7 +103,7 @@ The class `fd.trajectories` identifies the object as a subclass of `trajectories
 ```{r}
 names(fdtrajToy)
 ```
-`d` is a distance matrix and `metadata` is a dataframe containing the information necessary to read it as a descriptor of **fixed-date trajectories**.
+`d` is a distance matrix and `metadata` is a data frame containing the information necessary to read it as a descriptor of **fixed-date trajectories**.
 ```{r}
 head(fdtrajToy$metadata)
 ```
@@ -112,6 +114,12 @@ Using a combination a the new distance matrix `d` and its descriptors in `metada
 trajectoryPCoA(fdtrajToy,
                lwd = 2,length = 0.2,
                traj.colors = c("blue","red","black","grey","orange","green3","brown","purple","pink","yellow"))
+```
+
+However CETA provides a plotting function dedicated to fixed date trajectories that uses a circular color palette for the fixed dates trajectories and can represent the original cyclical trajectory:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+fixedDateTrajectoryPCoA(fdtrajToy,
+                        lwd = 2, length = 0.2)
 ```
 
 Note that we find, as expected 10 fixed-date trajectories (one for each date of each cycle). They are all linear and pretty much parallel, which is what we expect given the trend that we put in our toy dataset.

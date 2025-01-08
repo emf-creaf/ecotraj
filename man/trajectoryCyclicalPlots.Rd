@@ -28,7 +28,7 @@ fixedDateTrajectoryPCoA(
 )
 }
 \arguments{
-\item{x}{The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.}
+\item{x}{The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.}
 
 \item{centered}{Boolean. Have the cycles been centered? Default to FALSE.}
 
@@ -58,7 +58,7 @@ Plotting functions for Cyclical Ecological Trajectory Analysis:
 \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
 }
 
-The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
+The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
 Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.
 }

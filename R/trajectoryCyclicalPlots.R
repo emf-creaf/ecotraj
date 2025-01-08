@@ -12,7 +12,7 @@
 #' @aliases cyclePCoA fixedDateTrajectoryPCoA customCircularPalette
 #' 
 #' @details
-#' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
+#' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
 #' Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 #' In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.  
 #' 
@@ -27,7 +27,7 @@
 #' @seealso \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 #' 
 #' @rdname trajectoryCyclicalPlots
-#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.
+#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.
 #' @param sites.colors The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
@@ -175,7 +175,7 @@ cyclePCoA <- function (x,
 
 
 #' @rdname trajectoryCyclicalPlots
-#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.
+#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param fixedDates.colors The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.
 #' @param sites.lty The line type for the different sites (see \code{\link{par}}, \code{"lty"}).
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.

@@ -21,16 +21,16 @@
 #' Function \code{interpolateEcolStates} is called within \code{extractTrajectorySections} to interpolate ecological states when \code{tstart} and or \code{tend} do not have an associated measured ecological state within matrix \code{d}.
 #' 
 #' IMPORTANT: Trajectory sections comprises both "internal" and "external" ecological states (indicated in vector \code{internal}, see the output of function \code{extractTrajectorySections}).
-#' "external" ecological states MUST BE EXCLUDED from the calculation of some metrics and for some operations within ETA namely:
+#' "external" ecological states need a specific treatment in some calculations and for some operations within ETA, namely:
 #' \itemize{
-#'  \item{centering, where external ecological states must be excluded from computation but included nonetheless in the procedure (see function \code{centerTrajectories})}
-#'  \item{trajectory variability (only internal ecological states must be taken in account)}
+#'  \item{Centering, where external ecological states must be excluded from computation but included nonetheless in the procedure. This is automatically handled by function \code{\link{centerTrajectories}}.}
+#'  \item{Trajectory variability, where only internal ecological states must be taken in account. This is handled automatically by function \code{\link{trajectoryVariability}}.}
 #' }
 #' Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{extractTrajectorySections}.
 #' 
 #' 
 #' @return 
-#' Function \code{extractTrajectorySections} returns the base information needed to describe trajectory sections. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within trajectory sections, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{extractTrajectorySections} returns a list containing:
+#' Function \code{extractTrajectorySections} returns the base information needed to describe trajectory sections. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within trajectory sections, ecological states can be considered "internal" or "external" and may necessitate special treatment (see details). Function \code{extractTrajectorySections} returns an object of class \code{\link{sections}} containing:
 #' \itemize{
 #'  \item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the trajectory sections. Ecological states may be duplicated in this matrix if trajectory sections overlap. As compared to the input matrix, \code{d} may also present deletions of ecological states that do not belong to any trajectory sections.}
 #'  \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
@@ -42,7 +42,7 @@
 #'      \item{\code{internal}: a boolean vector with \code{TRUE} indicating "internal" ecological states whereas \code{FALSE} indicates "external" ecological states. This has important implications for the use of \code{extractTrajectorySections} outputs (see details).}
 #'      }
 #'    }
-#'  \item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used by plotting functions (see \code{cyclePCoA}) but is not intended to be of interest to the end user.}
+#'  \item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used internally by plotting functions (see \code{cyclePCoA}) but is not intended to be of interest to the end user.}
 #' }
 #' 
 #' Function \code{interpolateEcolStates} returns an object of class \code{\link{dist}} including the desired interpolated ecological states.

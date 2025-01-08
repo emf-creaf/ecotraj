@@ -92,7 +92,7 @@ cyclePCoA <- function (x,
        ylab=paste0("PCoA ",axes[2]," (", round(100*PCoA$eig[axes[2]]/sum(PCoA$eig)),"%)"))
   
   for (i in 1:length(unique(metadataD$sites))){
-    sitei <- metadataD$sites==metadataD$sites[i]
+    sitei <- metadataD$sites==unique(metadataD$sites)[i]
     cyclesi <- unique(metadataD$cycles[sitei])
     
     #add a (simple) color ramp for cycle
@@ -269,7 +269,7 @@ customCircularPalette <- function(x)
 {
   #this function builds a simple custom circular color palette for fixed date trajectories plotting
   #first retrieve cycleDuration:
-  cycleDuration <- sort(x$times[which(x$dates==min(x$dates))])[2]-sort(x$times[which(x$dates==min(x$dates))])[1]
+  cycleDuration <- sort(unique(x$times[which(x$dates==min(x$dates))]))[2]-sort(unique(x$times[which(x$dates==min(x$dates))]))[1]
   
   #prepare the colors:
   coefs.col <- tapply(x$dates,x$fdT,min)/cycleDuration

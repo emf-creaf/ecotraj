@@ -30,9 +30,7 @@ By "regular cyclical dynamics" we mean cycles that are ‒ *most often* ‒ the 
 In this vignette you will learn how to use the specific functions designed for CETA, and how to combine them with the wider ETA framework to obtain metrics describing cyclical trajectories.  
 Let's first call the package:
 ```{r}
-library(devtools)
-load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
-#library(ecotraj)
+library(ecotraj)
 ```
 
 ## 2. General approach of CETA
@@ -154,66 +152,64 @@ When inspecting `metadata`, we find the column `cycles`, containing the unique n
 head(cycleToy$metadata)
 ```
 
-The `internal` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the **"December-to-January segment problem"** and that ‒ *unfortunately* ‒ complicates a bit the use of the outputs of `extractCycles()`. We explain this in the following section.
+The `internal` column gives an information on *internal vs external* ecological states. This is an important distinction that solve what we call the **"December-to-January segment problem"** but imposes some peculiar handling of internal or external ecological states (generally handled automatically within ETA and CETA functions).
 
 #### 2.2.3 Beware of the external ecological states: the "December-to-January segment problem"
 Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years ($Y$, $Y+1$ ...). How do we cut this cyclical trajectory into cycles? One possibility is to make cycles out of the segments joining all the months of year $Y$, from January to December (12 ecological states, joined by 11 segments). The problem then is that the segment joining December of year $Y$ to January of year $Y+1$ is ignored. We can then extend the cycles to the first ecological state of the next cycle (January of year $Y+1$, 13 ecological states 12 segments). This correctly includes the 12 segments in the cycle but implies that the cycle contains twice the month of January. We refer to this as the **"December-to-January segment problem"**.  
 
-In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January of year $Y+1$ would be considered "external" whereas other ecological states would be "internal". Broadly speaking, external ecological states are included in computations relying on the **cycle segments**, but excluded in computations relying on **cycle states**. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
+In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January of year $Y+1$ would be considered "external" whereas other ecological states would be "internal". Broadly speaking, external ecological states are included in computations relying on the **cycle segments**, but excluded in computations relying on **cycle ecological states**. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
 
 * Centering, where internal states are used for determining cycle center but the centering operation applies to external states as well.
-* PCoA for visualization.
-* Computation of cycle smoothness or cyclical shifts, where external segments are required.
-* Computation of trajectory variability.
+* PCoA for visualization (when several cycles are studied, some ecological states are duplicated and need to be removed prior to PCoA).
+* Computation of trajectory variability, where external ecological states must be removed.
+
+**All this is readily handled for you  by functions `centerTrajectories()`, `cyclePCoA`, and `trajectoryVariability`respectively, but it's always good to be aware of what's going on under the hood!**  
 
 In addition, you might have ideas to study cycles outside of the CETA/ETA framework. If so, please go ahead! But remember that most approaches rely on the concept of points, not segments, so external ecological states should probably be removed beforehand.  
 
-We will detail how to treat external ecological states within CETA in the next sections, but first, let's explore the outputs of `extractCycles()` to make all this more palatable:
+Let's explore the outputs of `extractCycles()` to make all this clearer:
 ```{r}
 nrow(as.matrix(dToy))#Number of ecological states in the original distance matrix.
 nrow(as.matrix(cycleToy$d))#Number of ecological states in the matrix returned by extractCycles.
 ```
 Note that, in this example, the distance matrix returned by `extractCycles()` describes two more ecological states than the original distance matrix. This is because `extractCycles()` duplicates ecological states if they are shared by two cycles (coming back to the example above, January of year $Y+1$ belongs to the cycle describing year $Y$ AND the cycle describing year $Y+1$). Such duplicated ecological states exist always in an "internal" and an "external" version.
-This duplication allows to easily, and correctly, compute most of the ETA metrics for cycles such as, for instance, distances. Whenever they identify the input object as one of class `cycles`, they use the values of `cycles` column as substitute for `sites`. Akin to what we did with fixed-date trajectories, the key is to use the column `cycles` as input for `sites` in the ETA function :
+This duplication allows to easily, and correctly, compute most of the ETA metrics for cycles such as, for instance, distances. Whenever they identify the input object as one of class `cycles`, the ETA functions use the values of the `cycles` column as substitute for `sites`, allowing to compute metrics about the cycles. For instance distances:
 ```{r}
 trajectoryDistances(cycleToy)
 ```
-But if we want to center our cycles before computing the distances (for instance, if we are not interested in the trend but want to focus on changes of shape of the cycles) we need to take the distinction between internal and external ecological states in account and center all the distance matrix with respect to a centroid defined using ONLY internal ecological states. To do so we use the `internal` column. This column is a boolean set to `TRUE` if the associated ecological state is "internal":
-```{r}
-cycleToy_cent <- centerTrajectories(cycleToy,
-                                    exclude = which(cycleToy$metadata$internal==FALSE))
+
+However, when visualizing through PCoA, the duplicated ecological states must be removed. This is handled by the dedicated function `cyclePCoA()`:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+cyclePCoA(cycleToy,sites.colors="orangered")
 ```
+By default, the function applies a color gradients to cycles to represent time: darker cycles are at the start of the time series and clearer ones at the end.
 
-In the previous call, the centering function was explicitly asked to exclude external ecological states from the centroid computation. After the centering the location of duplicated sites is no longer the same. The distances between cycles after centering are:
-
+It is possible to center the cycles (for instance to compare only their shapes, irrespective of their positions). The function `centerTrajectory()` recognizes `cycleToy`as an object of class `cycles`and performs the centering with appropriate handling of external ecological states:
+```{r}
+cycleToy_cent <- centerTrajectories(cycleToy)
+```
+Of course after centering,the distances between cycles will go down:
 ```{r}
 trajectoryDistances(cycleToy_cent)
 ```
 
-BLABLAH PCoA Cycles 
-
-A special function is thus available within CETA for this purpose.
-This can be done using the original cycles:
+For visualization, if cycles are centered, the duplicated ecological states will no longer overlap, so they must be retained in PCoA. This is also handled by the function `cyclePCoA()`**but the user MUST state that the cycles have been centered:**
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-cyclePCoA(x = cycleToy, sites.colors = "blue")
+cyclePCoA(x = cycleToy_cent, sites.colors = "orangered", centered = TRUE)
 ```
 
-As well as the centered cycles:
-```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-cyclePCoA(x = cycleToy_cent, centered = TRUE, sites.colors = "blue")
-```
 
 ### 2.3 Assessing the degree of convexity in cycles
-Another metric that need special handling in CETA is cycle smoothness, which is estimated using function `cycleConvexity()`. This metric is the cyclical equivalent of directionality for non-cyclical trajectories. A cycle with high convexity is interpreted as simpler (more convex) than a cycle with low convexity, which is due to concavities or "bends" in more than two dimension indicative of a more complex (or nosier) cyclical dynamic. The function `cycleConvexity()` does not uses the outputs of `extractCycles()`. This is because the original full cyclical trajectory is needed for computation. Instead, `cycleConvexity()` take the same inputs as `extractCycles()`:
+Cycle convexity is estimated using function `cycleConvexity()`. This metric is the cyclical equivalent of directionality for non-cyclical trajectories. A cycle with high convexity is interpreted as simpler than a cycle with low convexity. Low convexity is due to concavities or "bends" in more than two dimension indicative of a more complex (or nosier) cyclical dynamic. Importantly, the function `cycleConvexity()` does not uses the outputs of `extractCycles()`. This is because the original full cyclical trajectory is needed for computation. Instead, `cycleConvexity()` take the same inputs as `extractCycles()`:
 ```{r}
 cycleConvexity(xToy,
                cycleDuration = cycleDurationToy)
 ```
-Note that the function returns a `NA` for the first cycle. This is because the function needs to associate an angle to each internal ecological states of the cycles. Since the first cycle starts with the first ecological state of the whole time series, its associated angle cannot be computed, and neither the smoothness of the cycle.
+Note that the function returns a `NA` for the first cycle. This is because the function needs to associate an angle to each internal ecological states of the cycles. Since the first cycle starts with the first ecological state of the whole time series, its associated angle cannot be computed, and neither the convexity of the cycle.
 
 ### 2.4 Computing cyclical shifts: phenological advances and delays
 
-A last novelty of CETA is to provide a way to generalize the concept of phenological advances and delays for multidimensional data such as those used in community ecology. The function that computes cyclical shifts is `cycleShifts()`. By default, it will estimate all the shifts that are possible to compute on a given cyclical trajectory. The computation relies on geometrical projection and comparison of a ecological states of interest to a reference cycle. The computation time can be long for large datasets. The function takes the same inputs as `extractCycles()`:
+A last novelty of CETA is to provide a way to generalize the concept of phenological advances and delays for multidimensional data such as those used in community ecology. The function that computes cyclical shifts is `cycleShifts()`. By default, it will estimate all the shifts that are possible to compute on a given cyclical trajectory. The computation relies on geometrical projection and comparison of ecological states of interest to reference cycles. The computation time can be long for large datasets. The function takes the same inputs as `extractCycles()`:
 ```{r}
 cycleShifts(xToy, cycleDuration = cycleDurationToy)
 ```
@@ -222,7 +218,7 @@ The output gives the `cycleShifts()` computed in the same units as the input `ti
 ### 2.5 Summary of the CETA approach
 Here is a visual summary of the CETA approach:
 
-![The CETA functions (blue) allow to format data to describe fixed-date trajectories or cycles. The reformated data (Output of functions `extractFixedDateTrajectories()` and `extractCycles()`) can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. However, when woking on cycles, keep in mind that external ecological states must be treated with care for some applications and that some metrics (obtained with functions `cycleConvexity` and `cycleShifts()`) are obtained directly from the original data, not from the output of `extractCycles()`.](CETA_workflow.png){width="100%"}
+![The CETA functions (blue) allow to format data to describe fixed-date trajectories or cycles. The outputs of functions `extractFixedDateTrajectories()` and `extractCycles()` can then be used as inputs for other ETA functions (orange) to obtain the metrics of interest. Keep in mind that functions `cycleConvexity()` and `cycleShifts()`, perhaps somewhat counter-intuitively, take the same inputs as `extractCycles()`. Remember also to tell `cyclePCoA()` whether the cycles were centered or not before plotting. Finally, beware of external ecological states when studying cycles outside of the ETA framework.](CETA_workflow.png){width="100%"}
 
 ## 3. Real data example: Zooplankton of the North Sea 1958-2021
 
@@ -265,7 +261,7 @@ trajectoryPCoA(x_northseaZoo,
                length = 0.05)
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
-Things indeed seem to turn and present clear cycles: This is not surprising as seasonality is a very prominent factor in driving zooplankton community dynamics. But from such a representation it is hard to distinguish clear patterns. Let's use CETA!
+Things indeed seem to turn and present clear cycles: This is not surprising as seasonality is a very prominent factor in driving temperate zooplankton community dynamics. But from such a representation it is hard to distinguish clear patterns. Let's use CETA!
 
 ### 3.4 Look at the cycles:
 
@@ -279,21 +275,30 @@ cyclesNSZoo <- extractCycles(x_northseaZoo,
 #have at least 12 ecological states: In our case this is as complete as it gets
 ```
 
-From there, we can use the outputs of `extractCycles()` contained in`cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. For instance one can obtain cycle length:
+Let's visualize the cycles!
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+cyclePCoA(cyclesNSZoo,
+          sites.colors = c("blue","red"),
+          length = 0.05)
+legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
+```
+It is still a very busy graph but note that some data points are not there anymore (such as the outlier from SNS far on PCoA axis 2). This is because we asked èxtractCycles()` to only take complete years (`minEcolStates = 12`). We can nonetheless see that more recent years (clearer lines) seem to be moving towards negative values of PCoA axis 2 suggesting a shift in zooplankton community composition across the whole time series and in both parts of the North Sea.
+
+We can then use the outputs of `extractCycles()` contained in`cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. For instance one can obtain cycle length:
 ```{r}
 cyclesZooLengths <- trajectoryLengths(cyclesNSZoo)
 ```
 
-However, remember that cycle convexity is not obtained using the output of `extractCycles()`, instead we get it using the same inputs as for `extractCycles()` such as:
+And cycle convexity, remembering that this metric is not obtained using the output of `extractCycles()`, but using the same inputs as for `extractCycles()`:
 ```{r}
-cyclesZooSmooth <- cycleConvexity(x_northseaZoo,
+cyclesZooConv <- cycleConvexity(x_northseaZoo,
                                   cycleDuration = 1,
                                   minEcolStates = 12)
 ```
 
-Cycle length and cycle smoothness help describing the shapes of cycles in a way mirroring trajectory length and directionality in non-cyclical ETA. Let's graph the outputs:
+Cycle length and cycle convexity help describing the shapes of cycles in a way mirroring trajectory length and directionality in non-cyclical ETA. Let's graph the outputs:
 ```{r}
-#First let's build some broad descriptive statistics for individual cycles: what year, and what site? (MAYBE THAT COULD BE DONE AUTOMATICALLY BY extractCycles???):
+#First let's build some broad descriptive statistics for individual cycles: what year, and what site?
 yearCycles <- floor(tapply(cyclesNSZoo$metadata$times,cyclesNSZoo$metadata$cycles,min))
 sitesCycles <- tapply(cyclesNSZoo$metadata$sites,cyclesNSZoo$metadata$cycles,unique)
 
@@ -302,7 +307,7 @@ yearCycles <- yearCycles[unique(cyclesNSZoo$metadata$cycles)]
 sitesCycles <- sitesCycles[unique(cyclesNSZoo$metadata$cycles)]
 
 #put all descriptors together
-StatCyclesZoo <- data.frame(sitesCycles,yearCycles,cyclesZooLengths$Trajectory,cyclesZooSmooth)
+StatCyclesZoo <- data.frame(sitesCycles,yearCycles,cyclesZooLengths$Trajectory,cyclesZooConv)
 SNScycles <- subset(StatCyclesZoo,sitesCycles=="SNS")
 NNScycles <- subset(StatCyclesZoo,sitesCycles=="NNS")
 
@@ -316,24 +321,24 @@ NNScycles <- NNScycles[as.character(1958:2021),]
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #First figure: Lengths
-plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Trajectory,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,4.1),col="red")
+plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Trajectory,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,5),col="red")
 points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Trajectory,type="l",col="blue")
 ```
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
-#Second figure: Smoothness
-plot(SNScycles$yearCycles,SNScycles$cyclesZooSmooth,type="l",las=1,ylab="Cycle smoothness",xlab="Years",ylim=c(0.3,0.5),col="red")
-points(NNScycles$yearCycles,NNScycles$cyclesZooSmooth,type="l",col="blue")
+#Second figure: Convexity
+plot(SNScycles$yearCycles,SNScycles$cyclesZooConv,type="l",las=1,ylab="Cycle convexity",xlab="Years",ylim=c(0.25,0.5),col="red")
+points(NNScycles$yearCycles,NNScycles$cyclesZooConv,type="l",col="blue")
 ```
 
-Cycle length may not tell much with those data, but in smoothness, there seems to be a "jump" around year 2000. From previous studies on the CPR time series, it is known that echinoderm larvae became seasonally dominant around this time in the North Sea. It is possible that this "jump" is linked to this event, a great dominance of one taxa in a given season would indeed pull the cycles towards one dimension only, possibly reducing concavities and thus increasing smoothness.
+Cycle lengths seems to have decreased in the 1980s while convexity seems to present a "jump" around year 2000. From previous studies on the CPR time series, it is known that regime shifts occurred in the plankton community at those two periods. For instance, around 2000, echinoderm larvae became seasonally dominant in the North Sea. It is possible that the "jump" in convexity is linked to this event, as a large dominance of one taxa in a given season would indeed pull the cycles towards one dimension only, possibly increasing cycle convexity.
 
 Let's now look at the distances between cycles:
 ```{r}
 cyclesZooDistances <- trajectoryDistances(cyclesNSZoo)
 ```
 
-Distances between cycles can then be visualized by principal coordinates analysis (PCoA) putting us in the "space of cycles":
+Just like distances between ecological states, distances between cycles can be visualized by principal coordinates analysis (PCoA) putting us in the "space of cycles":
 ```{r}
 library(ape)
 PCoAZoo <- pcoa(cyclesZooDistances)
@@ -349,7 +354,7 @@ text(PCoAZoo$vectors[,1:2],as.character(yearCycles),col=colPoints[sitesCycles])
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
 
-We can see from this graph that the Northern and Southern North Sea present parallel changes in seasonal dynamics while maintaining their differences during the whole time series. An important change seem to have occurred around year 2000 in agreement with what has already been said from those data using other methods.  
+We can see from this graph that the Northern and Southern North Sea present parallel changes in seasonal dynamics while maintaining their differences during the whole time series. An important change seem to have occurred around year 2000 in agreement with previous studies that detected a regime shift around that time.  
 
 You know what's fun? We now have two sets of time-ordered "ecological states" (more ecological dynamics to be fair) defined in a distance matrix. This is all we need to do some trajectory analysis. We can thus perform what we call "second-order" trajectory analysis using the distance between cycles as our distance matrix. We wont go in the details here but here is the corresponding graph as an appetizer:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
@@ -373,6 +378,13 @@ fdtrajNSZoo <- extractFixedDateTrajectories(x_northseaZoo,
                                             namesFixedDate =
                              c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+
+We can then visualize the fixed date trajectories using the dedicated function `fixedDateTrajectoryPCoA()`:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+fixedDateTrajectoryPCoA(fdtrajNSZoo,
+                        sites.lty=c(1,2))
+```
+Hum, with such a big dataset, this is not the clearest graph! Let's look at some summary metrics instead.  
 
 As we did for cycles, we can compute shape metrics on fixed-date trajectories:
 ```{r}
@@ -407,17 +419,17 @@ NNSfdT$monthFDT <- NNSfdT$monthFDT*12+0.5
 Before graphing them:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #First figure: Lengths
-plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Trajectory,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,22),col="red")
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Trajectory,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,25),col="red")
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Trajectory,type="l",col="blue")
 ```
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #Second figure: Directionality
-plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Years",ylim=c(0.36,0.47),col="red")
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Years",ylim=c(0.36,0.45),col="red")
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooDir,type="l",col="blue")
 ```
 
-There is tendency of fixed-date trajectories to have high directionality and low length in summer months and conversely in winter. This is likely to be a sampling effect. Although the sampling effort is rather continuous throughout the year in CPR data, winter communities are less abundant making their measured composition more stochastic. This is reflected in more noisy fixed-date trajectories in winter.
+There is tendency of fixed-date trajectories to have high directionality and low length in summer months and conversely in winter. This is likely to be a sampling effect. Although the sampling effort is rather continuous throughout the year in CPR data, winter zooplankton communities are less abundant making their measured composition more stochastic. This is reflected in more noisy fixed-date trajectories in winter.
 
 Nonetheless, a metric of peculiar interest in fixed-date trajectories might be convergence:
 ```{r}
@@ -514,10 +526,9 @@ plot(x=slopes$month[slopes$sites=="SNS"]*12+0.5,
      xlab="Month")
 #note the multiplication by ten to get a slope in days per decade
 abline(h=0)
-
 ```
 
-Same for the NNS
+Same for the NNS:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
      y=slopes$slope[slopes$sites=="NNS"]*10,
@@ -526,8 +537,7 @@ plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
      xlab="Month")
 #note the multiplication by ten to get a slope in days per decade
 abline(h=0)
-
 ```
 
-The two region of the North Sea exhibit a similar pattern of cyclical shift: there is maximal advance (positive shift) in spring and autumn. The advance computed is not negligible, communities take up to 6-10 days of advance every decade at those months (at least in term of composition)!
+The two region of the North Sea exhibit a similar pattern of cyclical shift: there is maximal advance (positive shift) in spring and autumn. The advance computed is not negligible, communities take around 6 to 12 days of advance every decade at those months (at least in term of composition)!
 

@@ -12,7 +12,7 @@
 #' @aliases cyclePCoA fixedDateTrajectoryPCoA customCircularPalette
 #' 
 #' @details
-#' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
+#' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
 #' Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 #' In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.  
 #' 
@@ -27,7 +27,7 @@
 #' @seealso \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 #' 
 #' @rdname trajectoryCyclicalPlots
-#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.
+#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.
 #' @param sites.colors The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
@@ -92,7 +92,7 @@ cyclePCoA <- function (x,
        ylab=paste0("PCoA ",axes[2]," (", round(100*PCoA$eig[axes[2]]/sum(PCoA$eig)),"%)"))
   
   for (i in 1:length(unique(metadataD$sites))){
-    sitei <- metadataD$sites==metadataD$sites[i]
+    sitei <- metadataD$sites==unique(metadataD$sites)[i]
     cyclesi <- unique(metadataD$cycles[sitei])
     
     #add a (simple) color ramp for cycle
@@ -175,10 +175,11 @@ cyclePCoA <- function (x,
 
 
 #' @rdname trajectoryCyclicalPlots
-#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.
+#' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param fixedDates.colors The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.
 #' @param sites.lty The line type for the different sites (see \code{\link{par}}, \code{"lty"}).
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
+#' @param add.cyclicalTrajectory A boolean flag to indicate whether the original cyclical trajectory should also be drawn as background.
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
 #' @export
@@ -186,6 +187,7 @@ fixedDateTrajectoryPCoA <- function (x,
                                      fixedDates.colors=NULL,
                                      sites.lty=NULL,
                                      print.names=FALSE,
+                                     add.cyclicalTrajectory=TRUE,
                                      axes=c(1,2),...)
 {
   if (!inherits(x, "fd.trajectories"))
@@ -220,13 +222,27 @@ fixedDateTrajectoryPCoA <- function (x,
     names(fixedDates.colors) <- unique(metadataD$fdT)
   }
   
-  
+  #(optional) loop to plot the original cyclical trajectory
+  if (add.cyclicalTrajectory==TRUE){
+    for (i in unique(metadataD$sites)){
+      sitei <- metadataD$sites==i
+      selec <- metadataD$sites==i
+      timesi <- metadataD$times[selec]
+      
+      xarrows <- x[selec][order(timesi)]
+      yarrows <- y[selec][order(timesi)]
+      
+      arrows(x0=xarrows[1:(length(xarrows)-1)],y0=yarrows[1:(length(yarrows)-1)],
+             x1=xarrows[2:length(xarrows)],y1=yarrows[2:length(yarrows)],
+             col="grey70",lty=sites.lty[i],length=0.1)
+    }
+  }
   
   for (i in unique(metadataD$sites)){
     sitei <- metadataD$sites==i
     fdTi <- unique(metadataD$fdT[sitei])
-    
     colorsfdTi <- fixedDates.colors[fdTi]
+    
     for (j in fdTi){
       selec <- metadataD$fdT==j
       timesj <- metadataD$times[selec]
@@ -247,13 +263,13 @@ fixedDateTrajectoryPCoA <- function (x,
 }
 
 #' @rdname trajectoryCyclicalPlots
-#' @param x the metadata \code{\link{data.frame}} of an object of class \code{\link{trajectories}}.
+#' @param x the metadata \code{\link{data.frame}} of an object of class \code{\link{fd.trajectories}}.
 #' @noRd
 customCircularPalette <- function(x)
 {
   #this function builds a simple custom circular color palette for fixed date trajectories plotting
   #first retrieve cycleDuration:
-  cycleDuration <- sort(x$times[which(x$dates==min(x$dates))])[2]-sort(x$times[which(x$dates==min(x$dates))])[1]
+  cycleDuration <- sort(unique(x$times[which(x$dates==min(x$dates))]))[2]-sort(unique(x$times[which(x$dates==min(x$dates))]))[1]
   
   #prepare the colors:
   coefs.col <- tapply(x$dates,x$fdT,min)/cycleDuration

@@ -25,7 +25,7 @@ centerTrajectories(x, exclude = integer(0))
 
 \item{fixed_endpoints}{A logical flag to force keeping the location of trajectory endpoints unmodified}
 
-\item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation}
+\item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation. Note: for objects of class \code{\link{cycles}}, \code{external} are excluded by default.}
 }
 \value{
 A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed.

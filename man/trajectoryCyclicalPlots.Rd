@@ -22,12 +22,13 @@ fixedDateTrajectoryPCoA(
   fixedDates.colors = NULL,
   sites.lty = NULL,
   print.names = FALSE,
+  add.cyclicalTrajectory = TRUE,
   axes = c(1, 2),
   ...
 )
 }
 \arguments{
-\item{x}{The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{trajectories}}.}
+\item{x}{The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.}
 
 \item{centered}{Boolean. Have the cycles been centered? Default to FALSE.}
 
@@ -42,6 +43,8 @@ fixedDateTrajectoryPCoA(
 \item{fixedDates.colors}{The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.}
 
 \item{sites.lty}{The line type for the different sites (see \code{\link{par}}, \code{"lty"}).}
+
+\item{add.cyclicalTrajectory}{A boolean flag to indicate whether the original cyclical trajectory should also be drawn as background.}
 }
 \value{
 Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results of calling of \code{\link{cmdscale}}.
@@ -55,7 +58,7 @@ Plotting functions for Cyclical Ecological Trajectory Analysis:
 \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
 }
 
-The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories respectively using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
+The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
 Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.
 }

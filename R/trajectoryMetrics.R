@@ -939,18 +939,25 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
 trajectoryVariability<-function(x) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
-  d <- x$d
-  surveys <- x$metadata$surveys
-  # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
+    selec <- x$metadata$internal==TRUE
+    x$metadata <- x$metadata[selec,]
+    x$d <- as.dist(as.matrix(x$d)[selec,selec])
+    
     sites <- x$metadata$cycles
   } else if(inherits(x, "sections")) {
+    selec <- x$metadata$internal==TRUE
+    x$metadata <- x$metadata[selec,]
+    x$d <- as.dist(as.matrix(x$d)[selec,selec])
+    
     sites <- x$metadata$sections
   } else {
     sites <- x$metadata$sites
   }
+  d <- x$d
+  surveys <- x$metadata$surveys
   
   siteIDs <- unique(sites)
   nsite <- length(siteIDs)

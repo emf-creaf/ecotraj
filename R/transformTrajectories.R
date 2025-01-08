@@ -102,7 +102,7 @@ smoothTrajectories<-function(x, survey_times = NULL, kernel_scale = 1, fixed_end
 }
 
 #' @rdname transformTrajectories
-#' @param exclude An integer vector indicating sites that are excluded from trajectory centroid computation
+#' @param exclude An integer vector indicating sites that are excluded from trajectory centroid computation. Note: for objects of class \code{\link{cycles}}, \code{external} are excluded by default.
 #' @export
 centerTrajectories<-function(x, exclude = integer(0)) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
@@ -113,8 +113,10 @@ centerTrajectories<-function(x, exclude = integer(0)) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+    exclude <- unique(c(exclude,which(x$metadata$internal==FALSE)))
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
+    exclude <- unique(c(exclude,which(x$metadata$internal==FALSE)))
   } else {
     sites <- x$metadata$sites
   }

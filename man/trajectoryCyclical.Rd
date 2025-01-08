@@ -7,6 +7,8 @@
 \alias{extractFixedDateTrajectories}
 \alias{cycleConvexity}
 \alias{cycleShifts}
+\alias{cycles}
+\alias{fd.trajectories}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
 \usage{
 extractCycles(
@@ -67,7 +69,7 @@ cycleShifts(
 \item{centering}{An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.}
 }
 \value{
-Function \code{extractCycles} returns the base information needed to describe cycles. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Importantly, within cycles, ecological states can be considered \code{"internal"} or \code{"external"}. Some operations and metrics within ETA use all ecological states whereas others use only \code{"internal"} ones (see details). Function \code{extractCycles} returns a list containing:
+Function \code{extractCycles} returns the base information needed to describe cycles. Its outputs are meant to be used as input for other ETA functions. Importantly, within cycles, ecological states can be considered "internal" or "external". Some operations and metrics within ETA use all ecological states whereas others use only "internal" ones (see details). Function \code{extractCycles} returns an object of class \code{cycles} containing:
 \itemize{
 \item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the cycles. To take in account ecological states that are both the end of a cycle and the start of another,\code{d} contains duplications. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any cycles (e.g. due to \code{minEcolStates}))}
 \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
@@ -83,7 +85,7 @@ Function \code{extractCycles} returns the base information needed to describe cy
 \item{\code{interpolationInfo}: an output that only appear if ecological states have been interpolated. It is used by plotting functions (see \code{\link{cyclePCoA}}) but is not intended to be of interest to the end user.}
 }
 
-Function \code{extractFixedDateTrajectories} returns the base information needed to describe fixed-date trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Unlike cycles,fixed-date trajectories do not include \code{"internal"} or \code{"external"} ecological states and can be treated as any trajectories. Function \code{extractFixedDateTrajectories} returns a list containing:
+Function \code{extractFixedDateTrajectories} returns the base information needed to describe fixed-date trajectories. Its outputs are meant to be used as inputs for other ETA functions in order to obtain desired metrics. Function \code{extractFixedDateTrajectories} returns an object of class \code{fd.trajectories} containing:
 \itemize{
 \item{\code{d}: an object of class \code{\link{dist}}, the new distance matrix describing the fixed-date trajectories. As compared to the input matrix, \code{d} may present deletions of ecological states that do not belong to any fixed-date trajectories (e.g. due to \code{minEcolStates}))}
 \item{\code{metadata}: an object of class \code{\link{data.frame}} describing the ecological states in \code{d} with columns:
@@ -145,8 +147,6 @@ The proposed solution in CETA (in the case of this specific example) is to set t
 }
 
 As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}), taking care of removing external ecological states when appropriate. There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShifts}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis. For \code{cycleConvexity}, this is because smoothness uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. The function instead compute the most adapted set of cycles to obtain the metric.
-
-Visualization of cycles through principal coordinate analysis is handled by the function \code{cyclePCoA} ADD DETAILS HERE!!!
 
 Note: Function \code{cycleShifts} is computation intensive for large datasets, it may not execute immediately.
 

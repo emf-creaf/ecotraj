@@ -11,7 +11,7 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectorySections
-#' @aliases extractTrajectorySections interpolateEcolStates
+#' @aliases extractTrajectorySections interpolateEcolStates sections
 #' 
 #' @details
 #' Trajectory sections can be obtained using \code{extractTrajectorySections}. Trajectory sections allow to cut a longer trajectory into parts for further analyses. Cycles are specical case of trajectory sections.

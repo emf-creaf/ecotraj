@@ -5,6 +5,7 @@
 \alias{trajectorySections}
 \alias{extractTrajectorySections}
 \alias{interpolateEcolStates}
+\alias{sections}
 \title{Functions for building Trajectory Sections}
 \usage{
 extractTrajectorySections(

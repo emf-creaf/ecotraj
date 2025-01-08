@@ -38,13 +38,13 @@ load_all("C:/Users/djeghri/Documents/GitHub/ecotraj")
 ## 2. General approach of CETA
 
 ### 2.1 The vocabulary of CETA
-CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once (and BBC radio is grateful). Then, there is the three type of trajectories that CETA distinguishes and characterizes:
+CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once ([and BBC radio is grateful](https://www.youtube.com/watch?v=AmPN8MPw2dk)). Then, there is the three types of trajectories that CETA distinguishes and characterizes:
 
 * **Cyclical trajectories**: Long trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA. They also constitute the inputs from which the two other types of trajectories will be derived.
 * **Cycles**: Sub-divisions of a cyclical trajectory of duration equal to its periodicity. 
 * **Fixed-date trajectories**: Trajectories joining the ecological states sampled at the same date in a given cyclical trajectory (for instance, in a multi-annual monthly sampled time series, the trajectory joining the ecological states obtained for March of year 1, March of year 2, etc...).
 
-All this vocabulary helps CETA being more time-explicit than regular ETA. Let's build a toy dataset with **one cyclical trajectory** composed of **three cycles** to make this more visual:
+All this vocabulary helps CETA being a little more time-explicit than regular ETA. Let's build a toy dataset with **one cyclical trajectory** composed of **three cycles** to make this more visual:
 ```{r}
 #Let's define our toy sampling times:
 timesToy <- 0:30 #The sampling times of the time series
@@ -109,22 +109,7 @@ head(fdtrajToy$metadata)
 ```
 The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectory are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrajectories()` (if not provided, the date is used as default).
 
-Using a combination a the new distance matrix `d` and its descriptors in `metadata`, the output of `extractFixedDateTrajectories()` can be fed in other ETA functions to study fixed-date trajectories. Whenever they identify the input object as one of class `fd.trajectories`, they use the values of `fdT` column as substitute for `sites`. For instance we can visualize the fixed-date trajectories using `trajectoryPCoA()` as follows:
-```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-trajectoryPCoA(fdtrajToy,
-               lwd = 2,length = 0.2,
-               traj.colors = c("blue","red","black","grey","orange","green3","brown","purple","pink","yellow"))
-```
-
-However CETA provides a plotting function dedicated to fixed date trajectories that uses a circular color palette for the fixed dates trajectories and can represent the original cyclical trajectory:
-```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-fixedDateTrajectoryPCoA(fdtrajToy,
-                        lwd = 2, length = 0.2)
-```
-
-Note that we find, as expected 10 fixed-date trajectories (one for each date of each cycle). They are all linear and pretty much parallel, which is what we expect given the trend that we put in our toy dataset.
-
-We can also, compute the directionality of the fixed-date trajectories using:
+Using a combination of the new distance matrix `d` and its descriptors in `metadata`, the output of `extractFixedDateTrajectories()` can be fed in other ETA functions to study fixed-date trajectories. Whenever the ETA functions identify the input object as one of class `fd.trajectories`, they use the values of `fdT` column as substitute for `sites`. For instance we can compute the directionality of the fixed-date trajectories using:
 ```{r}
 trajectoryDirectionality(fdtrajToy)
 ```
@@ -134,9 +119,26 @@ Or the distances between fixed-date trajectories using:
 trajectoryDistances(fdtrajToy)
 ```
 
+For visualization, it is possible to use the general `trajectoryPCoA()` function as:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(fdtrajToy,
+               lwd = 2,length = 0.2,
+               traj.colors = c("blue","red","black","grey","orange","green3","brown","purple","pink","yellow"))
+```
+
+But CETA provides a plotting function dedicated to fixed date trajectories that uses a circular color palette for the fixed dates trajectories and can represent the original cyclical trajectory:
+```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+fixedDateTrajectoryPCoA(fdtrajToy,
+                        lwd = 2, length = 0.2)
+```
+
+Note that we find, as expected 10 fixed-date trajectories (one for each date of each cycle). They are all linear and pretty much parallel, which is what we expect given the trend that we put in our toy dataset.
+
+
+
 #### 2.2.2 Trajectory cycles
 
-Ok let's now look at how extraction works for **cycles**. The function `extractCycles()` works very similarly to `extractFixedDateTrajectories()`. Few differences are that: it does not allows to specify names for cycles (they are by default the concatenation of site names and "C1", "C2" etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle does not always need to start in January*).
+Let's now look at how extraction works for **cycles**. The function `extractCycles()` works very similarly to `extractFixedDateTrajectories()`. Few differences are that: it does not allows to specify names for cycles (they are by default the concatenation of site names and "C1", "C2" etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle does not always need to start in January*).
 ```{r}
 cycleToy <- extractCycles(xToy,
                           cycleDuration = cycleDurationToy)
@@ -215,7 +217,7 @@ A last novelty of CETA is to provide a way to generalize the concept of phenolog
 ```{r}
 cycleShifts(xToy, cycleDuration = cycleDurationToy)
 ```
-The output gives the `cyclicalShifts()` computed in the same units as the input `time`, with positive values meaning advance and negative values meaning delay. The other columns give information on what exactly was compared. We will come back on this output in the real example below. 
+The output gives the `cycleShifts()` computed in the same units as the input `time`, with positive values indicating advance and negative values indicating delay. The other columns give information on what exactly was compared. We will come back to this output in the real example below. 
 
 ### 2.5 Summary of the CETA approach
 Here is a visual summary of the CETA approach:
@@ -245,7 +247,7 @@ ETA works from dissimilarity matrices. So a first step in analyzing the North Se
 northseaZoo$Dist <- dist(northseaZoo$Hellinger)
 ```
 
-To be analyzed using ETA, the distance matrix has to be complemented with information regarding sites and surveys. 
+To be analyzed using ETA, the distance matrix has to be complemented with information regarding sites and surveys to get a object of class `trajectories` using `defineTrajectories()`. 
 ```{r}
 x_northseaZoo <- defineTrajectories(d = northseaZoo$Dist,
                                     sites = northseaZoo$sites,

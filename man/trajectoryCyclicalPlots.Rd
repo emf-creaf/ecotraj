@@ -22,6 +22,7 @@ fixedDateTrajectoryPCoA(
   fixedDates.colors = NULL,
   sites.lty = NULL,
   print.names = FALSE,
+  add.cyclicalTrajectory = TRUE,
   axes = c(1, 2),
   ...
 )
@@ -42,6 +43,8 @@ fixedDateTrajectoryPCoA(
 \item{fixedDates.colors}{The colors applied to the different fixed dates trajectories. Defaults to a simple RGB circular color palette.}
 
 \item{sites.lty}{The line type for the different sites (see \code{\link{par}}, \code{"lty"}).}
+
+\item{add.cyclicalTrajectory}{A boolean flag to indicate whether the original cyclical trajectory should also be drawn as background.}
 }
 \value{
 Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results of calling of \code{\link{cmdscale}}.

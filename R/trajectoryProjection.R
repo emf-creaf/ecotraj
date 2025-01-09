@@ -4,7 +4,7 @@
 #'
 #' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
 #' @param target An integer vector of the ecosystem states to be projected.
-#' @param trajectory An integer vector of the trajectory onto which target states are to be projected.
+#' @param trajectory An integer vector of the ecosystem states conforming the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
 #' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #'

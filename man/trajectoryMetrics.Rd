@@ -3,26 +3,17 @@
 \encoding{UTF-8}
 \name{trajectoryMetrics}
 \alias{trajectoryMetrics}
-\alias{trajectoryDistances}
 \alias{trajectoryLengths}
 \alias{trajectoryLengths2D}
 \alias{trajectorySpeeds}
+\alias{trajectorySpeeds2D}
 \alias{trajectoryAngles}
 \alias{trajectoryAngles2D}
-\alias{trajectoryConvergence}
 \alias{trajectoryDirectionality}
 \alias{trajectoryVariability}
-\alias{trajectorySpeeds2D}
 \alias{trajectoryWindowMetrics}
-\title{Metrics for Ecological Trajectory Analysis}
+\title{Trajectory metrics}
 \usage{
-trajectoryDistances(
-  x,
-  distance.type = "DSPD",
-  symmetrization = "mean",
-  add = TRUE
-)
-
 trajectoryLengths(x, relativeToInitial = FALSE, all = FALSE)
 
 trajectoryLengths2D(
@@ -53,8 +44,6 @@ trajectoryAngles2D(
   betweenSegments = TRUE
 )
 
-trajectoryConvergence(x, symmetric = FALSE, add = TRUE)
-
 trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
 trajectoryVariability(x)
@@ -63,17 +52,6 @@ trajectoryWindowMetrics(x, bandwidth, type = "surveys")
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
-
-\item{distance.type}{The type of distance index to be calculated (Besse et al. 2016; De Cáceres et al. 2019):
-\itemize{
-\item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
-\item{\code{SPD}: Segment path distance.}
-\item{\code{DSPD}: Directed segment path distance (default).}
-}}
-
-\item{symmetrization}{Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., \code{mean} or \code{min}). If \code{symmetrization = NULL} then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.}
-
-\item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 
 \item{relativeToInitial}{Flag to indicate that lengths or angles should be calculated with respect to initial survey.}
 
@@ -89,9 +67,9 @@ trajectoryWindowMetrics(x, bandwidth, type = "surveys")
 
 \item{stats}{A flag to indicate that circular statistics are desired (mean, standard deviation and mean resultant length, i.e. rho)}
 
-\item{betweenSegments}{Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.}
+\item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 
-\item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
+\item{betweenSegments}{Flag to indicate that angles should be calculated between trajectory segments or with respect to X axis.}
 
 \item{nperm}{The number of permutations to be used in the directionality test.}
 
@@ -100,8 +78,6 @@ trajectoryWindowMetrics(x, bandwidth, type = "surveys")
 \item{type}{A string, either "surveys" or "times", indicating how windows are defined.}
 }
 \value{
-Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).
-
 Functions \code{trajectoryLengths} and  \code{trajectoryLengths2D} return a data frame with the length of each segment on each trajectory and the total length of all trajectories.
 If \code{relativeToInitial = TRUE} lengths are calculated between the initial survey and all the other surveys.
 If \code{all = TRUE} lengths are calculated for all segments.
@@ -112,12 +88,6 @@ Function \code{trajectoryAngles} returns a data frame with angle values on each 
 
 Function \code{trajectoryAngles2D} returns a data frame with angle values on each trajectory. If \code{betweenSegments=TRUE}, then angles are calculated between trajectory segments, alternatively, If \code{betweenSegments=FALSE}, angles are calculated considering Y axis as the North (0°).
 
-Function \code{trajectoryConvergence} returns a list with two elements:
-\itemize{
-\item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
-\item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
-}
-
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
@@ -126,30 +96,27 @@ Function \code{trajectoryVariability} returns a vector with total variability va
 Function \code{trajectoryWindowMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 }
 \description{
-Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
-ETA takes trajectories as objects to be analyzed and compared geometrically. Given input trajectory data, the set of functions that provide ETA metrics are:
+Set of functions to estimate metrics describing individual trajectories. Given input trajectory data, the set of functions that provide ETA metrics are:
 \itemize{
-\item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 \item{Function \code{trajectoryLengths} calculates lengths of directed segments and total path lengths of trajectories.}
 \item{Function \code{trajectoryLengths2D} calculates lengths of directed segments and total path lengths of trajectories from 2D coordinates given as input.}
 \item{Function \code{trajectorySpeeds} calculates speeds of directed segments and total path speed of trajectories.}
 \item{Function \code{trajectorySpeeds2D} calculates speeds of directed segments and total path speed of trajectories from 2D coordinates given as input.}
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
-\item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
 \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
 \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 }
 }
 \details{
-Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
+Ecological Trajectory Analysis (ETA) is a framework to analyze dynamics of ecosystems described as trajectories in a chosen space of multivariate resemblance (De \enc{Cáceres}{Caceres} et al. 2019).
+ETA takes trajectories as objects to be analyzed and compared geometrically.
+
 The input distance matrix \code{d} should ideally be metric. That is, all subsets of distance triplets should fulfill the triangle inequality (see utility function \code{\link{is.metric}}).
 All ETA functions that require metricity include a parameter '\code{add}', which by default is TRUE, meaning that whenever the triangle inequality is broken the minimum constant required to fulfill it is added to the three distances.
 If such local (an hence, inconsistent across triplets) corrections are not desired, users should find another way modify \code{d} to achieve metricity, such as PCoA, metric MDS or non-metric MDS (see vignette 'Introduction to Ecological Trajectory Analysis').
 If parameter '\code{add}' is set to FALSE and problems of triangle inequality exist, ETA functions may provide missing values in some cases where they should not.
-
-The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).
 
 Function \code{trajectoryAngles} calculates angles between consecutive segments in degrees. For each pair of segments, the angle between the two is defined on the plane that contains the two segments, and measures the change in direction (in degrees) from one segment to the other.
 Angles are always positive, with zero values indicating segments that are in a straight line, and values equal to 180 degrees for segments that are in opposite directions. If \code{all = TRUE}
@@ -202,20 +169,15 @@ trajectoryAngles(x)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
 
-#Distances between trajectories
-trajectoryDistances(x, distance.type = "Hausdorff")
-trajectoryDistances(x, distance.type = "DSPD")
   
  
 }
 \references{
-Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.
-
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019).
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \seealso{
-\code{\link{segmentDistances}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}
+\code{\link{trajectoryComparison}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

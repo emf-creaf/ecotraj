@@ -238,7 +238,7 @@ To measure the overall directionality of a ecosystem trajectory (i.e. if the pat
 trajectoryDirectionality(x)
 ```  
 
-As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. Note that function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality.
+As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. By default the function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality. A permutational test can be performed, but this feature is experimental needs to be tested before recommendation.
 
 ### 3.2 Assessing multiple metrics at once
 It is possible to assess multiple trajectory metrics in one function call to `trajectoryMetrics()`. This will only provide metrics that apply to the whole trajectory path: 

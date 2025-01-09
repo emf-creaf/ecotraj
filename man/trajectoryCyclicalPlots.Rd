@@ -62,6 +62,33 @@ The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted g
 Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.
 }
+\examples{
+#First build a toy dataset
+timesToy <- 0:30 #The sampling times of the time series
+cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
+sitesToy <- rep(c("A"),length(timesToy)) #The sites sampled (only one named "A")
+trend <- 0.05 #this term will act as a trend displacing the regular cycles
+
+#Build cyclical data (note that we apply the trend only to x):
+x <- sin((timesToy*2*pi)/cycleDurationToy)+trend*timesToy
+y <- cos((timesToy*2*pi)/cycleDurationToy)
+matToy <- cbind(x,y)
+
+#And express it as a distances:
+dToy <- dist(matToy)
+
+#Make it an object of class trajectory:
+cyclicalTrajToy <- defineTrajectories(d = dToy, sites = sitesToy, times = timesToy)
+
+#And extract the cycles and fixed date trajectories:
+cyclesToy <- extractCycles(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+
+#CETA plotting functions take the outputs of CETA extract functions as inputs:
+cyclePCoA(cyclesToy)
+fixedDateTrajectoryPCoA(fdTrajToy)
+
+}
 \seealso{
 \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 }

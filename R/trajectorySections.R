@@ -50,6 +50,47 @@
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
+#' @examples
+#' #Description of sites and surveys
+#' sites <- c("1","1","1","2","2","2")
+#' surveys <- c(1, 2, 3, 1, 2, 3)
+#' times <- c(0, 1.5, 3, 0, 1.5, 3)
+#'   
+#' #Raw data table
+#' xy <- matrix(0, nrow=6, ncol=2)
+#' xy[2,2]<-1
+#' xy[3,2]<-2
+#' xy[4:6,1] <- 0.5
+#' xy[4:6,2] <- xy[1:3,2]
+#' xy[6,1]<-1
+#' 
+#' #Draw trajectories
+#' trajectoryPlot(xy, sites, surveys,  
+#'                traj.colors = c("black","red"), lwd = 2)
+#'                
+#' #Distance matrix
+#' d <- dist(xy)
+#' d
+#'   
+#' #Trajectory data
+#' x <- defineTrajectories(d, sites, surveys, times)
+#' 
+#' #Cutting some trajectory sections in those trajectories
+#' TrajSec <- extractTrajectorySections(x,
+#'                                      Traj = c("1","1","2"),
+#'                                      tstart = c(0,1,0.7),
+#'                                      tend = c(1.2,2.5,2),
+#'                                      BCstart = rep("internal",3),
+#'                                      BCend = rep("internal",3))
+#' #extractTrajectorySections() works from distances, 
+#' #for representation using trajectoryPlot(),we must first perform a PCoA:
+#' Newxy <- cmdscale(TrajSec$d)
+#' trajectoryPlot(Newxy,
+#'                sites = TrajSec$metadata$sections,
+#'                surveys = TrajSec$metadata$surveys,
+#'                traj.colors = c("black","grey","red"),lwd = 2)
+#' 
+#' 
 #' @rdname trajectorySections
 #' @param x An object of class \code{\link{trajectories}} describing a cyclical trajectory.
 #' @param Traj A vector of length equal to the number of desired trajectory sections indicating the trajectories from which trajectory sections must be build (see details).
@@ -135,9 +176,12 @@ extractTrajectorySections <- function(x,
   
   for (i in 1:length(Traj)){
     selection <- intersect(
-      intersect(which(timesTS>=tstart[i]),
-                which(timesTS<=tend[i])),
-      which(sitesTS==Traj[i]))
+      intersect(which(times>=tstart[i]),
+                which(times<=tend[i])),
+      which(sites==Traj[i]))#this include in selection the non-interpolated ecological states that belong to it
+    selection <- c(selection,intersect(which(timesTS==tstart[i]),which(sitesTS==Traj[i])))#this includes potential interpolated ecological at the start
+    selection <- c(selection,intersect(which(timesTS==tend[i]),which(sitesTS==Traj[i])))#and end
+    selection <- unique(selection)#and remove duplications
     
     selec <- c(selec,selection)
     
@@ -218,6 +262,7 @@ interpolateEcolStates <- function(d,ToInterpolate)
       
       alpha <- (AB^2+AC^2-BC^2)/(2*AC*AB)
       alpha[alpha>=1] <- 1#If I'm not mistaken, this forces the places where triangle inequality is not respected to respected it (MIQUEL I'M NOT SUR THIS IS THE BEST WAY TO DO IT!!!)
+      alpha[alpha<=(-1)] <- (-1)
       alpha <- acos(alpha)
       CX <- sqrt(AX^2+AC^2-2*AX*AC*cos(alpha))
       CX[A] <- AX

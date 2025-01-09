@@ -26,6 +26,33 @@
 #' 
 #' @seealso \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 #' 
+#' 
+#' @examples
+#' #First build a toy dataset
+#' timesToy <- 0:30 #The sampling times of the time series
+#' cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
+#' sitesToy <- rep(c("A"),length(timesToy)) #The sites sampled (only one named "A")
+#' trend <- 0.05 #this term will act as a trend displacing the regular cycles
+#' 
+#' #Build cyclical data (note that we apply the trend only to x):
+#' x <- sin((timesToy*2*pi)/cycleDurationToy)+trend*timesToy
+#' y <- cos((timesToy*2*pi)/cycleDurationToy)
+#' matToy <- cbind(x,y)
+#' 
+#' #And express it as a distances:
+#' dToy <- dist(matToy)
+#' 
+#' #Make it an object of class trajectory:
+#' cyclicalTrajToy <- defineTrajectories(d = dToy, sites = sitesToy, times = timesToy)
+#' 
+#' #And extract the cycles and fixed date trajectories:
+#' cyclesToy <- extractCycles(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+#' fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+#' 
+#' #CETA plotting functions take the outputs of CETA extract functions as inputs:
+#' cyclePCoA(cyclesToy)
+#' fixedDateTrajectoryPCoA(fdTrajToy)
+#' 
 #' @rdname trajectoryCyclicalPlots
 #' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.

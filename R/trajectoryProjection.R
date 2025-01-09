@@ -16,6 +16,7 @@
 #'   \item{\code{relativeSegmentPosition}: Relative position of the projected point within the segment, i.e. values from 0 to 1 with 0 representing the start of the segment and 1 representing its end.}
 #'   \item{\code{relativeTrajectoryPosition}: Relative position of the projected point within the trajectory, i.e. values from 0 to 1 with 0 representing the start of the trajectory and 1 representing its end.}
 #' }
+#' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @export
 trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {
   if(length(trajectory)<2) stop("Trajectory needs to include at least two states")

@@ -132,3 +132,6 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 \seealso{
 \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}
 }
+\author{
+Miquel De \enc{Cáceres}{Caceres}, CREAF
+}

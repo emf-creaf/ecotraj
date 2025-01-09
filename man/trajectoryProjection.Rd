@@ -29,3 +29,6 @@ A data frame with the following columns:
 \description{
 Performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.
 }
+\author{
+Miquel De \enc{Cáceres}{Caceres}, CREAF
+}

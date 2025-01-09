@@ -189,4 +189,6 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 Miquel De \enc{Cáceres}{Caceres}, CREAF
 
 Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
+
+Nicolas Djeghri, UBO
 }

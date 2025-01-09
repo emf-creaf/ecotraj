@@ -68,6 +68,7 @@
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @author Anthony Sturbois, Vivarmor nature, Réserve Naturelle nationale de la Baie de Saint-Brieuc
+#' @author Nicolas Djeghri, UBO
 #' 
 #' @references
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). 
@@ -741,12 +742,12 @@ trajectoryMetrics <- function(x, add = TRUE) {
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
                     directionality = NA, variability = NA)
-  if (inherits(x, "cycles")|inherits(x, "fd.trajectories")|inherits(x, "sections")){
+  if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(siteIDs)){
       df$site[i] <-unique(x$metadata$sites[sites==siteIDs[i]])
     }
-  }else{
-    df <- subset(df,select=-site)
+  } else {
+    df$site <- NULL
   }
   for(i in 1:length(siteIDs)) {
     df$n[i] <- sum(sites==siteIDs[i])
@@ -798,12 +799,12 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
                     t_start = NA,t_end = NA, n = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
                     directionality = NA, variability = NA)
-  if (inherits(x, "cycles")|inherits(x, "fd.trajectories")|inherits(x, "sections")){
+  if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(sites)){
       df$site[i] <-unique(x$metadata$sites[sites==sites[i]])
     }
-  }else{
-    df <- subset(df,select=-site)
+  } else {
+    df$site <- NULL
   }
   for(i in 1:length(sites)) {
     surveys_i <- surveys[sites==sites[i]]

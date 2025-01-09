@@ -5,7 +5,6 @@
 \alias{trajectoryCyclicalPlots}
 \alias{cyclePCoA}
 \alias{fixedDateTrajectoryPCoA}
-\alias{customCircularPalette}
 \title{Cyclical trajectory plots}
 \usage{
 cyclePCoA(
@@ -101,7 +100,7 @@ fixedDateTrajectoryPCoA(fdTrajToy)
 
 #After centering of cycles, set  parameter centered to TRUE in cyclePCoA():
 cent_cyclesToy <- centerTrajectories(cyclesToy)
-cyclePCoA(cent_cyclesToy, centered = T)
+cyclePCoA(cent_cyclesToy, centered = TRUE)
 
 
 }

@@ -9,7 +9,6 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclicalPlots
-#' @aliases cyclePCoA fixedDateTrajectoryPCoA customCircularPalette
 #' 
 #' @details
 #' The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).  
@@ -66,7 +65,7 @@
 #' 
 #' #After centering of cycles, set  parameter centered to TRUE in cyclePCoA():
 #' cent_cyclesToy <- centerTrajectories(cyclesToy)
-#' cyclePCoA(cent_cyclesToy, centered = T)
+#' cyclePCoA(cent_cyclesToy, centered = TRUE)
 #' 
 #' 
 #' @rdname trajectoryCyclicalPlots
@@ -313,6 +312,7 @@ fixedDateTrajectoryPCoA <- function (x,
 #' @rdname trajectoryCyclicalPlots
 #' @param x the metadata \code{\link{data.frame}} of an object of class \code{\link{fd.trajectories}}.
 #' @noRd
+#' @keywords internal
 customCircularPalette <- function(x)
 {
   #this function builds a simple custom circular color palette for fixed date trajectories plotting

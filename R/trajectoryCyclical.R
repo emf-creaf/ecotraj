@@ -514,14 +514,12 @@ cycleMetrics <- function(x,
   internal <- cycles$metadata$internal
   
   siteIDs <- unique(sites)
-  df <-  data.frame(trajectory = siteIDs, site = NA,
+  df <-  data.frame(cycle = siteIDs, site = NA,
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
                     convexity = NA, variability = NA)
   for (i in 1:length(siteIDs)){
     df$site[i] <-unique(cycles$metadata$sites[sites==siteIDs[i]])
-  }
-  for(i in 1:length(siteIDs)) {
     df$n[i] <- sum(sites==siteIDs[i]&internal)
   }
   df$t_start <- tapply(cycles$metadata$times,sites,min)

@@ -394,7 +394,7 @@ fdtrajZooDir <- trajectoryDirectionality(fdtrajNSZoo)
 
 And put them in a convenient dataframe:
 ```{r}
-#descriptive stats (MAYBE THAT COULD BE DONE AUTOMATICALLY BY extractFixedDateTrajectories???):
+#descriptive stats
 monthFDT <- tapply(fdtrajNSZoo$metadata$dates,fdtrajNSZoo$metadata$fdT,min)
 sitesFDT <- tapply(fdtrajNSZoo$metadata$sites,fdtrajNSZoo$metadata$fdT,unique)
 

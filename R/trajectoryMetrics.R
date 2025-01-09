@@ -268,7 +268,7 @@ trajectorySpeeds<-function(x) {
     for(s in 1:(nsurveysite[i]-1)) {
       speeds[i,s] <- speeds[i,s]/(times[ind_surv[s+1]] - times[ind_surv[s]])
     }
-    speeds[i, maxnsurveys] <- speeds[i, maxnsurveys]/(times[ind_surv[maxnsurveys]] - times[ind_surv[1]])
+    speeds[i, maxnsurveys] <- speeds[i, maxnsurveys]/(times[ind_surv[length(ind_surv)]] - times[ind_surv[1]])
   }
   return(speeds)
 }

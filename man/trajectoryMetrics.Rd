@@ -48,7 +48,9 @@ trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
 trajectoryVariability(x)
 
-trajectoryWindowMetrics(x, bandwidth, type = "surveys")
+trajectoryMetrics(x, add = TRUE)
+
+trajectoryWindowMetrics(x, bandwidth, type = "surveys", add = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -93,6 +95,8 @@ with a column of directional values and a column of p-values corresponding to th
 
 Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 
+Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
+
 Function \code{trajectoryWindowMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 }
 \description{
@@ -106,6 +110,7 @@ Set of functions to estimate metrics describing individual trajectories. Given i
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+\item{Function \code{trajectoryMetrics} evaluates several trajectory metrics at once.}
 \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 }
 }
@@ -169,7 +174,8 @@ trajectoryAngles(x)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
 trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
 
-  
+#Several metrics at once
+trajectoryMetrics(x)  
  
 }
 \references{

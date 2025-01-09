@@ -10,6 +10,7 @@
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
 #' \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+#' \item{Function \code{trajectoryMetrics} evaluates several trajectory metrics at once.}
 #' \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 #' }
 #'  
@@ -61,6 +62,8 @@
 #' 
 #' Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
 #' 
+#' Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
+#' 
 #' Function \code{trajectoryWindowMetrics} returns a data frame where rows are midpoints over trajectories and columns correspond to different trajectory metrics.
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -110,7 +113,8 @@
 #' trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
 #' trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
 #' 
-#'   
+#' #Several metrics at once
+#' trajectoryMetrics(x)  
 #'  
 #' @export
 trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
@@ -674,7 +678,6 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
   }
 }
 
-
 #' @rdname trajectoryMetrics
 #' @export
 trajectoryVariability<-function(x) {
@@ -718,12 +721,38 @@ trajectoryVariability<-function(x) {
   return(var)
 }
 
-
+#' @rdname trajectoryMetrics
+#' @export
+trajectoryMetrics <- function(x, add = TRUE) {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
+  }
+  siteIDs <- unique(sites)
+  df <-  data.frame(trajectory = siteIDs, n = NA, 
+                    length = NA, mean_speed = NA, mean_angle = NA,
+                    directionality = NA, variability = NA)
+  for(i in 1:length(siteIDs)) {
+    df$n[i] <- sum(sites==siteIDs[i])
+  }
+  df$length <- trajectoryLengths(x)$Trajectory
+  df$mean_speed <- trajectorySpeeds(x)$Trajectory
+  df$mean_angle <- trajectoryAngles(x, add = add)$mean
+  df$directionality <- trajectoryDirectionality(x, add = add)
+  df$variability <- trajectoryVariability(x)
+  return(df)
+}
 #' @rdname trajectoryMetrics
 #' @param bandwidth Bandwidth of the moving windows (in units of surveys or times, depending on \code{type})
 #' @param type A string, either "surveys" or "times", indicating how windows are defined.
 #' @export
-trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys") {
+trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   match.arg(type, c("surveys", "times"))
   if(!is.numeric(bandwidth)) stop("'bandwidth' should be an numeric value")
@@ -735,15 +764,16 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys") {
     if(bandwidth<=0) stop("'bandwidth' should be larger than 0")
   }
   
-  d <- x$d
-  sites <- x$metadata$sites
   surveys <- x$metadata$surveys
   times <- x$metadata$times
-  # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
   }
   
   siteIDs <- unique(sites)
@@ -752,7 +782,7 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys") {
   for(i in 1:nsite) nsurveysite[i] = sum(sites==siteIDs[i])
   if(sum(nsurveysite<2)>0) stop("All sites need to be surveyed at least twice")
   
-  df <-  data.frame(sites = sites, midpoint = surveys, n = NA, 
+  df <-  data.frame(trajectory = sites, midpoint = surveys, n = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
                     directionality = NA, variability = NA)
   for(i in 1:length(sites)) {
@@ -767,8 +797,8 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys") {
     df$n[i] <- length(surveys_window)
     df$length[i] <- trajectoryLengths(x_i)$Trajectory
     df$mean_speed[i] <- trajectorySpeeds(x_i)$Trajectory
-    if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i)$mean
-    if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i)
+    if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
+    if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
     df$variability[i] <- trajectoryVariability(x_i)
   }
   return(df)

@@ -38,6 +38,7 @@ test_that("Trajectories can be analyzed",{
   expect_type(segmentDistances(x), "list")
   expect_s3_class(trajectoryDistances(x), "dist")
   expect_type(trajectoryConvergence(x), "list")
+  expect_s3_class(trajectoryMetrics(x), "data.frame")
   expect_s3_class(trajectoryWindowMetrics(x, 1), "data.frame")
 })
 

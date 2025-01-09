@@ -7,6 +7,7 @@
 \alias{extractFixedDateTrajectories}
 \alias{cycleConvexity}
 \alias{cycleShifts}
+\alias{cycleMetrics}
 \alias{cycles}
 \alias{fd.trajectories}
 \title{Functions for Cyclical Ecological Trajectory Analysis}
@@ -35,7 +36,8 @@ cycleConvexity(
   dates = NULL,
   startdate = NA,
   externalBoundary = "end",
-  minEcolStates = 3
+  minEcolStates = 3,
+  add = TRUE
 )
 
 cycleShifts(
@@ -45,6 +47,16 @@ cycleShifts(
   datesCS = NULL,
   centering = TRUE,
   minEcolStates = 3
+)
+
+cycleMetrics(
+  x,
+  cycleDuration,
+  dates = NULL,
+  startdate = NA,
+  externalBoundary = "end",
+  minEcolStates = 3,
+  add = TRUE
 )
 }
 \arguments{
@@ -63,6 +75,8 @@ cycleShifts(
 \item{fixedDate}{An optional vector of dates for which fixed-date trajectories must be computed. Defaults to \code{unique(dates)}, resulting in returning all possible fixed-date trajectories.}
 
 \item{namesFixedDate}{An optional vector of names associated to each \code{fixedDate}. Defaults to \code{round(fixedDate,2)}.}
+
+\item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 
 \item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
@@ -110,6 +124,8 @@ Function \code{cycleShifts} returns an object of class \code{\link{data.frame}} 
 \item{\code{timeScale}: the time difference between the reference and the projected ecological state.}
 \item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
 }
+
+Function \code{cycleMetrics} returns a data frame where rows are cycles and columns are different cycle metrics.
 }
 \description{
 The Cyclical extension of Ecological Trajectory Analysis (CETA) aims at allowing ETA to describe ecological trajectories presenting cyclical dynamics such as seasonal or day/night cycles. We call such trajectories "cyclical".
@@ -146,8 +162,8 @@ The proposed solution in CETA (in the case of this specific example) is to set t
 }
 
 As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}).
-There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShifts}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis.
-For \code{cycleConvexity}, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles.
+There is three important exceptions to that rule: the functions \code{cycleConvexity}, \code{cycleShifts} and \code{cycleMetrics}. Instead, the inputs of these three functions should parallel the inputs of \code{extractCycles} in a given analysis.
+For \code{cycleConvexity}, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. For \code{cycleMetrics}, this is because it calls \code{cycleConvexity}.
 The function instead compute the most adapted set of cycles to obtain the metric.
 
 Note: Function \code{cycleShifts} is computation intensive for large data sets, it may not execute immediately.
@@ -209,11 +225,14 @@ cycleShifts(x = cyclicalTrajToy,
 #Note that because our cycles are perfectly regular here, the cyclicalShift
 #computed are all 0 (or close because of R's computing approximations)
 
-
+#General metrics describing the geometry of cycles:
+cycleMetrics(x = cyclicalTrajToy,
+             cycleDuration = cycleDurationToy)
+             
 
 }
 \seealso{
-\code{\link{trajectoryCyclicalPlots}}
+\code{\link{trajectoryCyclicalPlots}}, \code{\link{trajectoryMetrics}}, \code{\link{trajectoryComparison}}
 }
 \author{
 Nicolas Djeghri, UBO

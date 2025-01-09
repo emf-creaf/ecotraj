@@ -99,6 +99,11 @@ fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy,
 cyclePCoA(cyclesToy)
 fixedDateTrajectoryPCoA(fdTrajToy)
 
+#After centering of cycles, set  parameter centered to TRUE in cyclePCoA():
+cent_cyclesToy <- centerTrajectories(cyclesToy)
+cyclePCoA(cent_cyclesToy, centered = T)
+
+
 }
 \seealso{
 \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}

@@ -434,26 +434,18 @@ There is tendency of fixed-date trajectories to have high directionality and low
 Nonetheless, a metric of peculiar interest in fixed-date trajectories might be convergence:
 ```{r}
 #We will do it for the two sites (NNS and SNS) separately, so lets pull them apart
-SNSfdtraj <- fdtrajNSZoo
-NNSfdtraj <- fdtrajNSZoo
-
-#change the distance matrices
-SNSfdtraj$d <- as.dist(as.matrix(SNSfdtraj$d)[SNSfdtraj$metadata$sites=="SNS",SNSfdtraj$metadata$sites=="SNS"])
-NNSfdtraj$d <- as.dist(as.matrix(NNSfdtraj$d)[NNSfdtraj$metadata$sites=="NNS",NNSfdtraj$metadata$sites=="NNS"])
-
-#change metadata
-SNSfdtraj$metadata <- SNSfdtraj$metadata[SNSfdtraj$metadata$sites=="SNS",]
-NNSfdtraj$metadata <- NNSfdtraj$metadata[NNSfdtraj$metadata$sites=="NNS",]
+SNSfdtraj <- subsetTrajectories(fdtrajNSZoo,site_selection = "SNS")
+NNSfdtraj <- subsetTrajectories(fdtrajNSZoo,site_selection = "NNS")
 
 #Then we need to keep only the years during which the fixed-date trajectories all have associated ecological states (this is because we want to perform a symmetric convergence test)
 selecSNS <- as.numeric(names(which(table(SNSfdtraj$metadata$times-SNSfdtraj$metadata$dates)==12)))
 selecNNS <- as.numeric(names(which(table(NNSfdtraj$metadata$times-NNSfdtraj$metadata$dates)==12)))
 
-#change the distance matrices again
+#change the distance matrices
 SNSfdtraj$d <- as.dist(as.matrix(SNSfdtraj$d)[floor(SNSfdtraj$metadata$times)%in%selecSNS,floor(SNSfdtraj$metadata$times)%in%selecSNS])
 NNSfdtraj$d <- as.dist(as.matrix(NNSfdtraj$d)[floor(NNSfdtraj$metadata$times)%in%selecNNS,floor(NNSfdtraj$metadata$times)%in%selecNNS])
 
-# and change metadata again
+# and change metadata
 SNSfdtraj$metadata <- SNSfdtraj$metadata[floor(SNSfdtraj$metadata$times)%in%selecSNS,]
 NNSfdtraj$metadata <- NNSfdtraj$metadata[floor(NNSfdtraj$metadata$times)%in%selecNNS,]
 

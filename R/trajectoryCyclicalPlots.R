@@ -64,6 +64,11 @@
 #' cyclePCoA(cyclesToy)
 #' fixedDateTrajectoryPCoA(fdTrajToy)
 #' 
+#' #After centering of cycles, set  parameter centered to TRUE in cyclePCoA():
+#' cent_cyclesToy <- centerTrajectories(cyclesToy)
+#' cyclePCoA(cent_cyclesToy, centered = T)
+#' 
+#' 
 #' @rdname trajectoryCyclicalPlots
 #' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.
@@ -94,7 +99,7 @@ cyclePCoA <- function (x,
     
     metadataD <- x$metadata
     
-  } else{
+  }else{
     selec <- integer(0)
     #this loop will first isolate the non-duplicated external ecological states
     #then it will add the internal ecological states (and removing possible overlap)
@@ -149,7 +154,12 @@ cyclePCoA <- function (x,
       
       timesjinput <- x$metadata$times[cyclejinput]
       
-      selec <- (metadataD$times%in%timesjinput) & sitei
+      if (centered == T){
+        selec <- (metadataD$times%in%timesjinput) & sitei & (metadataD$cycles==j)
+      }else{
+        selec <- (metadataD$times%in%timesjinput) & sitei
+      }
+      
       
       timesj <- metadataD$times[selec]
       xarrows <- xp[selec][order(timesj)]

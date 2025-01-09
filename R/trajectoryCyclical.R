@@ -151,6 +151,12 @@
 #' #Note that because our cycles are perfectly regular here, the cyclicalShift
 #' #computed are all 0 (or close because of R's computing approximations)
 #' 
+#' #Subsetting cycles and fixed date trajectories:
+#' subsetTrajectories(cyclesToy,
+#'                    subtrajectory_selection = "A_C1") 
+#' subsetTrajectories(fdTrajToy,
+#'                    subtrajectory_selection = c("A_fdT_2","A_fdT_4"))
+#'                 
 #' #General metrics describing the geometry of cycles:
 #' cycleMetrics(x = cyclicalTrajToy,
 #'              cycleDuration = cycleDurationToy)

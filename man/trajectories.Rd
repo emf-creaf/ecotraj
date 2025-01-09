@@ -8,7 +8,12 @@
 \usage{
 defineTrajectories(d, sites, surveys = NULL, times = NULL)
 
-subsetTrajectories(x, site_selection, survey_selection = NULL)
+subsetTrajectories(
+  x,
+  site_selection = NULL,
+  subtrajectory_selection = NULL,
+  survey_selection = NULL
+)
 }
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states..}
@@ -21,7 +26,9 @@ subsetTrajectories(x, site_selection, survey_selection = NULL)
 
 \item{x}{An object of class \code{trajectories}}
 
-\item{site_selection}{A character vector indicating the subset of site trajectories to be selected.  A different interpretation is used for cycles or fixed date trajectories (see details).}
+\item{site_selection}{A character vector indicating the subset of site trajectories to be selected.}
+
+\item{subtrajectory_selection}{A character vector indicating the subset of cycles or fixed date trajectories to be selected.}
 
 \item{survey_selection}{An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).}
 }
@@ -42,8 +49,8 @@ An object (list) of class \code{trajectories} with the following elements:
 Defines or subsets data structures for trajectory analysis
 }
 \details{
-When using function \code{subsetTrajectories} on cycles or fixed-date trajectories then the subsetting operation
-is assumed to operate on those geometry elements. Hence, the parameter \code{site_selection} applies to cycles or fixed-date trajectories, respectively.
+When using function \code{subsetTrajectories} on cycles or fixed-date trajectories then the parameter \code{site_selection} applies to sites
+(hence selecting multiple cycles or fixed-date trajectories). Specific cycles or fixed-date trajectories can be selected using \code{trajectory_selection}.
 }
 \examples{
 #Description of sites and surveys

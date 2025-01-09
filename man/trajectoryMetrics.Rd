@@ -183,7 +183,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \seealso{
-\code{\link{trajectoryComparison}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}
+\code{\link{trajectoryComparison}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{cycleMetrics}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

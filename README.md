@@ -80,6 +80,7 @@ framework:
 | `extractFixedDateTrajectories()` | Extracts fixed-date trajectories from cyclical trajectories. |
 | `cycleShifts()` | Estimates cyclical shifts (i.e. advances or delays). |
 | `cycleConvexity()` | Estimates the degree of convexity of cycles. |
+| `cycleMetrics()` | Calculates several (whole path) metrics on cycles. |
 | `cyclePCoA()` | Performs Principal Coordinates Analysis and draws cycles in the ordination scatter plot. |
 | `fixedDateTrajectoryPCoA()` | Performs Principal Coordinates Analysis and draws fixed date trajectories in the ordination scatter plot. |
 

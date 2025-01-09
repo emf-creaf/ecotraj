@@ -19,8 +19,8 @@
 #'    }
 #' }
 #' @details
-#' When using function \code{subsetTrajectories} on cycles or fixed-date trajectories then the subsetting operation
-#' is assumed to operate on those geometry elements. Hence, the parameter \code{site_selection} applies to cycles or fixed-date trajectories, respectively.
+#' When using function \code{subsetTrajectories} on cycles or fixed-date trajectories then the parameter \code{site_selection} applies to sites 
+#' (hence selecting multiple cycles or fixed-date trajectories). Specific cycles or fixed-date trajectories can be selected using \code{trajectory_selection}.
 #' 
 #' @export
 #' @name trajectories
@@ -84,24 +84,36 @@ defineTrajectories<-function(d, sites, surveys = NULL, times = NULL) {
 
 #' @rdname trajectories
 #' @param x An object of class \code{trajectories}
-#' @param site_selection A character vector indicating the subset of site trajectories to be selected.  A different interpretation is used for cycles or fixed date trajectories (see details).
+#' @param site_selection A character vector indicating the subset of site trajectories to be selected.  
+#' @param subtrajectory_selection A character vector indicating the subset of cycles or fixed date trajectories to be selected.
 #' @param survey_selection An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).
 #' @export
-subsetTrajectories<-function(x, site_selection, survey_selection = NULL) {
+subsetTrajectories<-function(x, site_selection = NULL, subtrajectory_selection = NULL, survey_selection = NULL) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
-  if(inherits(x, "fd.trajectories")) {
-    sites <- x$metadata$fdT
-  } else if(inherits(x, "cycles")) {
-    sites <- x$metadata$cycles
-  } else if(inherits(x, "sections")) {
-    sites <- x$metadata$sections
-  } else {
-    sites <- x$metadata$sites
+  sites <- x$metadata$sites
+  selection <- rep(TRUE, length(sites))
+  if(!is.null(site_selection)) {
+    if(!inherits(site_selection, "character")) stop("`site_selection` must be a character vector")
+    if(!all(site_selection %in% sites)) stop("At least one element in `site_selection` is not a trajectory site.")
+    selection <- selection & (sites %in% site_selection)
   }
-  siteIDs <- unique(sites)
-  if(!inherits(site_selection, "character")) stop("`site_selection` must be a character vector")
-  if(!all(site_selection %in% sites)) stop("At least one element in `site_selection` is not a trajectory site.")
-  selection <- (sites %in% site_selection)
+  if(!is.null(subtrajectory_selection)) {
+    if(!inherits(subtrajectory_selection, "character")) stop("`subtrajectory_selection` must be a character vector")
+    if(inherits(x, "fd.trajectories")) {
+      subtrajectories <- x$metadata$fdT
+    } else if(inherits(x, "cycles")) {
+      subtrajectories <- x$metadata$cycles
+    } else if(inherits(x, "sections")) {
+      subtrajectories <- x$metadata$sections
+    } else {
+      subtrajectories <- NULL
+      warning("Parameter `subtrajectory_selection` was ignored.")
+    }
+    if(!is.null(subtrajectories)) {
+      if(!all(subtrajectory_selection %in% subtrajectories)) stop("At least one element in `subtrajectory_selection` is not a cycle/fixed-date trajectory.")
+      selection <- selection & (subtrajectories %in% subtrajectory_selection)
+    }
+  }
   if(!is.null(survey_selection)) {
     if(!is.numeric(survey_selection)) stop("`survey_selection` must be a numeric (integer) vector")
     selection <- selection & (x$metadata$surveys %in% as.integer(survey_selection))

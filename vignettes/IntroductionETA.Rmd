@@ -152,7 +152,9 @@ x23
 
 We can decide to focus on the last three surveys:
 ```{r}
-x23s <- subsetTrajectories(x, site_selection = c("2", "3"), survey_selection = c(2,3,4))
+x23s <- subsetTrajectories(x, 
+                           site_selection = c("2", "3"), 
+                           survey_selection = c(2,3,4))
 x23s
 ```
 You will notice that `surveys` have been renumbered (but `times` are not modified). This illustrates that the vector `surveys` is only used to indicate the survey order within each trajectory.
@@ -246,7 +248,7 @@ It is possible to assess multiple trajectory metrics in one function call to `tr
 trajectoryMetrics(x)
 ```
 
-Another function, called `trajectoryMovingMetrics()` calculates trajectory metrics on moving windows over trajectories, but will not be illustrated here.
+Another function, called `trajectoryWindowMetrics()` calculates trajectory metrics on moving windows over trajectories, but will not be illustrated here.
 
 ## 4. Comparing trajectories
 ### 4.1 Relative positions within trajectories

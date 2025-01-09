@@ -151,6 +151,12 @@
 #' #Note that because our cycles are perfectly regular here, the cyclicalShift
 #' #computed are all 0 (or close because of R's computing approximations)
 #' 
+#' #Subsetting cycles and fixed date trajectories:
+#' subsetTrajectories(cyclesToy,
+#'                    subtrajectory_selection = "A_C1") 
+#' subsetTrajectories(fdTrajToy,
+#'                    subtrajectory_selection = c("A_fdT_2","A_fdT_4"))
+#'                 
 #' #General metrics describing the geometry of cycles:
 #' cycleMetrics(x = cyclicalTrajToy,
 #'              cycleDuration = cycleDurationToy)
@@ -508,12 +514,18 @@ cycleMetrics <- function(x,
   internal <- cycles$metadata$internal
   
   siteIDs <- unique(sites)
-  df <-  data.frame(trajectory = siteIDs, n = NA, 
+  df <-  data.frame(trajectory = siteIDs, site = NA,
+                    n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
                     convexity = NA, variability = NA)
+  for (i in 1:length(siteIDs)){
+    df$site[i] <-unique(cycles$metadata$sites[sites==siteIDs[i]])
+  }
   for(i in 1:length(siteIDs)) {
     df$n[i] <- sum(sites==siteIDs[i]&internal)
   }
+  df$t_start <- tapply(cycles$metadata$times,sites,min)
+  df$t_end <- tapply(cycles$metadata$times,sites,max)
   df$length <- trajectoryLengths(cycles)$Path
   df$mean_speed <- trajectorySpeeds(cycles)$Path
   df$convexity <- cycleConvexity(x,

@@ -38,7 +38,7 @@ Since it can be applied to multiple spaces, we now call the framework *Ecologica
 
 ### 1.2 About this vignette
 
-In this vignette you will learn how to conduct ETA using different package functions. 
+In this vignette you will learn how to conduct ETA using different package functions. In most of the vignette we describe how to study the trajectories of three sites that have been surveyed four times each. We use a small dataset where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily. In the last section a real example is presented.
 
 First of all, we load `ecotraj`:
 
@@ -47,9 +47,7 @@ library(ecotraj)
 ```
 
 
-## 2. Simple example
-
-In this section we describe how to study the trajectories of three sites that have been surveyed four times each. We use a small dataset where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily.
+## 2. Trajectory objects
 
 ### 2.1 Trajectory data
 
@@ -57,14 +55,12 @@ In this section we describe how to study the trajectories of three sites that ha
 
 To specify ecosystem dynamics, the following data items need to be distinguished: 
 
-a. A set of ecosystem states (i.e. coordinates in a space $\Omega$) implicitly described using a distance matrix $d$;
-b. A *character vector* specifying the site (i.e. sampling unit) corresponding to each ecosystem state; 
-c. An *integer vector* specifying the survey (i.e. census) corresponding to the sampling of each ecosystem state. 
-d. A *numeric vector* specifying the survey time corresponding to each ecosystem state.
+  a. A set of ecosystem states (i.e. coordinates in a space $\Omega$) implicitly described using a **distance matrix** $d$.
+  b. A *character vector* specifying the **site** (i.e. sampling unit) corresponding to each ecosystem state. Trajectory names are identified from unique values of sites.
+  c. An *integer vector* specifying the **survey** (i.e. census) corresponding to the sampling of each ecosystem state. This vector is important for survey order. If not provided, the order will be assumed to be incremental for each repetition of site value.
+  d. A *numeric vector* specifying the **survey time** corresponding to each ecosystem state. This is needed to evaluate speeds.
 
 In ETA, sampling units do not need to be surveyed synchronously nor the same number of times. 
-
-However, in this example we assume all three sites have been surveyed synchronously four times. 
 
 #### 2.1.2 Example data set
 
@@ -146,7 +142,23 @@ x$metadata
 ```
 
 
-### 2.3 Displaying trajectories
+
+### 2.3 Subsetting trajectories
+At some point in the ETA, one may desire to focus on particular trajectories or surveys. Function `subsetTrajectory()` allows subsetting objects of class `trajectories`, For example, we can decide to work with the second and third trajectories:
+```{r}
+x23 <- subsetTrajectories(x, site_selection = c("2", "3"))
+x23
+```
+
+We can decide to focus on the last three surveys:
+```{r}
+x23s <- subsetTrajectories(x, site_selection = c("2", "3"), survey_selection = c(2,3,4))
+x23s
+```
+You will notice that `surveys` have been renumbered (but `times` are not modified). This illustrates that the vector `surveys` is only used to indicate the survey order within each trajectory.
+
+
+### 2.4 Displaying trajectories
 
 To begin our analysis of the three trajectories, we display them in an ordination space, using function `trajectoryPCoA()`. Since $\Omega$ has only two dimensions in this example, the Principal Coordinates Analysis (PCoA) on $d$ displays the complete space:
 
@@ -180,18 +192,30 @@ legend("topright", col=c("red", "blue"),
        legend=c("Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
 ```
 
-### 2.4 Trajectory lengths, speeds, angles and directionality
 
-One may be interested in studying the geometric properties of particular trajectories. For example, one can obtain the length of trajectory segments and the total pathway length using function `trajectoryLengths()`:
+## 3. Trajectory metrics
+One may be interested in studying the geometric properties of particular trajectories. This is illustrated in this section
+
+### 3.1 Distance-based metrics
+
+Several metrics are related to distances between states. For example, one can obtain the length of trajectory segments and the total path length using function `trajectoryLengths()`:
 ```{r} 
 trajectoryLengths(x)
 ```
-When survey times are available, it may be of interest to calculate segment or trajectory speeds. One can obtain the speed of trajectory segments and the total pathway speed using function `trajectorySpeeds()`:
+When survey times are available, it may be of interest to calculate segment or trajectory speeds. One can obtain the speed of trajectory segments and the total path speed using function `trajectorySpeeds()`:
 
 ```{r} 
 trajectorySpeeds(x)
 ```
 Note that the units of lengths and speeds will depend on the definition of the $\Omega$ space and, in the latter case, on the units of `times`.
+
+Finally, one may calculate the overall (geometric) variability of states within each trajectory:
+```{r}
+trajectoryVariability(x)
+```
+The geometric variability can be interpreted as the average squared distance to the centroid of each trajectory.
+
+### 3.2 Angle-based metrics
 
 In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix $\Delta$ may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics. Function `trajectoryAngles()` allows calculating the angles between consecutive segments:
 
@@ -199,7 +223,7 @@ In CTA, angles are measured using triplets of time-ordered ecosystem states (a p
 trajectoryAngles(x)
 ```
 
-While site '1' follows a straight pathway, angles are > 0 for trajectories of site '2' and '3', denoting the change in direction. In this case, the same information could be obtained by inspecting the previous plots, but in a case where $\Omega$ has many dimensions, the representation will correspond to a reduced (ordination) space and hence, angles and lengths in the plot will not correspond exactly to those of functions `trajectoryLengths()` and `trajectoryAngles()`, which take into account the complete $\Omega$ space. 
+While site '1' follows a straight path, angles are > 0 for trajectories of site '2' and '3', denoting the change in direction. In this case, the same information could be obtained by inspecting the previous plots, but in a case where $\Omega$ has many dimensions, the representation will correspond to a reduced (ordination) space and hence, angles and lengths in the plot will not correspond exactly to those of functions `trajectoryLengths()` and `trajectoryAngles()`, which take into account the complete $\Omega$ space. 
 
 Angles can be calculated not only for all consecutive segments but for all four triplets of ordered ecosystem states, whether of consecutive segments or not (i.e., between points 1-2-3, 1-2-4, 1-3-4 and 2-3-4). This is done by specifying `all=TRUE` in `trajectoryAngles()`:
 
@@ -209,15 +233,24 @@ trajectoryAngles(x, all=TRUE)
 
 The *mean resultant length* of circular statistics (column `rho` of the previous result), which takes values between 0 and 1, can be used to assess the degree of homogeneity of angle values and it will take a value of 1 if all angles are the same. This approach, however, uses only angular information and does not take into account the length of segments. 
 
-To measure the overall directionality of a ecosystem trajectory (i.e. if the pathway consistently follows the same direction in $\Omega$ ), we recommend using another statistic that is sensitive to both angles and segment lengths and is implemented in function `trajectoryDirectionality()`:
+To measure the overall directionality of a ecosystem trajectory (i.e. if the path consistently follows the same direction in $\Omega$ ), we recommend using another statistic that is sensitive to both angles and segment lengths and is implemented in function `trajectoryDirectionality()`:
 ```{r} 
 trajectoryDirectionality(x)
 ```  
 
-As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. Note that function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality.
+As known from previous plots, trajectory of site '2' is less straight than trajectory of site '1' and that of site '3' has the lowest directionality value. By default the function only computes a descriptive statistic, i.e. it does not perform any statistical test on directionality. A permutational test can be performed, but this feature is experimental needs to be tested before recommendation.
 
-### 2.5 Relative positions within trajectories
-Ecosystem states occupy a position within their trajectory that depends on the total pathway length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the ecosystem state. Function `trajectoryProjection()` allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:
+### 3.2 Assessing multiple metrics at once
+It is possible to assess multiple trajectory metrics in one function call to `trajectoryMetrics()`. This will only provide metrics that apply to the whole trajectory path: 
+```{r}
+trajectoryMetrics(x)
+```
+
+Another function, called `trajectoryMovingMetrics()` calculates trajectory metrics on moving windows over trajectories, but will not be illustrated here.
+
+## 4. Comparing trajectories
+### 4.1 Relative positions within trajectories
+Ecosystem states occupy a position within their trajectory that depends on the total path length of the trajectory (see Fig. 2 of De Cáceres et al. 2019). By adding the length of segments prior to a given state and dividing the sum by the total length of the trajectory we obtain the relative position of the ecosystem state. Function `trajectoryProjection()` allows obtaining the relative position of each point of a trajectory. To use it for this purpose one should use as parameters the distance matrix between states and the indices that conform the trajectory, which have to be entered twice. For example for the two example trajectories we would have:
 
 ```{r} 
 trajectoryProjection(d, 1:4, 1:4)
@@ -232,12 +265,12 @@ Function `trajectoryProjection()` can also be used to **project** arbitrary ecos
 ```{r} 
 trajectoryProjection(d, 7, 1:4)
 ```  
-If we project the points of the trajectory of site '3' onto the trajectory of site '1' we see how the curved pathway of site '3' projects its fourth point to the same relative position as its second point.
+If we project the points of the trajectory of site '3' onto the trajectory of site '1' we see how the curved path of site '3' projects its fourth point to the same relative position as its second point.
 ```{r} 
 trajectoryProjection(d, 9:12, 1:4)
 ```  
 
-### 2.6 Trajectory convergence
+### 4.2 Trajectory convergence
 
 When trajectories have been sampled the same number of times, one can study their symmetric convergence or divergence (see Fig. 3a of De Cáceres et al. 2019). Function `trajectoryConvergence()` allows performing tests of convergence based on the trend analysis of the sequences of distances between points of the two trajectories (i.e. first-first, second-second, ...):
 
@@ -253,7 +286,7 @@ trajectoryConvergence(x, symmetric = FALSE)
 
 The asymmetric test is useful to determine if one trajectory is becoming closer to the other or if it is departing from the other.
 
-### 2.7 Distances between segments and trajectories
+### 4.3 Distances between segments and trajectories
 
 To start comparing trajectories between sites (i.e. between sampling units), one important step is the calculation of distances between directed segments (see Fig. 4 of De Cáceres et al. 2019), which can be obtained by calling function `segmentDistances`:
 ```{r} 
@@ -289,7 +322,7 @@ trajectoryDistances(x, distance.type = "DSPD", symmetrization = NULL)
 
 
 
-## 3. Structural dynamics in permanent plots
+## 5. Structural dynamics in permanent plots
 
 In this example we analyze the dynamics of 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).  Forests plots are almost monospecific, being the mountain beech (*Fuscospora cliffortioides*) the main dominant tree species. Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys. We begin our example by loading the data set, which includes 72 plot observations:
 ```{r load avoca, echo=T}
@@ -307,7 +340,7 @@ avoca_D_man <- vegclust::vegdiststruct(avoca_strat,
 
 Distances in `avoca_D_man` are calculated using the Manhattan metric, after applying a logarithm transformation to abundance data. 
 
-### 3.1 Defining trajectories
+### 5.1 Defining trajectories
 
 We start by defining our trajectories, which implies combining the information about distances, sites and surveys (survey times are omitted):
 
@@ -317,7 +350,7 @@ avoca_x <- defineTrajectories(d = avoca_D_man,
                               surveys = avoca_surveys)
 ```
 
-### 3.1 Displaying trajectories in PCoA
+### 5.2 Displaying trajectories in PCoA
 
 The distance matrix `avoca_D_man` conforms our definition of $\Omega$. We use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the trajectory of each plot:
 
@@ -404,7 +437,7 @@ This second trajectory is less straight and seems to include a turn by the end o
 
 
 
-### 3.2 Trajectory lengths, angles and overall directionality
+### 5.3 Trajectory lengths, angles and overall directionality
 
 While trajectory lengths and angles can be inspected visually in ordination diagrams, it is better to calculate them using the full $\Omega$ space (i.e., from matrix `avoca_D_man`). Using function `trajectoryLengths()` we can see that the trajectory of forest plot '4' is lengthier than that of plot '3', mostly because includes a lengthier last segment (i.e. the recruitment of new individuals):
 
@@ -434,7 +467,7 @@ plot(avoca_rho, avoca_dir, xlab = "rho(T)", ylab = "dir(T)", type="n")
 text(avoca_rho, avoca_dir, as.character(1:8))
 ```
 
-### 3.3 Distances between trajectories
+### 5.4 Distances between trajectories
 
 We can calculate the resemblance between forest plot trajectories using `trajectoryDistances()`:
 ```{r}

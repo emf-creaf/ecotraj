@@ -11,7 +11,7 @@ trajectoryProjection(d, target, trajectory, tol = 1e-06, add = TRUE)
 
 \item{target}{An integer vector of the ecosystem states to be projected.}
 
-\item{trajectory}{An integer vector of the trajectory onto which target states are to be projected.}
+\item{trajectory}{An integer vector of the ecosystem states conforming the trajectory onto which target states are to be projected.}
 
 \item{tol}{Numerical tolerance value to determine that projection of a point lies within the trajectory.}
 

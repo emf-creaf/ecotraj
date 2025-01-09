@@ -729,6 +729,7 @@ trajectoryMetrics <- function(x, add = TRUE) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+    warning("Function cycleMetrics() may be more appropriate for cycles")
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
   } else {

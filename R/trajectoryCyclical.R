@@ -20,7 +20,7 @@
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclical
-#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShifts cycles fd.trajectories
+#' @aliases extractCycles extractFixedDateTrajectories cycleConvexity cycleShifts cycleMetrics cycles fd.trajectories
 #' 
 #' @details
 #' CETA is a little more time-explicit than the rest of ETA. Hence the parameter \code{times} is needed to initiate the CETA approach (classical ETA functions can work from \code{surveys} which is only ordinal).
@@ -37,8 +37,8 @@
 #' 
 #' 
 #' As a general rule the outputs of \code{extractCycles} should be used as inputs in other, non-CETA function (e.g. \code{trajectoryDistances}).
-#' There is two important exceptions to that rule: the functions \code{cycleConvexity} and \code{cycleShifts}. Instead, the inputs of these two functions should parallel the inputs of \code{extractCycles} in a given analysis.
-#' For \code{cycleConvexity}, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles.
+#' There is three important exceptions to that rule: the functions \code{cycleConvexity}, \code{cycleShifts} and \code{cycleMetrics}. Instead, the inputs of these three functions should parallel the inputs of \code{extractCycles} in a given analysis.
+#' For \code{cycleConvexity}, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. For \code{cycleMetrics}, this is because it calls \code{cycleConvexity}.
 #' The function instead compute the most adapted set of cycles to obtain the metric.
 #' 
 #' 
@@ -89,36 +89,49 @@
 #'      \item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
 #' }
 #' 
+#' Function \code{cycleMetrics} returns a data frame where rows are cycles and columns are different cycle metrics.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
-#' @seealso \code{\link{trajectoryCyclicalPlots}}
+#' @seealso \code{\link{trajectoryCyclicalPlots}}, \code{\link{trajectoryMetrics}}, \code{\link{trajectoryComparison}}
 #' 
 #' @examples
-#' #First build a toy dataset
-#' timesToy <- 0:30 #The sampling times of the time series
-#' cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
-#' sitesToy <- rep(c("A"),length(timesToy)) #The sites sampled (only one named "A")
-#' trend <- 0.05 #this term will act as a trend displacing the regular cycles
+#' #First build a toy dataset with:
+#' #The sampling times of the time series
+#' timesToy <- 0:30 
+#' 
+#' #The duration of the cycles (i.e. the periodicity of the time series)
+#' cycleDurationToy <- 10 
+#' 
+#' #The sites sampled (only one named "A")
+#' sitesToy <- rep(c("A"),length(timesToy)) 
+#' 
+#' #And prepare a trend term
+#' trend <- 0.05
 #' 
 #' #Build cyclical data (note that we apply the trend only to x):
 #' x <- sin((timesToy*2*pi)/cycleDurationToy)+trend*timesToy
 #' y <- cos((timesToy*2*pi)/cycleDurationToy)
 #' matToy <- cbind(x,y)
 #' 
-#' #And express it as a distances:
+#' #And express it as distances:
 #' dToy <- dist(matToy)
 #' 
 #' #Make it an object of class trajectory:
-#' cyclicalTrajToy <- defineTrajectories(d = dToy, sites = sitesToy, times = timesToy)
+#' cyclicalTrajToy <- defineTrajectories(d = dToy,
+#'                                       sites = sitesToy,
+#'                                       times = timesToy)
 #' 
 #' #At this stage, cycles and / or fixed date trajectories are not isolated.
 #' #This done with the two CETA "extract" functions:
-#' cyclesToy <- extractCycles(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+#' cyclesToy <- extractCycles(x = cyclicalTrajToy,
+#'                            cycleDuration = cycleDurationToy)
+#' fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy,
+#'                                           cycleDuration = cycleDurationToy)
 #' 
-#' #The output of these functions can be used as input for other ETA functions to get metrics of interest
+#' #The output of these functions can be used as input
+#' #for other ETA functions to get metrics of interest
 #' #such as trajectory length:
 #' trajectoryLengths(x = cyclesToy)
 #' trajectoryLengths(x = fdTrajToy)
@@ -127,15 +140,21 @@
 #' trajectoryDistances(x = cyclesToy)
 #' trajectoryDistances(x = fdTrajToy)
 #' 
-#' #In addition CETA adds two additional specific metrics (cycle convexity, and computation of cyclical shifts).
-#' #For reasons explain above, they require the same inputs as function extractCycles():
-#' cycleConvexity(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' #By the way, it is expect to get a NA with the first cycle in this example,
-#' #Cycle convexity cannot be computed right at the start or end of the time series
-#' cycleShifts(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' #Note that because our cycles are perfectly regular here, the cyclicalShift computed are all 0 (or close because of R's computing approximations)
+#' #In addition CETA adds two additional specific metrics.
+#' #that require the same inputs as function extractCycles():
+#' cycleConvexity(x = cyclicalTrajToy,
+#'                cycleDuration = cycleDurationToy)
+#' #The NA with the first cycle, is expected:
+#' #Cycle convexity cannot be computed right at the boundary of the time series
+#' cycleShifts(x = cyclicalTrajToy,
+#'             cycleDuration = cycleDurationToy)
+#' #Note that because our cycles are perfectly regular here, the cyclicalShift
+#' #computed are all 0 (or close because of R's computing approximations)
 #' 
-#'
+#' #General metrics describing the geometry of cycles:
+#' cycleMetrics(x = cyclicalTrajToy,
+#'              cycleDuration = cycleDurationToy)
+#'              
 #'
 #' @rdname trajectoryCyclical
 #' @param x An object of class \code{\link{trajectories}} describing a cyclical trajectory.
@@ -318,13 +337,15 @@ extractFixedDateTrajectories <- function (x,
 }
 
 #' @rdname trajectoryCyclical
+#' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' @export
 cycleConvexity <- function(x,
                            cycleDuration,
                            dates = NULL,
                            startdate = NA,
                            externalBoundary="end",
-                           minEcolStates=3)
+                           minEcolStates=3,
+                           add = TRUE)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
@@ -341,7 +362,7 @@ cycleConvexity <- function(x,
                           startdate=startdate,
                           externalBoundary=externalBoundary,
                           minEcolStates=minEcolStates)
-  Angles <- trajectoryAngles(x)
+  Angles <- trajectoryAngles(x,add = add)
   
   Convexity <- integer(0)
   for(i in 1:length(siteIDs)){
@@ -461,3 +482,47 @@ cycleShifts <- function (x,
   return(Output)
 }
 
+#' @rdname trajectoryCyclical
+#' @export
+cycleMetrics <- function(x,
+                         cycleDuration,
+                         dates = NULL,
+                         startdate = NA,
+                         externalBoundary="end",
+                         minEcolStates=3,
+                         add = TRUE)
+{
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
+  if(inherits(x, "cycles")) stop("'x' should NOT be of class `cycles`")
+  if(inherits(x, "sections")) stop("'x' should NOT be of class `sections`")
+  
+  cycles <- extractCycles(x,
+                          cycleDuration,
+                          dates,
+                          startdate,
+                          externalBoundary,
+                          minEcolStates)
+  
+  sites <- cycles$metadata$cycles
+  internal <- cycles$metadata$internal
+  
+  siteIDs <- unique(sites)
+  df <-  data.frame(trajectory = siteIDs, n = NA, 
+                    length = NA, mean_speed = NA, mean_angle = NA,
+                    convexity = NA, variability = NA)
+  for(i in 1:length(siteIDs)) {
+    df$n[i] <- sum(sites==siteIDs[i]&internal)
+  }
+  df$length <- trajectoryLengths(cycles)$Path
+  df$mean_speed <- trajectorySpeeds(cycles)$Path
+  df$convexity <- cycleConvexity(x,
+                                 cycleDuration,
+                                 dates,
+                                 startdate,
+                                 externalBoundary,
+                                 minEcolStates)
+  df$mean_angle <- (df$convexity*360)/df$n
+  df$variability <- trajectoryVariability(cycles)
+  return(df)
+}

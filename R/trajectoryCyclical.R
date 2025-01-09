@@ -96,29 +96,41 @@
 #' @seealso \code{\link{trajectoryCyclicalPlots}}
 #' 
 #' @examples
-#' #First build a toy dataset
-#' timesToy <- 0:30 #The sampling times of the time series
-#' cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
-#' sitesToy <- rep(c("A"),length(timesToy)) #The sites sampled (only one named "A")
-#' trend <- 0.05 #this term will act as a trend displacing the regular cycles
+#' #First build a toy dataset with:
+#' #The sampling times of the time series
+#' timesToy <- 0:30 
+#' 
+#' #The duration of the cycles (i.e. the periodicity of the time series)
+#' cycleDurationToy <- 10 
+#' 
+#' #The sites sampled (only one named "A")
+#' sitesToy <- rep(c("A"),length(timesToy)) 
+#' 
+#' #And prepare a trend term
+#' trend <- 0.05
 #' 
 #' #Build cyclical data (note that we apply the trend only to x):
 #' x <- sin((timesToy*2*pi)/cycleDurationToy)+trend*timesToy
 #' y <- cos((timesToy*2*pi)/cycleDurationToy)
 #' matToy <- cbind(x,y)
 #' 
-#' #And express it as a distances:
+#' #And express it as distances:
 #' dToy <- dist(matToy)
 #' 
 #' #Make it an object of class trajectory:
-#' cyclicalTrajToy <- defineTrajectories(d = dToy, sites = sitesToy, times = timesToy)
+#' cyclicalTrajToy <- defineTrajectories(d = dToy,
+#'                                       sites = sitesToy,
+#'                                       times = timesToy)
 #' 
 #' #At this stage, cycles and / or fixed date trajectories are not isolated.
 #' #This done with the two CETA "extract" functions:
-#' cyclesToy <- extractCycles(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
+#' cyclesToy <- extractCycles(x = cyclicalTrajToy,
+#'                            cycleDuration = cycleDurationToy)
+#' fdTrajToy <- extractFixedDateTrajectories(x = cyclicalTrajToy,
+#'                                           cycleDuration = cycleDurationToy)
 #' 
-#' #The output of these functions can be used as input for other ETA functions to get metrics of interest
+#' #The output of these functions can be used as input
+#' #for other ETA functions to get metrics of interest
 #' #such as trajectory length:
 #' trajectoryLengths(x = cyclesToy)
 #' trajectoryLengths(x = fdTrajToy)
@@ -127,13 +139,16 @@
 #' trajectoryDistances(x = cyclesToy)
 #' trajectoryDistances(x = fdTrajToy)
 #' 
-#' #In addition CETA adds two additional specific metrics (cycle convexity, and computation of cyclical shifts).
-#' #For reasons explain above, they require the same inputs as function extractCycles():
-#' cycleConvexity(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' #By the way, it is expect to get a NA with the first cycle in this example,
-#' #Cycle convexity cannot be computed right at the start or end of the time series
-#' cycleShifts(x = cyclicalTrajToy, cycleDuration = cycleDurationToy)
-#' #Note that because our cycles are perfectly regular here, the cyclicalShift computed are all 0 (or close because of R's computing approximations)
+#' #In addition CETA adds two additional specific metrics.
+#' #that require the same inputs as function extractCycles():
+#' cycleConvexity(x = cyclicalTrajToy,
+#'                cycleDuration = cycleDurationToy)
+#' #The NA with the first cycle, is expected:
+#' #Cycle convexity cannot be computed right at the boundary of the time series
+#' cycleShifts(x = cyclicalTrajToy,
+#'             cycleDuration = cycleDurationToy)
+#' #Note that because our cycles are perfectly regular here, the cyclicalShift
+#' #computed are all 0 (or close because of R's computing approximations)
 #' 
 #'
 #'

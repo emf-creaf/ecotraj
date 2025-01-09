@@ -108,7 +108,7 @@ TrajSec <- extractTrajectorySections(x,
                                      BCstart = rep("internal",3),
                                      BCend = rep("internal",3))
 #extractTrajectorySections() works from distances, 
-#for representation using trajectoryPlot(),we must first perform a PCoA:
+#so for representation using trajectoryPlot(),we must first perform a PCoA:
 Newxy <- cmdscale(TrajSec$d)
 trajectoryPlot(Newxy,
                sites = TrajSec$metadata$sections,

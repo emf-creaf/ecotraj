@@ -75,6 +75,48 @@ IMPORTANT: Trajectory sections comprises both "internal" and "external" ecologic
 }
 Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{extractTrajectorySections}.
 }
+\examples{
+#Description of sites and surveys
+sites <- c("1","1","1","2","2","2")
+surveys <- c(1, 2, 3, 1, 2, 3)
+times <- c(0, 1.5, 3, 0, 1.5, 3)
+  
+#Raw data table
+xy <- matrix(0, nrow=6, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4:6,1] <- 0.5
+xy[4:6,2] <- xy[1:3,2]
+xy[6,1]<-1
+
+#Draw trajectories
+trajectoryPlot(xy, sites, surveys,  
+               traj.colors = c("black","red"), lwd = 2)
+               
+#Distance matrix
+d <- dist(xy)
+d
+  
+#Trajectory data
+x <- defineTrajectories(d, sites, surveys, times)
+
+#Cutting some trajectory sections in those trajectories
+TrajSec <- extractTrajectorySections(x,
+                                     Traj = c("1","1","2"),
+                                     tstart = c(0,1,0.7),
+                                     tend = c(1.2,2.5,2),
+                                     BCstart = rep("internal",3),
+                                     BCend = rep("internal",3))
+#extractTrajectorySections() works from distances, 
+#for representation using trajectoryPlot(),we must first perform a PCoA:
+Newxy <- cmdscale(TrajSec$d)
+trajectoryPlot(Newxy,
+               sites = TrajSec$metadata$sections,
+               surveys = TrajSec$metadata$surveys,
+               traj.colors = c("black","grey","red"),lwd = 2)
+
+
+}
 \author{
 Nicolas Djeghri, UBO
 

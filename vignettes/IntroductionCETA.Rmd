@@ -57,7 +57,7 @@ sitesToy <- rep(c("A"),length(timesToy))
 noise <- 0.05
 trend <- 0.05
 
-#Make cyclical data (note that we apply the trend only to x:
+#Make cyclical data (note that we apply the trend only to x):
 x <- sin((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)+trend*timesToy
 y <- cos((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)
 matToy <- cbind(x,y)

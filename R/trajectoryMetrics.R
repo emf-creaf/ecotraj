@@ -152,8 +152,8 @@ trajectoryLengths<-function(x, relativeToInitial = FALSE, all=FALSE) {
   if(!all) {
     lengths = as.data.frame(matrix(NA, nrow=nsite, ncol=maxnsurveys))
     row.names(lengths)<-siteIDs
-    if(relativeToInitial) names(lengths)<-c(paste0("Lt1_t",as.character(2:(maxnsurveys))),"Trajectory")
-    else names(lengths)<-c(paste0("S",as.character(1:(maxnsurveys-1))),"Trajectory")
+    if(relativeToInitial) names(lengths)<-c(paste0("Lt1_t",as.character(2:(maxnsurveys))),"Path")
+    else names(lengths)<-c(paste0("S",as.character(1:(maxnsurveys-1))),"Path")
     for(i1 in 1:nsite) {
       ind_surv1 = which(sites==siteIDs[i1])
       #Surveys may not be in order
@@ -741,8 +741,8 @@ trajectoryMetrics <- function(x, add = TRUE) {
   for(i in 1:length(siteIDs)) {
     df$n[i] <- sum(sites==siteIDs[i])
   }
-  df$length <- trajectoryLengths(x)$Trajectory
-  df$mean_speed <- trajectorySpeeds(x)$Trajectory
+  df$length <- trajectoryLengths(x)$Path
+  df$mean_speed <- trajectorySpeeds(x)$Path
   df$mean_angle <- trajectoryAngles(x, add = add)$mean
   df$directionality <- trajectoryDirectionality(x, add = add)
   df$variability <- trajectoryVariability(x)
@@ -795,8 +795,8 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
     }
     x_i <- subsetTrajectories(x = x, site_selection = sites[i], survey_selection = surveys_window)
     df$n[i] <- length(surveys_window)
-    df$length[i] <- trajectoryLengths(x_i)$Trajectory
-    df$mean_speed[i] <- trajectorySpeeds(x_i)$Trajectory
+    df$length[i] <- trajectoryLengths(x_i)$Path
+    df$mean_speed[i] <- trajectorySpeeds(x_i)$Path
     if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
     if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
     df$variability[i] <- trajectoryVariability(x_i)

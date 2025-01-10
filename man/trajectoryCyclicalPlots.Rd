@@ -50,13 +50,12 @@ Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results
 }
 \description{
 Plotting functions for Cyclical Ecological Trajectory Analysis:
-}
-\details{
 \itemize{
 \item{Function \code{cyclePCoA} removes unwanted points (see details) and performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot.}
 \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
 }
-
+}
+\details{
 The functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} give adapted graphical representation of cycles and fixed-date trajectories using principal coordinate analysis (PCoA, see \code{\link{cmdscale}}).
 Function \code{cyclePCoA} handles external and potential interpolated ecological states so that they are correctly taken in account in PCoA (i.e. avoiding duplication, and reducing the influence of interpolated ecological states as much as possible). In case of centered cycles, the influence of these ecological states will grow as they will not correspond to duplications anymore.
 In case of centered cycles, the intended use is to set the parameter \code{centered} to \code{TRUE}.
@@ -103,6 +102,9 @@ cent_cyclesToy <- centerTrajectories(cyclesToy)
 cyclePCoA(cent_cyclesToy, centered = TRUE)
 
 
+}
+\references{
+Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
 }
 \seealso{
 \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}

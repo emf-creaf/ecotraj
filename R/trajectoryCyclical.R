@@ -94,6 +94,9 @@
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
+#' @references
+#' Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
+#' 
 #' @seealso \code{\link{trajectoryCyclicalPlots}}, \code{\link{trajectoryMetrics}}, \code{\link{trajectoryComparison}}
 #' 
 #' @examples

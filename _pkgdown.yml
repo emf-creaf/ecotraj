@@ -81,6 +81,8 @@ reference:
   - starts_with("segment")
 
 - title: Cyclical trajectory analysis
+  desc: Set of functions for cyclical trajectory analysis
+  contents: 
   - starts_with("cycleShifts")
   - starts_with("cycleMetrics")
   - starts_with("extractCycles")

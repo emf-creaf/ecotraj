@@ -1,7 +1,6 @@
 #' Cyclical trajectory plots
 #' 
 #' Plotting functions for Cyclical Ecological Trajectory Analysis:
-#' 
 #' \itemize{
 #'  \item{Function \code{cyclePCoA} removes unwanted points (see details) and performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot.}
 #'  \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
@@ -22,6 +21,8 @@
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
+#' @references
+#' Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
 #' 
 #' @seealso \code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
 #' 
@@ -68,7 +69,6 @@
 #' cyclePCoA(cent_cyclesToy, centered = TRUE)
 #' 
 #' 
-#' @rdname trajectoryCyclicalPlots
 #' @param x The full output of function \code{\link{extractCycles}} or \code{\link{extractFixedDateTrajectories}} as appropriate, an object of class \code{\link{cycles}} or \code{\link{fd.trajectories}}.
 #' @param centered Boolean. Have the cycles been centered? Default to FALSE.
 #' @param sites.colors The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.

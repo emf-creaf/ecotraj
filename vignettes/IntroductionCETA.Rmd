@@ -19,7 +19,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 1. Introduction
 
 ### 1.1 Going round in cycles, but go somewhere! What CETA does, and where it sits
-*Cyclical Ecological Trajectory Analysis* (CETA) is an extension of *Ecological Trajectory Analysis* (ETA) allowing it to handle trajectories presenting regular cyclical dynamics (e.g. seasons, day-night cycle). 
+*Cyclical Ecological Trajectory Analysis* (CETA) is an extension of *Ecological Trajectory Analysis* (ETA) allowing it to handle trajectories presenting regular cyclical dynamics (e.g. seasons, day-night cycle):
+
++ Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
+
 Before starting, it is important to clarify what CETA does and what it does not, as well as what we mean by *regular cyclical dynamics*.  
 
 Unlike many statistical procedures dedicated to time series, CETA does not aims to detect cyclicity. Rather, CETA aims at describing it and gaining insights into long-term changes in cyclical dynamics. Cyclicity must be known *a priori* from knowledge of the system under study or from another statistical analysis (e.g. eigenvector maps).  

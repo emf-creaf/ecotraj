@@ -108,6 +108,10 @@ variables.
   community ecology. Ecological Monographs 89, e01350
   (<https://doi.org/10.1002/ecm.1350>).
 
+- Djeghri et al (in preparation) Going round in cycles, but going
+  somewhere: Ecological Trajectory Analysis as a tool to decipher
+  seasonality and other cyclical dynamics.
+
 - Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G.,
   Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021a). Extending
   community trajectory analysis : New metrics and representation.

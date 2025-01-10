@@ -307,7 +307,7 @@ yearCycles <- yearCycles[unique(cyclesNSZoo$metadata$cycles)]
 sitesCycles <- sitesCycles[unique(cyclesNSZoo$metadata$cycles)]
 
 #put all descriptors together
-StatCyclesZoo <- data.frame(sitesCycles,yearCycles,cyclesZooLengths$Trajectory,cyclesZooConv)
+StatCyclesZoo <- data.frame(sitesCycles,yearCycles,cyclesZooLengths$Path,cyclesZooConv)
 SNScycles <- subset(StatCyclesZoo,sitesCycles=="SNS")
 NNScycles <- subset(StatCyclesZoo,sitesCycles=="NNS")
 
@@ -321,8 +321,8 @@ NNScycles <- NNScycles[as.character(1958:2021),]
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #First figure: Lengths
-plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Trajectory,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,5),col="red")
-points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Trajectory,type="l",col="blue")
+plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Path,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,5),col="red")
+points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Path,type="l",col="blue")
 ```
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
@@ -403,7 +403,7 @@ monthFDT <- monthFDT[unique(fdtrajNSZoo$metadata$fdT)]
 sitesFDT <- sitesFDT[unique(fdtrajNSZoo$metadata$fdT)]
 
 #put all descriptors together
-StatFDTZoo <- data.frame(sitesFDT,monthFDT,fdtrajZooLengths$Trajectory,fdtrajZooDir)
+StatFDTZoo <- data.frame(sitesFDT,monthFDT,fdtrajZooLengths$Path,fdtrajZooDir)
 SNSfdT <- subset(StatFDTZoo,sitesFDT=="SNS")
 NNSfdT <- subset(StatFDTZoo,sitesFDT=="NNS")
 
@@ -419,8 +419,8 @@ NNSfdT$monthFDT <- NNSfdT$monthFDT*12+0.5
 Before graphing them:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #First figure: Lengths
-plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Trajectory,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,25),col="red")
-points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Trajectory,type="l",col="blue")
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Path,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,25),col="red")
+points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Path,type="l",col="blue")
 ```
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}

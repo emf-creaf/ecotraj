@@ -1,12 +1,14 @@
-pandoc: 3.1.11
-pkgdown: 2.1.0
+pandoc: '3.2'
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  Dissimilarities: Dissimilarities.html
+  IntroductionCETA: IntroductionCETA.html
   IntroductionEQA: IntroductionEQA.html
   IntroductionETA: IntroductionETA.html
   SITA: SITA.html
-  Transformation: Transformation.html
-last_built: 2024-08-26T10:00Z
+  TransformingTrajectories: TransformingTrajectories.html
+last_built: 2025-01-10T11:50Z
 urls:
   reference: https://emf-creaf.github.io/ecotraj/reference
   article: https://emf-creaf.github.io/ecotraj/articles

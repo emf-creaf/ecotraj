@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Stable Isotope Trajectory Analysis (SITA)">
 </head>
 <body>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,8 +41,12 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><h6 class="dropdown-header" data-toc-skip>Ecological Trajectory Analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionETA.html">Introduction to Ecological Trajectory Analysis (ETA)</a></li>
-    <li><a class="dropdown-item" href="../articles/Transformation.html">Transformation of dissimilarities in community data</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingTrajectories.html">Transforming trajectories</a></li>
+    <li><a class="dropdown-item" href="../articles/Dissimilarities.html">Dissimilarities in community data</a></li>
     <li><a class="dropdown-item" href="../articles/SITA.html">Stable Isotope Trajectory Analysis (SITA)</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Cyclical Ecological Trajectory Analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/IntroductionCETA.html">Introduction to Cyclical Ecological Trajectory Analysis (CETA)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Ecological Quality Assessment</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionEQA.html">Introduction to Ecological Quality Assessment (EQA)</a></li>
@@ -71,7 +75,7 @@
                         <h4 data-toc-skip class="author">Anthony
 STURBOIS</h4>
             
-            <h4 data-toc-skip class="date">2024-08-26</h4>
+            <h4 data-toc-skip class="date">2025-01-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/SITA.Rmd" class="external-link"><code>vignettes/SITA.Rmd</code></a></small>
       <div class="d-none name"><code>SITA.Rmd</code></div>
@@ -141,7 +145,7 @@ only those 30 sections were considered herein, from t1 (more recent
 values) to t30 (oldest values).</p>
 </div>
 <div class="section level3">
-<h3 id="trajectory-metrics">3.2 Trajectory metrics<a class="anchor" aria-label="anchor" href="#trajectory-metrics"></a>
+<h3 id="trajectory-metrics-on-stable-isotope-2d-space">3.2 Trajectory metrics on stable isotope 2D space<a class="anchor" aria-label="anchor" href="#trajectory-metrics-on-stable-isotope-2d-space"></a>
 </h3>
 <p>In this section, we illustrate how to calculate trajectory metrics to
 characterize the foraging strategy of each fur seal. In the following
@@ -150,7 +154,7 @@ sections, we show how to use these metrics as data to create plots.</p>
 (i.e. the distance between stable isotope compositions (i.e state) of
 each whisker section and the initial stable isotope composition):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                                 <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                                 <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Net_changes</span><span class="op">)</span></span></code></pre></div>
@@ -182,18 +186,18 @@ each whisker section and the initial stable isotope composition):</p>
 <span><span class="co">## 4 2.1019596 0.2814321 0.4237924 0.7473988 0.05360037 0.3889730 0.7375269</span></span>
 <span><span class="co">## 5 4.0823528 4.4187248 4.3025323 4.3520214 3.43035873 0.7908375 1.2435373</span></span>
 <span><span class="co">## 6 1.7282780 2.1873694 1.2698965 0.5391030 0.40993902 0.4085156 0.7709643</span></span>
-<span><span class="co">##   Trajectory</span></span>
-<span><span class="co">## 1   40.87543</span></span>
-<span><span class="co">## 2   21.87682</span></span>
-<span><span class="co">## 3   49.28114</span></span>
-<span><span class="co">## 4   36.05110</span></span>
-<span><span class="co">## 5   76.30333</span></span>
-<span><span class="co">## 6  107.19276</span></span></code></pre>
+<span><span class="co">##        Path</span></span>
+<span><span class="co">## 1  40.87543</span></span>
+<span><span class="co">## 2  21.87682</span></span>
+<span><span class="co">## 3  49.28114</span></span>
+<span><span class="co">## 4  36.05110</span></span>
+<span><span class="co">## 5  76.30333</span></span>
+<span><span class="co">## 6 107.19276</span></span></code></pre>
 <p>We then calculate trajectory segment lengths, i.e. the distance
 between the stable isotope composition of consecutive whisker sections
 in the stable isotope space:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Segment_lengths</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">Segment_lengths</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                                     <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                                     <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Segment_lengths</span><span class="op">)</span></span></code></pre></div>
@@ -225,19 +229,19 @@ in the stable isotope space:</p>
 <span><span class="co">## 4 0.25223997 0.2500180 1.8461901 0.6878982 0.3330540 0.7518151 0.3540353</span></span>
 <span><span class="co">## 5 2.03381243 3.4923735 0.4153228 0.1254313 0.1696408 0.9698892 2.7246227</span></span>
 <span><span class="co">## 6 1.48631692 7.3792361 0.6324634 0.9520021 0.9154939 0.1794937 0.3834071</span></span>
-<span><span class="co">##         S29 Trajectory</span></span>
-<span><span class="co">## 1 0.6836988   15.63293</span></span>
-<span><span class="co">## 2 0.3593800   14.60093</span></span>
-<span><span class="co">## 3 0.3359345   19.59814</span></span>
-<span><span class="co">## 4 0.5050881   21.38160</span></span>
-<span><span class="co">## 5 1.8207584   28.96757</span></span>
-<span><span class="co">## 6 0.9149454   42.62136</span></span></code></pre>
+<span><span class="co">##         S29     Path</span></span>
+<span><span class="co">## 1 0.6836988 15.63293</span></span>
+<span><span class="co">## 2 0.3593800 14.60093</span></span>
+<span><span class="co">## 3 0.3359345 19.59814</span></span>
+<span><span class="co">## 4 0.5050881 21.38160</span></span>
+<span><span class="co">## 5 1.8207584 28.96757</span></span>
+<span><span class="co">## 6 0.9149454 42.62136</span></span></code></pre>
 <p>Finally, we determine the angle
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>)
 of consecutive trajectory segments with respect to the second axis of
 the 2D stable isotope space:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Angles</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">Angles</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                           <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>,</span>
 <span>                           <span class="va">furseals</span><span class="op">$</span><span class="va">Time</span>, betweenSegments<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Angles</span><span class="op">)</span></span></code></pre></div>
@@ -285,8 +289,9 @@ of their foraging strategy. We need first to calculate distances between
 pairs of complete trajectories in the stable isotope space:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">furseals</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>,<span class="st">"d15N"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
-<span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">furseals_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">furseals</span><span class="op">$</span><span class="va">ID_SITA</span><span class="op">)</span></span>
+<span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">furseals_x</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
+<span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a
 hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -416,7 +421,7 @@ were calculated in 2D
 space
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mn>13</mn><mi>C</mi><mi>/</mi><mi>δ</mi><mn>15</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">\delta 13C/\delta 15N</annotation></semantics></math>)
 and represented by range
-(15<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∘</mo><annotation encoding="application/x-tex">\circ</annotation></semantics></math>)
+(15<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∘</mi><annotation encoding="application/x-tex">\circ</annotation></semantics></math>)
 of direction. Bars size represent the number of trajectory segments (all
 individual within each trajectory clusters).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -484,15 +489,16 @@ clusters<a class="anchor" aria-label="anchor" href="#calculating-trajectory-metr
 each individual (i.e. the distance between stable isotope compositions
 at release and at recapture):</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>,<span class="va">pike</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">Net_changes</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>,<span class="va">pike</span><span class="op">$</span><span class="va">Time</span>, relativeToInitial<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Net_changes</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Net_changes"</span>, <span class="st">"Trajectory"</span><span class="op">)</span></span>
 <span><span class="va">pike</span><span class="op">$</span><span class="va">Net_Changes</span><span class="op">&lt;-</span><span class="va">Net_changes</span><span class="op">$</span><span class="va">Net_changes</span></span></code></pre></div>
 <p>Then, we can use function <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust()</a></code> to conduct a
-hierarchiacl clustering on the symmetric matrix <code>D</code>:</p>
+hierarchical clustering on the symmetric matrix <code>D</code>:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">pike</span><span class="op">[</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">D</span>,<span class="va">pike</span><span class="op">$</span><span class="va">ID</span>, surveys <span class="op">=</span> <span class="cn">NULL</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
-<span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pike_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">pike</span><span class="op">$</span><span class="va">ID</span><span class="op">)</span></span>
+<span><span class="va">Ds</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">pike_x</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span>,</span>
+<span>                        symmetrization <span class="op">=</span> <span class="st">"mean"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We cut the dendrogram at height <code>Hst</code> to obtain a vector
 of cluster membership and copy it in <code>pike</code>:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -630,8 +636,8 @@ Latitude, Longitude, Years, Angles and segment lenghts values:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">station</span></span>
 <span><span class="va">surveys</span><span class="op">&lt;-</span><span class="va">isoscape</span><span class="op">$</span><span class="va">Year</span></span>
-<span><span class="va">Angl</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">Length</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectorymetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></span>
+<span><span class="va">Angl</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryAngles2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span>, betweenSegments <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">Length</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths2D</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span>,<span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></span>
 <span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">isoscape</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">489</span>,<span class="op">]</span>,<span class="va">Angl</span>,<span class="va">Length</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Latitude"</span>,<span class="st">"Longitude"</span>,<span class="st">"d13C"</span>,<span class="st">"d15N"</span>,<span class="st">"Stations"</span>,<span class="st">"Years"</span>,<span class="st">"Angles"</span>,<span class="st">"Lengths"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
@@ -873,11 +879,11 @@ and -
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Miquel De Cáceres, Anthony Sturbois.</p>
+  <p>Developed by Miquel De Cáceres, Nicolas Djeghri, Anthony Sturbois.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

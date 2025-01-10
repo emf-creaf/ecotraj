@@ -10,8 +10,10 @@
 #' [ORCID](https://orcid.org/0000-0001-7132-2080)
 #'
 #' Authors: \itemize{
-#' \item{ Nicolas Djeghri}
-#' \item{ Anthony Sturbois}
+#' \item{ Nicolas Djeghri
+#' [ORCID](https://orcid.org/0000-0001-5740-3386)}
+#' \item{ Anthony Sturbois
+#' [ORCID](https://orcid.org/0000-0002-9219-4468)}
 #' }
 #' Contributors: \itemize{
 #' \item{ Javier De la Casa}

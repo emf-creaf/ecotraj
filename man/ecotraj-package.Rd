@@ -21,8 +21,10 @@ Useful links: \itemize{ \item{
 \href{https://orcid.org/0000-0001-7132-2080}{ORCID}
 
 Authors: \itemize{
-\item{ Nicolas Djeghri}
-\item{ Anthony Sturbois}
+\item{ Nicolas Djeghri
+\href{https://orcid.org/0000-0001-5740-3386}{ORCID}}
+\item{ Anthony Sturbois
+\href{https://orcid.org/0000-0002-9219-4468}{ORCID}}
 }
 Contributors: \itemize{
 \item{ Javier De la Casa}

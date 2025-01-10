@@ -6,8 +6,8 @@ Date: 2024-12-29
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
-	person('Anthony', 'Sturbois', role = 'aut'),
-	person('Nicolas', 'Djeghri', role = 'aut'),
+	person('Nicolas', 'Djeghri', role = 'aut', comment = c(ORCID = "0000-0001-5740-3386")),
+	person('Anthony', 'Sturbois', role = 'aut', comment = c(ORCID = "0000-0002-9219-4468")),
 	person('Javier', 'De la Casa', role = 'ctb'))
 Description: Assists ecologists in the analysis of temporal changes of 
     ecosystems, defined as trajectories on a chosen multivariate space, by providing a set of 

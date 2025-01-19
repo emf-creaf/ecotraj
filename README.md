@@ -66,6 +66,7 @@ framework:
 | `trajectoryDirectionality()` | Assesses the level directionality of each trajectory. |
 | `trajectoryVariability()` | Assesses the internal variability within each trajectory. |
 | `trajectoryDistances()` | Estimates distances between pairs of ecosystem trajectories. |
+| `trajectoryShifts()` | Calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds. |
 | `trajectoryPlot()` | Draws trajectories in a 2D-plot corresponding to the input coordinates. |
 | `trajectoryPCoA()` | Performs principal coordinates analysis and draws trajectories in the ordination scatterplot. |
 | `trajectoryMetrics()` | Calculates several (whole path) metrics on trajectories. |

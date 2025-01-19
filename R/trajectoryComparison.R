@@ -512,8 +512,8 @@ trajectoryShifts<-function(x, add = TRUE){
           if(!is.na(rp) & !is.na(s)) {
             t0 <- times[(sites == ref_traj) & (surveys == s)]
             t1 <- times[(sites == ref_traj) & (surveys == (s+1))]
-            res_ref$time_ref[i] <- t0 + (t1-t0)*rp
-            res_ref$shift[i] <- res_ref$time_ref[i] - res_ref$time[i] 
+            res_ref$timeRef[i] <- t0 + (t1-t0)*rp
+            res_ref$shift[i] <- res_ref$timeRef[i] - res_ref$time[i] 
           }
         }
       }

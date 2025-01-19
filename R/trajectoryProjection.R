@@ -7,6 +7,7 @@
 #' @param trajectory An integer vector of the ecosystem states conforming the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
 #' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
+#' @param force Flag to indicate that when projection falls out of the reference trajectory for a given, the closest point in the trajectory will be used. 
 #'
 #' @returns 
 #' A data frame with the following columns:
@@ -18,7 +19,7 @@
 #' }
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' @export
-trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) {
+trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE, force = TRUE) {
   if(length(trajectory)<2) stop("Trajectory needs to include at least two states")
   if(length(trajectory)!=length(unique(trajectory))) stop("Trajectory states must be different")
   dmat <- as.matrix(d)
@@ -42,11 +43,16 @@ trajectoryProjection<-function(d, target, trajectory, tol = 0.000001, add=TRUE) 
   dgrad <- rep(NA, npoints)
   posgradseg <- rep(NA, npoints)
   posgradtraj <- rep(NA, npoints)
-  
+
   for(i in 1:npoints) {
     for(j in 1:nsteps) {
-      p <- .distanceToSegmentC(dsteps[j], d2ref[i, j], d2ref[i, j+1], add)
-      if((p[1]>-tol) & (p[2]>-tol)) {
+      if(force) {
+        p <- .distanceToSegmentC(dsteps[j], d2ref[i, j], d2ref[i, j+1], add)
+      } else {
+        p <-.projectionC(dsteps[j], d2ref[i, j], d2ref[i, j+1], add)
+      }
+      if((!is.na(p[3])) & (p[1]>-tol) & (p[2]>-tol)) {
+        p[1] <- max(p[1], 0.0)
         projA1[i,j] <- p[1]
         if(is.na(dgrad[i])) {
           dgrad[i] <- p[3]

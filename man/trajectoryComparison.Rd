@@ -5,6 +5,7 @@
 \alias{segmentDistances}
 \alias{trajectoryDistances}
 \alias{trajectoryConvergence}
+\alias{trajectoryShifts}
 \title{Trajectory comparison}
 \usage{
 segmentDistances(x, distance.type = "directed-segment", add = TRUE)
@@ -17,6 +18,8 @@ trajectoryDistances(
 )
 
 trajectoryConvergence(x, symmetric = FALSE, add = TRUE)
+
+trajectoryShifts(x, add = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -45,6 +48,16 @@ Function \code{trajectoryConvergence} returns a list with two elements:
 \item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
 \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
 }
+Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
+\itemize{
+\item{\code{reference}: the site (trajectory) that is taken as reference for shift evaluation.}
+\item{\code{site}: the target site (trajectory) for which shifts have been computed.}
+\item{\code{survey}: the target trajectory survey for which shift is computed.}
+\item{\code{time}: the time corresponding to target trajectory survey.}
+\item{\code{timeRef}: the time associated to the projected ecological state onto the reference trajectory.}
+\item{\code{shift}: the time difference between the time of the target survey and the time of projected ecological state onto the reference trajectory. Positive values mean faster
+trajectories and negative values mean slower trajectories.}
+}
 }
 \description{
 Functions to compare pairs of trajectories or trajectory segments.
@@ -52,6 +65,7 @@ Functions to compare pairs of trajectories or trajectory segments.
 \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
+\item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.}
 }
 }
 \details{
@@ -77,6 +91,10 @@ In the case of function \code{trajectoryDistances} the following values are poss
 \item{\code{SPD}: Segment path distance.}
 \item{\code{DSPD}: Directed segment path distance (default).}
 }
+
+Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
+evaluates shifts (advances or delays) due to different trajectory speeds. This is done using calls to \code{\link{trajectoryProjection}}.
+Whenever the projection does not exist the shift cannot be evaluated (missing values are returned).
 }
 \examples{
 #Description of sites and surveys
@@ -122,6 +140,33 @@ trajectoryDistances(x, distance.type = "DSPD")
 #Trajectory convergence/divergence
 trajectoryConvergence(x)
 
+#### Example of trajectory shifts
+#Description of sites and surveys
+sites2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+surveys2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+  
+#Raw data table
+xy2<-matrix(0, nrow=12, ncol=2)
+xy2[2,2]<-1
+xy2[3,2]<-2
+xy2[4,2]<-3
+xy2[5:8,1] <- 0.25
+xy2[5:8,2] <- xy2[1:4,2]*1.3 # 1.3 times faster
+xy2[9:12,1] <- 0.5
+xy2[9:12,2] <- xy2[1:4,2]*1.6  # 1.6 times faster
+  
+#Draw trajectories
+trajectoryPlot(xy2, sites, surveys,  
+               traj.colors = c("black","red", "blue"), lwd = 2)
+
+#Trajectory data
+x2 <- defineTrajectories(dist(xy2), sites, surveys)
+
+#Check that second and third trajectories are faster
+trajectorySpeeds(x2)
+
+#Trajectory shifts
+trajectoryShifts(x2)
 }
 \references{
 Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.

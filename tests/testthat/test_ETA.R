@@ -39,6 +39,7 @@ test_that("Trajectories can be analyzed",{
   expect_s3_class(trajectoryDistances(x), "dist")
   expect_type(trajectoryConvergence(x), "list")
   expect_s3_class(trajectoryMetrics(x), "data.frame")
+  expect_s3_class(trajectoryShifts(x), "data.frame")
   expect_s3_class(trajectoryWindowMetrics(x, 1), "data.frame")
 })
 
@@ -68,4 +69,5 @@ test_that("Trajectory analysis gives the same result after shuffling surveys",{
   expect_equal(segmentDistances(x), segmentDistances(x2))
   expect_equal(trajectoryDistances(x), trajectoryDistances(x2))
   expect_equal(trajectoryConvergence(x), trajectoryConvergence(x2))
+  expect_equal(trajectoryShifts(x), trajectoryShifts(x2))
 })

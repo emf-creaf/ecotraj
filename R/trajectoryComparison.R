@@ -5,6 +5,7 @@
 #' \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 #' \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
+#' \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.}
 #' }
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
@@ -36,6 +37,10 @@
 #'     \item{\code{DSPD}: Directed segment path distance (default).}
 #'  }
 #'  
+#'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
+#'  evaluates shifts (advances or delays) due to different trajectory speeds. This is done using calls to \code{\link{trajectoryProjection}}. 
+#'  Whenever the projection does not exist the shift cannot be evaluated (missing values are returned).
+#'  
 #' @returns 
 #' Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
 #' 
@@ -51,6 +56,16 @@
 #' \itemize{
 #'   \item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
 #'   \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
+#' }
+#' Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
+#' \itemize{
+#'      \item{\code{reference}: the site (trajectory) that is taken as reference for shift evaluation.}
+#'      \item{\code{site}: the target site (trajectory) for which shifts have been computed.}
+#'      \item{\code{survey}: the target trajectory survey for which shift is computed.}
+#'      \item{\code{time}: the time corresponding to target trajectory survey.}
+#'      \item{\code{timeRef}: the time associated to the projected ecological state onto the reference trajectory.}
+#'      \item{\code{shift}: the time difference between the time of the target survey and the time of projected ecological state onto the reference trajectory. Positive values mean faster 
+#'      trajectories and negative values mean slower trajectories.}
 #' }
 #' 
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -106,6 +121,33 @@
 #' #Trajectory convergence/divergence
 #' trajectoryConvergence(x)
 #' 
+#' #### Example of trajectory shifts
+#' #Description of sites and surveys
+#' sites2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+#' surveys2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+#'   
+#' #Raw data table
+#' xy2<-matrix(0, nrow=12, ncol=2)
+#' xy2[2,2]<-1
+#' xy2[3,2]<-2
+#' xy2[4,2]<-3
+#' xy2[5:8,1] <- 0.25
+#' xy2[5:8,2] <- xy2[1:4,2]*1.3 # 1.3 times faster
+#' xy2[9:12,1] <- 0.5
+#' xy2[9:12,2] <- xy2[1:4,2]*1.6  # 1.6 times faster
+#'   
+#' #Draw trajectories
+#' trajectoryPlot(xy2, sites, surveys,  
+#'                traj.colors = c("black","red", "blue"), lwd = 2)
+#' 
+#' #Trajectory data
+#' x2 <- defineTrajectories(dist(xy2), sites, surveys)
+#' 
+#' #Check that second and third trajectories are faster
+#' trajectorySpeeds(x2)
+#' 
+#' #Trajectory shifts
+#' trajectoryShifts(x2)
 #' @name trajectoryComparison
 #' @export
 segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
@@ -420,4 +462,67 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
     }
   }
   return(list(tau = tau, p.value = p.value))
+}
+
+#' @rdname trajectoryComparison
+#' @export
+trajectoryShifts<-function(x, add = TRUE){
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  d <- x$d
+  surveys <- x$metadata$surveys
+  times <- x$metadata$times
+  # This allows treating fixed date trajectories as sites for plotting purposes
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    warning("Function cycleShifts() may be more appropriate for cycles")
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
+  }
+  siteIDs <- unique(sites)
+  nsite <- length(siteIDs)
+  
+  df_res <- NULL
+  for(ref_traj in siteIDs) {
+    comp_ref <- which(sites==ref_traj)
+    comp_ref <- comp_ref[order(surveys[sites==ref_traj])]
+    for(comp_traj in siteIDs[siteIDs!=ref_traj]) {
+      comp_target <- which(sites == comp_traj)
+      comp_target <- comp_target[order(surveys[sites==comp_traj])]
+      n_target <- length(comp_target)
+      res_ref <- data.frame(reference = rep(ref_traj, n_target), 
+                            site = rep(comp_traj, n_target), 
+                            survey = rep(NA, n_target),
+                            time = rep(NA, n_target),
+                            timeRef = rep(NA, n_target),
+                            shift = rep(NA, n_target))
+      if(n_target>0) {
+        res_ref$survey <- surveys[comp_target]
+        res_ref$time <- times[comp_target]
+        t_proj <- trajectoryProjection(d, 
+                                       target = comp_target, 
+                                       trajectory = comp_ref, add = add, 
+                                       force = FALSE)
+        for(i in 1:n_target) {
+          s <- t_proj$segment[i]
+          rp <- t_proj$relativeSegmentPosition[i]
+          if(!is.na(rp) & !is.na(s)) {
+            t0 <- times[(sites == ref_traj) & (surveys == s)]
+            t1 <- times[(sites == ref_traj) & (surveys == (s+1))]
+            res_ref$time_ref[i] <- t0 + (t1-t0)*rp
+            res_ref$shift[i] <- res_ref$time_ref[i] - res_ref$time[i] 
+          }
+        }
+      }
+      if(is.null(df_res)) {
+        df_res <- res_ref
+      } else {
+        df_res <- rbind(df_res, res_ref)
+      }
+    }
+  }
+  return(df_res)
 }

@@ -53,6 +53,11 @@ bool ismetric(NumericMatrix dmat, double tol=0.0001) {
 // param dref Distance between the two segment endpoints
 // param d1 Distance from the target point to the initial segment endpoint
 // param d2 Distance from the target point to the final segment endpoint
+//
+// returns a vector with:
+//   - The distance of between the START of the reference segment and the projected point 
+//   - The distance of between the END of the reference segment and the projected point 
+//   - The distance height (rejection) of the projection
 // [[Rcpp::export(".projectionC")]]
 NumericVector projection(double dref, double d1, double d2, bool add = true) {
   if(add) { //Correct triangle inequality if needed

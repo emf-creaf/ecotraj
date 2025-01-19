@@ -4,7 +4,14 @@
 \alias{trajectoryProjection}
 \title{Trajectory projection}
 \usage{
-trajectoryProjection(d, target, trajectory, tol = 1e-06, add = TRUE)
+trajectoryProjection(
+  d,
+  target,
+  trajectory,
+  tol = 1e-06,
+  add = TRUE,
+  force = TRUE
+)
 }
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
@@ -16,6 +23,8 @@ trajectoryProjection(d, target, trajectory, tol = 1e-06, add = TRUE)
 \item{tol}{Numerical tolerance value to determine that projection of a point lies within the trajectory.}
 
 \item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
+
+\item{force}{Flag to indicate that when projection falls out of the reference trajectory for a given, the closest point in the trajectory will be used.}
 }
 \value{
 A data frame with the following columns:

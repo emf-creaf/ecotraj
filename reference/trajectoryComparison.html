@@ -3,11 +3,13 @@
 Function segmentDistances calculates the distance between pairs of trajectory segments.
 Function trajectoryDistances calculates the distance between pairs of trajectories.
 Function trajectoryConvergence performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.
+Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.
 
 "><meta property="og:description" content="Functions to compare pairs of trajectories or trajectory segments.
 Function segmentDistances calculates the distance between pairs of trajectory segments.
 Function trajectoryDistances calculates the distance between pairs of trajectories.
 Function trajectoryConvergence performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.
+Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.
 
 "><meta property="og:image" content="https://emf-creaf.github.io/ecotraj/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -60,6 +62,7 @@ Function trajectoryConvergence performs the Mann-Kendall trend test on the dista
     <p>Functions to compare pairs of trajectories or trajectory segments.</p><ul><li><p>Function <code>segmentDistances</code> calculates the distance between pairs of trajectory segments.</p></li>
 <li><p>Function <code>trajectoryDistances</code> calculates the distance between pairs of trajectories.</p></li>
 <li><p>Function <code>trajectoryConvergence</code> performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.</p></li>
+<li><p>Function <code>trajectoryShifts</code> calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -73,7 +76,9 @@ Function trajectoryConvergence performs the Mann-Kendall trend test on the dista
 <span>  add <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">trajectoryConvergence</span><span class="op">(</span><span class="va">x</span>, symmetric <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">trajectoryConvergence</span><span class="op">(</span><span class="va">x</span>, symmetric <span class="op">=</span> <span class="cn">FALSE</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">trajectoryShifts</span><span class="op">(</span><span class="va">x</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -110,6 +115,13 @@ Function trajectoryConvergence performs the Mann-Kendall trend test on the dista
 <li><p><code>Dfinini</code>: Distance matrix between final points of one segment and the initial point of the other.</p></li>
 </ul><p>Function <code>trajectoryConvergence</code> returns a list with two elements:</p><ul><li><p><code>tau</code>: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If <code>symmetric=TRUE</code> then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.</p></li>
 <li><p><code>p.value</code>: A matrix with the p-value of the convergence/divergence test between trajectories. If <code>symmetric=TRUE</code> then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.</p></li>
+</ul><p>Function <code>trajectoryShifts</code> returns an object of class <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> describing trajectory shifts (i.e. advances and delays). The columns of the <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> are:</p><ul><li><p><code>reference</code>: the site (trajectory) that is taken as reference for shift evaluation.</p></li>
+<li><p><code>site</code>: the target site (trajectory) for which shifts have been computed.</p></li>
+<li><p><code>survey</code>: the target trajectory survey for which shift is computed.</p></li>
+<li><p><code>time</code>: the time corresponding to target trajectory survey.</p></li>
+<li><p><code>timeRef</code>: the time associated to the projected ecological state onto the reference trajectory.</p></li>
+<li><p><code>shift</code>: the time difference between the time of the target survey and the time of projected ecological state onto the reference trajectory. Positive values mean faster
+trajectories and negative values mean slower trajectories.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -126,7 +138,10 @@ If parameter '<code>add</code>' is set to FALSE and problems of triangle inequal
 </ul><p>In the case of function <code>trajectoryDistances</code> the following values are possible (De Cáceres et al. 2019):</p><ul><li><p><code>Hausdorff</code>: Hausdorff distance between two trajectories.</p></li>
 <li><p><code>SPD</code>: Segment path distance.</p></li>
 <li><p><code>DSPD</code>: Directed segment path distance (default).</p></li>
-</ul></div>
+</ul><p>Function <code>trajectoryShifts</code> is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
+evaluates shifts (advances or delays) due to different trajectory speeds. This is done using calls to <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>.
+Whenever the projection does not exist the shift cannot be evaluated (missing values are returned).</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Besse, P., Guillouet, B., Loubes, J.-M. &amp; François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.</p>
@@ -394,6 +409,63 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.1485617 0.3081795        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#### Example of trajectory shifts</span></span></span>
+<span class="r-in"><span><span class="co">#Description of sites and surveys</span></span></span>
+<span class="r-in"><span><span class="va">sites2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">surveys2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">#Raw data table</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fl">1.3</span> <span class="co"># 1.3 times faster</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span></span>
+<span class="r-in"><span><span class="va">xy2</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fl">1.6</span>  <span class="co"># 1.6 times faster</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">#Draw trajectories</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="trajectoryPlot.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy2</span>, <span class="va">sites</span>, <span class="va">surveys</span>,  </span></span>
+<span class="r-in"><span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="trajectoryComparison-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Trajectory data</span></span></span>
+<span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy2</span><span class="op">)</span>, <span class="va">sites</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Check that second and third trajectories are faster</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="trajectoryMetrics.html">trajectorySpeeds</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    S1  S2  S3 Path</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.0 1.0 1.0  1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.3 1.3 1.3  1.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.6 1.6 1.6  1.6</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#Trajectory shifts</span></span></span>
+<span class="r-in"><span><span class="fu">trajectoryShifts</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    reference site survey time timeRef      shift time_ref</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1    2      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          1    2      2    2      NA  0.3000000 2.300000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          1    2      3    3      NA  0.6000000 3.600000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          1    2      4    4      NA         NA 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          1    3      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          1    3      2    2      NA  0.6000000 2.600000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          1    3      3    3      NA         NA 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          1    3      4    4      NA         NA 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          2    1      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         2    1      2    2      NA -0.2307692 1.769231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         2    1      3    3      NA -0.4615385 2.538462</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         2    1      4    4      NA -0.6923077 3.307692</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13         2    3      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14         2    3      2    2      NA  0.2307692 2.230769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15         2    3      3    3      NA  0.4615385 3.461538</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16         2    3      4    4      NA         NA 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17         3    1      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18         3    1      2    2      NA -0.3750000 1.625000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19         3    1      3    3      NA -0.7500000 2.250000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20         3    1      4    4      NA -1.1250000 2.875000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21         3    2      1    1      NA  0.0000000 1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22         3    2      2    2      NA -0.1875000 1.812500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23         3    2      3    3      NA -0.3750000 2.625000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         3    2      4    4      NA -0.5625000 3.437500</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

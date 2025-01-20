@@ -177,8 +177,8 @@ extractCycles <- function(x,
                           cycleDuration,
                           dates = NULL,
                           startdate = NA,
-                          externalBoundary="end",
-                          minEcolStates=3)
+                          externalBoundary = "end",
+                          minEcolStates = 3)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
@@ -279,10 +279,10 @@ extractCycles <- function(x,
 #' @export 
 extractFixedDateTrajectories <- function (x,
                                           cycleDuration, 
-                                          dates=NULL,
-                                          fixedDate= NULL,
-                                          namesFixedDate=NULL,
-                                          minEcolStates=2)
+                                          dates = NULL,
+                                          fixedDate = NULL,
+                                          namesFixedDate = NULL,
+                                          minEcolStates = 2)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
@@ -352,8 +352,8 @@ cycleConvexity <- function(x,
                            cycleDuration,
                            dates = NULL,
                            startdate = NA,
-                           externalBoundary="end",
-                           minEcolStates=3,
+                           externalBoundary = "end",
+                           minEcolStates = 3,
                            add = TRUE)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
@@ -405,13 +405,15 @@ cycleConvexity <- function(x,
 #' @rdname trajectoryCyclical
 #' @param datesCS An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.
 #' @param centering An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.
+#' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' @export
 cycleShifts <- function (x,
                          cycleDuration,
                          dates = NULL,
                          datesCS = NULL,
-                         centering=TRUE,
-                         minEcolStates=3)
+                         centering = TRUE,
+                         minEcolStates = 3,
+                         add = TRUE)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
@@ -442,7 +444,7 @@ cycleShifts <- function (x,
     
     if (centering){
       Cycles <- centerTrajectories(Cycles,
-                                     exclude=which(Cycles$metadata$internal==FALSE))
+                                   exclude=which(Cycles$metadata$internal==FALSE))
     }
     
     for (j in 1:length(siteIDs)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
@@ -464,7 +466,8 @@ cycleShifts <- function (x,
           #Find out onto which segment of Cref the ecological states of interest are projected
           projCS <- trajectoryProjection(d=Cycles$d,
                                          target=dateTag,
-                                         trajectory=CrefTag)
+                                         trajectory=CrefTag,
+                                         add=add)
           
           segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
           
@@ -497,8 +500,8 @@ cycleMetrics <- function(x,
                          cycleDuration,
                          dates = NULL,
                          startdate = NA,
-                         externalBoundary="end",
-                         minEcolStates=3,
+                         externalBoundary = "end",
+                         minEcolStates = 3,
                          add = TRUE)
 {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")

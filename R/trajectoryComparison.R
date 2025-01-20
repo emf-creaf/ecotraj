@@ -5,7 +5,7 @@
 #' \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 #' \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
-#' \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds.}
+#' \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds or time lags.}
 #' }
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
@@ -38,8 +38,8 @@
 #'  }
 #'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
-#'  evaluates shifts (advances or delays) due to different trajectory speeds. This is done using calls to \code{\link{trajectoryProjection}}. 
-#'  Whenever the projection does not exist the shift cannot be evaluated (missing values are returned).
+#'  evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to \code{\link{trajectoryProjection}}. 
+#'  Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).
 #'  
 #' @returns 
 #' Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}). 
@@ -132,9 +132,9 @@
 #' xy2[3,2]<-2
 #' xy2[4,2]<-3
 #' xy2[5:8,1] <- 0.25
-#' xy2[5:8,2] <- xy2[1:4,2]*1.3 # 1.3 times faster
+#' xy2[5:8,2] <- xy2[1:4,2] + 0.5 # States are all shifted with respect to site "1"
 #' xy2[9:12,1] <- 0.5
-#' xy2[9:12,2] <- xy2[1:4,2]*1.6  # 1.6 times faster
+#' xy2[9:12,2] <- xy2[1:4,2]*1.25  # 1.25 times faster than site "1"
 #'   
 #' #Draw trajectories
 #' trajectoryPlot(xy2, sites, surveys,  
@@ -143,7 +143,7 @@
 #' #Trajectory data
 #' x2 <- defineTrajectories(dist(xy2), sites, surveys)
 #' 
-#' #Check that second and third trajectories are faster
+#' #Check that the third trajectory is faster
 #' trajectorySpeeds(x2)
 #' 
 #' #Trajectory shifts

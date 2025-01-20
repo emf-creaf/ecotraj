@@ -35,6 +35,7 @@
 #'     \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
 #'     \item{\code{SPD}: Segment path distance.}
 #'     \item{\code{DSPD}: Directed segment path distance (default).}
+#'     \item{\code{DTEX}: Time-explicit distance (experimental).}
 #'  }
 #'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
@@ -237,10 +238,11 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
 #' @export
 trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add=TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
-  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff"))
+  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "DTEX"))
   
   d <- x$d
   surveys <- x$metadata$surveys
+  times <- x$metadata$times
   # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
@@ -262,7 +264,7 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
   nseg <- sum(nsurveysite)-nsite
   
   #Init output
-  dtraj <- matrix(0, nrow=nsite, ncol = nsite)
+  dtraj <- matrix(NA, nrow=nsite, ncol = nsite)
   rownames(dtraj) <- siteIDs
   colnames(dtraj) <- siteIDs
   if(distance.type=="DSPD"){
@@ -387,6 +389,97 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
       }
     }
   } 
+  else if(distance.type=="DTEX"){
+    dmat = as.matrix(d)
+    for(i1 in 1:nsite) {
+      sel1_comp <- sites==siteIDs[i1]
+      for(i2 in 1:nsite) {
+        sel2_comp <- sites==siteIDs[i2]
+        # Selection of observations to compare
+        n1_comp <- sum(sel1_comp)
+        n2_comp <- sum(sel2_comp)
+        t_comp1 <-times[sel1_comp]
+        t_comp2 <-times[sel2_comp]
+        d_comp11 <- dmat[sel1_comp, sel1_comp]
+        d_comp22 <- dmat[sel2_comp, sel2_comp]
+        d_comp12 <-dmat[sel1_comp, sel2_comp]
+        #From 1 to 2
+        dvec1 <- rep(NA, n1_comp)
+        if(n1_comp>0 & n2_comp>0) {
+          for(j in 1:n1_comp) {
+            t_low <- NA
+            i_low <- NA
+            t_high <- NA
+            i_high <- NA
+            sel_leq <- (t_comp2 <= t_comp1[j])
+            sel_heq <- (t_comp2 >= t_comp1[j])
+            if(sum(sel_leq)>0) {
+              t_low <- max(t_comp2[sel_leq])
+              i_low <- which(t_comp2==t_low)
+            }
+            if(sum(sel_heq)>0) {
+              t_high <- min(t_comp2[sel_heq])
+              i_high <- which(t_comp2==t_high)
+            }
+            if(!is.na(i_low) & !is.na(i_high)) {
+              if(i_low != i_high) {
+                p <- (t_comp1[j] - t_low)/(t_high - t_low)
+                dref <- d_comp22[i_low, i_high]
+                d1 <- d_comp12[j,i_low]
+                d2 <- d_comp12[j,i_high]
+                # cat(paste0(j, " ", t_comp1[j], " ", dref, " ", d1, " ", d2, " ", p, "\n"))
+                dvec1[j] <- .distanceToInterpolatedC(dref, d1, d2, p, add = TRUE)
+              } else {
+                dvec1[j] <- d_comp12[j, i_low]
+              }
+            }
+          }
+        }
+        # names(dvec1) <- t_comp1
+        # print(dvec1)
+        
+        dtraj[i1,i2] <- mean(dvec1, na.rm=TRUE) 
+        #From 2 to 1
+        dvec2 <- rep(NA, n2_comp)
+        if(n2_comp>0 & n1_comp>0) {
+          for(j in 1:n2_comp) {
+            t_low <- NA
+            i_low <- NA
+            t_high <- NA
+            i_high <- NA
+            sel_leq <- (t_comp1 <= t_comp2[j])
+            sel_heq <- (t_comp1 >= t_comp2[j])
+            if(sum(sel_leq)>0) {
+              t_low <- max(t_comp1[sel_leq])
+              i_low <- which(t_comp1==t_low)
+            }
+            if(sum(sel_heq)>0) {
+              t_high <- min(t_comp1[sel_heq])
+              i_high <- which(t_comp1==t_high)
+            }
+            if(!is.na(i_low) & !is.na(i_high)) {
+              if(i_low != i_high) {
+                p <- (t_comp1[j] - t_low)/(t_high - t_low)
+                dref <- d_comp11[i_low, i_high]
+                d1 <- d_comp12[i_low,j]
+                d2 <- d_comp12[i_high,j]
+                dvec2[j] <- .distanceToInterpolatedC(dref, d1, d2, p, add = TRUE)
+              } else {
+                dvec2[j] <- d_comp12[i_low, j]
+              }
+            }
+          }
+        }
+        # names(dvec2) <- t_comp2
+        # print(dvec2)
+        dtraj[i2,i1] <- mean(dvec2, na.rm=TRUE) 
+        if(!is.null(symmetrization)) {
+          dtraj[i1,i2] <- (dtraj[i1,i2] + dtraj[i2,i1])/2
+          dtraj[i2,i1] <- dtraj[i1,i2]
+        }
+      }
+    }
+  }
   else stop("Wrong distance type")
   if(!is.null(symmetrization)) return(as.dist(dtraj))
   return(dtraj)

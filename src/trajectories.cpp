@@ -121,6 +121,31 @@ NumericVector distanceToSegment(double dref, double d1, double d2, bool add = tr
   return(p);
 }
 
+// Based on the law of cosines (https://en.wikipedia.org/wiki/Law_of_cosines)
+// For outer triangle we have
+// c1 = dref, b1 = d1, a1 = d2
+// b1^2 = a1^2 + c1^2 - 2*a1*c1*cos(beta1)
+// so that 
+//  -2*a1*cos(beta1) = (b1^2 - a1^2 - c1^2/c1
+//
+// For the inner triangle we have:
+// c2 = dref*(1-p), b2 = ?, a2 = d2 
+// b2^2 = a2^2 + c2^2 - 2*a2*c2*cos(beta2)
+//
+// Since a1 = a2 and beta1 = beta2, we have that
+//  -2*a1*cos(beta1) = -2*a2*cos(beta2)
+// And
+// b2^2 = a2^2 + c2*2 - c2*((b1^2 - a1^2 - c1^2/c1)
+// [[Rcpp::export(".distanceToInterpolatedC")]]
+double distanceToInterpolated(double dref, double d1, double d2, double p, bool add = true) {
+  double c2 = dref*(1.0 - p);
+  double dsq = (d2*d2) + (c2*c2) + c2*((d1*d1) - (d2*d2)  - (dref*dref))/dref;
+  if(add) {
+    dsq = std::max(0.0, dsq);
+  }
+  return(sqrt(dsq));
+}
+
 //
 // Distance between two segments
 //

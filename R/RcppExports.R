@@ -25,6 +25,10 @@
     .Call(`_ecotraj_distanceToSegment`, dref, d1, d2, add)
 }
 
+.distanceToInterpolatedC <- function(dref, d1, d2, p, add = TRUE) {
+    .Call(`_ecotraj_distanceToInterpolated`, dref, d1, d2, p, add)
+}
+
 .twoSegmentDistanceC <- function(dmat12, type = "directed-segment", add = TRUE) {
     .Call(`_ecotraj_twoSegmentDistance`, dmat12, type, add)
 }

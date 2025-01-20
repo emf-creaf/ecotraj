@@ -91,6 +91,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// distanceToInterpolated
+double distanceToInterpolated(double dref, double d1, double d2, double p, bool add);
+RcppExport SEXP _ecotraj_distanceToInterpolated(SEXP drefSEXP, SEXP d1SEXP, SEXP d2SEXP, SEXP pSEXP, SEXP addSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type dref(drefSEXP);
+    Rcpp::traits::input_parameter< double >::type d1(d1SEXP);
+    Rcpp::traits::input_parameter< double >::type d2(d2SEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
+    Rcpp::traits::input_parameter< bool >::type add(addSEXP);
+    rcpp_result_gen = Rcpp::wrap(distanceToInterpolated(dref, d1, d2, p, add));
+    return rcpp_result_gen;
+END_RCPP
+}
 // twoSegmentDistance
 double twoSegmentDistance(NumericMatrix dmat12, String type, bool add);
 RcppExport SEXP _ecotraj_twoSegmentDistance(SEXP dmat12SEXP, SEXP typeSEXP, SEXP addSEXP) {
@@ -136,6 +151,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ecotraj_projection", (DL_FUNC) &_ecotraj_projection, 4},
     {"_ecotraj_angularAttributeConsecutive", (DL_FUNC) &_ecotraj_angularAttributeConsecutive, 4},
     {"_ecotraj_distanceToSegment", (DL_FUNC) &_ecotraj_distanceToSegment, 4},
+    {"_ecotraj_distanceToInterpolated", (DL_FUNC) &_ecotraj_distanceToInterpolated, 5},
     {"_ecotraj_twoSegmentDistance", (DL_FUNC) &_ecotraj_twoSegmentDistance, 3},
     {"_ecotraj_distanceToClusters", (DL_FUNC) &_ecotraj_distanceToClusters, 2},
     {"_ecotraj_distanceBetweenClusters", (DL_FUNC) &_ecotraj_distanceBetweenClusters, 2},

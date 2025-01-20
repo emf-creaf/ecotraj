@@ -75,7 +75,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-01-19</h4>
+            <h4 data-toc-skip class="date">2025-01-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionETA.Rmd" class="external-link"><code>vignettes/IntroductionETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionETA.Rmd</code></div>
@@ -785,6 +785,79 @@ one uses (see eq. 11 in De Cáceres et al. 2019):</p>
 <span><span class="co">## 2 0.6523689 0.0000000 0.5196723</span></span>
 <span><span class="co">## 3 1.0590170 0.6232257 0.0000000</span></span></code></pre>
 </div>
+<div class="section level3">
+<h3 id="trajectory-shifts">4.4 Trajectory shifts<a class="anchor" aria-label="anchor" href="#trajectory-shifts"></a>
+</h3>
+<p>Sometimes different ecosystems follow the same or similar trajectory
+but with different speeds, or where sampling starts at a different point
+in the dynamic sequence. We can quantify those differences using
+function <code><a href="../reference/trajectoryComparison.html">trajectoryShifts()</a></code>. To illustrate this function,
+we will first build a small dataset of three linear trajectories, but
+where the second and the third are modified:</p>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Description of sites and times</span></span>
+<span><span class="va">sites2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span>
+<span><span class="va">times2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co">#Raw data table</span></span>
+<span><span class="va">xy2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">3</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="co"># States are all shifted with respect to site "1"</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
+<span><span class="va">xy2</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fl">1.25</span>  <span class="co"># 1.25 times faster than site "1"</span></span></code></pre></div>
+<p>We can see the differences graphically:</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">xy2</span>, <span class="va">sites2</span>,  </span>
+<span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
+<span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Trajectory 1"</span>, <span class="st">"Trajectory 2"</span>, <span class="st">"Trajectory 3"</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">"n"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>We now build the usual <code>trajectories</code> object:</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy2</span><span class="op">)</span>, sites <span class="op">=</span> <span class="va">sites2</span>, times <span class="op">=</span> <span class="va">times2</span><span class="op">)</span></span></code></pre></div>
+<p>We can check that indeed the third trajectory is faster using:</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectorySpeeds</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##     S1   S2   S3 Path</span></span>
+<span><span class="co">## 1 1.00 1.00 1.00 1.00</span></span>
+<span><span class="co">## 2 1.00 1.00 1.00 1.00</span></span>
+<span><span class="co">## 3 1.25 1.25 1.25 1.25</span></span></code></pre>
+<p>Function <code><a href="../reference/trajectoryComparison.html">trajectoryShifts()</a></code> allows comparing different
+observations to a reference trajectory. For example we can compare
+trajectory for sites “1” and “2”:</p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryShifts</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">x2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   reference site survey time timeRef shift</span></span>
+<span><span class="co">## 1         1    2      1    1     1.5   0.5</span></span>
+<span><span class="co">## 2         1    2      2    2     2.5   0.5</span></span>
+<span><span class="co">## 3         1    2      3    3     3.5   0.5</span></span>
+<span><span class="co">## 4         1    2      4    4      NA    NA</span></span>
+<span><span class="co">## 5         2    1      1    1      NA    NA</span></span>
+<span><span class="co">## 6         2    1      2    2     1.5  -0.5</span></span>
+<span><span class="co">## 7         2    1      3    3     2.5  -0.5</span></span>
+<span><span class="co">## 8         2    1      4    4     3.5  -0.5</span></span></code></pre>
+<p>Where we see that the observations of trajectory “2” correspond to
+states of trajectory “1” at 0.5 time units later in time. Surveys with
+missing values indicate that the projection of the target state cannot
+be determined (because the reference trajectory is too short).</p>
+<p>We can also compare trajectories “1” and “3”:</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryShifts</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">x2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"3"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   reference site survey time timeRef shift</span></span>
+<span><span class="co">## 1         1    3      1    1    1.00  0.00</span></span>
+<span><span class="co">## 2         1    3      2    2    2.25  0.25</span></span>
+<span><span class="co">## 3         1    3      3    3    3.50  0.50</span></span>
+<span><span class="co">## 4         1    3      4    4      NA    NA</span></span>
+<span><span class="co">## 5         3    1      1    1    1.00  0.00</span></span>
+<span><span class="co">## 6         3    1      2    2    1.80 -0.20</span></span>
+<span><span class="co">## 7         3    1      3    3    2.60 -0.40</span></span>
+<span><span class="co">## 8         3    1      4    4    3.40 -0.60</span></span></code></pre>
+<p>Here we see that shifts increase progressively, indicating the faster
+speed of trajectory “3”.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="structural-dynamics-in-permanent-plots">5. Structural dynamics in permanent plots<a class="anchor" aria-label="anchor" href="#structural-dynamics-in-permanent-plots"></a>
@@ -799,7 +872,7 @@ Previously forests consisted of largely mature stands, but some of them
 were affected by different disturbances during the sampling period
 (1972-2009) which includes 9 surveys. We begin our example by loading
 the data set, which includes 72 plot observations:</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"avoca"</span><span class="op">)</span></span></code></pre></div>
 <p>Community data is in form of an object
 <code>stratifiedvegdata</code>. To account for differences in tree
@@ -815,7 +888,7 @@ calculate distances between forest plot states in terms of structure and
 composition (see De Cáceres M, Legendre P, He F (2013) Dissimilarity
 measurements and the size structure of ecological communities. Methods
 Ecol Evol 4:1167–1177. <a href="https://doi.org/10.1111/2041-210X.12116" class="external-link uri">https://doi.org/10.1111/2041-210X.12116</a>):</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_D_man</span> <span class="op">&lt;-</span> <span class="fu">vegclust</span><span class="fu">::</span><span class="fu"><a href="https://emf-creaf.github.io/vegclust/reference/vegdiststruct.html" class="external-link">vegdiststruct</a></span><span class="op">(</span><span class="va">avoca_strat</span>, </span>
 <span>                                       method<span class="op">=</span><span class="st">"manhattan"</span>, </span>
 <span>                                       transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
@@ -828,7 +901,7 @@ data.</p>
 <p>We start by defining our trajectories, which implies combining the
 information about distances, sites and surveys (survey times are
 omitted):</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">avoca_D_man</span>,  </span>
 <span>                              sites <span class="op">=</span> <span class="va">avoca_sites</span>, </span>
 <span>                              surveys <span class="op">=</span> <span class="va">avoca_surveys</span><span class="op">)</span></span></code></pre></div>
@@ -842,13 +915,13 @@ of
 We use <code><a href="../reference/trajectoryPlot.html">trajectoryPCoA()</a></code> to display the relations between
 forest plot states in this space and to draw the trajectory of each
 plot:</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in cmdscale(d, eig = TRUE, add = TRUE, k = nrow(as.matrix(d)) - : only</span></span>
 <span><span class="co">## 70 of the first 71 eigenvalues are &gt; 0</span></span></code></pre>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/avoca_pcoa-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Note that in this case, the full
@@ -859,7 +932,7 @@ variance (correction for negative eigenvalues is included in the call to
 be careful when interpreting trajectories visually.</p>
 <p>Another option is to use mMDS to represent trajectories, which in
 this case produces a similar result:</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mMDS</span> <span class="op">&lt;-</span> <span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html" class="external-link">mds</a></span><span class="op">(</span><span class="va">avoca_D_man</span><span class="op">)</span></span>
 <span><span class="va">mMDS</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -870,7 +943,7 @@ this case produces a similar result:</p>
 <span><span class="co">## Number of objects: 72 </span></span>
 <span><span class="co">## Stress-1 value: 0.114 </span></span>
 <span><span class="co">## Number of iterations: 49</span></span></code></pre>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPlot</a></span><span class="op">(</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span>,  <span class="va">avoca_sites</span>, <span class="va">avoca_surveys</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -879,13 +952,13 @@ this case produces a similar result:</p>
 <p>One can inspect specific trajectories using
 <code><a href="../reference/subsetTrajectories.html">subsetTrajectories()</a></code>. This allows getting a better view of
 particular trajectories, here that of forest plot ‘3’:</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"3"</span><span class="op">)</span>,</span>
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/trajectory_3-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>In the right hand, we added a representation of the change in the
 mountain beech tree diameter distribution through time for trajectory of
@@ -893,13 +966,13 @@ forest plot ‘3’. The dynamics of this plot include mostly growth, which
 results in individuals moving from one diameter class to the other. The
 whole trajectory looks mostly directional. Let’s now inspect the
 trajectory of forest plot ‘4’:</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionETA_files/figure-html/trajectory_4-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>This second trajectory is less straight and seems to include a turn
 by the end of the sampling period, corresponding to the recruitment of
@@ -916,7 +989,7 @@ space (i.e., from matrix <code>avoca_D_man</code>). Using function
 forest plot ‘4’ is lengthier than that of plot ‘3’, mostly because
 includes a lengthier last segment (i.e. the recruitment of new
 individuals):</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##          S1        S2        S3        S4        S5        S6        S7</span></span>
 <span><span class="co">## 1 1.2173214 1.5911988 1.0976965 2.1173501 0.5238760 1.5863283 1.5750365</span></span>
@@ -940,7 +1013,7 @@ individuals):</p>
 function <code>trajectoryLengths</code>) we see that indeed the
 trajectory of ‘3’ is rather directional, but the angles of trajectory of
 ‘4’ are larger, on aveerage:</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_ang</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span>
 <span><span class="va">avoca_ang</span></span></code></pre></div>
 <pre><code><span><span class="co">##       S1-S2        S2-S3        S3-S4     S4-S5     S5-S6     S6-S7</span></span>
@@ -964,7 +1037,7 @@ trajectory of ‘3’ is rather directional, but the angles of trajectory of
 <p>By calling function <code><a href="../reference/trajectoryMetrics.html">trajectoryDirectionality()</a></code> we can
 confirm that the trajectory for site ‘4’ is less straight than that of
 site ‘3’:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span>
 <span><span class="va">avoca_dir</span></span></code></pre></div>
 <pre><code><span><span class="co">##         1         2         3         4         5         6         7         8 </span></span>
@@ -973,18 +1046,18 @@ site ‘3’:</p>
 <code><a href="../reference/trajectoryMetrics.html">trajectoryDirectionality()</a></code> and the mean resultant vector
 length that uses angular information only and assesses the constancy of
 angle values:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_rho</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">avoca_x</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">rho</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">avoca_rho</span>, <span class="va">avoca_dir</span>, xlab <span class="op">=</span> <span class="st">"rho(T)"</span>, ylab <span class="op">=</span> <span class="st">"dir(T)"</span>, type<span class="op">=</span><span class="st">"n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">avoca_rho</span>, <span class="va">avoca_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-32-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-38-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="distances-between-trajectories">5.4 Distances between trajectories<a class="anchor" aria-label="anchor" href="#distances-between-trajectories"></a>
 </h3>
 <p>We can calculate the resemblance between forest plot trajectories
 using <code><a href="../reference/trajectoryComparison.html">trajectoryDistances()</a></code>:</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_D_traj_man</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">avoca_x</span>, distance.type<span class="op">=</span><span class="st">"DSPD"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">avoca_D_traj_man</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       1     2     3     4     5     6     7</span></span>
@@ -1002,7 +1075,7 @@ with all trajectories, so probably it is position, rather than
 <em>shape</em> which has influenced this low value. The next pair of
 similar trajectories are those of the ‘3’-‘5’ pair. We can again use
 mMDS to produce an ordination of resemblances between trajectories:</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mMDS</span><span class="op">&lt;-</span><span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html" class="external-link">mds</a></span><span class="op">(</span><span class="va">avoca_D_traj_man</span><span class="op">)</span></span>
 <span><span class="va">mMDS</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -1013,7 +1086,7 @@ mMDS to produce an ordination of resemblances between trajectories:</p>
 <span><span class="co">## Number of objects: 8 </span></span>
 <span><span class="co">## Stress-1 value: 0.091 </span></span>
 <span><span class="co">## Number of iterations: 25</span></span></code></pre>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">&lt;-</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">y</span><span class="op">&lt;-</span><span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, type<span class="op">=</span><span class="st">"p"</span>, asp<span class="op">=</span><span class="fl">1</span>, xlab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Axis 1"</span><span class="op">)</span>, </span>

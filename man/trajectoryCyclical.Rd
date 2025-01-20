@@ -46,7 +46,8 @@ cycleShifts(
   dates = NULL,
   datesCS = NULL,
   centering = TRUE,
-  minEcolStates = 3
+  minEcolStates = 3,
+  add = TRUE
 )
 
 cycleMetrics(

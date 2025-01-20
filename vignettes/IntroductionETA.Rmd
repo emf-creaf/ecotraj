@@ -323,6 +323,59 @@ trajectoryDistances(x, distance.type = "DSPD", symmetrization = NULL)
 ```  
 
 
+### 4.4 Trajectory shifts
+Sometimes different ecosystems follow the same or similar trajectory but with different speeds, or where sampling starts at a different point in the dynamic sequence. We can quantify those differences using function `trajectoryShifts()`. To illustrate this function, we will first build a small dataset of three linear trajectories, but where the second and the third are modified:
+
+```{r}
+#Description of sites and times
+sites2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+times2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+  
+#Raw data table
+xy2<-matrix(0, nrow=12, ncol=2)
+xy2[2,2]<-1
+xy2[3,2]<-2
+xy2[4,2]<-3
+xy2[5:8,1] <- 0.25
+xy2[5:8,2] <- xy2[1:4,2] + 0.5 # States are all shifted with respect to site "1"
+xy2[9:12,1] <- 0.5
+xy2[9:12,2] <- xy2[1:4,2]*1.25  # 1.25 times faster than site "1"
+```
+
+We can see the differences graphically:
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPlot(xy2, sites2,  
+               traj.colors = c("black","red", "blue"), lwd = 2)
+legend("topright", col=c("black","red", "blue"), 
+       legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
+```
+
+
+We now build the usual `trajectories` object:
+```{r}
+x2 <- defineTrajectories(dist(xy2), sites = sites2, times = times2)
+```
+
+We can check that indeed the third trajectory is faster using:
+
+```{r}
+trajectorySpeeds(x2)
+```
+Function `trajectoryShifts()` allows comparing different observations to a reference trajectory. For example we can compare trajectory for sites "1" and "2":
+
+```{r}
+trajectoryShifts(subsetTrajectories(x2, c("1","2")))
+```
+Where we see that the observations of trajectory "2" correspond to states of trajectory "1" at 0.5 time units later in time. Surveys with missing values indicate that the projection of the target state cannot be determined (because the reference trajectory is too short).
+
+We can also compare trajectories "1" and "3":
+```{r}
+trajectoryShifts(subsetTrajectories(x2, c("1","3")))
+```
+
+Here we see that shifts increase progressively, indicating the faster speed of trajectory "3".
+
 
 ## 5. Structural dynamics in permanent plots
 

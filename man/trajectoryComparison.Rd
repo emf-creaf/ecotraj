@@ -143,7 +143,7 @@ trajectoryConvergence(x)
 #### Example of trajectory shifts
 #Description of sites and surveys
 sites2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
-surveys2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+times2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
   
 #Raw data table
 xy2<-matrix(0, nrow=12, ncol=2)
@@ -156,11 +156,11 @@ xy2[9:12,1] <- 0.5
 xy2[9:12,2] <- xy2[1:4,2]*1.25  # 1.25 times faster than site "1"
   
 #Draw trajectories
-trajectoryPlot(xy2, sites, surveys,  
+trajectoryPlot(xy2, sites2,  
                traj.colors = c("black","red", "blue"), lwd = 2)
 
 #Trajectory data
-x2 <- defineTrajectories(dist(xy2), sites, surveys)
+x2 <- defineTrajectories(dist(xy2), sites = sites2, times = times2)
 
 #Check that the third trajectory is faster
 trajectorySpeeds(x2)
@@ -179,4 +179,6 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF
+
+Nicolas Djeghri, UBO
 }

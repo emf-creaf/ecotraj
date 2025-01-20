@@ -77,6 +77,7 @@ reference:
   desc:  Set of functions to compare trajectories
   contents:
   - starts_with("trajectoryProjection")
+  - starts_with("trajectoryShifts")
   - starts_with("trajectoryDistance")
   - starts_with("segment")
 

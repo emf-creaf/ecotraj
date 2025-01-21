@@ -33,9 +33,9 @@
 #'  In the case of function \code{trajectoryDistances} the following values are possible (De \enc{Cáceres}{Caceres} et al. 2019):
 #'  \itemize{
 #'     \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
-#'     \item{\code{SPD}: Segment path distance.}
-#'     \item{\code{DSPD}: Directed segment path distance (default).}
-#'     \item{\code{TSD}: Time-sensitive distance (experimental).}
+#'     \item{\code{SPD}: Segment Path Distance.}
+#'     \item{\code{DSPD}: Directed Segment Path Distance (default).}
+#'     \item{\code{TSPD}: Time-Sensitive Path Distance (experimental).}
 #'  }
 #'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
@@ -238,7 +238,7 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
 #' @export
 trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add=TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
-  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "TSD"))
+  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "TSPD"))
   if(!is.null(symmetrization)) symmetrization <- match.arg(symmetrization, c("mean", "min", "max"))
   
   d <- x$d
@@ -390,7 +390,7 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
       }
     }
   } 
-  else if(distance.type=="TSD"){
+  else if(distance.type=="TSPD"){
     dmat = as.matrix(d)
     for(i1 in 1:nsite) {
       sel1_comp <- sites==siteIDs[i1]

@@ -30,7 +30,7 @@ library(ecotraj)
 
 ### 1.2 The three distance metrics
 
-Let $T_1$ and $T_2$ be two trajectories to be compared. The first distance metric is **Segment path distance (SPD)** (Besse et al. 2016), defined as the average of the distances between each *point* composing $T_1$ and $T_2$:
+Let $T_1$ and $T_2$ be two trajectories to be compared. The first distance metric is **Segment Path Distance (SPD)** (Besse et al. 2016), defined as the average of the distances between each *point* composing $T_1$ and $T_2$:
 
 \[D_{SP}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{pt}(x_{1i}, T_2)}\]
 
@@ -38,7 +38,7 @@ where $D_{pt}$ is the *distance between a point a a trajectory*. SPD is not symm
 
 \[D_{SSP}(T_1, T_2) = \frac{D_{SP}(T_1, T_2) + D_{SP}(T_2, T_1)}{2}\]
 
-SPD is appropriate to compare the *location* and *shape* of trajectories, but is not sensitive to trajectory *direction*. For this reason, De Cáceres et al. (2019) introduced the **Directed segment path dissimilarity (DSPD)**, defined as the average of the distance between each *directed segment* of $T_1$ and $T_2$:
+SPD is appropriate to compare the *location* and *shape* of trajectories, but is not sensitive to trajectory *direction*. For this reason, De Cáceres et al. (2019) introduced the **Directed Segment Path Dissimilarity (DSPD)**, defined as the average of the distance between each *directed segment* of $T_1$ and $T_2$:
 
 \[D_{DSP}(T_1, T_2) = \frac{1}{n-1}\sum_{i=1}^{n-1}{D_{DS}(S_{1i}, T_2)}\]
 
@@ -48,15 +48,15 @@ where $D_{SP}$ is the *distance between a segment and a trajectory*. As before, 
 
 DSPD is an appropriate metric to compare the *location*, *shape* and *direction* of trajectories. Nevertheless, the metric does not allow taking into account differences in trajectory *speed*, because it does not use the information regarding the time of observations (only the survey order). 
 
-If $T_1$ and $T_2$ represent the dynamics of two sites that have been surveyed synchronously (i.e., if $n = m$ and $t_{11} = t_{21}$; $t_{12}=t_{22}$;... ; $t_{1n} = t_{2n}$), a straightforward way of comparing them is to calculate the average across surveys of dissimilarity between the two sites, i.e. the mean of the sequence $\{d(x_{11}, x_{21}), \, d(x_{12}, x_{22}), \, \dots,\, d(x_{1n}, x_{2n})\}$. For a more general solution the **Time-sensitive distance (TSD)** is the average of distances between each *observation* in $T_1$ and $T_2$:
+If $T_1$ and $T_2$ represent the dynamics of two sites that have been surveyed synchronously (i.e., if $n = m$ and $t_{11} = t_{21}$; $t_{12}=t_{22}$;... ; $t_{1n} = t_{2n}$), a straightforward way of comparing them is to calculate the average across surveys of dissimilarity between the two sites, i.e. the mean of the sequence $\{d(x_{11}, x_{21}), \, d(x_{12}, x_{22}), \, \dots,\, d(x_{1n}, x_{2n})\}$. For a more general solution the **Time-Sensitive Path Distance (TSPD)** is the average of distances between each *observation* in $T_1$ and $T_2$:
 
-\[D_{TSD}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{ot}(\{x_{1i}, t_{1i}\}, T_2)}\]
+\[D_{TSP}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{ot}(\{x_{1i}, t_{1i}\}, T_2)}\]
 
-where $D_{ot}$ is the *distance between an observation and a trajectory*. $D_{ot}$ is the calculated as the distance between $x_{1i}$ and the point in $T_2$ corresponding to time $t_{1i}$, which may need to be interpolated if does not correspond to any value in $\{t_{21}, t_{22}, \dots,t_{2m}\}$. If $t_{1i}$ is beyond the time boundaries of $T_2$, then the distance to the closest time point is taken. As before, TSD is not symmetric so it needs to be symmetrized: 
+where $D_{ot}$ is the *distance between an observation and a trajectory*. $D_{ot}$ is the calculated as the distance between $x_{1i}$ and the point in $T_2$ corresponding to time $t_{1i}$, which may need to be interpolated if does not correspond to any value in $\{t_{21}, t_{22}, \dots,t_{2m}\}$. If $t_{1i}$ is beyond the time boundaries of $T_2$, then the distance to the closest time point is taken. As before, TSPD is not symmetric so it needs to be symmetrized: 
 
-\[D_{STSD}(T_1, T_2) = \frac{D_{TSD}(T_1, T_2) + D_{TSD}(T_2, T_1)}{2}\]
+\[D_{STSP}(T_1, T_2) = \frac{D_{TSP}(T_1, T_2) + D_{TSP}(T_2, T_1)}{2}\]
 
-TSD is sensitive to differences in *location*, *shape*, *direction* and *speed*, as will be illustrated in the following examples.
+TSPD is sensitive to differences in *location*, *shape*, *direction* and *speed*, as will be illustrated in the following examples.
 
 
 ## 2. Linear trajectories
@@ -110,7 +110,7 @@ trajectoryDistances(x, distance.type = "SPD")
 The other two dissimilarity metrics do yield non-zero values:
 ```{r}
 trajectoryDistances(x, distance.type = "DSPD")
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 ### 2.2 Equal pathways and speeds but different number of segments
@@ -178,9 +178,9 @@ Since it is defined by means of distances between directed segments, DSPD seems 
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
-In contrast, TSD yields again zero distance values, because the trajectories do not differ in neither speed or shape.
+In contrast, TSPD yields again zero distance values, because the trajectories do not differ in neither speed or shape.
 ```{r}
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 
@@ -239,10 +239,10 @@ And the same happens with DSPD:
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
-It is only when we apply TSD that we can observe differences between trajectories:
+It is only when we apply TSPD that we can observe differences between trajectories:
 
 ```{r}
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 The distance between the first and the third trajectory is largest because their difference in speed is also largest.
@@ -289,10 +289,12 @@ In this case, all three metrics are responsive to differences in trajectory loca
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
 trajectoryDistances(x, distance.type = "DSPD")
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 ### 2.5 Space-expanded trajectories
+
+In this example, the three linear trajectories are surveyed the same times but they differ in total path length due to differences in trajectory speed.
 
 ```{r}
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -308,40 +310,39 @@ xy[9:12,2] <- xy[1:4,2]*2
 x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
+We draw the three (overlapping) trajectories:
+
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
 ```
 
+In this case both lengths and speeds are different between trajectories:
+
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
-
-
+This is also translated to trajectory shifts:
 ```{r}
 trajectoryShifts(x)
 ```
 
+Since the trajectories differ in length, this is captured by all three metrics:
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
-```
-
-```{r}
 trajectoryDistances(x, distance.type = "DSPD")
-```
-
-```{r}
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 ## 3. Curved trajectories
 
+In this second set of examples we examine the behavior of the metrics when comparing trajectories that are not always linear.
+
 ### 3.1 Constant speed
+
+Here the three trajectories have the same length and speed, but trajectory 2 and 3 are progressively curved:
 
 ```{r}
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -372,33 +373,22 @@ trajectoryPCoA(x,
                time.labels = TRUE)
 ```
 
+As expected, no differences are found in terms of lengths or speeds:
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
 
-
-```{r}
-trajectoryShifts(x)
-```
-
+The three distance metrics are responsive to differences of trajectory shape:
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
-```
-
-```{r}
 trajectoryDistances(x, distance.type = "DSPD")
-```
-
-```{r}
-trajectoryDistances(x, distance.type = "TSD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
 ### 3.2 Different speed
 
+This example is similar to the previous one, but here we changed the survey times, so that the observed trajectory shapes correspond also to different speeds:
 
 ```{r}
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -422,34 +412,30 @@ xy[12,2] <- 0.0
 x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
-
+The trajectory plot looks as before, except for the time labels:
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
 ```
 
+In this case trajectories differ in speed but not length:
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
 
-
-```{r}
-trajectoryShifts(x)
-```
-
+The three metrics detect differences in shape, as before.
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
-```
-
-```{r}
 trajectoryDistances(x, distance.type = "DSPD")
+trajectoryDistances(x, distance.type = "TSPD")
 ```
 
-```{r}
-trajectoryDistances(x, distance.type = "TSD")
-```
+However, note that the values of SPD and DSPD are exactly the same to those of the previous example, whereas TSPD yields higher distance values because of the differences in trajectory speed.
+
+## 4. References
+
++ Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.
+
++ De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.

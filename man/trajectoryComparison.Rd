@@ -88,9 +88,9 @@ Parameter \code{distance.type} is the type of distance index to be calculated wh
 In the case of function \code{trajectoryDistances} the following values are possible (De \enc{Cáceres}{Caceres} et al. 2019):
 \itemize{
 \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
-\item{\code{SPD}: Segment path distance.}
-\item{\code{DSPD}: Directed segment path distance (default).}
-\item{\code{TSD}: Time-sensitive distance (experimental).}
+\item{\code{SPD}: Segment Path Distance.}
+\item{\code{DSPD}: Directed Segment Path Distance (default).}
+\item{\code{TSPD}: Time-Sensitive Path Distance (experimental).}
 }
 
 Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function

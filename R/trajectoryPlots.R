@@ -93,8 +93,11 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
 
   cmd_D2 <- cmdscale(d,eig=TRUE, add=TRUE, k=nrow(as.matrix(d))-1)
   
-  x<-cmd_D2$points[,axes[1]]
-  y<-cmd_D2$points[,axes[2]]
+  x<-cmd_D2$points[,axes[1], drop = FALSE]
+  y <- rep(0, length(x))
+  if(ncol(cmd_D2$points)>1) {
+    y<-cmd_D2$points[,axes[2], drop = FALSE]
+  }
   plot(x,y, type="n", asp=1, xlab=paste0("PCoA ",axes[1]," (", round(100*cmd_D2$eig[axes[1]]/sum(cmd_D2$eig)),"%)"), 
        ylab=paste0("PCoA ",axes[2]," (", round(100*cmd_D2$eig[axes[2]]/sum(cmd_D2$eig)),"%)"))
   

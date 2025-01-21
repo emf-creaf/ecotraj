@@ -18,7 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction
 
-In this vignette you will learn the differences between the distance coefficients available for assessing trajectory resemblance. We use small datasets where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily. 
+### 1.1 About this vignette
+In this vignette you will learn the differences between three distance coefficients available for assessing trajectory resemblance. We use small datasets where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily. 
 First of all, we load `ecotraj`:
 
 ```{r load libraries, echo = T}
@@ -26,9 +27,46 @@ library(ecotraj)
 ```
 
 
+
+### 1.2 The three distance metrics
+
+Let $T_1$ and $T_2$ be two trajectories to be compared. The first distance metric is **Segment path distance (SPD)** (Besse et al. 2016), defined as the average of the distances between each *point* composing $T_1$ and $T_2$:
+
+\[D_{SP}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{pt}(x_{1i}, T_2)}\]
+
+where $D_{pt}$ is the *distance between a point a a trajectory*. SPD is not symmetric so it needs to be symmetrized: 
+
+\[D_{SSP}(T_1, T_2) = \frac{D_{SP}(T_1, T_2) + D_{SP}(T_2, T_1)}{2}\]
+
+SPD is appropriate to compare the *location* and *shape* of trajectories, but is not sensitive to trajectory *direction*. For this reason, De Cáceres et al. (2019) introduced the **Directed segment path dissimilarity (DSPD)**, defined as the average of the distance between each *directed segment* of $T_1$ and $T_2$:
+
+\[D_{DSP}(T_1, T_2) = \frac{1}{n-1}\sum_{i=1}^{n-1}{D_{DS}(S_{1i}, T_2)}\]
+
+where $D_{SP}$ is the *distance between a segment and a trajectory*. As before, DSPD is not symmetric so it needs to be symmetrized: 
+
+\[D_{SDSP}(T_1, T_2) = \frac{D_{DSP}(T_1, T_2) + D_{DSP}(T_2, T_1)}{2}\]
+
+DSPD is an appropriate metric to compare the *location*, *shape* and *direction* of trajectories. Nevertheless, the metric does not allow taking into account differences in trajectory *speed*, because it does not use the information regarding the time of observations (only the survey order). 
+
+If $T_1$ and $T_2$ represent the dynamics of two sites that have been surveyed synchronously (i.e., if $n = m$ and $t_{11} = t_{21}$; $t_{12}=t_{22}$;... ; $t_{1n} = t_{2n}$), a straightforward way of comparing them is to calculate the average across surveys of dissimilarity between the two sites, i.e. the mean of the sequence $\{d(x_{11}, x_{21}), \, d(x_{12}, x_{22}), \, \dots,\, d(x_{1n}, x_{2n})\}$. For a more general solution the **Time-sensitive distance (TSD)** is the average of distances between each *observation* in $T_1$ and $T_2$:
+
+\[D_{TSD}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{ot}(\{x_{1i}, t_{1i}\}, T_2)}\]
+
+where $D_{ot}$ is the *distance between an observation and a trajectory*. $D_{ot}$ is the calculated as the distance between $x_{1i}$ and the point in $T_2$ corresponding to time $t_{1i}$, which may need to be interpolated if does not correspond to any value in $\{t_{21}, t_{22}, \dots,t_{2m}\}$. If $t_{1i}$ is beyond the time boundaries of $T_2$, then the distance to the closest time point is taken. As before, TSD is not symmetric so it needs to be symmetrized: 
+
+\[D_{STSD}(T_1, T_2) = \frac{D_{TSD}(T_1, T_2) + D_{TSD}(T_2, T_1)}{2}\]
+
+TSD is sensitive to differences in *location*, *shape*, *direction* and *speed*, as will be illustrated in the following examples.
+
+
 ## 2. Linear trajectories
 
+Let us first compare the behavior of the three distance metrics for comparisons between linear trajectories. In all cases, the reference trajectory is composed of three linear segments.
+
 ### 2.1 Oposed linear trajectories
+
+We compare first a linear trajectory with its oposed one, i.e. a trajectory going in the exact oposite sense.
+
 ```{r}
 sites <- c("1","1","1","1","2","2","2", "2")
 times <- c(0,1,2,3,0,1,2,3)
@@ -45,39 +83,39 @@ xy[8,2]<-0
 x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
+We can display the two (overlapping) trajectories using:
 
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
 ```
+
+The two trajectories have the same lengths and speeds:
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
 
-
+When we examine trajectory (temporal) shifts we see the oposing character: 
 ```{r}
 trajectoryShifts(x)
 ```
 
+Calculating SPD yields zero dissimilarity, because the distance does not take into account differences in direction:
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
+The other two dissimilarity metrics do yield non-zero values:
 ```{r}
 trajectoryDistances(x, distance.type = "DSPD")
-```
-
-
-```{r}
 trajectoryDistances(x, distance.type = "TSD")
 ```
 
-### 2.2 Equal trajectories but different number of segments
+### 2.2 Equal pathways and speeds but different number of segments
+
+Here we compare three trajectories with the same linear pathway and speed. They only differ in the number of segments used to describe them:
 ```{r}
 sites <- c("1","1","1","1","2","2","2","3","3")
 times <- c(0,1,2,3,0,1.5,3,0,3)
@@ -93,11 +131,27 @@ xy[9,2]<-3
 x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
+We plot the three trajectories in separate panels for clarity:
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+par(mfrow=c(3,1))
+trajectoryPCoA(subsetTrajectories(x,"1"), 
+               traj.colors = c("black"), lwd = 2,
+               time.labels = TRUE)
+trajectoryPCoA(subsetTrajectories(x,"2"), 
+               traj.colors = c("red"), lwd = 2,
+               time.labels = TRUE)
+trajectoryPCoA(subsetTrajectories(x,"3"),
+               traj.colors = c("blue"), lwd = 2,
+               time.labels = TRUE)
+```
+Note that reversals may occur because of PCoA eigen analysis. But together the trajectories look like:
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
 ```
+
+We can check that the three trajectories have the same total length and average speed:
 ```{r}
 trajectoryLengths(x)
 ```
@@ -106,19 +160,25 @@ trajectoryLengths(x)
 trajectorySpeeds(x)
 ```
 
+There are no temporal shifts between the trajectories:
 
 ```{r}
 trajectoryShifts(x)
 ```
 
+Here SPD yields zero distance, because the three trajectories have the same shape:
+
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
 ```
+
+Since it is defined by means of distances between directed segments, DSPD seems to be affected by the different segmentation of trajectories, so that it yields non-zero values:
 
 ```{r}
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
+In contrast, TSD yields again zero distance values, because the trajectories do not differ in neither speed or shape.
 ```{r}
 trajectoryDistances(x, distance.type = "TSD")
 ```
@@ -126,6 +186,7 @@ trajectoryDistances(x, distance.type = "TSD")
 
 ### 2.3 Equal pathways but different speeds
 
+In this example the three trajectories have the same segments and pathways, but they differ in the speed of changes:
 
 ```{r}
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -141,6 +202,8 @@ xy[9:12,2] <- xy[1:4,2]
 x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
+Again we use separate plots to show the differences in speed:
+
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 par(mfrow=c(3,1))
 trajectoryPCoA(subsetTrajectories(x,"1"), 
@@ -153,34 +216,40 @@ trajectoryPCoA(subsetTrajectories(x,"3"),
                traj.colors = c("blue"), lwd = 2,
                time.labels = TRUE)
 ```
-
+We can check that there are no differences in segment or total path lengths, but they indeed differ in trajectory speed:
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
 
+Differences in speed also lead to temporal shifts between trajectories:
 ```{r}
 trajectoryShifts(x)
 ```
 
 
-
+If we calculate distances using SPD, the distance metric does not detect the differences in speed and tells us that the trajectories are equal:
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
 ```
+
+And the same happens with DSPD:
 
 ```{r}
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
+It is only when we apply TSD that we can observe differences between trajectories:
+
 ```{r}
 trajectoryDistances(x, distance.type = "TSD")
 ```
 
+The distance between the first and the third trajectory is largest because their difference in speed is also largest.
+
 ### 2.4 Space-shifted trajectories
+
+Let us now evaluate a case where trajectories are the same but have been displaced in one dimension:
 
 ```{r}
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -199,34 +268,27 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
 
-
+We use a single plot, though not very clear, to display the three trajectories:
 ```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
 ```
+In this case differences do not exist in terms of lengths nor speeds:
+
 ```{r}
 trajectoryLengths(x)
-```
-
-```{r}
 trajectorySpeeds(x)
 ```
-
-
+But (temporal) shifts reflect the spatial ones:
 ```{r}
 trajectoryShifts(x)
 ```
 
+In this case, all three metrics are responsive to differences in trajectory location:
 ```{r}
 trajectoryDistances(x, distance.type = "SPD")
-```
-
-```{r}
 trajectoryDistances(x, distance.type = "DSPD")
-```
-
-```{r}
 trajectoryDistances(x, distance.type = "TSD")
 ```
 

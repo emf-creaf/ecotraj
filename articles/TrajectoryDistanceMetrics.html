@@ -109,7 +109,7 @@ First of all, we load <code>ecotraj</code>:</p>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>2</mn></msub><annotation encoding="application/x-tex">T_2</annotation></semantics></math>
 be two trajectories to be compared. The first distance metric is
-<strong>Segment path distance (SPD)</strong> (Besse et al. 2016),
+<strong>Segment Path Distance (SPD)</strong> (Besse et al. 2016),
 defined as the average of the distances between each <em>point</em>
 composing
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>1</mn></msub><annotation encoding="application/x-tex">T_1</annotation></semantics></math>
@@ -124,7 +124,7 @@ symmetric so it needs to be symmetrized:</p>
 <p>SPD is appropriate to compare the <em>location</em> and
 <em>shape</em> of trajectories, but is not sensitive to trajectory
 <em>direction</em>. For this reason, De Cáceres et al. (2019) introduced
-the <strong>Directed segment path dissimilarity (DSPD)</strong>, defined
+the <strong>Directed Segment Path Dissimilarity (DSPD)</strong>, defined
 as the average of the distance between each <em>directed segment</em> of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>1</mn></msub><annotation encoding="application/x-tex">T_1</annotation></semantics></math>
 and
@@ -156,13 +156,13 @@ a straightforward way of comparing them is to calculate the average
 across surveys of dissimilarity between the two sites, i.e. the mean of
 the sequence
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>11</mn></msub><mo>,</mo><msub><mi>x</mi><mn>21</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.167em"></mspace><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>12</mn></msub><mo>,</mo><msub><mi>x</mi><mn>22</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.167em"></mspace><mi>…</mi><mo>,</mo><mspace width="0.167em"></mspace><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>n</mi></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{d(x_{11}, x_{21}), \, d(x_{12}, x_{22}), \, \dots,\, d(x_{1n}, x_{2n})\}</annotation></semantics></math>.
-For a more general solution the <strong>Time-sensitive distance
-(TSD)</strong> is the average of distances between each
+For a more general solution the <strong>Time-Sensitive Path Distance
+(TSPD)</strong> is the average of distances between each
 <em>observation</em> in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>1</mn></msub><annotation encoding="application/x-tex">T_1</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>2</mn></msub><annotation encoding="application/x-tex">T_2</annotation></semantics></math>:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>D</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mi>D</mi><mrow><mi>o</mi><mi>t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo stretchy="false" form="postfix">}</mo><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">D_{TSD}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{ot}(\{x_{1i}, t_{1i}\}, T_2)}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>P</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><msub><mi>D</mi><mrow><mi>o</mi><mi>t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><mo stretchy="false" form="postfix">}</mo><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">D_{TSP}(T_1, T_2) = \frac{1}{n}\sum_{i=1}^{n}{D_{ot}(\{x_{1i}, t_{1i}\}, T_2)}</annotation></semantics></math></p>
 <p>where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mrow><mi>o</mi><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">D_{ot}</annotation></semantics></math>
 is the <em>distance between an observation and a trajectory</em>.
@@ -179,12 +179,12 @@ If
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mn>1</mn><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">t_{1i}</annotation></semantics></math>
 is beyond the time boundaries of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mn>2</mn></msub><annotation encoding="application/x-tex">T_2</annotation></semantics></math>,
-then the distance to the closest time point is taken. As before, TSD is
+then the distance to the closest time point is taken. As before, TSPD is
 not symmetric so it needs to be symmetrized:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>S</mi><mi>T</mi><mi>S</mi><mi>D</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>D</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>D</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>2</mn></msub><mo>,</mo><msub><mi>T</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">D_{STSD}(T_1, T_2) = \frac{D_{TSD}(T_1, T_2) + D_{TSD}(T_2, T_1)}{2}</annotation></semantics></math></p>
-<p>TSD is sensitive to differences in <em>location</em>, <em>shape</em>,
-<em>direction</em> and <em>speed</em>, as will be illustrated in the
-following examples.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>S</mi><mi>T</mi><mi>S</mi><mi>P</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>P</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>1</mn></msub><mo>,</mo><msub><mi>T</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>D</mi><mrow><mi>T</mi><mi>S</mi><mi>P</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>T</mi><mn>2</mn></msub><mo>,</mo><msub><mi>T</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">D_{STSP}(T_1, T_2) = \frac{D_{TSP}(T_1, T_2) + D_{TSP}(T_2, T_1)}{2}</annotation></semantics></math></p>
+<p>TSPD is sensitive to differences in <em>location</em>,
+<em>shape</em>, <em>direction</em> and <em>speed</em>, as will be
+illustrated in the following examples.</p>
 </div>
 </div>
 <div class="section level2">
@@ -254,7 +254,7 @@ not take into account differences in direction:</p>
 <pre><code><span><span class="co">##   1</span></span>
 <span><span class="co">## 2 1</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   1</span></span>
 <span><span class="co">## 2 2</span></span></code></pre>
 </div>
@@ -348,10 +348,10 @@ so that it yields non-zero values:</p>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.5833333          </span></span>
 <span><span class="co">## 3 1.3333333 1.5000000</span></span></code></pre>
-<p>In contrast, TSD yields again zero distance values, because the
+<p>In contrast, TSPD yields again zero distance values, because the
 trajectories do not differ in neither speed or shape.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   1 2</span></span>
 <span><span class="co">## 2 0  </span></span>
 <span><span class="co">## 3 0 0</span></span></code></pre>
@@ -443,10 +443,10 @@ equal:</p>
 <pre><code><span><span class="co">##   1 2</span></span>
 <span><span class="co">## 2 0  </span></span>
 <span><span class="co">## 3 0 0</span></span></code></pre>
-<p>It is only when we apply TSD that we can observe differences between
+<p>It is only when we apply TSPD that we can observe differences between
 trajectories:</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        1      2</span></span>
 <span><span class="co">## 2 0.6250       </span></span>
 <span><span class="co">## 3 0.9375 0.6250</span></span></code></pre>
@@ -534,7 +534,7 @@ trajectory location:</p>
 <span><span class="co">## 2 0.5000000          </span></span>
 <span><span class="co">## 3 0.3333333 0.5000000</span></span></code></pre>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     1   2</span></span>
 <span><span class="co">## 2 0.5    </span></span>
 <span><span class="co">## 3 1.0 0.5</span></span></code></pre>
@@ -542,6 +542,9 @@ trajectory location:</p>
 <div class="section level3">
 <h3 id="space-expanded-trajectories">2.5 Space-expanded trajectories<a class="anchor" aria-label="anchor" href="#space-expanded-trajectories"></a>
 </h3>
+<p>In this example, the three linear trajectories are surveyed the same
+times but they differ in total path length due to differences in
+trajectory speed.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span>
 <span><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span>
@@ -554,11 +557,14 @@ trajectory location:</p>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="fl">2</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, sites <span class="op">=</span> <span class="va">sites</span>, times <span class="op">=</span> <span class="va">times</span><span class="op">)</span></span></code></pre></div>
+<p>We draw the three (overlapping) trajectories:</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, </span>
 <span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TrajectoryDistanceMetrics_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>In this case both lengths and speeds are different between
+trajectories:</p>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    S1  S2  S3 Path</span></span>
@@ -571,6 +577,7 @@ trajectory location:</p>
 <span><span class="co">## 1 1.0 1.0 1.0  1.0</span></span>
 <span><span class="co">## 2 1.5 1.5 1.5  1.5</span></span>
 <span><span class="co">## 3 2.0 2.0 2.0  2.0</span></span></code></pre>
+<p>This is also translated to trajectory shifts:</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryShifts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    reference site survey time   timeRef      shift</span></span>
@@ -598,6 +605,8 @@ trajectory location:</p>
 <span><span class="co">## 22         3    2      2    1 0.7500000 -0.2500000</span></span>
 <span><span class="co">## 23         3    2      3    2 1.5000000 -0.5000000</span></span>
 <span><span class="co">## 24         3    2      4    3 2.2500000 -0.7500000</span></span></code></pre>
+<p>Since the trajectories differ in length, this is captured by all
+three metrics:</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"SPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        1      2</span></span>
@@ -609,7 +618,7 @@ trajectory location:</p>
 <span><span class="co">## 2 0.7500000          </span></span>
 <span><span class="co">## 3 1.3333333 0.9166667</span></span></code></pre>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      1    2</span></span>
 <span><span class="co">## 2 0.75     </span></span>
 <span><span class="co">## 3 1.50 0.75</span></span></code></pre>
@@ -618,9 +627,13 @@ trajectory location:</p>
 <div class="section level2">
 <h2 id="curved-trajectories">3. Curved trajectories<a class="anchor" aria-label="anchor" href="#curved-trajectories"></a>
 </h2>
+<p>In this second set of examples we examine the behavior of the metrics
+when comparing trajectories that are not always linear.</p>
 <div class="section level3">
 <h3 id="constant-speed">3.1 Constant speed<a class="anchor" aria-label="anchor" href="#constant-speed"></a>
 </h3>
+<p>Here the three trajectories have the same length and speed, but
+trajectory 2 and 3 are progressively curved:</p>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span>
 <span><span class="va">surveys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span></span>
@@ -647,7 +660,9 @@ trajectory location:</p>
 <span>               time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in cmdscale(d, eig = TRUE, add = TRUE, k = nrow(as.matrix(d)) - : only</span></span>
 <span><span class="co">## 10 of the first 11 eigenvalues are &gt; 0</span></span></code></pre>
-<p><img src="TrajectoryDistanceMetrics_files/figure-html/unnamed-chunk-37-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="TrajectoryDistanceMetrics_files/figure-html/unnamed-chunk-34-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>As expected, no differences are found in terms of lengths or
+speeds:</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   S1 S2 S3 Path</span></span>
@@ -660,45 +675,20 @@ trajectory location:</p>
 <span><span class="co">## 1  1  1  1    1</span></span>
 <span><span class="co">## 2  1  1  1    1</span></span>
 <span><span class="co">## 3  1  1  1    1</span></span></code></pre>
+<p>The three distance metrics are responsive to differences of
+trajectory shape:</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryShifts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    reference site survey time  timeRef      shift</span></span>
-<span><span class="co">## 1          1    2      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 2          1    2      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 3          1    2      3    2 1.707107 -0.2928932</span></span>
-<span><span class="co">## 4          1    2      4    3 1.707107 -1.2928932</span></span>
-<span><span class="co">## 5          1    3      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 6          1    3      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 7          1    3      3    2 1.000000 -1.0000000</span></span>
-<span><span class="co">## 8          1    3      4    3 0.000000 -3.0000000</span></span>
-<span><span class="co">## 9          2    1      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 10         2    1      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 11         2    1      3    2 1.707107 -0.2928932</span></span>
-<span><span class="co">## 12         2    1      4    3       NA         NA</span></span>
-<span><span class="co">## 13         2    3      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 14         2    3      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 15         2    3      3    2 1.707107 -0.2928932</span></span>
-<span><span class="co">## 16         2    3      4    3 0.000000 -3.0000000</span></span>
-<span><span class="co">## 17         3    1      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 18         3    1      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 19         3    1      3    2 1.000000 -1.0000000</span></span>
-<span><span class="co">## 20         3    1      4    3 1.000000 -2.0000000</span></span>
-<span><span class="co">## 21         3    2      1    0 0.000000  0.0000000</span></span>
-<span><span class="co">## 22         3    2      2    1 1.000000  0.0000000</span></span>
-<span><span class="co">## 23         3    2      3    2 1.707107 -0.2928932</span></span>
-<span><span class="co">## 24         3    2      4    3       NA         NA</span></span></code></pre>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"SPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.5743683          </span></span>
 <span><span class="co">## 3 0.6250000 0.4267767</span></span></code></pre>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.7658244          </span></span>
 <span><span class="co">## 3 0.9023689 0.6868867</span></span></code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.7267030          </span></span>
 <span><span class="co">## 3 1.1441228 0.6532815</span></span></code></pre>
@@ -706,7 +696,10 @@ trajectory location:</p>
 <div class="section level3">
 <h3 id="different-speed">3.2 Different speed<a class="anchor" aria-label="anchor" href="#different-speed"></a>
 </h3>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<p>This example is similar to the previous one, but here we changed the
+survey times, so that the observed trajectory shapes correspond also to
+different speeds:</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span>
 <span><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">1.5</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">6</span><span class="op">)</span></span>
 <span></span>
@@ -726,68 +719,59 @@ trajectory location:</p>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.0</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span>, sites <span class="op">=</span> <span class="va">sites</span>, times <span class="op">=</span> <span class="va">times</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<p>The trajectory plot looks as before, except for the time labels:</p>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, </span>
 <span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in cmdscale(d, eig = TRUE, add = TRUE, k = nrow(as.matrix(d)) - : only</span></span>
 <span><span class="co">## 10 of the first 11 eigenvalues are &gt; 0</span></span></code></pre>
-<p><img src="TrajectoryDistanceMetrics_files/figure-html/unnamed-chunk-45-1.png" width="480" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<p><img src="TrajectoryDistanceMetrics_files/figure-html/unnamed-chunk-38-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>In this case trajectories differ in speed but not length:</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   S1 S2 S3 Path</span></span>
 <span><span class="co">## 1  1  1  1    3</span></span>
 <span><span class="co">## 2  1  1  1    3</span></span>
 <span><span class="co">## 3  1  1  1    3</span></span></code></pre>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectorySpeeds</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    S1  S2  S3 Path</span></span>
 <span><span class="co">## 1 2.0 2.0 2.0  2.0</span></span>
 <span><span class="co">## 2 1.0 1.0 1.0  1.0</span></span>
 <span><span class="co">## 3 0.5 0.5 0.5  0.5</span></span></code></pre>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryShifts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    reference site survey time   timeRef      shift</span></span>
-<span><span class="co">## 1          1    2      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 2          1    2      2  1.0 0.5000000 -0.5000000</span></span>
-<span><span class="co">## 3          1    2      3  2.0 0.8535534 -1.1464466</span></span>
-<span><span class="co">## 4          1    2      4  3.0 0.8535534 -2.1464466</span></span>
-<span><span class="co">## 5          1    3      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 6          1    3      2  2.0 0.5000000 -1.5000000</span></span>
-<span><span class="co">## 7          1    3      3  4.0 0.5000000 -3.5000000</span></span>
-<span><span class="co">## 8          1    3      4  6.0 0.0000000 -6.0000000</span></span>
-<span><span class="co">## 9          2    1      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 10         2    1      2  0.5 1.0000000  0.5000000</span></span>
-<span><span class="co">## 11         2    1      3  1.0 1.7071068  0.7071068</span></span>
-<span><span class="co">## 12         2    1      4  1.5        NA         NA</span></span>
-<span><span class="co">## 13         2    3      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 14         2    3      2  2.0 1.0000000 -1.0000000</span></span>
-<span><span class="co">## 15         2    3      3  4.0 1.7071068 -2.2928932</span></span>
-<span><span class="co">## 16         2    3      4  6.0 0.0000000 -6.0000000</span></span>
-<span><span class="co">## 17         3    1      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 18         3    1      2  0.5 2.0000000  1.5000000</span></span>
-<span><span class="co">## 19         3    1      3  1.0 2.0000000  1.0000000</span></span>
-<span><span class="co">## 20         3    1      4  1.5 2.0000000  0.5000000</span></span>
-<span><span class="co">## 21         3    2      1  0.0 0.0000000  0.0000000</span></span>
-<span><span class="co">## 22         3    2      2  1.0 2.0000000  1.0000000</span></span>
-<span><span class="co">## 23         3    2      3  2.0 3.4142136  1.4142136</span></span>
-<span><span class="co">## 24         3    2      4  3.0        NA         NA</span></span></code></pre>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<p>The three metrics detect differences in shape, as before.</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"SPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.5743683          </span></span>
 <span><span class="co">## 3 0.6250000 0.4267767</span></span></code></pre>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"DSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.7658244          </span></span>
 <span><span class="co">## 3 0.9023689 0.6868867</span></span></code></pre>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSD"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           1         2</span></span>
 <span><span class="co">## 2 0.9748813          </span></span>
 <span><span class="co">## 3 1.4872932 0.8433407</span></span></code></pre>
+<p>However, note that the values of SPD and DSPD are exactly the same to
+those of the previous example, whereas TSPD yields higher distance
+values because of the differences in trajectory speed.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="references">4. References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<ul>
+<li><p>Besse, P., Guillouet, B., Loubes, J.-M. &amp; François, R.
+(2016). Review and perspective for distance based trajectory clustering.
+IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.</p></li>
+<li><p>De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
+Condit R &amp; Hubbell S. (2019). Trajectory analysis in community
+ecology. Ecological Monographs 89, e01350.</p></li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

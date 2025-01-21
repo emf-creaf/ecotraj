@@ -139,9 +139,9 @@ If parameter '<code>add</code>' is set to FALSE and problems of triangle inequal
 <li><p><code>directed-segment</code>: Directed segment distance (default).</p></li>
 <li><p><code>PPA</code>: Perpendicular-parallel-angle distance.</p></li>
 </ul><p>In the case of function <code>trajectoryDistances</code> the following values are possible (De Cáceres et al. 2019):</p><ul><li><p><code>Hausdorff</code>: Hausdorff distance between two trajectories.</p></li>
-<li><p><code>SPD</code>: Segment path distance.</p></li>
-<li><p><code>DSPD</code>: Directed segment path distance (default).</p></li>
-<li><p><code>TSD</code>: Time-sensitive distance (experimental).</p></li>
+<li><p><code>SPD</code>: Segment Path Distance.</p></li>
+<li><p><code>DSPD</code>: Directed Segment Path Distance (default).</p></li>
+<li><p><code>TSPD</code>: Time-Sensitive Path Distance (experimental).</p></li>
 </ul><p>Function <code>trajectoryShifts</code> is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>.
 Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).</p>

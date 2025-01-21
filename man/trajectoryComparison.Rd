@@ -28,7 +28,7 @@ trajectoryShifts(x, add = TRUE)
 
 \item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 
-\item{symmetrization}{Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., \code{mean} or \code{min}). If \code{symmetrization = NULL} then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.}
+\item{symmetrization}{Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., \code{mean}, \code{max} or \code{min}). If \code{symmetrization = NULL} then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.}
 
 \item{symmetric}{A logical flag to indicate a symmetric convergence comparison of trajectories.}
 }

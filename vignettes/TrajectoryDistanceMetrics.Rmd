@@ -1,0 +1,393 @@
+---
+title: "Distance metrics for trajectory resemblance"
+author: "Miquel De Cáceres"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{Distance metrics for trajectory resemblance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignettePackage{ecotraj}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+In this vignette you will learn the differences between the distance coefficients available for assessing trajectory resemblance. We use small datasets where trajectories occur in a space of two dimensions, so that geometric calculations can be followed more easily. 
+First of all, we load `ecotraj`:
+
+```{r load libraries, echo = T}
+library(ecotraj)
+```
+
+
+## 2. Linear trajectories
+
+### 2.1 Oposed linear trajectories
+```{r}
+sites <- c("1","1","1","1","2","2","2", "2")
+times <- c(0,1,2,3,0,1,2,3)
+  
+xy<-matrix(0, nrow=8, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5,2]<-3
+xy[6,2]<-2
+xy[7,2]<-1
+xy[8,2]<-0
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+### 2.2 Equal trajectories but different number of segments
+```{r}
+sites <- c("1","1","1","1","2","2","2","3","3")
+times <- c(0,1,2,3,0,1.5,3,0,3)
+  
+xy<-matrix(0, nrow=9, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[6,2]<-1.5
+xy[7,2]<-3
+xy[9,2]<-3
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+
+### 2.3 Equal pathways but different speeds
+
+
+```{r}
+sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+times <- c(0,0.5,1,1.5,0,1,2,3,0,2,4,6)
+  
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:8,2] <- xy[1:4,2]
+xy[9:12,2] <- xy[1:4,2]
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+par(mfrow=c(3,1))
+trajectoryPCoA(subsetTrajectories(x,"1"), 
+               traj.colors = c("black"), lwd = 2,
+               time.labels = TRUE)
+trajectoryPCoA(subsetTrajectories(x,"2"), 
+               traj.colors = c("red"), lwd = 2,
+               time.labels = TRUE)
+trajectoryPCoA(subsetTrajectories(x,"3"), 
+               traj.colors = c("blue"), lwd = 2,
+               time.labels = TRUE)
+```
+
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+```{r}
+trajectoryShifts(x)
+```
+
+
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+### 2.4 Space-shifted trajectories
+
+```{r}
+sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+times <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+# States are all shifted half unit with respect to site "1"
+xy[5:8,2] <- xy[1:4,2] + 0.5 
+# States are all shifted one unit with respect to site "1"
+xy[9:12,2] <- xy[1:4,2] + 1.0  
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+### 2.5 Space-expanded trajectories
+
+```{r}
+sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+times <- c(0,1,2,3,0,1,2,3,0,1,2,3)
+  
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:8,2] <- xy[1:4,2]*1.5
+xy[9:12,2] <- xy[1:4,2]*2
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+## 3. Curved trajectories
+
+### 3.1 Constant speed
+
+```{r}
+sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+surveys <- c(1,2,3,4,1,2,3,4,1,2,3,4)
+
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:6,2] <- xy[1:2,2]
+xy[7,1]<-0+sqrt(0.5)
+xy[7,2]<-1+sqrt(0.5)
+xy[8,2]<-xy[7,2]
+xy[8,1]<-xy[7,1]+1
+xy[9:10,2] <- xy[1:2,2]
+xy[11,1] <- 1.0
+xy[11,2] <- 1.0
+xy[12,1] <- 1.0
+xy[12,2] <- 0.0
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```
+
+### 3.2 Different speed
+
+
+```{r}
+sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+times <- c(0,0.5,1,1.5,0,1,2,3,0,2,4,6)
+
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:6,2] <- xy[1:2,2]
+xy[7,1]<-0+sqrt(0.5)
+xy[7,2]<-1+sqrt(0.5)
+xy[8,2]<-xy[7,2]
+xy[8,1]<-xy[7,1]+1
+xy[9:10,2] <- xy[1:2,2]
+xy[11,1] <- 1.0
+xy[11,2] <- 1.0
+xy[12,1] <- 1.0
+xy[12,2] <- 0.0
+
+x <- defineTrajectories(dist(xy), sites = sites, times = times)
+```
+
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black", "red", "blue"), lwd = 2,
+               time.labels = TRUE)
+```
+
+```{r}
+trajectoryLengths(x)
+```
+
+```{r}
+trajectorySpeeds(x)
+```
+
+
+```{r}
+trajectoryShifts(x)
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "SPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "DSPD")
+```
+
+```{r}
+trajectoryDistances(x, distance.type = "TSD")
+```

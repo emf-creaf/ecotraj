@@ -6,6 +6,7 @@
 * New function trajectoryMetrics() for evaluation of multiple metrics.
 * New function trajectoryWindowMetrics() for metrics evaluated over moving windows.
 * New function trajectoryShifts() to compare trajectories that are similar in shape but differ in speed.
+* New dissimilarity metric for trajectories, taking into account differences in time.
 
 # ecotraj 0.2.1
 * Update of function 'centerTrajectories' to add flexibility in trajectory centroid definition.

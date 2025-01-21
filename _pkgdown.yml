@@ -22,9 +22,13 @@ navbar:
         href: articles/IntroductionETA.html
       - text: Transforming trajectories
         href: articles/TransformingTrajectories.html
+      - text: Distance metrics for trajectory resemblance
+        href: articles/TrajectoryDistanceMetrics.html
       - text: Dissimilarities in community data
         href: articles/Dissimilarities.html
-      - text: Stable Isotope Trajectory Analysis (SITA)
+      - text: -------
+      - text: Stable Isotope Trajectory Analysis 
+      - text: Introduction to Stable Isotope Trajectory Analysis (SITA)
         href: articles/SITA.html
       - text: -------
       - text: Cyclical Ecological Trajectory Analysis
@@ -40,7 +44,10 @@ articles:
   contents:
     - starts_with("IntroductionETA")
     - starts_with("TransformingTrajectories")
+    - starts_with("TrajectoryDistanceMetrics")
     - starts_with("Dissimilarities")
+- title: Stable Isotope Trajectory Analysis
+  contents:
     - starts_with("SITA")
 - title: Cyclical Ecological Trajectory Analysis
   contents:

@@ -90,7 +90,7 @@ In the case of function \code{trajectoryDistances} the following values are poss
 \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
 \item{\code{SPD}: Segment path distance.}
 \item{\code{DSPD}: Directed segment path distance (default).}
-\item{\code{DTEX}: Time-explicit distance (experimental).}
+\item{\code{TSD}: Time-sensitive distance (experimental).}
 }
 
 Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function

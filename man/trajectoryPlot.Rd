@@ -11,6 +11,7 @@ trajectoryPCoA(
   traj.colors = NULL,
   axes = c(1, 2),
   survey.labels = FALSE,
+  time.labels = FALSE,
   ...
 )
 
@@ -18,9 +19,11 @@ trajectoryPlot(
   coords,
   sites,
   surveys = NULL,
+  times = NULL,
   traj.colors = NULL,
   axes = c(1, 2),
   survey.labels = FALSE,
+  time.labels = FALSE,
   ...
 )
 }
@@ -31,7 +34,9 @@ trajectoryPlot(
 
 \item{axes}{The pair of principal coordinates to be plotted.}
 
-\item{survey.labels}{A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints}
+\item{survey.labels}{A boolean flag to indicate whether surveys should be added as text next to arrow endpoints}
+
+\item{time.labels}{A boolean flag to indicate whether times should be added as text next to arrow endpoints}
 
 \item{...}{Additional parameters for function \code{\link{arrows}}.}
 
@@ -40,6 +45,8 @@ trajectoryPlot(
 \item{sites}{A vector indicating the site corresponding to each ecosystem state.}
 
 \item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
+
+\item{times}{A numeric vector indicating survey times.}
 }
 \value{
 Function \code{trajectoryPCoA} returns the result of calling \code{\link{cmdscale}}.
@@ -96,7 +103,7 @@ trajectoryPCoA(x,
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \seealso{
-\code{\link{trajectoryMetrics}}, \code{\link{transformTrajectories}}, \code{\link{cmdscale}}
+\code{\link{trajectoryMetrics}}, \code{\link{transformTrajectories}}, \code{\link{cmdscale}}, \code{\link{cyclePCoA}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

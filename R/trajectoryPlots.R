@@ -23,7 +23,7 @@
 #' @references
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 #' 
-#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{transformTrajectories}}, \code{\link{cmdscale}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{transformTrajectories}}, \code{\link{cmdscale}}, \code{\link{cyclePCoA}}
 #' 
 #' @examples 
 #' #Description of sites and surveys
@@ -66,20 +66,28 @@
 
 #' @rdname trajectoryPlot
 #' @param traj.colors A vector of colors (one per site). If \code{selection != NULL} the length of the color vector should be equal to the number of sites selected.
-#' @param survey.labels A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints
+#' @param survey.labels A boolean flag to indicate whether surveys should be added as text next to arrow endpoints
+#' @param time.labels A boolean flag to indicate whether times should be added as text next to arrow endpoints
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
 #' @export
 trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2), 
-                         survey.labels = FALSE, ...) {
+                         survey.labels = FALSE, time.labels = FALSE, ...) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
 
   d <- x$d
-  sites <- x$metadata$sites
   surveys <- x$metadata$surveys
+  times <- x$metadata$times
   # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    warning("Function cyclePCoA() may be more appropriate for cycles")
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
   }
   siteIDs <- unique(sites)
 
@@ -106,6 +114,12 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
           text(x[nifin],y[nifin], labels = ifelse(!is.null(surveys), surveys[nifin],t+1), pos = 3)
         }
       }
+      if(time.labels) {
+        text(x[niini],y[niini], labels = paste0("t=",times[niini]), pos = 3)
+        if(t==(length(ind_surv)-1)) {
+          text(x[nifin],y[nifin], labels = paste0("t=",times[nifin]), pos = 3)
+        }
+      }
     }
   }
   #Return cmdscale result
@@ -116,9 +130,10 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
 #' @param coords A data.frame or matrix where rows are ecosystem states and columns are coordinates in an arbitrary space
 #' @param sites A vector indicating the site corresponding to each ecosystem state.
 #' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
+#' @param times A numeric vector indicating survey times.
 #' @export
-trajectoryPlot<-function(coords, sites, surveys = NULL, traj.colors = NULL, axes=c(1,2), 
-                         survey.labels = FALSE, ...) {
+trajectoryPlot<-function(coords, sites, surveys = NULL, times = NULL, traj.colors = NULL, axes=c(1,2), 
+                         survey.labels = FALSE, time.labels = FALSE, ...) {
   if(length(sites)!=nrow(coords)) stop("'sites' needs to be of length equal to the number of rows in 'coords'")
   if(!is.null(surveys)) {
     if(length(sites)!=length(surveys)) stop("'sites' and 'surveys' need to be of the same length")
@@ -152,6 +167,13 @@ trajectoryPlot<-function(coords, sites, surveys = NULL, traj.colors = NULL, axes
           text(xp[nifin],yp[nifin], labels = ifelse(!is.null(surveys), surveys[nifin],t+1), pos = 3)
         }
       }
+      if(time.labels) {
+        text(xp[niini],yp[niini], labels = paste0("t=",ifelse(!is.null(times), times[niini],t)), pos = 3)
+        if(t==(length(ind_surv)-1)) {
+          text(xp[nifin],yp[nifin], labels = paste0("t=",ifelse(!is.null(times), times[nifin],t)), pos = 3)
+        }
+      }
+      
     }
   }
 }

@@ -35,7 +35,7 @@
 #'     \item{\code{Hausdorff}: Hausdorff distance between two trajectories.}
 #'     \item{\code{SPD}: Segment path distance.}
 #'     \item{\code{DSPD}: Directed segment path distance (default).}
-#'     \item{\code{DTEX}: Time-explicit distance (experimental).}
+#'     \item{\code{TSD}: Time-sensitive distance (experimental).}
 #'  }
 #'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
@@ -238,7 +238,7 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
 #' @export
 trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add=TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
-  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "DTEX"))
+  distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "TSD"))
   
   d <- x$d
   surveys <- x$metadata$surveys
@@ -389,7 +389,7 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
       }
     }
   } 
-  else if(distance.type=="DTEX"){
+  else if(distance.type=="TSD"){
     dmat = as.matrix(d)
     for(i1 in 1:nsite) {
       sel1_comp <- sites==siteIDs[i1]
@@ -432,7 +432,11 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
               } else {
                 dvec1[j] <- d_comp12[j, i_low]
               }
-            }
+            } else if (!is.na(i_high)) {
+              dvec1[j] <- d_comp12[j, i_high]
+            } else if (!is.na(i_low)) {
+              dvec1[j] <- d_comp12[j, i_low]
+            } 
           }
         }
         # names(dvec1) <- t_comp1
@@ -467,7 +471,11 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
               } else {
                 dvec2[j] <- d_comp12[i_low, j]
               }
-            }
+            } else if (!is.na(i_high)) {
+              dvec1[j] <- d_comp12[i_high, j]
+            } else if (!is.na(i_low)) {
+              dvec1[j] <- d_comp12[i_low, j]
+            } 
           }
         }
         # names(dvec2) <- t_comp2

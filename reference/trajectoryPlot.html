@@ -21,8 +21,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Ecological Trajectory Analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionETA.html">Introduction to Ecological Trajectory Analysis (ETA)</a></li>
     <li><a class="dropdown-item" href="../articles/TransformingTrajectories.html">Transforming trajectories</a></li>
+    <li><a class="dropdown-item" href="../articles/TrajectoryDistanceMetrics.html">Distance metrics for trajectory resemblance</a></li>
     <li><a class="dropdown-item" href="../articles/Dissimilarities.html">Dissimilarities in community data</a></li>
-    <li><a class="dropdown-item" href="../articles/SITA.html">Stable Isotope Trajectory Analysis (SITA)</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Stable Isotope Trajectory Analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/SITA.html">Introduction to Stable Isotope Trajectory Analysis (SITA)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Cyclical Ecological Trajectory Analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionCETA.html">Introduction to Cyclical Ecological Trajectory Analysis (CETA)</a></li>
@@ -57,6 +60,7 @@
 <span>  traj.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  survey.labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  time.labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -64,9 +68,11 @@
 <span>  <span class="va">coords</span>,</span>
 <span>  <span class="va">sites</span>,</span>
 <span>  surveys <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  times <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  traj.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  survey.labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  time.labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -88,7 +94,11 @@
 
 
 <dt id="arg-survey-labels">survey.labels<a class="anchor" aria-label="anchor" href="#arg-survey-labels"></a></dt>
-<dd><p>A boolean flag to indicate whether surveys should be plotted as text next to arrow endpoints</p></dd>
+<dd><p>A boolean flag to indicate whether surveys should be added as text next to arrow endpoints</p></dd>
+
+
+<dt id="arg-time-labels">time.labels<a class="anchor" aria-label="anchor" href="#arg-time-labels"></a></dt>
+<dd><p>A boolean flag to indicate whether times should be added as text next to arrow endpoints</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -105,6 +115,10 @@
 
 <dt id="arg-surveys">surveys<a class="anchor" aria-label="anchor" href="#arg-surveys"></a></dt>
 <dd><p>A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).</p></dd>
+
+
+<dt id="arg-times">times<a class="anchor" aria-label="anchor" href="#arg-times"></a></dt>
+<dd><p>A numeric vector indicating survey times.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -123,7 +137,7 @@
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="https://rdrr.io/r/stats/cmdscale.html" class="external-link">cmdscale</a></code></p></div>
+    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="https://rdrr.io/r/stats/cmdscale.html" class="external-link">cmdscale</a></code>, <code><a href="trajectoryCyclicalPlots.html">cyclePCoA</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

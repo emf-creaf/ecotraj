@@ -33,8 +33,11 @@ Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><h6 class="dropdown-header" data-toc-skip>Ecological Trajectory Analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionETA.html">Introduction to Ecological Trajectory Analysis (ETA)</a></li>
     <li><a class="dropdown-item" href="../articles/TransformingTrajectories.html">Transforming trajectories</a></li>
+    <li><a class="dropdown-item" href="../articles/TrajectoryDistanceMetrics.html">Distance metrics for trajectory resemblance</a></li>
     <li><a class="dropdown-item" href="../articles/Dissimilarities.html">Dissimilarities in community data</a></li>
-    <li><a class="dropdown-item" href="../articles/SITA.html">Stable Isotope Trajectory Analysis (SITA)</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Stable Isotope Trajectory Analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/SITA.html">Introduction to Stable Isotope Trajectory Analysis (SITA)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Cyclical Ecological Trajectory Analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/IntroductionCETA.html">Introduction to Cyclical Ecological Trajectory Analysis (CETA)</a></li>
@@ -98,7 +101,7 @@ Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays
 
 
 <dt id="arg-symmetrization">symmetrization<a class="anchor" aria-label="anchor" href="#arg-symmetrization"></a></dt>
-<dd><p>Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., <code>mean</code> or <code>min</code>). If <code>symmetrization = NULL</code> then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.</p></dd>
+<dd><p>Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., <code>mean</code>, <code>max</code> or <code>min</code>). If <code>symmetrization = NULL</code> then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.</p></dd>
 
 
 <dt id="arg-symmetric">symmetric<a class="anchor" aria-label="anchor" href="#arg-symmetric"></a></dt>
@@ -138,6 +141,7 @@ If parameter '<code>add</code>' is set to FALSE and problems of triangle inequal
 </ul><p>In the case of function <code>trajectoryDistances</code> the following values are possible (De Cáceres et al. 2019):</p><ul><li><p><code>Hausdorff</code>: Hausdorff distance between two trajectories.</p></li>
 <li><p><code>SPD</code>: Segment path distance.</p></li>
 <li><p><code>DSPD</code>: Directed segment path distance (default).</p></li>
+<li><p><code>TSD</code>: Time-sensitive distance (experimental).</p></li>
 </ul><p>Function <code>trajectoryShifts</code> is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>.
 Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).</p>

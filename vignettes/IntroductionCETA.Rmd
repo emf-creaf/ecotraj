@@ -108,7 +108,7 @@ names(fdtrajToy)
 ```{r}
 head(fdtrajToy$metadata)
 ```
-The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectory are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrajectories()` (if not provided, the date is used as default).
+The column `fdT` (for fixed-date trajectories) indicates to which fixed-date trajectories the different ecological states in `d` belong. The names in `fdT` are built by concatenating the site (especially useful if several cyclical trajectories are studied in parallel) with the string `fdT` and the name given as argument in `extractFixedDateTrajectories()` (if not provided, the date is used as default).
 
 Using a combination of the new distance matrix `d` and its descriptors in `metadata`, the output of `extractFixedDateTrajectories()` can be fed in other ETA functions to study fixed-date trajectories. Whenever the ETA functions identify the input object as one of class `fd.trajectories`, they use the values of `fdT` column as substitute for `sites`. For instance we can compute the directionality of the fixed-date trajectories using:
 ```{r}
@@ -133,7 +133,7 @@ fixedDateTrajectoryPCoA(fdtrajToy,
                         lwd = 2, length = 0.2)
 ```
 
-Note that we find, as expected 10 fixed-date trajectories (one for each date of each cycle). They are all linear and pretty much parallel, which is what we expect given the trend that we put in our toy dataset.
+Note that we find, as expected, 10 fixed-date trajectories (one for each date of each cycle). They are all linear and pretty much parallel, which is what we expect given the trend that we put in our toy dataset.
 
 
 
@@ -160,22 +160,25 @@ The `internal` column gives an information on *internal vs external* ecological 
 #### 2.2.3 Beware of the external ecological states: the "December-to-January segment problem"
 Let's imagine we sampled a site monthly (Jan, Feb, ..., Dec) during many years ($Y$, $Y+1$ ...). How do we cut this cyclical trajectory into cycles? One possibility is to make cycles out of the segments joining all the months of year $Y$, from January to December (12 ecological states, joined by 11 segments). The problem then is that the segment joining December of year $Y$ to January of year $Y+1$ is ignored. We can then extend the cycles to the first ecological state of the next cycle (January of year $Y+1$, 13 ecological states 12 segments). This correctly includes the 12 segments in the cycle but implies that the cycle contains twice the month of January. We refer to this as the **"December-to-January segment problem"**.  
 
-In CETA, we solve this issue by distinguishing "internal" and "external" ecological states. In the case above, January of year $Y+1$ would be considered "external" whereas other ecological states would be "internal". Broadly speaking, external ecological states are included in computations relying on the **cycle segments**, but excluded in computations relying on **cycle ecological states**. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
+In CETA, we solve this issue by distinguishing *internal* and *external* ecological states. In the case above, January of year $Y+1$ would be considered *external* whereas other ecological states would be *internal*. Broadly speaking, external ecological states are included in computations relying on the **cycle segments**, but excluded in computations relying on **cycle ecological states**. More specifically the metrics and operations in CETA that require to remove, or apply a special treatment to external ecological states are:
 
 * Centering, where internal states are used for determining cycle center but the centering operation applies to external states as well.
 * PCoA for visualization (when several cycles are studied, some ecological states are duplicated and need to be removed prior to PCoA).
 * Computation of trajectory variability, where external ecological states must be removed.
 
-**All this is readily handled for you  by functions `centerTrajectories()`, `cyclePCoA`, and `trajectoryVariability`respectively, but it's always good to be aware of what's going on under the hood!**  
+**All this is readily handled for you  by functions `centerTrajectories()`, `cyclePCoA()`, and `trajectoryVariability()`respectively, but it's always good to be aware of what's going on under the hood!**  
 
 In addition, you might have ideas to study cycles outside of the CETA/ETA framework. If so, please go ahead! But remember that most approaches rely on the concept of points, not segments, so external ecological states should probably be removed beforehand.  
 
 Let's explore the outputs of `extractCycles()` to make all this clearer:
 ```{r}
-nrow(as.matrix(dToy))#Number of ecological states in the original distance matrix.
-nrow(as.matrix(cycleToy$d))#Number of ecological states in the matrix returned by extractCycles.
+#Number of ecological states in the original distance matrix:
+nrow(as.matrix(dToy))
+
+#Number of ecological states in the matrix returned by extractCycles():
+nrow(as.matrix(cycleToy$d))
 ```
-Note that, in this example, the distance matrix returned by `extractCycles()` describes two more ecological states than the original distance matrix. This is because `extractCycles()` duplicates ecological states if they are shared by two cycles (coming back to the example above, January of year $Y+1$ belongs to the cycle describing year $Y$ AND the cycle describing year $Y+1$). Such duplicated ecological states exist always in an "internal" and an "external" version.
+Note that, in this example, the distance matrix returned by `extractCycles()` describes two more ecological states than the original distance matrix. This is because `extractCycles()` duplicates ecological states if they are shared by two cycles (coming back to the example above, January of year $Y+1$ belongs to the cycle describing year $Y$ AND the cycle describing year $Y+1$). Such duplicated ecological states exist always in an internal and an external version.
 This duplication allows to easily, and correctly, compute most of the ETA metrics for cycles such as, for instance, distances. Whenever they identify the input object as one of class `cycles`, the ETA functions use the values of the `cycles` column as substitute for `sites`, allowing to compute metrics about the cycles. For instance distances:
 ```{r}
 trajectoryDistances(cycleToy)
@@ -187,7 +190,7 @@ cyclePCoA(cycleToy,sites.colors="orangered")
 ```
 By default, the function applies a color gradients to cycles to represent time: darker cycles are at the start of the time series and clearer ones at the end.
 
-It is possible to center the cycles (for instance to compare only their shapes, irrespective of their positions). The function `centerTrajectory()` recognizes `cycleToy`as an object of class `cycles`and performs the centering with appropriate handling of external ecological states:
+It is possible to center the cycles (for instance to compare only their shapes, irrespective of their positions). The function `centerTrajectory()` recognizes `cycleToy`as an object of class `cycles` and performs the centering with appropriate handling of external ecological states:
 ```{r}
 cycleToy_cent <- centerTrajectories(cycleToy)
 ```
@@ -257,7 +260,7 @@ x_northseaZoo <- defineTrajectories(d = northseaZoo$Dist,
 ### 3.3 Visualize the cyclical trajectories
 
 From now on, if you are executing the code live, bear with us a little bit as the time series are rather long, so your computer may need some time to display the graphics or compute some metrics.  
-As before, we can use the `trajectoryPCoA()` function to display the two cyclical trajectories
+As before, we can use the `trajectoryPCoA()` function to display the two cyclical trajectories:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 trajectoryPCoA(x_northseaZoo,
                traj.colors = c("blue","red"),
@@ -266,9 +269,9 @@ legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
 Things indeed seem to turn and present clear cycles: This is not surprising as seasonality is a very prominent factor in driving temperate zooplankton community dynamics. But from such a representation it is hard to distinguish clear patterns. Let's use CETA!
 
-### 3.4 Look at the cycles:
+### 3.4 Seasonal cycles
 
-We can use the function `extractCycles()` to get data in a format describing the cycles:
+We can use the function `extractCycles()` to get data in a format describing the seasonal cycles:
 ```{r}
 cyclesNSZoo <- extractCycles(x_northseaZoo,
                              cycleDuration = 1,
@@ -287,7 +290,7 @@ legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
 It is still a very busy graph but note that some data points are not there anymore (such as the outlier from SNS far on PCoA axis 2). This is because we asked `extractCycles()` to only take complete years (`minEcolStates = 12`). We can nonetheless see that more recent years (clearer lines) seem to be moving towards negative values of PCoA axis 2 suggesting a shift in zooplankton community composition across the whole time series and in both parts of the North Sea.
 
-We can then use the outputs of `extractCycles()` contained in`cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. For instance one can obtain cycle length:
+We can then use the outputs of `extractCycles()` contained in `cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. For instance one can obtain cycle length:
 ```{r}
 cyclesZooLengths <- trajectoryLengths(cyclesNSZoo)
 ```
@@ -372,7 +375,7 @@ legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 
 Note that the two PCoA do not represent the same variance on their first and second axes. This is due to differences in the correction method used for negative eigenvalues (ignored in the first case, application of Cailliez correction in the second case).
 
-### 3.5 Look at the fixed-date trajectories:
+### 3.5 Fixed-date trajectories
 
 Let's now look at the fixed-date trajectories. First prepare the data using `extractFixedDateTrajectories()`:
 ```{r}
@@ -432,7 +435,7 @@ plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date traject
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooDir,type="l",col="blue")
 ```
 
-There is tendency of fixed-date trajectories to have high directionality and low length in summer months and conversely in winter. This is likely to be a sampling effect. Although the sampling effort is rather continuous throughout the year in CPR data, winter zooplankton communities are less abundant making their measured composition more stochastic. This is reflected in more noisy fixed-date trajectories in winter.
+There is tendency of fixed-date trajectories to have high directionality and low length in summer months and conversely in winter. This is likely to be a sampling effect. Although the sampling effort is rather continuous throughout the year in CPR data, winter zooplankton communities are less abundant making their measured composition more stochastic. This is reflected in noisier fixed-date trajectories in winter.
 
 Nonetheless, a metric of peculiar interest in fixed-date trajectories might be convergence:
 ```{r}
@@ -469,9 +472,9 @@ And for NNS:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 corrplot(matrix(as.vector(NNSfdtrajConv$tau)*as.numeric(NNSfdtrajConv$p.value<0.05),12,12))
 ```
-In those graphs, blue indicates divergence while red indicates convergence. In both part of the North Sea, we see a convergence of spring and summer months and a divergence winter month with summer months. One possible interpretation is that summers and winters are getting more contrasted.
+In those graphs, blue indicates divergence while red indicates convergence of fixed date tajectories. In both part of the North Sea, we see a convergence of spring and summer months and a divergence winter month with summer months. One possible interpretation is that summers and winters are getting more contrasted.
 
-### 3.6 Finally, compute cyclical shifts:
+### 3.6 Advances and delays in community composition
 
 The last aspect that CETA allows to investigate is cyclical shifts (e.g. advances and delays similar to approaches in phenology). The function that does it is `cycleShifts()`. This one will take a bit long to compute, it works a lot!
 ```{r}

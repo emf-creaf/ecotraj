@@ -212,7 +212,7 @@ extractTrajectorySections <- function(x,
   #renumber the surveys
   surveys <- integer(0)
   for (i in unique(sections)){
-    surveys <- c(surveys,order(times[sections==i]))
+    surveys <- c(surveys,order(order(times[sections==i])))
   }
   
   #Filling TS

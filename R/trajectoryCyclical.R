@@ -333,7 +333,7 @@ extractFixedDateTrajectories <- function (x,
   #renumber surveys
   surveys <- rep(NA,nrow(metadata))
   for (i in unique(metadata$fdT)){
-    surveys[metadata$fdT==i] <- order(metadata$times[metadata$fdT==i])
+    surveys[metadata$fdT==i] <- order(order(metadata$times[metadata$fdT==i]))
   }
   metadata$surveys <- surveys
   

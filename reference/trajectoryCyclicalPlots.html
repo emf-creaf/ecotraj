@@ -68,6 +68,7 @@ Function fixedDateTrajectoryPCoA performs principal coordinates analysis (cmdsca
 <span>  <span class="va">x</span>,</span>
 <span>  centered <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  sites.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cycles.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  print.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -98,6 +99,10 @@ Function fixedDateTrajectoryPCoA performs principal coordinates analysis (cmdsca
 
 <dt id="arg-sites-colors">sites.colors<a class="anchor" aria-label="anchor" href="#arg-sites-colors"></a></dt>
 <dd><p>The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.</p></dd>
+
+
+<dt id="arg-cycles-colors">cycles.colors<a class="anchor" aria-label="anchor" href="#arg-cycles-colors"></a></dt>
+<dd><p>The colors applied to the different cycles. Not compatible with <code>sites.colors</code>.</p></dd>
 
 
 <dt id="arg-print-names">print.names<a class="anchor" aria-label="anchor" href="#arg-print-names"></a></dt>

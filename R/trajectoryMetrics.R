@@ -752,8 +752,8 @@ trajectoryMetrics <- function(x, add = TRUE) {
   for(i in 1:length(siteIDs)) {
     df$n[i] <- sum(sites==siteIDs[i])
   }
-  df$t_start <- tapply(x$metadata$times,sites,min)
-  df$t_end <- tapply(x$metadata$times,sites,max)
+  df$t_start <- tapply(x$metadata$times,sites,min)[siteIDs]
+  df$t_end <- tapply(x$metadata$times,sites,max)[siteIDs]
   df$length <- trajectoryLengths(x)$Path
   df$mean_speed <- trajectorySpeeds(x)$Path
   df$mean_angle <- trajectoryAngles(x, add = add)$mean

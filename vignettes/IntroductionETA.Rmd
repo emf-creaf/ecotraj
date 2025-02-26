@@ -171,7 +171,7 @@ legend("topright", col=c("black","red", "blue"),
        legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
 ```
 
-While trajectory of site '1' (black arrows) is made of three segments of the same length and direction, trajectory of site '2' (red arrows) has a second and third segments that bend and are shorter than that of the segond segment of site '1'. Trajectory of site '3' includes a stronger change in direction and shorter segments. 
+While trajectory of site '1' (black arrows) is made of three segments of the same length and direction, trajectory of site '2' (red arrows) has a second and third segments that bend and are shorter than that of the second segment of site '1'. Trajectory of site '3' includes a stronger change in direction and shorter segments. 
 
 As this example has two dimensions and we used Euclidean distance, the same plot (albeit rotated) can be straightforwardly obtained using matrix `xy` and function `trajectoryPlot()`:
 

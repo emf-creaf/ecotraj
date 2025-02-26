@@ -11,6 +11,7 @@ cyclePCoA(
   x,
   centered = FALSE,
   sites.colors = NULL,
+  cycles.colors = NULL,
   print.names = FALSE,
   axes = c(1, 2),
   ...
@@ -32,6 +33,8 @@ fixedDateTrajectoryPCoA(
 \item{centered}{Boolean. Have the cycles been centered? Default to FALSE.}
 
 \item{sites.colors}{The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.}
+
+\item{cycles.colors}{The colors applied to the different cycles. Not compatible with \code{sites.colors}.}
 
 \item{print.names}{A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.}
 

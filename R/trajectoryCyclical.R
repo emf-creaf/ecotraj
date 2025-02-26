@@ -528,8 +528,8 @@ cycleMetrics <- function(x,
     df$site[i] <-unique(cycles$metadata$sites[sites==siteIDs[i]])
     df$n[i] <- sum(sites==siteIDs[i]&internal)
   }
-  df$t_start <- tapply(cycles$metadata$times,sites,min)
-  df$t_end <- tapply(cycles$metadata$times,sites,max)
+  df$t_start <- tapply(cycles$metadata$times,sites,min)[siteIDs]
+  df$t_end <- tapply(cycles$metadata$times,sites,max)[siteIDs]
   df$length <- trajectoryLengths(cycles)$Path
   df$mean_speed <- trajectorySpeeds(cycles)$Path
   df$convexity <- cycleConvexity(x,

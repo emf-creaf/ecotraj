@@ -137,7 +137,7 @@ Note that we find, as expected, 10 fixed-date trajectories (one for each date of
 
 
 
-#### 2.2.2 Trajectory cycles
+#### 2.2.2 Cycles
 
 Let's now look at how extraction works for **cycles**. The function `extractCycles()` works very similarly to `extractFixedDateTrajectories()`. Few differences are that: it does not allows to specify names for cycles (they are by default the concatenation of site names and "C1", "C2" etc...); it allows to change the `startdate` of the cycles (for instance allowing to flexibly choose when a cycle start: *e.g. an annual cycle does not always need to start in January*).
 ```{r}
@@ -480,9 +480,10 @@ The last aspect that CETA allows to investigate is cyclical shifts (e.g. advance
 ```{r}
 CSNSZoo <- cycleShifts(x_northseaZoo,
                        cycleDuration = 1)
+head(CSNSZoo)
 ```
 
-We can then extract a trend for each month in each site (and in the process make one example graph):
+Broadly, `cycleShifts()` works by compute `cyclicalShift` by comparing **the position of an ecological state of interest on its cycle** (at a date `dateCS`,and time `timeCS`) to **the position of the ecological state of same date on a reference cycle** (at time `timeRef`). The two ecological states are separated by an amount of time `timeScale`. Which cycles to choose to compute a cyclical shift can be rather arbitrary so instead we can simply use all possible comparison and extract a trend from a graph of `cyclicalShift` against `timeScale`. We do it below for all dates (i.e. months of the year) and display only one of the graphs as an example:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 slopes <- integer(0)
 for (i in c("SNS","NNS")){
@@ -515,7 +516,7 @@ colnames(slopes) <- c("sites","month","slope")
 
 ```
 
-The graph gives an example of how trends of cyclical shifts can be computed across the whole time series for a given month. Let's now synthesize this information first for SNS:
+Let's now show all the trends, first for the SNS:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 plot(x=slopes$month[slopes$sites=="SNS"]*12+0.5,
      y=slopes$slope[slopes$sites=="SNS"]*10,
@@ -526,7 +527,7 @@ plot(x=slopes$month[slopes$sites=="SNS"]*12+0.5,
 abline(h=0)
 ```
 
-Same for the NNS:
+And then for the NNS:
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
      y=slopes$slope[slopes$sites=="NNS"]*10,
@@ -537,5 +538,5 @@ plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
 abline(h=0)
 ```
 
-The two region of the North Sea exhibit a similar pattern of cyclical shift: there is maximal advance (positive shift) in spring and autumn. The advance computed is not negligible, communities take around 6 to 12 days of advance every decade at those months (at least in term of composition)!
+The two regions of the North Sea exhibit a similar pattern of cyclical shift: there is maximal advance (positive shift) in spring and autumn. The advance computed is not negligible, communities take around 6 to 12 days of advance every decade at those months (at least in term of composition)!
 

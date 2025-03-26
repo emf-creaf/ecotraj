@@ -285,10 +285,11 @@ Let's visualize the cycles!
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 cyclePCoA(cyclesNSZoo,
           sites.colors = c("blue","red"),
-          length = 0.05)
+          length = 0.05,
+          print.init.points = TRUE)
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
-It is still a very busy graph but note that some data points are not there anymore (such as the outlier from SNS far on PCoA axis 2). This is because we asked `extractCycles()` to only take complete years (`minEcolStates = 12`). We can nonetheless see that more recent years (clearer lines) seem to be moving towards negative values of PCoA axis 2 suggesting a shift in zooplankton community composition across the whole time series and in both parts of the North Sea.
+It is still a very busy graph but note that some data points are not there anymore (such as the outlier from SNS far on PCoA axis 2). This is because we asked `extractCycles()` to only take complete years (`minEcolStates = 12`). We can nonetheless see that more recent years (clearer lines) seem to be moving towards negative values of PCoA axis 2 suggesting a shift in zooplankton community composition across the whole time series and in both parts of the North Sea. The points (printed through argument `print.init.points`) show cycles' starts (in this case January months) and help interpretation: winters are towards negative values of PCoA 1, summers towards positive values of PCoA 1.  
 
 We can then use the outputs of `extractCycles()` contained in `cycleNSZoo` as inputs for other ETA function and assess some interesting characteristics of the seasonal cycles of North Sea zooplankton. For instance one can obtain cycle length:
 ```{r}

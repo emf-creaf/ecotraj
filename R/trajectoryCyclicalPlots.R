@@ -230,7 +230,7 @@ cyclePCoA <- function (x,
       }
       #potentially print cycle names and initial points
       if (print.init.points==TRUE){
-        points(x=xarrows[1],y=yarrows[1],col=colorCycles[j],pch=16,cex=cex.init.points)
+        points(x=xarrows[1],y=yarrows[1],bg=colorCycles[j],pch=21,cex=cex.init.points)
       }
       if (print.names==TRUE){
         text(x=xarrows[1],y=yarrows[1],j,col=colorCycles[j])

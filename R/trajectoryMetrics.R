@@ -814,19 +814,22 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
     } else {
       surveys_window <- surveys_i[abs(times_i - times[i])<=bandwidth]
     }
-    if (inherits(x, "cycles")|inherits(x, "fd.trajectories")|inherits(x, "sections")){
-      x_i <- subsetTrajectories(x = x, subtrajectory_selection = sites[i], survey_selection = surveys_window)
-    }else{
-      x_i <- subsetTrajectories(x = x, site_selection = sites[i], survey_selection = surveys_window)
-    }
-    df$t_start[i] <- min(x_i$metadata$times)
-    df$t_end[i] <- max(x_i$metadata$times)
     df$n[i] <- length(surveys_window)
-    df$length[i] <- trajectoryLengths(x_i)$Path
-    df$mean_speed[i] <- trajectorySpeeds(x_i)$Path
-    if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
-    if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
-    df$variability[i] <- trajectoryVariability(x_i)
+    df$t_start[i] <- min(times_i[surveys_window])
+    df$t_end[i] <- max(times_i[surveys_window])
+    
+    if(length(surveys_window)>1) {
+      if (inherits(x, "cycles")|inherits(x, "fd.trajectories")|inherits(x, "sections")){
+        x_i <- subsetTrajectories(x = x, subtrajectory_selection = sites[i], survey_selection = surveys_window)
+      }else{
+        x_i <- subsetTrajectories(x = x, site_selection = sites[i], survey_selection = surveys_window)
+      }
+      df$length[i] <- trajectoryLengths(x_i)$Path
+      df$mean_speed[i] <- trajectorySpeeds(x_i)$Path
+      if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
+      if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
+      df$variability[i] <- trajectoryVariability(x_i)
+    }
   }
   return(df)
 }

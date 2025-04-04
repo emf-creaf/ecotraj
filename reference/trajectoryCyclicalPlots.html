@@ -70,6 +70,8 @@ Function fixedDateTrajectoryPCoA performs principal coordinates analysis (cmdsca
 <span>  sites.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cycles.colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  print.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  print.init.points <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cex.init.points <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  axes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
@@ -107,6 +109,14 @@ Function fixedDateTrajectoryPCoA performs principal coordinates analysis (cmdsca
 
 <dt id="arg-print-names">print.names<a class="anchor" aria-label="anchor" href="#arg-print-names"></a></dt>
 <dd><p>A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.</p></dd>
+
+
+<dt id="arg-print-init-points">print.init.points<a class="anchor" aria-label="anchor" href="#arg-print-init-points"></a></dt>
+<dd><p>A boolean flag to indicate whether an initial point at the start of cycles should be printed (useful to spot the start of cycles in graphs containing many trajectories).</p></dd>
+
+
+<dt id="arg-cex-init-points">cex.init.points<a class="anchor" aria-label="anchor" href="#arg-cex-init-points"></a></dt>
+<dd><p>The size of initial points.</p></dd>
 
 
 <dt id="arg-axes">axes<a class="anchor" aria-label="anchor" href="#arg-axes"></a></dt>

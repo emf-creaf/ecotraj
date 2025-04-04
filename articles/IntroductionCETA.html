@@ -78,7 +78,7 @@
                         <h4 data-toc-skip class="author">Nicolas
 Djeghri/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-02-24</h4>
+            <h4 data-toc-skip class="date">2025-04-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionCETA.Rmd" class="external-link"><code>vignettes/IntroductionCETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionCETA.Rmd</code></div>
@@ -320,7 +320,7 @@ which is what we expect given the trend that we put in our toy
 dataset.</p>
 </div>
 <div class="section level4">
-<h4 id="trajectory-cycles">2.2.2 Trajectory cycles<a class="anchor" aria-label="anchor" href="#trajectory-cycles"></a>
+<h4 id="cycles">2.2.2 Cycles<a class="anchor" aria-label="anchor" href="#cycles"></a>
 </h4>
 <p>Let’s now look at how extraction works for <strong>cycles</strong>.
 The function <code><a href="../reference/trajectoryCyclical.html">extractCycles()</a></code> works very similarly to
@@ -645,7 +645,8 @@ format describing the seasonal cycles:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryCyclicalPlots.html">cyclePCoA</a></span><span class="op">(</span><span class="va">cyclesNSZoo</span>,</span>
 <span>          sites.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
-<span>          length <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span>          length <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>          print.init.points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"topleft"</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>,pch<span class="op">=</span><span class="fl">15</span>,<span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">northseaZoo</span><span class="op">$</span><span class="va">sites</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;">
 It is still a very busy graph but note that some data points are not
@@ -655,7 +656,10 @@ years (<code>minEcolStates = 12</code>). We can nonetheless see that
 more recent years (clearer lines) seem to be moving towards negative
 values of PCoA axis 2 suggesting a shift in zooplankton community
 composition across the whole time series and in both parts of the North
-Sea.</p>
+Sea. The points (printed through argument
+<code>print.init.points</code>) show cycles’ starts (in this case
+January months) and help interpretation: winters are towards negative
+values of PCoA 1, summers towards positive values of PCoA 1.</p>
 <p>We can then use the outputs of <code><a href="../reference/trajectoryCyclical.html">extractCycles()</a></code> contained
 in <code>cycleNSZoo</code> as inputs for other ETA function and assess
 some interesting characteristics of the seasonal cycles of North Sea
@@ -866,10 +870,28 @@ function that does it is <code><a href="../reference/trajectoryCyclical.html">cy
 a bit long to compute, it works a lot!</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">CSNSZoo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryCyclical.html">cycleShifts</a></span><span class="op">(</span><span class="va">x_northseaZoo</span>,</span>
-<span>                       cycleDuration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p>We can then extract a trend for each month in each site (and in the
-process make one example graph):</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<span>                       cycleDuration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">CSNSZoo</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   sites     dateCS   timeCS  timeRef timeScale cyclicalShift</span></span>
+<span><span class="co">## 1   NNS 0.04166667 1960.042 1959.042         1   0.025631729</span></span>
+<span><span class="co">## 2   NNS 0.04166667 1961.042 1959.042         2   0.021382801</span></span>
+<span><span class="co">## 3   NNS 0.04166667 1962.042 1959.042         3   0.061321501</span></span>
+<span><span class="co">## 4   NNS 0.04166667 1963.042 1959.042         4   0.020736485</span></span>
+<span><span class="co">## 5   NNS 0.04166667 1964.042 1959.042         5  -0.001200648</span></span>
+<span><span class="co">## 6   NNS 0.04166667 1965.042 1959.042         6  -0.017846575</span></span></code></pre>
+<p>Broadly, <code><a href="../reference/trajectoryCyclical.html">cycleShifts()</a></code> works by compute
+<code>cyclicalShift</code> by comparing <strong>the position of an
+ecological state of interest on its cycle</strong> (at a date
+<code>dateCS</code>,and time <code>timeCS</code>) to <strong>the
+position of the ecological state of same date on a reference
+cycle</strong> (at time <code>timeRef</code>). The two ecological states
+are separated by an amount of time <code>timeScale</code>. Which cycles
+to choose to compute a cyclical shift can be rather arbitrary so instead
+we can simply use all possible comparison and extract a trend from a
+graph of <code>cyclicalShift</code> against <code>timeScale</code>. We
+do it below for all dates (i.e. months of the year) and display only one
+of the graphs as an example:</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">slopes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SNS"</span>,<span class="st">"NNS"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">CSNSZoo</span><span class="op">$</span><span class="va">dateCS</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
@@ -898,12 +920,10 @@ process make one example graph):</p>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">slopes</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>,<span class="st">"month"</span>,<span class="st">"slope"</span><span class="op">)</span></span></code></pre></div>
-<p>The graph gives an example of how trends of cyclical shifts can be
-computed across the whole time series for a given month. Let’s now
-synthesize this information first for SNS:</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">slopes</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>,<span class="st">"month"</span>,<span class="st">"slope"</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s now show all the trends, first for the SNS:</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">month</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span>,</span>
 <span>     y<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">slope</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">10</span>,</span>
 <span>     las<span class="op">=</span><span class="fl">1</span>,type<span class="op">=</span><span class="st">"b"</span>,</span>
@@ -912,8 +932,8 @@ synthesize this information first for SNS:</p>
 <span><span class="co">#note the multiplication by ten to get a slope in days per decade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>Same for the NNS:</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<p>And then for the NNS:</p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">month</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span>,</span>
 <span>     y<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">slope</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">10</span>,</span>
 <span>     las<span class="op">=</span><span class="fl">1</span>,type<span class="op">=</span><span class="st">"b"</span>,</span>
@@ -922,11 +942,11 @@ synthesize this information first for SNS:</p>
 <span><span class="co">#note the multiplication by ten to get a slope in days per decade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>The two region of the North Sea exhibit a similar pattern of cyclical
-shift: there is maximal advance (positive shift) in spring and autumn.
-The advance computed is not negligible, communities take around 6 to 12
-days of advance every decade at those months (at least in term of
-composition)!</p>
+<p>The two regions of the North Sea exhibit a similar pattern of
+cyclical shift: there is maximal advance (positive shift) in spring and
+autumn. The advance computed is not negligible, communities take around
+6 to 12 days of advance every decade at those months (at least in term
+of composition)!</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

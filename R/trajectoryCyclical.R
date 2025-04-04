@@ -377,10 +377,13 @@ cycleConvexity <- function(x,
   for(i in 1:length(siteIDs)){
     Anglesi <- Angles[i,]
     Anglesi <- Anglesi[1:(length(Anglesi)-3)]
-    Anglesi <- Anglesi[is.na(Anglesi)==FALSE]
     
     timesi <- times[sites==siteIDs[i]]
     timesi <- timesi[2:(length(timesi)-1)]
+    
+    #remove uncomputable angles (this happens when a segment length is 0)
+    timesi <- timesi[is.na(Anglesi)==FALSE]
+    Anglesi <- Anglesi[is.na(Anglesi)==FALSE]
     
     bidule <- data.frame(timesi,Anglesi)
     bidule <- bidule[order(bidule$timesi),]

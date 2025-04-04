@@ -13,6 +13,8 @@ cyclePCoA(
   sites.colors = NULL,
   cycles.colors = NULL,
   print.names = FALSE,
+  print.init.points = FALSE,
+  cex.init.points = 1,
   axes = c(1, 2),
   ...
 )
@@ -37,6 +39,10 @@ fixedDateTrajectoryPCoA(
 \item{cycles.colors}{The colors applied to the different cycles. Not compatible with \code{sites.colors}.}
 
 \item{print.names}{A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.}
+
+\item{print.init.points}{A boolean flag to indicate whether an initial point at the start of cycles should be printed (useful to spot the start of cycles in graphs containing many trajectories).}
+
+\item{cex.init.points}{The size of initial points.}
 
 \item{axes}{The pair of principal coordinates to be plotted.}
 

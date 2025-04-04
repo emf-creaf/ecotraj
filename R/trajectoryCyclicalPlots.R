@@ -74,6 +74,8 @@
 #' @param sites.colors The colors applied to the different sites. The cycles will be distinguished (old to recent) by increasingly lighter tones of the provided colors.
 #' @param cycles.colors The colors applied to the different cycles. Not compatible with \code{sites.colors}.
 #' @param print.names A boolean flag to indicate whether the names of cycles or fixed-date trajectories should be printed.
+#' @param print.init.points A boolean flag to indicate whether an initial point at the start of cycles should be printed (useful to spot the start of cycles in graphs containing many trajectories).
+#' @param cex.init.points The size of initial points.
 #' @param axes The pair of principal coordinates to be plotted.
 #' @param ... Additional parameters for function \code{\link{arrows}}.
 #' @export
@@ -82,6 +84,8 @@ cyclePCoA <- function (x,
                        sites.colors=NULL,
                        cycles.colors=NULL,
                        print.names=FALSE,
+                       print.init.points=FALSE,
+                       cex.init.points=1,
                        axes=c(1,2), ...)
 {
   if (!inherits(x, "cycles"))
@@ -183,10 +187,6 @@ cyclePCoA <- function (x,
              x1=xarrows[2:length(xarrows)],y1=yarrows[2:length(yarrows)],
              col=colorCycles[j],...)
       
-      #potentially print cycle names
-      if (print.names==TRUE){
-        text(x=xarrows[1],y=yarrows[1],j,col=colorCycles[j])
-      }
       #add the interpolated ecological states if any
       if (is.null(x$interpolationInfo)==FALSE){
         #addition may be made at the start and/or at the end of the cycle
@@ -228,6 +228,14 @@ cyclePCoA <- function (x,
           segments(x0=x0Int,y0=y0Int,x1=x1Int,y1=y1Int,col=colorCycles[j],...)
         }
       }
+      #potentially print cycle names and initial points
+      if (print.init.points==TRUE){
+        points(x=xarrows[1],y=yarrows[1],bg=colorCycles[j],pch=21,cex=cex.init.points)
+      }
+      if (print.names==TRUE){
+        text(x=xarrows[1],y=yarrows[1],j,col=colorCycles[j])
+      }
+      
     }
   }
   invisible(PCoA)

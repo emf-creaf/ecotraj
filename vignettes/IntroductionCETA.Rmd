@@ -393,7 +393,7 @@ trajectoryPCoA(x_second_order_centered,
                length=0.05)
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
-After centering of cycles these trajectories describe change in seasonal dynamics irrespective of the position (i.e. average community composition of the cycles), focussing the analysis on change of shape and size of the cycles.  
+After centering of cycles these trajectories describe change in seasonal dynamics irrespective of the position (i.e. average community composition of the cycles), focusing the analysis on change of shape and size of the cycles.  
 
 ### 3.5 Fixed-date trajectories
 

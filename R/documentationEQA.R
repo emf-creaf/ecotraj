@@ -24,10 +24,10 @@
 #' @name glomel
 #' @aliases glomel 
 #' @docType data
-#' @author Aline Bifolchi, Réserve Naturelle des landes et marais de Glomel
+#' @author Aline Bifolchi, \enc{Réserve}{Reserve} Naturelle des landes et marais de Glomel
 #' @keywords data
 #' 
-#' @seealso \code{\link{envelope}}
+#' @seealso \code{\link{referenceEnvelopes}}
 NULL
 
 
@@ -61,5 +61,5 @@ NULL
 #' @references 
 #' Tauran, A., Dubreuil, J., Guyonnet, B., Grall, J., 2020. Impact of fishing gears and fishing intensities on maerl beds: An experimental approach. Journal of Experimental Marine Biology and Ecology 533, 151472. https://doi.org/10.1016/j.jembe.2020.151472
 #' 
-#' @seealso \code{\link{envelope}}
+#' @seealso \code{\link{referenceEnvelopes}}
 NULL

@@ -29,9 +29,9 @@ envelope, and the next 18 stations (rows) where those for which the conservation
 was to be assessed.
 }
 \seealso{
-\code{\link{envelope}}
+\code{\link{referenceEnvelopes}}
 }
 \author{
-Aline Bifolchi, Réserve Naturelle des landes et marais de Glomel
+Aline Bifolchi, \enc{Réserve}{Reserve} Naturelle des landes et marais de Glomel
 }
 \keyword{data}

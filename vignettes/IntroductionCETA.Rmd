@@ -363,19 +363,19 @@ legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 
 We can see from this graph that the Northern and Southern North Sea present parallel changes in seasonal dynamics while maintaining their differences during the whole time series. An important change seem to have occurred around year 2000 in agreement with previous studies that detected a regime shift around that time.  
 
-You know what's fun? We now have two sets of time-ordered "ecological states" (more ecological dynamics to be fair) defined in a distance matrix. This is all we need to do some trajectory analysis. We can thus perform what we call "second-order" trajectory analysis using the distance between cycles as our distance matrix:
+You know what's fun? We now have two sets of time-ordered "ecological states" (more ecological dynamics to be fair) defined in a distance matrix. This is all we need to do some trajectory analysis. We can thus perform what we call "second-stage" trajectory analysis using the distance between cycles as our distance matrix:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
-x_second_order <- defineTrajectories(d = cyclesZooDistances,
+x_second_stage <- defineTrajectories(d = cyclesZooDistances,
                                      sites = sitesCycles,
                                      surveys = yearCycles)
-trajectoryPCoA(x_second_order,
+trajectoryPCoA(x_second_stage,
                traj.colors=c("blue","red"),
                length=0.05)
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))
 ```
 
-However, this is perhaps not the best use of the concept of second-order trajectory analysis. Indeed the trajectories above are in fact very similar to the trajectories obtained by simply joining the center of cycles of cycles (not shown here).  
-Where second-order trajectory analysis may be more precious is when it is used on dissimilarities between centered cycles as such:
+However, this is perhaps not the best use of the concept of second-stage trajectory analysis. Indeed the trajectories above are in fact very similar to the trajectories obtained by simply joining the center of cycles of cycles (not shown here).  
+Where second-stage trajectory analysis may be more precious is when it is used on dissimilarities between centered cycles as such:
 ```{r fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
 #we first center the cycles
 centered_cyclesNSZoo <- centerTrajectories(cyclesNSZoo)
@@ -384,11 +384,11 @@ centered_cyclesNSZoo <- centerTrajectories(cyclesNSZoo)
 centered_cyclesZooDistances <- trajectoryDistances(centered_cyclesNSZoo)
 
 #before finally making it a trajectory object
-x_second_order_centered <- defineTrajectories(d = centered_cyclesZooDistances,
+x_second_stage_centered <- defineTrajectories(d = centered_cyclesZooDistances,
                                               sites = sitesCycles,
                                               surveys = yearCycles)
 #and make a plot:
-trajectoryPCoA(x_second_order_centered,
+trajectoryPCoA(x_second_stage_centered,
                traj.colors=c("blue","red"),
                length=0.05)
 legend(x="topleft",col=c("blue","red"),pch=15,unique(northseaZoo$sites))

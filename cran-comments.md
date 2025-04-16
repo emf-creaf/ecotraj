@@ -1,10 +1,10 @@
 ## Submission
 
-This submission (v0.1.1) adds new R functions to the package. Vignettes have been moved to the package website in order to facilitate checks.
+This submission (v1.0.0) adds new R functions to the package. 
 
 ## Tested environments
 
-* local R installation (Arch Linux), R 4.3.1, OK
+* local R installation (Arch Linux), R 4.4.3, OK
 * windows-latest (on github actions), R release, OK
 * macOS-latest (on github actions), R release, OK
 * ubuntu-latest (on github actions), R release, OK

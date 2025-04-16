@@ -31,6 +31,6 @@ and varying fishing pressures on maerl beds, in the bay of Brest (Brittany, Fran
 Tauran, A., Dubreuil, J., Guyonnet, B., Grall, J., 2020. Impact of fishing gears and fishing intensities on maerl beds: An experimental approach. Journal of Experimental Marine Biology and Ecology 533, 151472. https://doi.org/10.1016/j.jembe.2020.151472
 }
 \seealso{
-\code{\link{envelope}}
+\code{\link{referenceEnvelopes}}
 }
 \keyword{data}

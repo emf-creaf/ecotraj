@@ -78,7 +78,7 @@
                         <h4 data-toc-skip class="author">Nicolas
 Djeghri/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-04-04</h4>
+            <h4 data-toc-skip class="date">2025-04-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionCETA.Rmd" class="external-link"><code>vignettes/IntroductionCETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionCETA.Rmd</code></div>
@@ -741,8 +741,7 @@ detected a regime shift around that time.</p>
 states” (more ecological dynamics to be fair) defined in a distance
 matrix. This is all we need to do some trajectory analysis. We can thus
 perform what we call “second-order” trajectory analysis using the
-distance between cycles as our distance matrix. We wont go in the
-details here but here is the corresponding graph as an appetizer:</p>
+distance between cycles as our distance matrix:</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_second_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">cyclesZooDistances</span>,</span>
 <span>                                     sites <span class="op">=</span> <span class="va">sitesCycles</span>,</span>
@@ -752,36 +751,59 @@ details here but here is the corresponding graph as an appetizer:</p>
 <span>               length<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"topleft"</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>,pch<span class="op">=</span><span class="fl">15</span>,<span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">northseaZoo</span><span class="op">$</span><span class="va">sites</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-38-1.png" width="480" style="display: block; margin: auto;"></p>
-<p>Note that the two PCoA do not represent the same variance on their
-first and second axes. This is due to differences in the correction
-method used for negative eigenvalues (ignored in the first case,
-application of Cailliez correction in the second case).</p>
+<p>However, this is perhaps not the best use of the concept of
+second-order trajectory analysis. Indeed the trajectories above are in
+fact very similar to the trajectories obtained by simply joining the
+center of cycles of cycles (not shown here).<br>
+Where second-order trajectory analysis may be more precious is when it
+is used on dissimilarities between centered cycles as such:</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#we first center the cycles</span></span>
+<span><span class="va">centered_cyclesNSZoo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">cyclesNSZoo</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#then compute distances between centered cycles</span></span>
+<span><span class="va">centered_cyclesZooDistances</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">centered_cyclesNSZoo</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#before finally making it a trajectory object</span></span>
+<span><span class="va">x_second_order_centered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span>d <span class="op">=</span> <span class="va">centered_cyclesZooDistances</span>,</span>
+<span>                                              sites <span class="op">=</span> <span class="va">sitesCycles</span>,</span>
+<span>                                              surveys <span class="op">=</span> <span class="va">yearCycles</span><span class="op">)</span></span>
+<span><span class="co">#and make a plot:</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_second_order_centered</span>,</span>
+<span>               traj.colors<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>,</span>
+<span>               length<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"topleft"</span>,col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>,<span class="st">"red"</span><span class="op">)</span>,pch<span class="op">=</span><span class="fl">15</span>,<span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">northseaZoo</span><span class="op">$</span><span class="va">sites</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-39-1.png" width="480" style="display: block; margin: auto;">
+After centering of cycles these trajectories describe change in seasonal
+dynamics irrespective of the position (i.e. average community
+composition of the cycles), focusing the analysis on change of shape and
+size of the cycles.</p>
 </div>
 <div class="section level3">
 <h3 id="fixed-date-trajectories-1">3.5 Fixed-date trajectories<a class="anchor" aria-label="anchor" href="#fixed-date-trajectories-1"></a>
 </h3>
 <p>Let’s now look at the fixed-date trajectories. First prepare the data
 using <code><a href="../reference/trajectoryCyclical.html">extractFixedDateTrajectories()</a></code>:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdtrajNSZoo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryCyclical.html">extractFixedDateTrajectories</a></span><span class="op">(</span><span class="va">x_northseaZoo</span>,</span>
 <span>                                            cycleDuration <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                                            namesFixedDate <span class="op">=</span></span>
 <span>                             <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Jan"</span>,<span class="st">"Feb"</span>,<span class="st">"Mar"</span>,<span class="st">"Apr"</span>,<span class="st">"May"</span>,<span class="st">"Jun"</span>,<span class="st">"Jul"</span>,<span class="st">"Aug"</span>,<span class="st">"Sep"</span>,<span class="st">"Oct"</span>,<span class="st">"Nov"</span>,<span class="st">"Dec"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can then visualize the fixed date trajectories using the dedicated
 function <code><a href="../reference/trajectoryCyclicalPlots.html">fixedDateTrajectoryPCoA()</a></code>:</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryCyclicalPlots.html">fixedDateTrajectoryPCoA</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span>,</span>
 <span>                        sites.lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-40-1.png" width="480" style="display: block; margin: auto;">
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-41-1.png" width="480" style="display: block; margin: auto;">
 Hum, with such a big dataset, this is not the clearest graph! Let’s look
 at some summary metrics instead.</p>
 <p>As we did for cycles, we can compute shape metrics on fixed-date
 trajectories:</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fdtrajZooLengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryLengths</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span><span class="op">)</span></span>
 <span><span class="va">fdtrajZooDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryDirectionality</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span><span class="op">)</span></span></code></pre></div>
 <p>And put them in a convenient dataframe:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#descriptive stats</span></span>
 <span><span class="va">monthFDT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">dates</span>,<span class="va">fdtrajNSZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">fdT</span>,<span class="va">min</span><span class="op">)</span></span>
 <span><span class="va">sitesFDT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">sites</span>,<span class="va">fdtrajNSZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">fdT</span>,<span class="va">unique</span><span class="op">)</span></span>
@@ -803,16 +825,16 @@ trajectories:</p>
 <span><span class="va">SNSfdT</span><span class="op">$</span><span class="va">monthFDT</span> <span class="op">&lt;-</span> <span class="va">SNSfdT</span><span class="op">$</span><span class="va">monthFDT</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span></span>
 <span><span class="va">NNSfdT</span><span class="op">$</span><span class="va">monthFDT</span> <span class="op">&lt;-</span> <span class="va">NNSfdT</span><span class="op">$</span><span class="va">monthFDT</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span></span></code></pre></div>
 <p>Before graphing them:</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#First figure: Lengths</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">SNSfdT</span><span class="op">$</span><span class="va">monthFDT</span>,<span class="va">SNSfdT</span><span class="op">$</span><span class="va">fdtrajZooLengths.Path</span>,type<span class="op">=</span><span class="st">"l"</span>,las<span class="op">=</span><span class="fl">1</span>,ylab<span class="op">=</span><span class="st">"Fixed-date trajectory lengths"</span>,xlab<span class="op">=</span><span class="st">"Month"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">25</span><span class="op">)</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">NNSfdT</span><span class="op">$</span><span class="va">monthFDT</span>,<span class="va">NNSfdT</span><span class="op">$</span><span class="va">fdtrajZooLengths.Path</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Second figure: Directionality</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">SNSfdT</span><span class="op">$</span><span class="va">monthFDT</span>,<span class="va">SNSfdT</span><span class="op">$</span><span class="va">fdtrajZooDir</span>,type<span class="op">=</span><span class="st">"l"</span>,las<span class="op">=</span><span class="fl">1</span>,ylab<span class="op">=</span><span class="st">"Fixed-date trajectory directionality"</span>,xlab<span class="op">=</span><span class="st">"Years"</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.36</span>,<span class="fl">0.45</span><span class="op">)</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">NNSfdT</span><span class="op">$</span><span class="va">monthFDT</span>,<span class="va">NNSfdT</span><span class="op">$</span><span class="va">fdtrajZooDir</span>,type<span class="op">=</span><span class="st">"l"</span>,col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>There is tendency of fixed-date trajectories to have high
 directionality and low length in summer months and conversely in winter.
 This is likely to be a sampling effect. Although the sampling effort is
@@ -822,7 +844,7 @@ stochastic. This is reflected in noisier fixed-date trajectories in
 winter.</p>
 <p>Nonetheless, a metric of peculiar interest in fixed-date trajectories
 might be convergence:</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#We will do it for the two sites (NNS and SNS) separately, so lets pull them apart</span></span>
 <span><span class="va">SNSfdtraj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span>,site_selection <span class="op">=</span> <span class="st">"SNS"</span><span class="op">)</span></span>
 <span><span class="va">NNSfdtraj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">fdtrajNSZoo</span>,site_selection <span class="op">=</span> <span class="st">"NNS"</span><span class="op">)</span></span>
@@ -848,13 +870,13 @@ might be convergence:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/taiyun/corrplot" class="external-link">corrplot</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## corrplot 0.95 loaded</span></span></code></pre>
 <p>Let’s now visualize it for SNS:</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">SNSfdtrajConv</span><span class="op">$</span><span class="va">tau</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">SNSfdtrajConv</span><span class="op">$</span><span class="va">p.value</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-46-1.png" width="480" style="display: block; margin: auto;">
-And for NNS:</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">NNSfdtrajConv</span><span class="op">$</span><span class="va">tau</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">NNSfdtrajConv</span><span class="op">$</span><span class="va">p.value</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">SNSfdtrajConv</span><span class="op">$</span><span class="va">tau</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">SNSfdtrajConv</span><span class="op">$</span><span class="va">p.value</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-47-1.png" width="480" style="display: block; margin: auto;">
+And for NNS:</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">NNSfdtrajConv</span><span class="op">$</span><span class="va">tau</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">NNSfdtrajConv</span><span class="op">$</span><span class="va">p.value</span><span class="op">&lt;</span><span class="fl">0.05</span><span class="op">)</span>,<span class="fl">12</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-48-1.png" width="480" style="display: block; margin: auto;">
 In those graphs, blue indicates divergence while red indicates
 convergence of fixed date tajectories. In both part of the North Sea, we
 see a convergence of spring and summer months and a divergence winter
@@ -868,7 +890,7 @@ and winters are getting more contrasted.</p>
 (e.g. advances and delays similar to approaches in phenology). The
 function that does it is <code><a href="../reference/trajectoryCyclical.html">cycleShifts()</a></code>. This one will take
 a bit long to compute, it works a lot!</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">CSNSZoo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryCyclical.html">cycleShifts</a></span><span class="op">(</span><span class="va">x_northseaZoo</span>,</span>
 <span>                       cycleDuration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">CSNSZoo</span><span class="op">)</span></span></code></pre></div>
@@ -891,7 +913,7 @@ we can simply use all possible comparison and extract a trend from a
 graph of <code>cyclicalShift</code> against <code>timeScale</code>. We
 do it below for all dates (i.e. months of the year) and display only one
 of the graphs as an example:</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">slopes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SNS"</span>,<span class="st">"NNS"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">CSNSZoo</span><span class="op">$</span><span class="va">dateCS</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
@@ -919,11 +941,11 @@ of the graphs as an example:</p>
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">slopes</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sites"</span>,<span class="st">"month"</span>,<span class="st">"slope"</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s now show all the trends, first for the SNS:</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">month</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span>,</span>
 <span>     y<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">slope</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">10</span>,</span>
 <span>     las<span class="op">=</span><span class="fl">1</span>,type<span class="op">=</span><span class="st">"b"</span>,</span>
@@ -931,9 +953,9 @@ of the graphs as an example:</p>
 <span>     xlab<span class="op">=</span><span class="st">"Month"</span><span class="op">)</span></span>
 <span><span class="co">#note the multiplication by ten to get a slope in days per decade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>And then for the NNS:</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">month</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">12</span><span class="op">+</span><span class="fl">0.5</span>,</span>
 <span>     y<span class="op">=</span><span class="va">slopes</span><span class="op">$</span><span class="va">slope</span><span class="op">[</span><span class="va">slopes</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">10</span>,</span>
 <span>     las<span class="op">=</span><span class="fl">1</span>,type<span class="op">=</span><span class="st">"b"</span>,</span>
@@ -941,7 +963,7 @@ of the graphs as an example:</p>
 <span>     xlab<span class="op">=</span><span class="st">"Month"</span><span class="op">)</span></span>
 <span><span class="co">#note the multiplication by ten to get a slope in days per decade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>The two regions of the North Sea exhibit a similar pattern of
 cyclical shift: there is maximal advance (positive shift) in spring and
 autumn. The advance computed is not negligible, communities take around

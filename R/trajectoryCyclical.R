@@ -526,7 +526,7 @@ cycleMetrics <- function(x,
   df <-  data.frame(cycle = siteIDs, site = NA,
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    convexity = NA, variability = NA)
+                    convexity = NA, temporal_ss = NA, temporal_variance = NA)
   for (i in 1:length(siteIDs)){
     df$site[i] <-unique(cycles$metadata$sites[sites==siteIDs[i]])
     df$n[i] <- sum(sites==siteIDs[i]&internal)
@@ -542,6 +542,8 @@ cycleMetrics <- function(x,
                                  externalBoundary,
                                  minEcolStates)
   df$mean_angle <- (df$convexity*360)/df$n
-  df$variability <- trajectoryVariability(cycles)
+  var <- trajectoryVariability(cycles)
+  df$temporal_ss <- var[,"temporal_ss"]
+  df$temporal_variance <- var[,"temporal_variance"]
   return(df)
 }

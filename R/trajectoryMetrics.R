@@ -60,7 +60,8 @@
 #' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 #' with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 #' 
-#' Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
+#' Function \code{trajectoryVariability} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
+#' (3) an unbiased estimator of overall temporal variance.
 #' 
 #' Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
 #' 
@@ -681,7 +682,7 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
 
 #' @rdname trajectoryMetrics
 #' @export
-trajectoryVariability<-function(x) {
+trajectoryVariability<-function(x, relativeContributions = FALSE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
   if(inherits(x, "fd.trajectories")) {
@@ -710,16 +711,24 @@ trajectoryVariability<-function(x) {
   for(i in 1:nsite) nsurveysite[i] = sum(sites==siteIDs[i])
   if(sum(nsurveysite<2)>0) stop("All sites need to be surveyed at least twice")
   
+  out <- matrix(NA, nrow = nsite, ncol = max(nsurveysite)+2)
   dmat <- as.matrix(d)
-  var <- rep(NA, nsite)
-  names(var) <- siteIDs
   for(i in 1:nsite) {
     ind_surv = which(sites==siteIDs[i])
+    #Surveys may not be in order
+    if(!is.null(surveys)) ind_surv <- ind_surv[order(surveys[sites==siteIDs[i]])]
     dsub <- dmat[ind_surv, ind_surv]
     r <- ncol(dsub)
-    var[i] <- sum(as.vector(as.dist(dsub))^2)/(r^2)
+    G <- .gowerCentered(dsub)
+    out[i, 1:r] <- diag(G)
+    out[i, max(nsurveysite)+1] <- sum(diag(G))
+    out[i, max(nsurveysite)+2] <- out[i, max(nsurveysite)+1]/(r-1)
+    if(relativeContributions) out[i, 1:r] <- diag(G)/sum(diag(G))
   }
-  return(var)
+  out <- as.data.frame(out)
+  names(out) <- c(paste0("ss_", 1:max(nsurveysite)), "temporal_ss", "temporal_variance")
+  row.names(out) <- siteIDs
+  return(out)
 }
 
 #' @rdname trajectoryMetrics
@@ -741,7 +750,7 @@ trajectoryMetrics <- function(x, add = TRUE) {
   df <-  data.frame(trajectory = siteIDs, site = NA,
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    directionality = NA, variability = NA)
+                    directionality = NA, temporal_ss = NA, temporal_variance = NA)
   if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(siteIDs)){
       df$site[i] <-unique(x$metadata$sites[sites==siteIDs[i]])
@@ -758,7 +767,9 @@ trajectoryMetrics <- function(x, add = TRUE) {
   df$mean_speed <- trajectorySpeeds(x)$Path
   df$mean_angle <- trajectoryAngles(x, add = add)$mean
   df$directionality <- trajectoryDirectionality(x, add = add)
-  df$variability <- trajectoryVariability(x)
+  var <- trajectoryVariability(x)
+  df$temporal_ss <- var[,"temporal_ss"]
+  df$temporal_variance <- var[,"temporal_variance"]
   return(df)
 }
 #' @rdname trajectoryMetrics
@@ -798,7 +809,7 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
   df <-  data.frame(trajectory = sites, site = NA, midpoint = surveys,
                     t_start = NA,t_end = NA, n = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    directionality = NA, variability = NA)
+                    directionality = NA, temporal_ss = NA, temporal_variance = NA)
   if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(sites)){
       df$site[i] <-unique(x$metadata$sites[sites==sites[i]])
@@ -828,7 +839,9 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
       df$mean_speed[i] <- trajectorySpeeds(x_i)$Path
       if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
       if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
-      df$variability[i] <- trajectoryVariability(x_i)
+      var_i <- trajectoryVariability(x_i)
+      df$temporal_ss[i] <- var_i[,"temporal_ss"]
+      df$temporal_variance[i] <- var_i[,"temporal_variance"]
     }
   }
   return(df)

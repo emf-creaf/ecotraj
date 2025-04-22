@@ -46,7 +46,7 @@ trajectoryAngles2D(
 
 trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
-trajectoryVariability(x)
+trajectoryVariability(x, relativeContributions = FALSE)
 
 trajectoryMetrics(x, add = TRUE)
 
@@ -93,7 +93,8 @@ Function \code{trajectoryAngles2D} returns a data frame with angle values on eac
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
-Function \code{trajectoryVariability} returns a vector with total variability values (one per trajectory).
+Function \code{trajectoryVariability} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
+(3) an unbiased estimator of overall temporal variance.
 
 Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
 

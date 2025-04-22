@@ -152,6 +152,7 @@ oldpar <- par(mar=c(4,4,1,1))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
+legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
 ```
 Although it is not particularly useful, we can see the effect of centering in this real data set:
 

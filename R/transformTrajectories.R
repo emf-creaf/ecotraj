@@ -1,3 +1,16 @@
+.gowerCentered<-function(D) {
+  Dmat <- as.matrix(D)
+  Amat <- (-0.5)*(Dmat^2)
+  n <- nrow(Dmat)
+  #Identity matrix  
+  I <- diag(n)
+  #Centering matrix
+  One <- matrix(1, n, n)
+  Cmat <- I - (One/n)
+  #Gower matrix
+  G = Cmat %*% Amat %*% Cmat
+  return(G)
+}
 #' Transform trajectories
 #' 
 #' The following functions are provided to transform trajectories:
@@ -60,9 +73,8 @@ smoothTrajectories<-function(x, survey_times = NULL, kernel_scale = 1, fixed_end
   for(i in 1:nsite) nsurveysite[i] <- sum(sites==siteIDs[i])
   if(sum(nsurveysite<3)>0) stop("All sites need to be surveyed at least three times")
   
-  dmat <- as.matrix(d)
-  
-  umat_smooth <- matrix(0, length(sites), length(sites))
+  n <- length(sites)
+  umat_smooth <- matrix(0, n, n)
   for(i1 in 1:length(sites)) {
     if(!is.null(surveys)) {
       surveys_i1 <- surveys
@@ -96,8 +108,9 @@ smoothTrajectories<-function(x, survey_times = NULL, kernel_scale = 1, fixed_end
       umat_smooth[i1, ] <- umat_smooth[i1, ]/sum(umat_smooth[i1, ])
     }
   }
+  
   # Replace distance matrix with distances between clusters
-  x$d <- .distanceBetweenClusters(dmat, umat_smooth)
+  x$d <- .distanceBetweenClusters(as.matrix(d), umat_smooth)
   return(x)
 }
 
@@ -133,17 +146,11 @@ centerTrajectories<-function(x, exclude = integer(0)) {
   }
   
   Dmat <-as.matrix(d)
+  n <- nrow(Dmat)
+  I <- diag(n)
   
   # Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
-  Amat <- (-0.5)*(Dmat^2)
-  n <- nrow(Dmat)
-  #Identity matrix  
-  I <- diag(n)
-  #Centering matrix
-  One <- matrix(1, n, n)
-  Cmat <- I - (One/n)
-  #Gower matrix
-  G = Cmat %*% Amat %*% Cmat
+  G <- .gowerCentered(d)
   #model matrix
   df <- data.frame(a = factor(sites))
   M <- model.matrix(~a,df, contrasts = list(a = "contr.helmert"))

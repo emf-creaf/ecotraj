@@ -198,9 +198,9 @@ legend("topright", col=c("red", "blue"),
 ## 3. Trajectory metrics
 One may be interested in studying the geometric properties of particular trajectories. This is illustrated in this section
 
-### 3.1 Distance-based metrics
+### 3.1 Changes in ecological state
 
-Several metrics are related to distances between states. For example, one can obtain the length of trajectory segments and the total path length using function `trajectoryLengths()`:
+Several metrics are related to the magnitude of temporal changes in state. For example, one can obtain the length of trajectory segments and the total path length using function `trajectoryLengths()`:
 ```{r} 
 trajectoryLengths(x)
 ```
@@ -211,13 +211,13 @@ trajectorySpeeds(x)
 ```
 Note that the units of lengths and speeds will depend on the definition of the $\Omega$ space and, in the latter case, on the units of `times`.
 
-Finally, one may calculate the overall (geometric) variability of states within each trajectory:
+Finally, one may calculate the overall temporal variation of states within each trajectory:
 ```{r}
 trajectoryVariability(x)
 ```
-The geometric variability can be interpreted as the average squared distance to the centroid of each trajectory.
+The function returns the (absolute or relative) contribution of each observation to the temporal variation, the total sum of squares of temporal variation and an unbiased estimation of temporal variance. Note that in this example the third (more curved) trajectory has lower temporal variation, compared to the first and second (straighter) ones.
 
-### 3.2 Angle-based metrics
+### 3.2 Changes in direction
 
 In CTA, angles are measured using triplets of time-ordered ecosystem states (a pair of consecutive segments is an example of such triplets). As matrix $\Delta$ may represent a space of multiple dimensions, angles cannot be calculated with respect to a single plane. Instead, each angle is measured on the plane defined by each triplet. Zero angles indicate that the three points (e.g. the two consecutive segments) are in a straight line. The larger the angle value, the more is trajectory changing in direction. Mean and standard deviation statistics of angles are calculated according to circular statistics. Function `trajectoryAngles()` allows calculating the angles between consecutive segments:
 

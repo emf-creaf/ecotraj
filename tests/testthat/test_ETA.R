@@ -34,7 +34,7 @@ test_that("Trajectories can be analyzed",{
   expect_s3_class(trajectoryAngles(x, all = TRUE), "data.frame")
   expect_s3_class(trajectoryAngles(x, relativeToInitial = TRUE, all = TRUE), "data.frame")
   expect_type(trajectoryDirectionality(x), "double")
-  expect_type(trajectoryVariability(x), "double")
+  expect_s3_class(trajectoryVariability(x), "data.frame")
   expect_type(segmentDistances(x), "list")
   expect_s3_class(trajectoryDistances(x, distance.type = "DSPD"), "dist")
   expect_s3_class(trajectoryDistances(x, distance.type = "SPD"), "dist")

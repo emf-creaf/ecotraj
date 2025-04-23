@@ -17,13 +17,13 @@
 #' \itemize{
 #' \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 #' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
-#' \item{Function \code{synchronizeTrajectories} resets trajectory ecological states to those corresponding to input times, via interpolation.}
+#' \item{Function \code{interpolateTrajectories} relocates trajectory ecological states to those corresponding to input times, via interpolation.}
 #' }
 #'  
 #' 
 #' @encoding UTF-8
 #' @name transformTrajectories
-#' @aliases centerTrajectories smoothTrajectories synchronizeTrajectories
+#' @aliases centerTrajectories smoothTrajectories interpolateTrajectories
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
 #' 
@@ -32,7 +32,8 @@
 #' Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
 #'
 #' @return 
-#' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed.
+#' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories}, also the
+#' number of observations and metadata is likely to be affected.
 #' 
 #' @author 
 #' Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -189,7 +190,7 @@ centerTrajectories<-function(x, exclude = integer(0)) {
 #' @rdname transformTrajectories
 #' @param times A numeric vector indicating new observation times for trajectories. Values should be comprised between time limits of the original trajectories.
 #' @export
-synchronizeTrajectories<-function(x, times) {
+interpolateTrajectories<-function(x, times) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(!inherits(times, "numeric") && !inherits(times, "integer")) stop("'times' should be a numeric vector")
   if(length(unique(times)) < length(times)) stop("Time values must be unique")

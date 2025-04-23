@@ -5,7 +5,7 @@
 \alias{transformTrajectories}
 \alias{smoothTrajectories}
 \alias{centerTrajectories}
-\alias{synchronizeTrajectories}
+\alias{interpolateTrajectories}
 \title{Transform trajectories}
 \usage{
 smoothTrajectories(
@@ -17,7 +17,7 @@ smoothTrajectories(
 
 centerTrajectories(x, exclude = integer(0))
 
-synchronizeTrajectories(x, times)
+interpolateTrajectories(x, times)
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -33,14 +33,15 @@ synchronizeTrajectories(x, times)
 \item{times}{A numeric vector indicating new observation times for trajectories. Values should be comprised between time limits of the original trajectories.}
 }
 \value{
-A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed.
+A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories}, also the
+number of observations and metadata is likely to be affected.
 }
 \description{
 The following functions are provided to transform trajectories:
 \itemize{
 \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
-\item{Function \code{synchronizeTrajectories} resets trajectory ecological states to those corresponding to input times, via interpolation.}
+\item{Function \code{interpolateTrajectories} relocates trajectory ecological states to those corresponding to input times, via interpolation.}
 }
 }
 \details{

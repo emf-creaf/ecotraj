@@ -5,6 +5,7 @@
 \alias{transformTrajectories}
 \alias{smoothTrajectories}
 \alias{centerTrajectories}
+\alias{synchronizeTrajectories}
 \title{Transform trajectories}
 \usage{
 smoothTrajectories(
@@ -15,6 +16,8 @@ smoothTrajectories(
 )
 
 centerTrajectories(x, exclude = integer(0))
+
+synchronizeTrajectories(x, times)
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -26,6 +29,8 @@ centerTrajectories(x, exclude = integer(0))
 \item{fixed_endpoints}{A logical flag to force keeping the location of trajectory endpoints unmodified}
 
 \item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation. Note: for objects of class \code{\link{cycles}}, \code{external} are excluded by default.}
+
+\item{times}{A numeric vector indicating new observation times for trajectories. Values should be comprised between time limits of the original trajectories.}
 }
 \value{
 A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed.
@@ -35,6 +40,7 @@ The following functions are provided to transform trajectories:
 \itemize{
 \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
+\item{Function \code{synchronizeTrajectories} resets trajectory ecological states to those corresponding to input times, via interpolation.}
 }
 }
 \details{

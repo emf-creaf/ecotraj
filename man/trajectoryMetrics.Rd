@@ -75,6 +75,8 @@ trajectoryWindowMetrics(x, bandwidth, type = "surveys", add = TRUE)
 
 \item{nperm}{The number of permutations to be used in the directionality test.}
 
+\item{relativeContributions}{A logical flag to indicate that contributions of individual observations to temporal variability should be expressed in relative terms, i.e. as the ratio of the sum of squares of the observation divided by the overall sum of squares (otherwise, absolute sum of squares are returned).}
+
 \item{bandwidth}{Bandwidth of the moving windows (in units of surveys or times, depending on \code{type})}
 
 \item{type}{A string, either "surveys" or "times", indicating how windows are defined.}

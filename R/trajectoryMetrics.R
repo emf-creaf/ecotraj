@@ -681,6 +681,7 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
 }
 
 #' @rdname trajectoryMetrics
+#' @param relativeContributions A logical flag to indicate that contributions of individual observations to temporal variability should be expressed in relative terms, i.e. as the ratio of the sum of squares of the observation divided by the overall sum of squares (otherwise, absolute sum of squares are returned).
 #' @export
 trajectoryVariability<-function(x, relativeContributions = FALSE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")

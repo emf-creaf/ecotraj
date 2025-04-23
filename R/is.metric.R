@@ -2,17 +2,23 @@
 #' 
 #' Checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).
 #' 
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
+#' @param x Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
 #' @param tol Tolerance value for metricity
 #' 
-#' @return a boolean indicating metric property
+#' @return A boolean indicating metric property
 #' 
 #' @author 
 #' Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' @encoding UTF-8
 #' @export
-#' @keywords internal
-is.metric<-function(d, tol=0.0001) {
-  return(.ismetricC(as.matrix(d), tol))
+is.metric<-function(x, tol=0.0001) {
+  if(inherits(x, "trajectories")) {
+    return(.ismetricC(as.matrix(x$d), tol))
+  } else if(inherits(x, "dist")) {
+    return(.ismetricC(as.matrix(x), tol))
+  } else if(inherits(x, "matrix")) {
+    return(.ismetricC(x, tol))
+  }
+  stop("'x' should be of class `trajectories`, `dist` or `matrix`")
 }

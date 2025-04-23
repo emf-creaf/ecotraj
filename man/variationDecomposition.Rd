@@ -2,13 +2,42 @@
 % Please edit documentation in R/variationDecomposition.R
 \name{variationDecomposition}
 \alias{variationDecomposition}
-\title{Title}
+\title{Variation decomposition}
 \usage{
 variationDecomposition(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{An object of class \code{trajectories} (or its children subclasses \code{fd.trajectories} or \code{cycles}) where
+trajectories are synchronous.}
+}
+\value{
+A data frame with results (sum of squares, degrees of freedom and variance estimates) for each variance component and the total.
 }
 \description{
-Title
+Performs a sum of squares decomposition of variation in three components: (1) across trajectory entities; (2) across time;
+(3) interaction.
+}
+\examples{
+#Description of sites and surveys
+sites <- c("1","1","1","2","2","2")
+surveys <- c(1,2,3,1,2,3)
+  
+#Raw data table
+xy<-matrix(0, nrow=6, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4:6,1] <- 0.5
+xy[4:6,2] <- xy[1:3,2]
+xy[6,1]<-1
+
+d <- dist(xy)
+
+# Defines trajectories
+x <- defineTrajectories(d, sites, surveys)
+
+# Variation decomposition
+variationDecomposition(x)
+}
+\seealso{
+\code{\link{defineTrajectories}}, \code{\link{is.synchronous}}
 }

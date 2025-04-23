@@ -5,15 +5,15 @@
 \alias{is.metric}
 \title{Metricity}
 \usage{
-is.metric(d, tol = 1e-04)
+is.metric(x, tol = 1e-04)
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
+\item{x}{Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
 
 \item{tol}{Tolerance value for metricity}
 }
 \value{
-a boolean indicating metric property
+A boolean indicating metric property
 }
 \description{
 Checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).
@@ -21,4 +21,3 @@ Checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfi
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF
 }
-\keyword{internal}

@@ -477,9 +477,9 @@ NNSfdtraj$metadata <- NNSfdtraj$metadata[floor(NNSfdtraj$metadata$times)%in%sele
 
 #Now we can compute the convergence!
 SNSfdtrajConv <- trajectoryConvergence(SNSfdtraj,
-                                       symmetric = TRUE)
+                                       type = "pairwise.symmetric")
 NNSfdtrajConv <- trajectoryConvergence(NNSfdtraj,
-                                       symmetric = TRUE)
+                                       type = "pairwise.symmetric")
 
 library(corrplot)
 ```

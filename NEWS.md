@@ -3,6 +3,7 @@
 * Update of function trajectoryVariability().
 * New function variationDecomposition() for synchronous trajectories.
 * New function interpolateTrajectories() for interpolation to given times.
+* Function trajectoryConvergence() modified to allow a global convergence test (type = "multiple").
 
 # ecotraj 1.0.0
 * Trajectory data structures have been introduced.

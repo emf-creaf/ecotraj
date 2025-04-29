@@ -4,7 +4,7 @@
 #' \itemize{
 #' \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 #' \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
-#' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on the distances between trajectories (symmetric test) or the distance between points of one trajectory to the other.}
+#' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on (1) the distances between trajectories; (2) the distance between points of one trajectory to the other; or (3) the variance of states among trajectories.}
 #' \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds or time lags.}
 #' }
 #' 
@@ -38,6 +38,18 @@
 #'     \item{\code{TSPD}: Time-Sensitive Path Distance (experimental).}
 #'  }
 #'  
+#'  Function \code{trajectoryConvergence} is used to study convergence/divergence between trajectories. There are three possible tests, the first two concerning pairwise comparisons between trajectories.
+#'  \enumerate{
+#'     \item{If \code{type = "pairwise.asymmetric"} then all pairwise comparisons are considered and the test is asymmetric, meaning that we test for trajectory A approaching trajectory B along time. 
+#'     This test uses distances of orthogonal projections (i.e. rejections) of states of one trajectory onto the other.}
+#'     \item{If \code{type = "pairwise.symmetric"} then all pairwise comparisons are considered but we test whether
+#'     the two trajectories become closer along surveys. This test requires the same number of surveys for all trajectories and uses the sequence of distances between states of the two trajectories corresponding to the same survey.}
+#'     \item{If \code{type = "multiple"} then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
+#'  the test uses the sequence of variability between states corresponding to the same time.}
+#'  } 
+#'  In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing.
+#'   
+#'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 #'  evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to \code{\link{trajectoryProjection}}. 
 #'  Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).
@@ -55,8 +67,8 @@
 #' }
 #' Function \code{trajectoryConvergence} returns a list with two elements:
 #' \itemize{
-#'   \item{\code{tau}: A matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the statistic of the test of the row trajectory approaching the column trajectory.}
-#'   \item{\code{p.value}: A matrix with the p-value of the convergence/divergence test between trajectories. If \code{symmetric=TRUE} then the matrix is square. Otherwise the p-value indicates the test of the row trajectory approaching the column trajectory.}
+#'   \item{\code{tau}: A single value or a matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix is square and if \code{type = "pairwise.asymmetric"} the statistic of the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} tau is a single value.}
+#'   \item{\code{p.value}: A single value or a matrix with the p-value of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix of p-values is square and if \code{type = "pairwise.asymmetric"} then the p-value indicates the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} p-value is a single value.}
 #' }
 #' Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
 #' \itemize{
@@ -78,7 +90,7 @@
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). 
 #' Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 #' 
-#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 #' 
 #' @examples 
 #' #Description of sites and surveys
@@ -503,13 +515,14 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
 }
 
 #' @rdname trajectoryComparison
-#' @param symmetric A logical flag to indicate a symmetric convergence comparison of trajectories.
+#' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).
 #' @export
-trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
+trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
-  
+  type <- match.arg(type, c("pairwise.asymmetric", "pairwise.symmetric", "multiple"))
   d <- x$d
   surveys <- x$metadata$surveys
+  times <- x$metadata$times
   # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
@@ -526,52 +539,66 @@ trajectoryConvergence<-function(x, symmetric = FALSE, add=TRUE){
   nsurveysite<-numeric(nsite)
   for(i in 1:nsite) nsurveysite[i] <- sum(sites==siteIDs[i])
   if(sum(nsurveysite<3)>0) stop("All sites need to be surveyed at least three times")
-  n <- nrow(as.matrix(d))
-  
-  #Init output
-  tau <- matrix(NA, nrow=nsite, ncol = nsite)
-  rownames(tau) <- siteIDs
-  colnames(tau) <- siteIDs
-  p.value <- tau
   dmat <- as.matrix(d)
-  for(i1 in 1:(nsite-1)) {
-    ind_surv1 <- which(sites==siteIDs[i1])
-    #Surveys may not be in order
-    if(!is.null(surveys)) ind_surv1 <- ind_surv1[order(surveys[sites==siteIDs[i1]])]
-    for(i2 in (i1+1):nsite) {
-      ind_surv2 <- which(sites==siteIDs[i2])
+  n <- nrow(dmat)
+  
+  if(type %in% c("pairwise.asymmetric", "pairwise.symmetric")) {
+    #Init output
+    tau <- matrix(NA, nrow=nsite, ncol = nsite)
+    rownames(tau) <- siteIDs
+    colnames(tau) <- siteIDs
+    p.value <- tau
+    
+    for(i1 in 1:(nsite-1)) {
+      ind_surv1 <- which(sites==siteIDs[i1])
       #Surveys may not be in order
-      if(!is.null(surveys)) ind_surv2 <- ind_surv2[order(surveys[sites==siteIDs[i2]])]
-      if(!symmetric) {
-        trajectory <- ind_surv2
-        target <- ind_surv1
-        trajProj <- trajectoryProjection(d,target, trajectory, add=add)
-        dT <- trajProj$distanceToTrajectory
-        mk.test <- MannKendall(dT)
-        tau[i1,i2] <- mk.test$tau
-        p.value[i1,i2] <- mk.test$sl
-        trajectory <- ind_surv1
-        target <- ind_surv2
-        trajProj <- trajectoryProjection(d,target, trajectory, add=add)
-        dT <- trajProj$distanceToTrajectory
-        mk.test <- MannKendall(dT)
-        tau[i2,i1] <- mk.test$tau
-        p.value[i2,i1] <- mk.test$sl
-      } 
-      else {
-        if(length(ind_surv1)==length(ind_surv2)) {
-          dT <- numeric(length(ind_surv1))
-          for(j in 1:length(ind_surv1)) dT[j] = dmat[ind_surv1[j], ind_surv2[j]]
+      if(!is.null(surveys)) ind_surv1 <- ind_surv1[order(surveys[sites==siteIDs[i1]])]
+      for(i2 in (i1+1):nsite) {
+        ind_surv2 <- which(sites==siteIDs[i2])
+        #Surveys may not be in order
+        if(!is.null(surveys)) ind_surv2 <- ind_surv2[order(surveys[sites==siteIDs[i2]])]
+        if(type == "pairwise.assymetric") {
+          trajectory <- ind_surv2
+          target <- ind_surv1
+          trajProj <- trajectoryProjection(d,target, trajectory, add=add)
+          dT <- trajProj$distanceToTrajectory
           mk.test <- MannKendall(dT)
           tau[i1,i2] <- mk.test$tau
           p.value[i1,i2] <- mk.test$sl
+          trajectory <- ind_surv1
+          target <- ind_surv2
+          trajProj <- trajectoryProjection(d,target, trajectory, add=add)
+          dT <- trajProj$distanceToTrajectory
+          mk.test <- MannKendall(dT)
           tau[i2,i1] <- mk.test$tau
           p.value[i2,i1] <- mk.test$sl
-        } else {
-          warning(paste0("sites ",i1, " and ",i2," do not have the same number of surveys."))
+        } 
+        else { # Symmetric
+          if(length(ind_surv1)==length(ind_surv2)) {
+            dT <- numeric(length(ind_surv1))
+            for(j in 1:length(ind_surv1)) dT[j] = dmat[ind_surv1[j], ind_surv2[j]]
+            mk.test <- MannKendall(dT)
+            tau[i1,i2] <- mk.test$tau
+            p.value[i1,i2] <- mk.test$sl
+            tau[i2,i1] <- mk.test$tau
+            p.value[i2,i1] <- mk.test$sl
+          } else {
+            warning(paste0("sites ",i1, " and ",i2," do not have the same number of surveys."))
+          }
         }
       }
     }
+  } else {
+    if(!is.synchronous(x)) stop("Trajectories need to be synchronous for a global convergence test.")
+    times1 <- times[sites==siteIDs[1]]
+    varD <- numeric(length(times1))
+    for(i in 1:length(times1)) {
+      dmat_sub <- dmat[times==times1[i],times==times1[i]]
+      varD[i] <- sum(diag(.gowerCentered(dmat_sub)))
+    }
+    mk.test <- MannKendall(varD)
+    tau <- mk.test$tau[1]
+    p.value <- mk.test$sl[1]
   }
   return(list(tau = tau, p.value = p.value))
 }

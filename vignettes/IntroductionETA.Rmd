@@ -277,16 +277,17 @@ trajectoryProjection(d, 9:12, 1:4)
 When trajectories have been sampled the same number of times, one can study their symmetric convergence or divergence (see Fig. 3a of De Cáceres et al. 2019). Function `trajectoryConvergence()` allows performing tests of convergence based on the trend analysis of the sequences of distances between points of the two trajectories (i.e. first-first, second-second, ...):
 
 ```{r} 
-trajectoryConvergence(x, symmetric = TRUE)
+trajectoryConvergence(x, type = "pairwise.symmetric")
 ```  
 
-The function performs the Mann-Whitney trend test. Values of the statistic ('tau') larger than 0 correspond to trajectories that are diverging, whereas values lower than 0 correspond to trajectories that are converging. By setting `symmetric = FALSE` the convergence test becomes asymmetric (see Figs. 3b and 3c of De Cáceres et al. 2019). In this case the sequence of distances *between every point of one trajectory and the other*:
+The function performs the Mann-Whitney trend test. Values of the statistic ('tau') larger than 0 correspond to trajectories that are diverging, whereas values lower than 0 correspond to trajectories that are converging. By setting `type = "pairwise.asymmetric"` the convergence test becomes asymmetric (see Figs. 3b and 3c of De Cáceres et al. 2019). In this case the sequence of distances *between every point of one trajectory and the other*:
 
 ```{r} 
-trajectoryConvergence(x, symmetric = FALSE)
+trajectoryConvergence(x, type = "pairwise.asymmetric")
 ```  
 
-The asymmetric test is useful to determine if one trajectory is becoming closer to the other or if it is departing from the other.
+The asymmetric test is useful to determine if one trajectory is becoming closer to the other or if it is departing from the other. Finally, if the trajectories have been surveyed synchronously, one can perform a global test of convergence/divergence between trajectories, using `type = "multiple"` (in this example, this test cannot be run because the trajectories are not synchronous).
+
 
 ### 4.3 Distances between segments and trajectories
 

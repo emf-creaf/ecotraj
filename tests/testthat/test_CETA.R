@@ -34,7 +34,7 @@ test_that("Fixed date trajectories can be build, subset and analyzed",{
   expect_s3_class(trajectoryLengths(fdtrajToy), "data.frame")
   expect_s3_class(trajectorySpeeds(fdtrajToy), "data.frame")
   expect_type(trajectoryDirectionality(fdtrajToy), "double")
-  expect_s3_class(trajectoryVariability(fdtrajToy), "data.frame")
+  expect_s3_class(trajectoryInternalVariation(fdtrajToy), "data.frame")
   expect_s3_class(trajectoryMetrics(fdtrajToy), "data.frame")
   expect_type(segmentDistances(fdtrajToy), "list")
   expect_s3_class(trajectoryDistances(fdtrajToy), "dist")
@@ -54,7 +54,7 @@ test_that("Cycles can be build, subset and analyzed",{
   expect_s3_class(cycleMetrics(xToy,
                                cycleDuration = cycleDurationToy), "data.frame")
   expect_type(trajectoryDirectionality(cycleToy), "double")
-  expect_s3_class(trajectoryVariability(cycleToy), "data.frame")
+  expect_s3_class(trajectoryInternalVariation(cycleToy), "data.frame")
   expect_type(segmentDistances(cycleToy), "list")
   expect_s3_class(trajectoryDistances(cycleToy), "dist")
 

@@ -31,7 +31,7 @@
 #' The proposed solution in CETA (in the case of this specific example) is to set the January month of year Y+1 as "external". "external" ecological states need a specific handling for some operation in ETA, namely:
 #' \itemize{
 #'  \item{Centering where external ecological states must be excluded from computation but included nonetheless in the procedure. This is handled automatically by the function \code{\link{centerTrajectories}}.}
-#'  \item{Trajectory variability, where external ecological states must be excluded. This handled directly by the \code{\link{trajectoryVariability}} function.}
+#'  \item{Trajectory internal variability, where external ecological states must be excluded. This handled directly by the \code{\link{trajectoryInternalVariation}} function.}
 #'  \item{Visualization through principal coordinate analysis of the cycles. The dedicated function \code{\link{cyclePCoA}} must be preferred over \code{\link{trajectoryPCoA}}.}
 #' }
 #' 
@@ -526,7 +526,7 @@ cycleMetrics <- function(x,
   df <-  data.frame(cycle = siteIDs, site = NA,
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    convexity = NA, temporal_ss = NA, temporal_variance = NA)
+                    convexity = NA, internal_ss = NA, internal_variance = NA)
   for (i in 1:length(siteIDs)){
     df$site[i] <-unique(cycles$metadata$sites[sites==siteIDs[i]])
     df$n[i] <- sum(sites==siteIDs[i]&internal)
@@ -542,8 +542,8 @@ cycleMetrics <- function(x,
                                  externalBoundary,
                                  minEcolStates)
   df$mean_angle <- (df$convexity*360)/df$n
-  var <- trajectoryVariability(cycles)
-  df$temporal_ss <- var[,"temporal_ss"]
-  df$temporal_variance <- var[,"temporal_variance"]
+  var <- trajectoryInternalVariation(cycles)
+  df$internal_ss <- var[,"internal_ss"]
+  df$internal_variance <- var[,"internal_variance"]
   return(df)
 }

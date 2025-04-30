@@ -64,7 +64,7 @@ framework:
 | `trajectoryAngles2D()` | Calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points from 2D coordinates. |
 | `trajectoryConvergence()` | Performs the Mann-Kendall trend test on (1) the distances between trajectories; (2) the distance between points of one trajectory to the other; or (3) the variance of states among trajectories. |
 | `trajectoryDirectionality()` | Assesses the level directionality of each trajectory. |
-| `trajectoryVariability()` | Assesses the internal variability within each trajectory. |
+| `trajectoryInternalVariation()` | Assesses the internal variability within each trajectory. |
 | `trajectoryDistances()` | Estimates distances between pairs of ecosystem trajectories. |
 | `trajectoryShifts()` | Calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds or time lags. |
 | `trajectoryPlot()` | Draws trajectories in a 2D-plot corresponding to the input coordinates. |

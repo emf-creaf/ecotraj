@@ -166,7 +166,7 @@ In CETA, we solve this issue by distinguishing *internal* and *external* ecologi
 * PCoA for visualization (when several cycles are studied, some ecological states are duplicated and need to be removed prior to PCoA).
 * Computation of trajectory variability, where external ecological states must be removed.
 
-**All this is readily handled for you  by functions `centerTrajectories()`, `cyclePCoA()`, and `trajectoryVariability()`respectively, but it's always good to be aware of what's going on under the hood!**  
+**All this is readily handled for you  by functions `centerTrajectories()`, `cyclePCoA()`, and `trajectoryInternalVariation()`respectively, but it's always good to be aware of what's going on under the hood!**  
 
 In addition, you might have ideas to study cycles outside of the CETA/ETA framework. If so, please go ahead! But remember that most approaches rely on the concept of points, not segments, so external ecological states should probably be removed beforehand.  
 

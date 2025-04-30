@@ -24,7 +24,7 @@
 #' "external" ecological states need a specific treatment in some calculations and for some operations within ETA, namely:
 #' \itemize{
 #'  \item{Centering, where external ecological states must be excluded from computation but included nonetheless in the procedure. This is automatically handled by function \code{\link{centerTrajectories}}.}
-#'  \item{Trajectory variability, where only internal ecological states must be taken in account. This is handled automatically by function \code{\link{trajectoryVariability}}.}
+#'  \item{Trajectory variability, where only internal ecological states must be taken in account. This is handled automatically by function \code{\link{trajectoryInternalVariation}}.}
 #' }
 #' Special care must also be taken when processing the data through principal coordinate analysis as external ecological states are effectively duplicated or interpolated in the output of \code{extractTrajectorySections}.
 #' 

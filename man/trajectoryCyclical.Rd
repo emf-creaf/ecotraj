@@ -158,7 +158,7 @@ IMPORTANT: Cycles within CETA comprises both "internal" and "external" ecologica
 The proposed solution in CETA (in the case of this specific example) is to set the January month of year Y+1 as "external". "external" ecological states need a specific handling for some operation in ETA, namely:
 \itemize{
 \item{Centering where external ecological states must be excluded from computation but included nonetheless in the procedure. This is handled automatically by the function \code{\link{centerTrajectories}}.}
-\item{Trajectory variability, where external ecological states must be excluded. This handled directly by the \code{\link{trajectoryVariability}} function.}
+\item{Trajectory internal variability, where external ecological states must be excluded. This handled directly by the \code{\link{trajectoryInternalVariation}} function.}
 \item{Visualization through principal coordinate analysis of the cycles. The dedicated function \code{\link{cyclePCoA}} must be preferred over \code{\link{trajectoryPCoA}}.}
 }
 

@@ -10,7 +10,7 @@
 \alias{trajectoryAngles}
 \alias{trajectoryAngles2D}
 \alias{trajectoryDirectionality}
-\alias{trajectoryVariability}
+\alias{trajectoryInternalVariation}
 \alias{trajectoryWindowMetrics}
 \title{Trajectory metrics}
 \usage{
@@ -46,7 +46,7 @@ trajectoryAngles2D(
 
 trajectoryDirectionality(x, add = TRUE, nperm = NA)
 
-trajectoryVariability(x, relativeContributions = FALSE)
+trajectoryInternalVariation(x, relativeContributions = FALSE)
 
 trajectoryMetrics(x, add = TRUE)
 
@@ -95,7 +95,7 @@ Function \code{trajectoryAngles2D} returns a data frame with angle values on eac
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
-Function \code{trajectoryVariability} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
+Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
 (3) an unbiased estimator of overall temporal variance.
 
 Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
@@ -112,7 +112,7 @@ Set of functions to estimate metrics describing individual trajectories. Given i
 \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
-\item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+\item{Function \code{trajectoryInternalVariation} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
 \item{Function \code{trajectoryMetrics} evaluates several trajectory metrics at once.}
 \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 }

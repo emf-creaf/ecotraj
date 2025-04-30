@@ -9,7 +9,7 @@
 #' \item{Function \code{trajectoryAngles} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryAngles2D} calculates the angle between consecutive pairs of directed segments or between segments of ordered triplets of points.}
 #' \item{Function \code{trajectoryDirectionality} calculates (for each trajectory) a statistic that measures directionality of the whole trajectory.}
-#' \item{Function \code{trajectoryVariability} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
+#' \item{Function \code{trajectoryInternalVariation} calculates (for each trajectory) a statistic that measures the variability between the states included in the trajectory.}
 #' \item{Function \code{trajectoryMetrics} evaluates several trajectory metrics at once.}
 #' \item{Function \code{trajectoryWindowMetrics} evaluates several trajectory metrics on subtrajectories defined using moving windows.}
 #' }
@@ -60,7 +60,7 @@
 #' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 #' with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 #' 
-#' Function \code{trajectoryVariability} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
+#' Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
 #' (3) an unbiased estimator of overall temporal variance.
 #' 
 #' Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
@@ -683,7 +683,7 @@ trajectoryDirectionality <- function(x, add=TRUE, nperm = NA) {
 #' @rdname trajectoryMetrics
 #' @param relativeContributions A logical flag to indicate that contributions of individual observations to temporal variability should be expressed in relative terms, i.e. as the ratio of the sum of squares of the observation divided by the overall sum of squares (otherwise, absolute sum of squares are returned).
 #' @export
-trajectoryVariability<-function(x, relativeContributions = FALSE) {
+trajectoryInternalVariation<-function(x, relativeContributions = FALSE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   
   if(inherits(x, "fd.trajectories")) {
@@ -727,7 +727,7 @@ trajectoryVariability<-function(x, relativeContributions = FALSE) {
     if(relativeContributions) out[i, 1:r] <- diag(G)/sum(diag(G))
   }
   out <- as.data.frame(out)
-  names(out) <- c(paste0("ss_", 1:max(nsurveysite)), "temporal_ss", "temporal_variance")
+  names(out) <- c(paste0("ss_", 1:max(nsurveysite)), "internal_ss", "internal_variance")
   row.names(out) <- siteIDs
   return(out)
 }
@@ -751,7 +751,7 @@ trajectoryMetrics <- function(x, add = TRUE) {
   df <-  data.frame(trajectory = siteIDs, site = NA,
                     n = NA, t_start = NA, t_end = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    directionality = NA, temporal_ss = NA, temporal_variance = NA)
+                    directionality = NA, internal_ss = NA, internal_variance = NA)
   if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(siteIDs)){
       df$site[i] <-unique(x$metadata$sites[sites==siteIDs[i]])
@@ -768,9 +768,9 @@ trajectoryMetrics <- function(x, add = TRUE) {
   df$mean_speed <- trajectorySpeeds(x)$Path
   df$mean_angle <- trajectoryAngles(x, add = add)$mean
   df$directionality <- trajectoryDirectionality(x, add = add)
-  var <- trajectoryVariability(x)
-  df$temporal_ss <- var[,"temporal_ss"]
-  df$temporal_variance <- var[,"temporal_variance"]
+  var <- trajectoryInternalVariation(x)
+  df$internal_ss <- var[,"internal_ss"]
+  df$internal_variance <- var[,"internal_variance"]
   return(df)
 }
 #' @rdname trajectoryMetrics
@@ -810,7 +810,7 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
   df <-  data.frame(trajectory = sites, site = NA, midpoint = surveys,
                     t_start = NA,t_end = NA, n = NA, 
                     length = NA, mean_speed = NA, mean_angle = NA,
-                    directionality = NA, temporal_ss = NA, temporal_variance = NA)
+                    directionality = NA, internal_ss = NA, internal_variance = NA)
   if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
     for (i in 1:length(sites)){
       df$site[i] <-unique(x$metadata$sites[sites==sites[i]])
@@ -840,9 +840,9 @@ trajectoryWindowMetrics <- function(x, bandwidth, type = "surveys", add = TRUE) 
       df$mean_speed[i] <- trajectorySpeeds(x_i)$Path
       if(length(surveys_window)>2) df$mean_angle[i] <- trajectoryAngles(x_i, add = add)$mean
       if(length(surveys_window)>2) df$directionality[i] <- trajectoryDirectionality(x_i, add = add)
-      var_i <- trajectoryVariability(x_i)
-      df$temporal_ss[i] <- var_i[,"temporal_ss"]
-      df$temporal_variance[i] <- var_i[,"temporal_variance"]
+      var_i <- trajectoryInternalVariation(x_i)
+      df$internal_ss[i] <- var_i[,"internal_ss"]
+      df$internal_variance[i] <- var_i[,"internal_variance"]
     }
   }
   return(df)

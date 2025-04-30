@@ -211,9 +211,9 @@ trajectorySpeeds(x)
 ```
 Note that the units of lengths and speeds will depend on the definition of the $\Omega$ space and, in the latter case, on the units of `times`.
 
-Finally, one may calculate the overall temporal variation of states within each trajectory:
+Finally, one may calculate the temporal variation of states within each trajectory using `trajectoryInternalVariation()`:
 ```{r}
-trajectoryVariability(x)
+trajectoryInternalVariation(x)
 ```
 The function returns the (absolute or relative) contribution of each observation to the temporal variation, the total sum of squares of temporal variation and an unbiased estimation of temporal variance. Note that in this example the third (more curved) trajectory has lower temporal variation, compared to the first and second (straighter) ones.
 

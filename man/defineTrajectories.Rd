@@ -10,7 +10,7 @@ defineTrajectories(d, sites, surveys = NULL, times = NULL)
 \arguments{
 \item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states..}
 
-\item{sites}{A character vector indicating the site corresponding to each ecosystem state (other types are converted to character).}
+\item{sites}{A character vector indicating the ecological entity (site, individual, community) corresponding to each ecosystem state (other types are converted to character).}
 
 \item{surveys}{An integer vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
 
@@ -20,9 +20,9 @@ defineTrajectories(d, sites, surveys = NULL, times = NULL)
 An object (list) of class \code{trajectories} with the following elements:
 \itemize{
 \item{\code{d}: An object of class \code{\link{dist}} containing relationships between ecosystem states}
-\item{\code{metadata}: A dataframe describing trajectory states, with the following columns:
+\item{\code{metadata}: A data frame describing trajectory states, with the following columns:
 \itemize{
-\item{\code{sites}: A character vector indicating the site corresponding to each ecosystem state.}
+\item{\code{sites}: A character vector indicating the ecological entity corresponding to each ecosystem state.}
 \item{\code{surveys}: An integer vector indicating the survey corresponding to each ecosystem state.}
 \item{\code{times}: A numeric vector indicating survey times.}
 }
@@ -33,8 +33,8 @@ An object (list) of class \code{trajectories} with the following elements:
 Defines data structures for trajectory analysis
 }
 \examples{
-#Description of sites and surveys
-sites <- c("1","1","1","2","2","2")
+#Description of entities (sites) and surveys
+entities <- c("1","1","1","2","2","2")
 surveys <- c(1,2,3,1,2,3)
   
 #Raw data table
@@ -48,7 +48,7 @@ xy[6,1]<-1
 d <- dist(xy)
 
 # Defines trajectories
-x <- defineTrajectories(d, sites, surveys)
+x <- defineTrajectories(d, entities, surveys)
 x
 }
 \seealso{

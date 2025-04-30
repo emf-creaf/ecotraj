@@ -3,7 +3,7 @@
 #' Subsets data structures for trajectory analysis
 #'
 #' @param x An object of class \code{trajectories} (or its children subclasses \code{fd.trajectories} or \code{cycles})
-#' @param site_selection A character vector indicating the subset of site trajectories to be selected (if NULL, all sites are included).  
+#' @param site_selection A character vector indicating the subset of entity (site) trajectories to be selected (if NULL, all sites are included).  
 #' @param subtrajectory_selection A character vector indicating the subset of cycles or fixed date trajectories to be selected (only used when \code{x} is of class \code{fd.trajectories} or \code{cycles}).
 #' @param survey_selection An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).
 #'
@@ -15,8 +15,8 @@
 #' @seealso \code{\link{defineTrajectories}}, \code{\link{trajectoryCyclical}}
 #' @export
 #' @examples 
-#' #Description of sites and surveys
-#' sites <- c("1","1","1","2","2","2")
+#' #Description of entities (sites) and surveys
+#' entities <- c("1","1","1","2","2","2")
 #' surveys <- c(1,2,3,1,2,3)
 #'   
 #' #Raw data table
@@ -30,7 +30,7 @@
 #' d <- dist(xy)
 #' 
 #' # Defines trajectories
-#' x <- defineTrajectories(d, sites, surveys)
+#' x <- defineTrajectories(d, entities, surveys)
 #' x
 #' 
 #' # Extracts (subset) second trajectory

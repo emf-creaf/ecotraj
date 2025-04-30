@@ -60,8 +60,8 @@
 #' Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 #' with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 #' 
-#' Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
-#' (3) an unbiased estimator of overall temporal variance.
+#' Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the internal sum of squares (in absolute or relative terms); (2) the overall sum of squares of internal variability;
+#' (3) an unbiased estimator of overall internal variance.
 #' 
 #' Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
 #' 
@@ -78,8 +78,8 @@
 #' @seealso \code{\link{trajectoryComparison}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{cycleMetrics}}
 #' 
 #' @examples 
-#' #Description of sites and surveys
-#' sites <- c("1","1","1","2","2","2")
+#' #Description of entities (sites) and surveys
+#' entities <- c("1","1","1","2","2","2")
 #' surveys <- c(1, 2, 3, 1, 2, 3)
 #' times <- c(0, 1.5, 3, 0, 1.5, 3)
 #'   
@@ -92,7 +92,7 @@
 #' xy[6,1]<-1
 #'   
 #' #Draw trajectories
-#' trajectoryPlot(xy, sites, surveys,  
+#' trajectoryPlot(xy, entities, surveys,  
 #'                traj.colors = c("black","red"), lwd = 2)
 #' 
 #' #Distance matrix
@@ -100,20 +100,20 @@
 #' d
 #'   
 #' #Trajectory data
-#' x <- defineTrajectories(d, sites, surveys, times)
+#' x <- defineTrajectories(d, entities, surveys, times)
 #' 
 #' #Trajectory lengths
 #' trajectoryLengths(x)
-#' trajectoryLengths2D(xy, sites, surveys)
+#' trajectoryLengths2D(xy, entities, surveys)
 #' 
 #' #Trajectory speeds
 #' trajectorySpeeds(x)
-#' trajectorySpeeds2D(xy, sites, surveys, times)
+#' trajectorySpeeds2D(xy, entities, surveys, times)
 #'
 #' #Trajectory angles
 #' trajectoryAngles(x)
-#' trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
-#' trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
+#' trajectoryAngles2D(xy, entities, surveys, betweenSegments = TRUE)
+#' trajectoryAngles2D(xy, entities, surveys, betweenSegments = FALSE)
 #' 
 #' #Several metrics at once
 #' trajectoryMetrics(x)  
@@ -727,7 +727,8 @@ trajectoryInternalVariation<-function(x, relativeContributions = FALSE) {
     if(relativeContributions) out[i, 1:r] <- diag(G)/sum(diag(G))
   }
   out <- as.data.frame(out)
-  names(out) <- c(paste0("ss_", 1:max(nsurveysite)), "internal_ss", "internal_variance")
+  if(relativeContributions) names(out) <- c(paste0("rc_", 1:max(nsurveysite)), "internal_ss", "internal_variance")
+  else names(out) <- c(paste0("ss_", 1:max(nsurveysite)), "internal_ss", "internal_variance")
   row.names(out) <- siteIDs
   return(out)
 }
@@ -749,7 +750,7 @@ trajectoryMetrics <- function(x, add = TRUE) {
   }
   siteIDs <- unique(sites)
   df <-  data.frame(trajectory = siteIDs, site = NA,
-                    n = NA, t_start = NA, t_end = NA, 
+                    n = NA, t_start = NA, t_end = NA, duration = NA,
                     length = NA, mean_speed = NA, mean_angle = NA,
                     directionality = NA, internal_ss = NA, internal_variance = NA)
   if (inherits(x, "cycles") || inherits(x, "fd.trajectories") || inherits(x, "sections")){
@@ -764,6 +765,7 @@ trajectoryMetrics <- function(x, add = TRUE) {
   }
   df$t_start <- tapply(x$metadata$times,sites,min)[siteIDs]
   df$t_end <- tapply(x$metadata$times,sites,max)[siteIDs]
+  df$duration <- df$t_end - df$t_start
   df$length <- trajectoryLengths(x)$Path
   df$mean_speed <- trajectorySpeeds(x)$Path
   df$mean_angle <- trajectoryAngles(x, add = add)$mean

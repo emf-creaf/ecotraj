@@ -109,8 +109,8 @@ evaluates shifts (advances or delays) due to different trajectory speeds or the 
 Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).
 }
 \examples{
-#Description of sites and surveys
-sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+#Description of entities (sites) and surveys
+entities <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 surveys <- c(1,2,3,4,1,2,3,4,1,2,3,4)
   
 #Raw data table
@@ -131,7 +131,7 @@ xy[9:10,2] <- xy[5:6,2]
 xy[11:12,2]<-c(1.25,1.0)
   
 #Draw trajectories
-trajectoryPlot(xy, sites, surveys,  
+trajectoryPlot(xy, entities, surveys,  
                traj.colors = c("black","red", "blue"), lwd = 2)
 
 #Distance matrix
@@ -139,7 +139,7 @@ d <- dist(xy)
 d
   
 #Trajectory data
-x <- defineTrajectories(d, sites, surveys)
+x <- defineTrajectories(d, entities, surveys)
 
 #Distances between trajectory segments
 segmentDistances(x, distance.type = "Hausdorff")
@@ -153,8 +153,8 @@ trajectoryDistances(x, distance.type = "DSPD")
 trajectoryConvergence(x)
 
 #### Example of trajectory shifts
-#Description of sites and surveys
-sites2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
+#Description of entities (sites) and surveys
+entities2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times2 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
   
 #Raw data table
@@ -168,11 +168,11 @@ xy2[9:12,1] <- 0.5
 xy2[9:12,2] <- xy2[1:4,2]*1.25  # 1.25 times faster than site "1"
   
 #Draw trajectories
-trajectoryPlot(xy2, sites2,  
+trajectoryPlot(xy2, entities2,  
                traj.colors = c("black","red", "blue"), lwd = 2)
 
 #Trajectory data
-x2 <- defineTrajectories(dist(xy2), sites = sites2, times = times2)
+x2 <- defineTrajectories(dist(xy2), entities2, times = times2)
 
 #Check that the third trajectory is faster
 trajectorySpeeds(x2)

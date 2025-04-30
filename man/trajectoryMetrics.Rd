@@ -95,8 +95,8 @@ Function \code{trajectoryAngles2D} returns a data frame with angle values on eac
 Function \code{trajectoryDirectionality} returns a vector with directionality values (one per trajectory). If \code{nperm} is not missing, the function returns a data frame
 with a column of directional values and a column of p-values corresponding to the result of the permutational test.
 
-Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the temporal sum of squares (in absolute or relative terms); (2) the overall sum of squares of temporal variability;
-(3) an unbiased estimator of overall temporal variance.
+Function \code{trajectoryInternalVariation} returns data.frame with as many rows as trajectories, and different columns: (1) the contribution of each individual state to the internal sum of squares (in absolute or relative terms); (2) the overall sum of squares of internal variability;
+(3) an unbiased estimator of overall internal variance.
 
 Function \code{trajectoryMetrics} returns a data frame where rows are trajectories and columns are different trajectory metrics.
 
@@ -140,8 +140,8 @@ performs a permutational test to evaluate the significance of directionality, wh
 permutations with a directional value equal or larger than the observed.
 }
 \examples{
-#Description of sites and surveys
-sites <- c("1","1","1","2","2","2")
+#Description of entities (sites) and surveys
+entities <- c("1","1","1","2","2","2")
 surveys <- c(1, 2, 3, 1, 2, 3)
 times <- c(0, 1.5, 3, 0, 1.5, 3)
   
@@ -154,7 +154,7 @@ xy[4:6,2] <- xy[1:3,2]
 xy[6,1]<-1
   
 #Draw trajectories
-trajectoryPlot(xy, sites, surveys,  
+trajectoryPlot(xy, entities, surveys,  
                traj.colors = c("black","red"), lwd = 2)
 
 #Distance matrix
@@ -162,20 +162,20 @@ d <- dist(xy)
 d
   
 #Trajectory data
-x <- defineTrajectories(d, sites, surveys, times)
+x <- defineTrajectories(d, entities, surveys, times)
 
 #Trajectory lengths
 trajectoryLengths(x)
-trajectoryLengths2D(xy, sites, surveys)
+trajectoryLengths2D(xy, entities, surveys)
 
 #Trajectory speeds
 trajectorySpeeds(x)
-trajectorySpeeds2D(xy, sites, surveys, times)
+trajectorySpeeds2D(xy, entities, surveys, times)
 
 #Trajectory angles
 trajectoryAngles(x)
-trajectoryAngles2D(xy, sites, surveys, betweenSegments = TRUE)
-trajectoryAngles2D(xy, sites, surveys, betweenSegments = FALSE)
+trajectoryAngles2D(xy, entities, surveys, betweenSegments = TRUE)
+trajectoryAngles2D(xy, entities, surveys, betweenSegments = FALSE)
 
 #Several metrics at once
 trajectoryMetrics(x)  

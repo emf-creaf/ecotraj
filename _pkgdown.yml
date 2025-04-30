@@ -87,6 +87,7 @@ reference:
   - starts_with("trajectoryShifts")
   - starts_with("trajectoryDistance")
   - starts_with("segment")
+  - starts_with("dynamicVariation")
 
 - title: Cyclical trajectory analysis
   desc: Set of functions for cyclical trajectory analysis
@@ -115,8 +116,10 @@ reference:
   contents:
   - starts_with("centerTrajectories")
   - starts_with("smoothTrajectories")
+  - starts_with("interpolateTrajectories")
 
 - title: Miscellaneous
   desc:  Miscellaneous functions
   contents:
   - starts_with("is.metric")
+  - starts_with("is.synchronous")

@@ -89,12 +89,14 @@ Cáceres / Nicolas Djeghri</h4>
 <h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>In this vignette you will learn to <strong>transform</strong>
-trajectory data in two different ways. By transforming, we mean
+trajectory data in three different ways. By transforming, we mean
 <strong>modifying the distance matrix</strong> that represents the
-resemblance between ecosystem states. This is equivalent to (implicitly)
-modifying the coordinates (position) of ecosystem states in the
+resemblance between ecological states. This is equivalent to
+(implicitly) modifying the coordinates (position) of ecological states
+in the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
-space.</p>
+space. However, one of the transformations also includes a modification
+of observation times.</p>
 <p>First of all, we load <code>ecotraj</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://emf-creaf.github.io/ecotraj/">ecotraj</a></span><span class="op">)</span></span></code></pre></div>
@@ -111,27 +113,28 @@ space.</p>
 focus on the direction of temporal changes. It is done using function
 <code><a href="../reference/transformTrajectories.html">centerTrajectories()</a></code>. Trajectory centering will normally
 imply subtracting the coordinate values of the trajectory centroid from
-the states conforming each trajectory. However, one may decide that the
-original trajectory centers do not correspond to the centroid, but to a
-specific subset of states, for example the state corresponding to the
-first or last observation. In this cases, trajectories are shifted with
-respect to particular reference states. Trajectory centering is useful
-in cases where one wants to focus on spatio-temporal interaction while
-discarding spatial patterns that are constant in time. It can also be
-useful when trajectories are defined as subtrajectories of a trajectory
-with cyclical patterns.</p>
+the states conforming each trajectory. However, one may decide to
+“center” trajectories not with respect to the overall centroid but to
+the average of a specific subset of ecological states, or even a single
+state, for example the state corresponding to the first or last
+observation. In this cases, trajectories are shifted with respect to
+particular ecological states. Trajectory centering is useful in cases
+where one wants to focus trajectory analysis on temporal changes while
+discarding differences between trajectories that are constant in time.
+It can also be useful when trajectories are defined as subtrajectories
+of a trajectory with cyclical patterns.</p>
 </div>
 <div class="section level3">
 <h3 id="simple-centering-example">2.2 Simple centering example<a class="anchor" aria-label="anchor" href="#simple-centering-example"></a>
 </h3>
 <p>We will employ the same simple example used in the introduction to
 trajectory analysis. Let us first define the vectors that describe the
-state of each site:</p>
+state of each entity (i.e. site):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sites</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">entities</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span></code></pre></div>
 <p>We do not define <code>surveys</code>, so that they are assumed to be
-consecutive for the each site. However, we do define a matrix whose
-coordinates correspond to the set of ecosystem states observed. We
+consecutive for the each entity. However, we do define a matrix whose
+coordinates correspond to the set of ecological states observed. We
 assume that the ecosystem space
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 has two dimensions:</p>
@@ -154,7 +157,7 @@ has two dimensions:</p>
 <p>We define trajectories using:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">sites</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">entities</span><span class="op">)</span></span></code></pre></div>
 <p>The trajectories can be displayed using a PCoA on the distance matrix
 as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -224,7 +227,7 @@ which are repeated for all states of each trajectory:</p>
 <p>As explained in the introduction, centering can be performed with
 respect to different states beyond the trajectory centroid. Say we want
 to align the first segment of the three trajectories to focus on the
-changes that occur later. To do so, first define ecosystem states that
+changes that occur later. To do so, first define ecological states that
 are to be <em>excluded</em> from the computation of the trajectory
 position taken as reference (its center). In our case these are the
 states of trajectories that were surveyed later than the first segment
@@ -345,16 +348,16 @@ is the survey time of the target location,
 is the survey time of one the original points and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>
 is the kernel scale. Kernel values are normalized to one and they are
-used to determine (implicitly) the new coordinates of ecosystem
-observations. The kernel application turns consecutive ecosystem states
-more similar.</p>
+used to determine (implicitly) the new coordinates of ecological states.
+The kernel application turns consecutive ecological states more
+similar.</p>
 </div>
 <div class="section level3">
 <h3 id="smoothing-effect">3.3 Smoothing effect<a class="anchor" aria-label="anchor" href="#smoothing-effect"></a>
 </h3>
 <p>Function <code><a href="../reference/transformTrajectories.html">smoothTrajectories()</a></code> performs the smoothing
 operation and returns a modified distance matrix describing distances
-between ecosystem states:</p>
+between ecological states:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">smoothTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span></code></pre></div>
 <p>The following figure illustrates the effect of trajectory

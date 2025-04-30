@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introduction to Ecological Quality Assessment (EQA) • ecotraj</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -26,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +77,7 @@
                         <h4 data-toc-skip class="author">Anthony
 Sturbois/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-04-16</h4>
+            <h4 data-toc-skip class="date">2025-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionEQA.Rmd" class="external-link"><code>vignettes/IntroductionEQA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionEQA.Rmd</code></div>
@@ -174,7 +173,7 @@ data from the initial data table:</p>
 <pre><code><span><span class="co">## [1] 23 43</span></span></code></pre>
 <p>Using the compositional data, we can use function
 <code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
-of Bray Curtis distances between ecosystem states:</p>
+of Bray Curtis distances between ecological (community) states:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>The distance matrix <code>glomel_bc</code> defines the multivariate
@@ -375,7 +374,7 @@ initially performed in Tauran et al. (2020).</p>
 <span><span class="va">grab_comp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">251</span><span class="op">:</span><span class="fl">252</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Using the compositional data, we can use function
 <code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
-of Bray Curtis distances between ecosystem states:</p>
+of Bray Curtis distances between ecological (community) states:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grab_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">grab_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>Like in the first example, the distance matrix <code>grab_bc</code>
@@ -587,7 +586,7 @@ approach. Journal of Experimental Marine Biology and Ecology 533,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

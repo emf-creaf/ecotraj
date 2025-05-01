@@ -303,45 +303,19 @@ As before, we could check the equivalence with a centering using explicit coordi
 
 ### 3.5 Centering in a real example
 
-In this example we analyze the dynamics of 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).  Forests plots are almost monospecific, being the mountain beech (*Fuscospora cliffortioides*) the main dominant tree species. Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys. We begin our example by loading the data set, which includes 72 plot observations:
+Let us examine the effect of centering on the forest plot data. As before we use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the trajectory of each plot before and after centering:
 
-```{r}
-data("avoca")
-```
-
-Before starting, we have to use function `vegdiststruct` from package **vegclust** to calculate distances between forest plot states in terms of structure and composition (see De Cáceres M, Legendre P, He F (2013) Dissimilarity measurements and the size structure of ecological communities. Methods Ecol Evol 4:1167–1177. https://doi.org/10.1111/2041-210X.12116):
-
-```{r}
-avoca_D_man <- vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
-```
-
-Distances in `avoca_D_man` are calculated using the Manhattan metric. We start ETA by defining our trajectories, which implies combining the information about distances, sites and surveys:
-
-```{r}
-years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
-avoca_times <- years[avoca_surveys]
-avoca_x <- defineTrajectories(avoca_D_man,  
-                              sites = avoca_sites, 
-                              times = avoca_times)
-```
-
-As before we use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the (uncentered) trajectory of each plot:
-
-```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-oldpar <- par(mar=c(4,4,1,1))
+```{r, echo=T, fig=TRUE, fig.height=4, fig.width=8, fig.align = "center"}
+oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
-legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
-```
-Although it is not particularly useful, we can see the effect of centering in this real data set:
-
-```{r, echo=T, fig=TRUE, fig.height=4, fig.width=5, fig.align = "center"}
-oldpar <- par(mar=c(4,4,1,1))
-avoca_cent <- centerTrajectories(avoca_x)
-trajectoryPCoA(avoca_cent,
+title("Before centering")
+trajectoryPCoA(centerTrajectories(avoca_x),
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
+title("After centering")
+par(oldpar)
 ```
 
 Finally, we can illustrate the effect of centering with respect to the initial or final states. To do so we define vectors that exclude the remaining states from centering:

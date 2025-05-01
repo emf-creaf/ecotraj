@@ -118,9 +118,9 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
         }
       }
       if(time.labels) {
-        text(x[niini],y[niini], labels = paste0("t=",times[niini]), pos = 3)
+        text(x[niini],y[niini], labels = paste0(times[niini]), pos = 3)
         if(t==(length(ind_surv)-1)) {
-          text(x[nifin],y[nifin], labels = paste0("t=",times[nifin]), pos = 3)
+          text(x[nifin],y[nifin], labels = paste0(times[nifin]), pos = 3)
         }
       }
     }
@@ -130,9 +130,9 @@ trajectoryPCoA<-function(x, traj.colors = NULL, axes=c(1,2),
 }
 
 #' @rdname trajectoryPlot
-#' @param coords A data.frame or matrix where rows are ecosystem states and columns are coordinates in an arbitrary space
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
+#' @param coords A data.frame or matrix where rows are ecological states and columns are coordinates in an arbitrary space
+#' @param sites A vector indicating the site corresponding to each ecological state.
+#' @param surveys A vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).
 #' @param times A numeric vector indicating survey times.
 #' @export
 trajectoryPlot<-function(coords, sites, surveys = NULL, times = NULL, traj.colors = NULL, axes=c(1,2), 
@@ -171,9 +171,9 @@ trajectoryPlot<-function(coords, sites, surveys = NULL, times = NULL, traj.color
         }
       }
       if(time.labels) {
-        text(xp[niini],yp[niini], labels = paste0("t=",ifelse(!is.null(times), times[niini],t)), pos = 3)
+        text(xp[niini],yp[niini], labels = paste0(ifelse(!is.null(times), times[niini],t)), pos = 3)
         if(t==(length(ind_surv)-1)) {
-          text(xp[nifin],yp[nifin], labels = paste0("t=",ifelse(!is.null(times), times[nifin],t)), pos = 3)
+          text(xp[nifin],yp[nifin], labels = paste0(ifelse(!is.null(times), times[nifin],t)), pos = 3)
         }
       }
       

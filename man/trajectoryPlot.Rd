@@ -40,11 +40,11 @@ trajectoryPlot(
 
 \item{...}{Additional parameters for function \code{\link{arrows}}.}
 
-\item{coords}{A data.frame or matrix where rows are ecosystem states and columns are coordinates in an arbitrary space}
+\item{coords}{A data.frame or matrix where rows are ecological states and columns are coordinates in an arbitrary space}
 
-\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
+\item{sites}{A vector indicating the site corresponding to each ecological state.}
 
-\item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
+\item{surveys}{A vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).}
 
 \item{times}{A numeric vector indicating survey times.}
 }

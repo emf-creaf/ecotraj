@@ -14,11 +14,11 @@ trajectoryProjection(
 )
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states (see details).}
 
-\item{target}{An integer vector of the ecosystem states to be projected.}
+\item{target}{An integer vector of the ecological states to be projected.}
 
-\item{trajectory}{An integer vector of the ecosystem states conforming the trajectory onto which target states are to be projected.}
+\item{trajectory}{An integer vector of the ecological states conforming the trajectory onto which target states are to be projected.}
 
 \item{tol}{Numerical tolerance value to determine that projection of a point lies within the trajectory.}
 

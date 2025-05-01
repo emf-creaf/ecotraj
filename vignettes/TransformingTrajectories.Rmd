@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction
 
-In this vignette you will learn to **transform** trajectory data in two different ways. By transforming, we mean **modifying the distance matrix** that represents the resemblance between ecosystem states. This is equivalent to (implicitly) modifying the coordinates (position) of ecosystem states in the $\Omega$ space.
+In this vignette you will learn to **transform** trajectory data in three different ways. By transforming, we mean **modifying the distance matrix** that represents the resemblance between ecological states. This is equivalent to (implicitly) modifying the coordinates (position) of ecological states in the $\Omega$ space. However, one of the transformations also includes a modification of observation times.
 
 First of all, we load `ecotraj`:
 
@@ -26,19 +26,111 @@ First of all, we load `ecotraj`:
 library(ecotraj)
 ```
 
-## 2. Centering trajectories
+## 2. Interpolating trajectories
 
-### 2.1 What is trajectory centering?
+### 2.1 What is trajectory interpolation?
 
-Trajectory centering removes differences in (e.g. initial or overall) *position* between trajectories, without changing their shape, to focus on the direction of temporal changes. It is done using function `centerTrajectories()`. Trajectory centering will normally imply subtracting the coordinate values of the trajectory centroid from the states conforming each trajectory. However, one may decide that the original trajectory centers do not correspond to the centroid, but to a specific subset of states, for example the state corresponding to the first or last observation. In this cases, trajectories are shifted with respect to particular reference states. Trajectory centering is useful in cases where one wants to focus on spatio-temporal interaction while discarding spatial patterns that are constant in time. It can also be useful when trajectories are defined as subtrajectories of a trajectory with cyclical patterns.
+Sometimes the available trajectory data is non-synchronous, due to missing observations or observation times that do not match completely. This is not normally a limitation for ETA, but there are some analyses that require synchronous trajectory data. Trajectory interpolation allows recalculating positions along trajectory pathways so that observation times are the same across all trajectories, hence obtaining a synchronous data set. Interpolation is done in the multivariate $\Omega$ space but is linear.
 
-### 2.2 Simple centering example
+### 2.2 Simple interpolation example
 
-We will employ the same simple example used in the introduction to trajectory analysis. Let us first define the vectors that describe the state of each site:
+We will employ a simple example similar to that used in the introduction to trajectory analysis. Let us first define the vectors that describe the observation of each entity (i.e. site):
+
 ```{r}
-sites = c("1","1","1","1","2","2","2","2","3","3","3","3")
+entities = c("1","1","1","1","2","2","2","2","3","3","3","3")
+times <- c(1.0,2.0,3.0,4.0,1.0,1.75,2.5,3.25,1.0,1.5,2.0,2.5)
 ```
-We do not define `surveys`, so that they are assumed to be consecutive for the each site. However, we do define a matrix whose coordinates correspond to the set of ecosystem states observed. We assume that the ecosystem space $\Omega$ has two dimensions:
+
+The times of observation do not match except for the first survey, with entities '2' and '3' being observed earlier than entity '1'. We then define a matrix whose coordinates correspond to the set of ecological states observed. We assume that the ecosystem space $\Omega$ has two dimensions:
+
+```{r}
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:6,2] <- xy[1:2,2]
+xy[7,2]<-1.5
+xy[8,2]<-2.0
+xy[5:6,1] <- 0.25
+xy[7,1]<-0.5
+xy[8,1]<-1.0
+xy[9:10,1] <- xy[5:6,1]+0.25
+xy[11,1] <- 1.0
+xy[12,1] <-1.5
+xy[9:10,2] <- xy[5:6,2]
+xy[11:12,2]<-c(1.25,1.0)
+```
+
+We define trajectories using:
+
+```{r}
+x <- defineTrajectories(dist(xy), entities, times = times)
+```
+
+We can see the differences graphically, adding observation times as labels:
+
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x, 
+               traj.colors = c("black","red", "blue"), time.labels = TRUE,
+               lwd = 2)
+legend("topright", col=c("black","red", "blue"), 
+       legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
+```
+Let us assume we want to perform a global divergence test, but this requires synchronous trajectories and these are not:
+```{r}
+is.synchronous(x)
+```
+
+The solution is to bring all trajectories to the same observation times. In this case we choose the observation times of entity '3' and this will imply interpolation for entities '1' and '2':
+
+```{r}
+x_inter <- interpolateTrajectories(x, times = c(1, 1.5, 2.0, 2.5))
+```
+
+The trajectory plot after interpolation looks like:
+```{r, fig = TRUE, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryPCoA(x_inter, 
+               traj.colors = c("black","red", "blue"), time.labels = TRUE,
+               lwd = 2)
+legend("topright", col=c("black","red", "blue"), 
+       legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"), bty="n", lty=1, lwd = 2)
+```
+
+And now we can perform the global test for convergence/divergence:
+```{r}
+trajectoryConvergence(x_inter, type="multiple")
+```
+
+The test indicates divergence, although in a non significant way because of the low sample size.
+
+### 2.3 Interpolation effect
+
+Interpolation has an effect on trajectory metrics, although this should be small. In particular, it may inflate directionality. Let's compare trajectory metrics before:
+
+```{r}
+trajectoryMetrics(x)
+```
+with after interpolation:
+
+```{r}
+trajectoryMetrics(x_inter)
+```
+
+As expected, trajectory metrics of entity '3' are unaffected. Length and variance of entities '1' and '2' is obviously affected because the trajectories have been trimmed. Interestingly, the directionality and mean speed of entity '2' have slightly increased. 
+
+## 3. Centering trajectories
+
+### 3.1 What is trajectory centering?
+
+Trajectory centering removes differences in (e.g. initial or overall) *position* between trajectories, without changing their shape, to focus on the direction of temporal changes. It is done using function `centerTrajectories()`. Trajectory centering will normally imply subtracting the coordinate values of the trajectory centroid from the states conforming each trajectory. However, one may decide to "center" trajectories not with respect to the overall centroid but to the average of a specific subset of ecological states, or even a single state, for example the state corresponding to the first or last observation. In this cases, trajectories are shifted with respect to particular ecological states. Trajectory centering is useful in cases where one wants to focus trajectory analysis on temporal changes while discarding differences between trajectories that are constant in time. It can also be useful when trajectories are defined as subtrajectories of a trajectory with cyclical patterns.
+
+### 3.2 Simple centering example
+
+We will employ the same simple example used in the introduction to trajectory analysis. Let us first define the vectors that describe the state of each entity (i.e. site):
+```{r}
+entities = c("1","1","1","1","2","2","2","2","3","3","3","3")
+```
+We do not define `surveys`, so that they are assumed to be consecutive for the each entity. However, we do define a matrix whose coordinates correspond to the set of ecological states observed. We assume that the ecosystem space $\Omega$ has two dimensions:
 ```{r}
 xy<-matrix(0, nrow=12, ncol=2)
 xy[2,2]<-1
@@ -61,7 +153,7 @@ We define trajectories using:
 
 ```{r}
 D <- dist(xy)
-x <- defineTrajectories(D, sites)
+x <- defineTrajectories(D, entities)
 ```
 
 
@@ -104,9 +196,26 @@ max(as.vector(x_cent$d) - as.vector(dist(xy_cent)))
 ```
 
 
-### 2.3 Trajectory centering excluding observations
+### 3.3 Centering effect
 
-As explained in the introduction, centering can be performed with respect to different states beyond the trajectory centroid. Say we want to align the first segment of the three trajectories to focus on the changes that occur later. To do so, first define ecosystem states that are to be *excluded* from the computation of the trajectory position taken as reference (its center). In our case these are the states of trajectories that were surveyed later than the first segment (i.e. the third and fourth observations of each trajectory):
+Trajectory centering does not modify the properties of individual trajectories, as can be seen by comparing trajectory metrics before:
+
+```{r}
+trajectoryMetrics(x)
+```
+
+with the same metrics after centering:
+
+```{r}
+trajectoryMetrics(x_cent)
+```
+
+However, centering will modify the results of metrics that compare trajectories, such as convergence/divergence or trajectory dissimilarities. Generally speaking, trajectory convergence should be studied without centering, whereas calculating trajectory dissimilarity after centering may be interesting to remove differences that are constant in time.
+
+
+### 3.4 Trajectory centering excluding observations
+
+As explained in the introduction, centering can be performed with respect to different states beyond the trajectory centroid. Say we want to align the first segment of the three trajectories to focus on the changes that occur later. To do so, first define ecological states that are to be *excluded* from the computation of the trajectory position taken as reference (its center). In our case these are the states of trajectories that were surveyed later than the first segment (i.e. the third and fourth observations of each trajectory):
 
 ```{r}
 excluded <- c(3:4,7:8,11:12)
@@ -125,7 +234,7 @@ trajectoryPCoA(x_cent_excluded, traj.colors = c("black","red", "blue"), lwd = 2,
 
 As before, we could check the equivalence with a centering using explicit coordinates, but this is not needed at this stage.
 
-### 2.4 Centering in a real example
+### 3.5 Centering in a real example
 
 In this example we analyze the dynamics of 8 permanent forest plots located on slopes of a valley in the New Zealand Alps. The study area is mountainous and centered on the Craigieburn Range (Southern Alps), South Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).  Forests plots are almost monospecific, being the mountain beech (*Fuscospora cliffortioides*) the main dominant tree species. Previously forests consisted of largely mature stands, but some of them were affected by different disturbances during the sampling period (1972-2009) which includes 9 surveys. We begin our example by loading the data set, which includes 72 plot observations:
 
@@ -142,7 +251,11 @@ avoca_D_man <- vegclust::vegdiststruct(avoca_strat, method="manhattan", transfor
 Distances in `avoca_D_man` are calculated using the Manhattan metric. We start ETA by defining our trajectories, which implies combining the information about distances, sites and surveys:
 
 ```{r}
-avoca_x <- defineTrajectories(avoca_D_man,  avoca_sites, avoca_surveys)
+years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
+avoca_times <- years[avoca_surveys]
+avoca_x <- defineTrajectories(avoca_D_man,  
+                              sites = avoca_sites, 
+                              times = avoca_times)
 ```
 
 As before we use `trajectoryPCoA()` to display the relations between forest plot states in this space and to draw the (uncentered) trajectory of each plot:
@@ -196,30 +309,30 @@ par(oldpar)
 ```
 
 
-## 3 Smoothing trajectories
+## 4 Smoothing trajectories
 
-### 3.1 What is trajectory smoothing?
+### 4.1 What is trajectory smoothing?
 
 Trajectories may contain variation that is considered *noise*, for whatever reason (e.g. measurement error). Similarly to univariate smoothing of temporal series, noise can be smoothed out in trajectory data. This is done applying a multivariate moving average over the trajectory, using a kernel to specify average weights. This is done using function `smoothTrajectories()`.
 
 
-### 3.2 Smoothing kernel
+### 4.2 Smoothing kernel
 
 Function `smoothTrajectories()` smoothes out noise from trajectories by applying a Gaussian kernel over each trajectory:
 \begin{equation}
 K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
 \end{equation}
-where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecosystem observations. The kernel application turns consecutive ecosystem states more similar. 
+where $x$ is the survey time of the target location, $x_r$ is the survey time of one the original points and $b$ is the kernel scale. Kernel values are normalized to one and they are used to determine (implicitly) the new coordinates of ecological states. The kernel application turns consecutive ecological states more similar. 
 
-### 3.3 Smoothing effect
+### 4.3 Smoothing effect
 
-Function `smoothTrajectories()` performs the smoothing operation and returns a modified distance matrix describing distances between ecosystem states:
+Function `smoothTrajectories()` performs the smoothing operation and returns a modified distance matrix describing distances between ecological states:
 
 ```{r trajectory_smooth}
-avoca_smooth <- smoothTrajectories(avoca_x)
+avoca_x_smooth <- smoothTrajectories(avoca_x)
 ```
 
-The following figure illustrates the effect of trajectory smoothing:
+The following trajectory plot illustrates the effect of smoothing:
 
 ```{r trajectory_smooth_plot, echo=TRUE, warning = FALSE, fig.height=4, fig.width=8, fig.align = "center"}
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
@@ -227,25 +340,23 @@ trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("Before smoothing")
-trajectoryPCoA(avoca_smooth,
+trajectoryPCoA(avoca_x_smooth,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 title("After smoothing")
 par(oldpar)
 ```
 
-Trajectory smoothing logically alters several trajectory metrics. In particular, overall trajectory length is reduced:
+Trajectory smoothing logically alters several trajectory metrics. This can be checked by first evaluating multiple metrics:
 
-```{r trajectory_length_smooth, echo=T}
-trajectoryLengths(avoca_x)$Trajectory
-trajectoryLengths(avoca_smooth)$Trajectory
+```{r trajectory_metrics, echo=T}
+trajectoryMetrics(avoca_x)
 ```
 
-while trajectory directionality is increased:
+And re-evaluating them after smoothing:
 
 ```{r trajectory_dir_smooth, echo=T}
-trajectoryDirectionality(avoca_x)
-trajectoryDirectionality(avoca_smooth)
+trajectoryMetrics(avoca_x_smooth)
 ```
 
-Whether these effects are desirable or not, will depend on the application.
+In particular, overall trajectory length, speed and internal variability are reduced while trajectory directionality is increased. Whether these effects are desirable or not, will depend on the application, but generally speaking smoothing should only be used to clarify trajectory paths visually.

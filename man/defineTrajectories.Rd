@@ -8,22 +8,22 @@
 defineTrajectories(d, sites, surveys = NULL, times = NULL)
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states..}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states..}
 
-\item{sites}{A character vector indicating the ecological entity (site, individual, community) corresponding to each ecosystem state (other types are converted to character).}
+\item{sites}{A character vector indicating the ecological entity (site, individual, community) corresponding to each ecological state (other types are converted to character).}
 
-\item{surveys}{An integer vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
+\item{surveys}{An integer vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).}
 
 \item{times}{A numeric vector indicating survey times (if missing, survey times are made equal to surveys).}
 }
 \value{
 An object (list) of class \code{trajectories} with the following elements:
 \itemize{
-\item{\code{d}: An object of class \code{\link{dist}} containing relationships between ecosystem states}
+\item{\code{d}: An object of class \code{\link{dist}} containing relationships between ecological states}
 \item{\code{metadata}: A data frame describing trajectory states, with the following columns:
 \itemize{
-\item{\code{sites}: A character vector indicating the ecological entity corresponding to each ecosystem state.}
-\item{\code{surveys}: An integer vector indicating the survey corresponding to each ecosystem state.}
+\item{\code{sites}: A character vector indicating the ecological entity corresponding to each ecological state.}
+\item{\code{surveys}: An integer vector indicating the survey corresponding to each ecological state.}
 \item{\code{times}: A numeric vector indicating survey times.}
 }
 }

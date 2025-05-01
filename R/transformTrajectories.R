@@ -222,21 +222,39 @@ interpolateTrajectories<-function(x, times) {
   
   times_final <- times
   times <- sort(unique(c(times, times_old)))
-  survey_selection <- which(times %in% times_final)
+  # cat(paste0("Times: ", paste0(times, collapse=","),"\n"))
   
   n_new <- nsite*length(times)
   sites_new <- as.character(gl(nsite, length(times), labels = siteIDs))
   times_new <- rep(times, nsite)
-  dmat_new <- matrix(NA, nrow = n_new, ncol = n_new)
-  rownames(dmat_new) <- 1:n_new
-  colnames(dmat_new) <- 1:n_new
   is_old <- rep(FALSE, n_new)
+  to_remove <- rep(FALSE, n_new)
   for(i in 1:n_new) {
     site_i <- sites_new[i]
     time_i <- times_new[i]
-    if(time_i %in% times_old[sites==site_i]) is_old[i] <- TRUE
-    dmat_new[i,i] <- 0
+    # cat(paste0(i, " time ", time_i, " site ", site_i, " min time old ", min(times_old[sites==site_i]), " max time old ", max(times_old[sites==site_i]), "\n"))
+    # Check if this time is included in original duration of the trajectory (otherwise exclude from trajectory building)
+    if((time_i >= min(times_old[sites==site_i])) && (time_i <= max(times_old[sites==site_i]))) {
+      # Check if this time was already present in original definition
+      if(time_i %in% times_old[sites==site_i]) is_old[i] <- TRUE
+    } else {
+      to_remove[i] <- TRUE
+    }
   }
+  # cat(paste0("To remove: ", sum(to_remove),"\n"))
+  n_new <- sum(!to_remove)
+  sites_new <- sites_new[!to_remove]
+  times_new <- times_new[!to_remove]
+  is_old <- is_old[!to_remove]
+  
+  # cat(paste0("Old points: ", paste0(which(is_old), collapse = ","), "\n"))
+  # cat(paste0("Old times: ", paste0(times_new[is_old], collapse = ","), "\n"))
+  
+  dmat_new <- matrix(NA, nrow = n_new, ncol = n_new)
+  rownames(dmat_new) <- 1:n_new
+  colnames(dmat_new) <- 1:n_new
+  # Diagonal
+  for(i in 1:n_new) dmat_new[i,i] <- 0
   # Distances between existing points
   for(i in which(is_old)) {
     site_i <- sites_new[i]
@@ -257,7 +275,7 @@ interpolateTrajectories<-function(x, times) {
     aft_i <- min(which(times_old[sites == site_i] > time_i))
     time_bef_i <- times_old[sites == site_i][bef_i]
     time_aft_i <- times_old[sites == site_i][aft_i]
-    p <- (time_aft_i - time_i)/(time_aft_i - time_bef_i)
+    p <- (time_i - time_bef_i)/(time_aft_i - time_bef_i)
     r_bef_i <- which((times_old ==time_bef_i) & (sites == site_i))
     r_aft_i <- which((times_old ==time_aft_i) & (sites == site_i))
     dref <- dmat[r_bef_i, r_aft_i]
@@ -267,8 +285,8 @@ interpolateTrajectories<-function(x, times) {
       c_j <- which((times_old ==time_j) & (sites == site_j))
       d1 <- dmat[r_bef_i, c_j]
       d2 <- dmat[r_aft_i, c_j]
-      # print(c(time_i, bef_i, aft_i, r_bef_i, r_aft_i, i, j, dref, d1, d2, p))
       d_int <- .distanceToInterpolatedC(dref, d1, d2, p)
+      # print(c(time_i, time_j, bef_i, aft_i, time_bef_i, time_aft_i, r_bef_i, r_aft_i, i, j, dref, d1, d2, p, d_int))
       dmat_new[i,j] <- d_int
       dmat_new[j,i] <- d_int
     }
@@ -282,7 +300,7 @@ interpolateTrajectories<-function(x, times) {
     aft_i <- min(which(times_old[sites == site_i] > time_i))
     time_bef_i <- times_old[sites == site_i][bef_i]
     time_aft_i <- times_old[sites == site_i][aft_i]
-    p <- (time_aft_i - time_i)/(time_aft_i - time_bef_i)
+    p <- (time_i - time_bef_i)/(time_aft_i - time_bef_i)
     r_bef_i <- which((times_old ==time_bef_i) & (sites == site_i))
     r_aft_i <- which((times_old ==time_aft_i) & (sites == site_i))
     dref <- dmat[r_bef_i, r_aft_i]
@@ -296,12 +314,17 @@ interpolateTrajectories<-function(x, times) {
       c_j_new <- which((times_new ==time_j) & (sites_new == site_j))
       d1 <- dmat_new[r_bef_new_i, c_j_new]
       d2 <- dmat_new[r_aft_new_i, c_j_new]
-      # print(c(time_i, bef_i, aft_i, r_bef_i, r_aft_i, i, j, dref, d1, d2, p))
       d_int <- .distanceToInterpolatedC(dref, d1, d2, p)
+      # print(c(time_i, time_j, bef_i, aft_i, r_bef_i, r_aft_i, i, j, dref, d1, d2, p, d_int))
       dmat_new[i,j] <- d_int
       dmat_new[j,i] <- d_int
     }
   }
+  # print(as.dist(dmat_new))
   sel <- times_new %in% times_final
-  return(defineTrajectories(as.dist(dmat_new[sel,sel]), sites = sites_new[sel], times = times_new[sel]))
+  dmat_new <- dmat_new[sel,sel]
+  rownames(dmat_new) <- NULL
+  colnames(dmat_new) <- NULL
+  # print(dmat_new)
+  return(defineTrajectories(as.dist(dmat_new), sites = sites_new[sel], times = times_new[sel]))
 }

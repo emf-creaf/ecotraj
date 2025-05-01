@@ -8,7 +8,7 @@
 is.metric(x, tol = 1e-04)
 }
 \arguments{
-\item{x}{Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.}
+\item{x}{Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states.}
 
 \item{tol}{Tolerance value for metricity}
 }

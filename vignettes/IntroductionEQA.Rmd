@@ -56,7 +56,7 @@ rownames(glomel_comp) <- glomel$ID
 dim(glomel_comp)
 ```
 
-Using the compositional data, we can use function `vegdist()` from package **vegan** to calculate of Bray Curtis distances between ecosystem states:
+Using the compositional data, we can use function `vegdist()` from package **vegan** to calculate of Bray Curtis distances between ecological (community) states:
 ```{r, echo=T}
 glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 ```
@@ -175,7 +175,7 @@ We also extract the compositional data and log-transform it as initially perform
 grab_comp<-log1p(glenan[,-c(251:252)])
 ```
 
-Using the compositional data, we can use function `vegdist()` from package **vegan** to calculate of Bray Curtis distances between ecosystem states:
+Using the compositional data, we can use function `vegdist()` from package **vegan** to calculate of Bray Curtis distances between ecological (community) states:
 ```{r, echo=T}
 grab_bc <- vegan::vegdist(grab_comp, method = "bray")
 ```

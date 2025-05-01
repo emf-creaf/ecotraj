@@ -2,9 +2,9 @@
 #' 
 #' Performs an projection of a set of target points onto a specified trajectory and returns the distance to the trajectory (i.e. rejection) and the relative position of the projection point within the trajectory.
 #'
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
-#' @param target An integer vector of the ecosystem states to be projected.
-#' @param trajectory An integer vector of the ecosystem states conforming the trajectory onto which target states are to be projected.
+#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states (see details).
+#' @param target An integer vector of the ecological states to be projected.
+#' @param trajectory An integer vector of the ecological states conforming the trajectory onto which target states are to be projected.
 #' @param tol Numerical tolerance value to determine that projection of a point lies within the trajectory.
 #' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' @param force Flag to indicate that when projection falls out of the reference trajectory for a given, the closest point in the trajectory will be used. 

@@ -45,11 +45,11 @@ compareToStateEnvelope(
 )
 }
 \arguments{
-\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).}
+\item{d}{A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states (see details).}
 
-\item{sites}{A vector indicating the site corresponding to each ecosystem state.}
+\item{sites}{A vector indicating the site corresponding to each ecological state.}
 
-\item{surveys}{A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).}
+\item{surveys}{A vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).}
 
 \item{envelope}{A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)}
 

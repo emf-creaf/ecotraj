@@ -231,8 +231,8 @@ extractTrajectorySections <- function(x,
 
 
 #' @rdname trajectorySections
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
-#' @param ToInterpolate a matrix with three columns: 1) the positions of ecosystem states A in d; 2) the positions of ecosystem states B in d; 3) an interpolation coefficient (i.e. at what proportion of directed segment AB the interpolate ecosystem state X needs to be).
+#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states.
+#' @param ToInterpolate a matrix with three columns: 1) the positions of ecological states A in d; 2) the positions of ecological states B in d; 3) an interpolation coefficient (i.e. at what proportion of directed segment AB the interpolate ecosystem state X needs to be).
 #' @noRd
 interpolateEcolStates <- function(d,ToInterpolate)
 {

@@ -26,9 +26,9 @@
 #' @name referenceEnvelopes
 #' @aliases trajectoryEnvelopeVariability stateEnvelopeVariability compareToStateEnvelope compareToTrajectoryEnvelope
 #' 
-#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states (see details).
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
+#' @param d A symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states (see details).
+#' @param sites A vector indicating the site corresponding to each ecological state.
+#' @param surveys A vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).
 #' @param nboot.ci Number of bootstrap samples for confidence intervals. If nboot.ci = NULL then confidence intervals are not estimated.
 #' @param alpha.ci Error in confidence intervals.
 #' @param envelope A vector indicating the set of sites that conform the reference envelope (other sites will be compared to the envelope)

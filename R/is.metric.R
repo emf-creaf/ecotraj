@@ -2,7 +2,7 @@
 #' 
 #' Checks whether the input dissimilarity matrix is metric (i.e. all triplets fulfill the triangle inequality).
 #' 
-#' @param x Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecosystem states.
+#' @param x Either an object of class \code{trajectories},  a symmetric \code{\link{matrix}} or an object of class \code{\link{dist}} containing the distance values between pairs of ecological states.
 #' @param tol Tolerance value for metricity
 #' 
 #' @return A boolean indicating metric property

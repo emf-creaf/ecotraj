@@ -220,9 +220,9 @@ rownames(lengths)<-c(siteIDs)
 
 
 #' @rdname trajectoryMetrics
-#' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecosystem states).
-#' @param sites A vector indicating the site corresponding to each ecosystem state.
-#' @param surveys A vector indicating the survey corresponding to each ecosystem state (only necessary when surveys are not in order).
+#' @param xy Matrix with 2D coordinates in a Cartesian space (typically an ordination of ecological states).
+#' @param sites A vector indicating the site corresponding to each ecological state.
+#' @param surveys A vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).
 #' @export
 trajectoryLengths2D<-function(xy, sites, surveys = NULL, relativeToInitial=FALSE, all=FALSE) {
   if(length(sites)!=nrow(xy)) stop("'sites' needs to be of length equal to the number of rows in xy")

@@ -223,6 +223,80 @@ and variance of entities ‘1’ and ‘2’ is obviously affected because the
 trajectories have been trimmed. Interestingly, the directionality and
 mean speed of entity ‘2’ have slightly increased.</p>
 </div>
+<div class="section level3">
+<h3 id="interpolation-in-a-real-example">2.4 Interpolation in a real example<a class="anchor" aria-label="anchor" href="#interpolation-in-a-real-example"></a>
+</h3>
+<p>In this example we analyze the dynamics of 8 permanent forest plots
+located on slopes of a valley in the New Zealand Alps. The study area is
+mountainous and centered on the Craigieburn Range (Southern Alps), South
+Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).
+Forests plots are almost monospecific, being the mountain beech
+(<em>Fuscospora cliffortioides</em>) the main dominant tree species.
+Previously forests consisted of largely mature stands, but some of them
+were affected by different disturbances during the sampling period
+(1972-2009) which includes 9 surveys. We begin our example by loading
+the data set, which includes 72 plot observations:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"avoca"</span><span class="op">)</span></span></code></pre></div>
+<p>Before starting, we have to use function <code>vegdiststruct</code>
+from package <strong>vegclust</strong> to calculate distances between
+forest plot states in terms of structure and composition (see De Cáceres
+M, Legendre P, He F (2013) Dissimilarity measurements and the size
+structure of ecological communities. Methods Ecol Evol 4:1167–1177. <a href="https://doi.org/10.1111/2041-210X.12116" class="external-link uri">https://doi.org/10.1111/2041-210X.12116</a>):</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avoca_D_man</span> <span class="op">&lt;-</span> <span class="fu">vegclust</span><span class="fu">::</span><span class="fu"><a href="https://emf-creaf.github.io/vegclust/reference/vegdiststruct.html" class="external-link">vegdiststruct</a></span><span class="op">(</span><span class="va">avoca_strat</span>, method<span class="op">=</span><span class="st">"manhattan"</span>, transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>Distances in <code>avoca_D_man</code> are calculated using the
+Manhattan metric. We start ETA by defining our trajectories, which
+implies combining the information about distances, sites and
+surveys:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1971</span>, <span class="fl">1974</span>, <span class="fl">1978</span>, <span class="fl">1983</span>, <span class="fl">1987</span>, <span class="fl">1993</span>, <span class="fl">1999</span>, <span class="fl">2004</span>, <span class="fl">2009</span><span class="op">)</span></span>
+<span><span class="va">avoca_times</span> <span class="op">&lt;-</span> <span class="va">years</span><span class="op">[</span><span class="va">avoca_surveys</span><span class="op">]</span></span>
+<span><span class="va">avoca_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  </span>
+<span>                              sites <span class="op">=</span> <span class="va">avoca_sites</span>, </span>
+<span>                              times <span class="op">=</span> <span class="va">avoca_times</span><span class="op">)</span></span></code></pre></div>
+<p>We use <code><a href="../reference/trajectoryPlot.html">trajectoryPCoA()</a></code> to display the relations between
+forest plot states in this space and to draw the trajectory of each
+plot:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x</span>,</span>
+<span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
+<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>One use of interpolation is to force regular intervals in
+observations. In the original definition the time difference between
+consecutive surveys is between 3 and 6 years. Lets homogenize to 4
+years:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">years_regular</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1971</span>, <span class="fl">2009</span>, by<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">years_regular</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] 1971 1975 1979 1983 1987 1991 1995 1999 2003 2007</span></span></code></pre>
+<p>We will loose 2009, but this will be closely represented by 2007.
+Lets perform the interpolation:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avoca_x_inter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">interpolateTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="va">years_regular</span><span class="op">)</span></span></code></pre></div>
+<p>We can see the effect on the trajectory plot, which should be small
+(appart from the axis inversion):</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x_inter</span>,</span>
+<span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
+<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;"></p>
+<p>Let’s see the effect on the trajectory of forest plot ‘4’:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
+<span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x_inter</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
+<span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/trajectory_8-1.png" width="864" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="centering-trajectories">3. Centering trajectories<a class="anchor" aria-label="anchor" href="#centering-trajectories"></a>
@@ -252,7 +326,7 @@ of a trajectory with cyclical patterns.</p>
 <p>We will employ the same simple example used in the introduction to
 trajectory analysis. Let us first define the vectors that describe the
 state of each entity (i.e. site):</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">entities</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span></code></pre></div>
 <p>We do not define <code>surveys</code>, so that they are assumed to be
 consecutive for the each entity. However, we do define a matrix whose
@@ -260,7 +334,7 @@ coordinates correspond to the set of ecological states observed. We
 assume that the ecosystem space
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 has two dimensions:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span>
@@ -277,34 +351,34 @@ has two dimensions:</p>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">]</span></span>
 <span><span class="va">xy</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.25</span>,<span class="fl">1.0</span><span class="op">)</span></span></code></pre></div>
 <p>We define trajectories using:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">entities</span><span class="op">)</span></span></code></pre></div>
 <p>The trajectories can be displayed using a PCoA on the distance matrix
 as follows:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Centering trajectories is straightforward using function
 <code><a href="../reference/transformTrajectories.html">centerTrajectories()</a></code>:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_cent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p>The function will return an object of class <code>trajectories</code>
 where the distance matrix has been modified to represent the distances
 after centering. The effect of centering can be shown by repeating PCoA
 on the modified object:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Function <code><a href="../reference/transformTrajectories.html">centerTrajectories()</a></code> operates on distance
 matrices, so that we are free to use arbitrary dissimilarity
 coefficients for resemblance between states. However, in this case we
 could have conducted the centering manually by substracting trajectory
 centroids. For that we build a matrix containing centroid coordinates,
 which are repeated for all states of each trajectory:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                   <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">m</span></span></code></pre></div>
@@ -322,7 +396,7 @@ which are repeated for all states of each trajectory:</p>
 <span><span class="co">## [11,] 0.875 0.8125</span></span>
 <span><span class="co">## [12,] 0.875 0.8125</span></span></code></pre>
 <p>Centering operation is equal to the subtraction:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xy_cent</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">xy</span> <span class="op">-</span> <span class="va">m</span><span class="op">)</span></span>
 <span><span class="va">xy_cent</span></span></code></pre></div>
 <pre><code><span><span class="co">##         [,1]    [,2]</span></span>
@@ -339,7 +413,7 @@ which are repeated for all states of each trajectory:</p>
 <span><span class="co">## [11,]  0.125  0.4375</span></span>
 <span><span class="co">## [12,]  0.625  0.1875</span></span></code></pre>
 <p>We can compare the equivalence of the two approaches using:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">x_cent</span><span class="op">$</span><span class="va">d</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy_cent</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 4.996004e-16</span></span></code></pre>
 </div>
@@ -348,7 +422,7 @@ which are repeated for all states of each trajectory:</p>
 </h3>
 <p>Trajectory centering does not modify the properties of individual
 trajectories, as can be seen by comparing trajectory metrics before:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryMetrics</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   trajectory n t_start t_end duration   length mean_speed mean_angle</span></span>
 <span><span class="co">## 1          1 4       1     4        3 3.000000  1.0000000    0.00000</span></span>
@@ -359,7 +433,7 @@ trajectories, as can be seen by comparing trajectory metrics before:</p>
 <span><span class="co">## 2      0.8274026    2.562500         0.8541667</span></span>
 <span><span class="co">## 3      0.5620859    1.609375         0.5364583</span></span></code></pre>
 <p>with the same metrics after centering:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryMetrics</a></span><span class="op">(</span><span class="va">x_cent</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   trajectory n t_start t_end duration   length mean_speed mean_angle</span></span>
 <span><span class="co">## 1          1 4       1     4        3 3.000000  1.0000000    0.00000</span></span>
@@ -387,85 +461,54 @@ are to be <em>excluded</em> from the computation of the trajectory
 position taken as reference (its center). In our case these are the
 states of trajectories that were surveyed later than the first segment
 (i.e. the third and fourth observations of each trajectory):</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span>,<span class="fl">11</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span></span></code></pre></div>
 <p>Then we can call again <code><a href="../reference/transformTrajectories.html">centerTrajectories()</a></code>, but
 supplying the vector we created to parameter <code>exclude</code>:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_cent_excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">x</span>, exclude <span class="op">=</span> <span class="va">excluded</span><span class="op">)</span></span></code></pre></div>
 <p>We can see the effect of the new centering using:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent_excluded</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-31-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>As before, we could check the equivalence with a centering using
 explicit coordinates, but this is not needed at this stage.</p>
 </div>
 <div class="section level3">
 <h3 id="centering-in-a-real-example">3.5 Centering in a real example<a class="anchor" aria-label="anchor" href="#centering-in-a-real-example"></a>
 </h3>
-<p>In this example we analyze the dynamics of 8 permanent forest plots
-located on slopes of a valley in the New Zealand Alps. The study area is
-mountainous and centered on the Craigieburn Range (Southern Alps), South
-Island, New Zealand (see map in Fig. 8 of De Cáceres et al. 2019).
-Forests plots are almost monospecific, being the mountain beech
-(<em>Fuscospora cliffortioides</em>) the main dominant tree species.
-Previously forests consisted of largely mature stands, but some of them
-were affected by different disturbances during the sampling period
-(1972-2009) which includes 9 surveys. We begin our example by loading
-the data set, which includes 72 plot observations:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"avoca"</span><span class="op">)</span></span></code></pre></div>
-<p>Before starting, we have to use function <code>vegdiststruct</code>
-from package <strong>vegclust</strong> to calculate distances between
-forest plot states in terms of structure and composition (see De Cáceres
-M, Legendre P, He F (2013) Dissimilarity measurements and the size
-structure of ecological communities. Methods Ecol Evol 4:1167–1177. <a href="https://doi.org/10.1111/2041-210X.12116" class="external-link uri">https://doi.org/10.1111/2041-210X.12116</a>):</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">avoca_D_man</span> <span class="op">&lt;-</span> <span class="fu">vegclust</span><span class="fu">::</span><span class="fu"><a href="https://emf-creaf.github.io/vegclust/reference/vegdiststruct.html" class="external-link">vegdiststruct</a></span><span class="op">(</span><span class="va">avoca_strat</span>, method<span class="op">=</span><span class="st">"manhattan"</span>, transform <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Distances in <code>avoca_D_man</code> are calculated using the
-Manhattan metric. We start ETA by defining our trajectories, which
-implies combining the information about distances, sites and
-surveys:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1971</span>, <span class="fl">1974</span>, <span class="fl">1978</span>, <span class="fl">1983</span>, <span class="fl">1987</span>, <span class="fl">1993</span>, <span class="fl">1999</span>, <span class="fl">2004</span>, <span class="fl">2009</span><span class="op">)</span></span>
-<span><span class="va">avoca_times</span> <span class="op">&lt;-</span> <span class="va">years</span><span class="op">[</span><span class="va">avoca_surveys</span><span class="op">]</span></span>
-<span><span class="va">avoca_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">avoca_D_man</span>,  </span>
-<span>                              sites <span class="op">=</span> <span class="va">avoca_sites</span>, </span>
-<span>                              times <span class="op">=</span> <span class="va">avoca_times</span><span class="op">)</span></span></code></pre></div>
-<p>As before we use <code><a href="../reference/trajectoryPlot.html">trajectoryPCoA()</a></code> to display the
-relations between forest plot states in this space and to draw the
-(uncentered) trajectory of each plot:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<p>Let us examine the effect of centering on the forest plot data. As
+before we use <code><a href="../reference/trajectoryPlot.html">trajectoryPCoA()</a></code> to display the relations
+between forest plot states in this space and to draw the trajectory of
+each plot before and after centering:</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;">
-Although it is not particularly useful, we can see the effect of
-centering in this real data set:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">avoca_cent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_cent</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Before centering"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
-<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;"></p>
+<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"After centering"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-32-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, we can illustrate the effect of centering with respect to
 the initial or final states. To do so we define vectors that exclude the
 remaining states from centering:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_but_first</span> <span class="op">&lt;-</span> <span class="fl">9</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">avoca_sites</span><span class="op">)</span></span>
 <span><span class="va">all_but_last</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">avoca_sites</span><span class="op">)</span><span class="op">-</span><span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <p>Then we conduct the two centerings:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_cent_initial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, </span>
 <span>                                         exclude <span class="op">=</span> <span class="va">all_but_first</span><span class="op">)</span> </span>
 <span><span class="va">avoca_cent_final</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, </span>
 <span>                                       exclude <span class="op">=</span> <span class="va">all_but_last</span><span class="op">)</span> </span></code></pre></div>
 <p>We can compare their effect using:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_cent_initial</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
@@ -475,8 +518,8 @@ remaining states from centering:</p>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Reference: final state"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-32-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-35-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -517,11 +560,11 @@ similar.</p>
 <p>Function <code><a href="../reference/transformTrajectories.html">smoothTrajectories()</a></code> performs the smoothing
 operation and returns a modified distance matrix describing distances
 between ecological states:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avoca_x_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">smoothTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span></code></pre></div>
 <p>The following trajectory plot illustrates the effect of
 smoothing:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x</span>,</span>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
@@ -532,11 +575,11 @@ smoothing:</p>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"After smoothing"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TransformingTrajectories_files/figure-html/trajectory_smooth_plot-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>Trajectory smoothing logically alters several trajectory metrics.
 This can be checked by first evaluating multiple metrics:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryMetrics</a></span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   trajectory n t_start t_end duration    length mean_speed mean_angle</span></span>
 <span><span class="co">## 1          1 9    1971  2009       38 10.336602  0.2720158   78.82477</span></span>
@@ -557,7 +600,7 @@ This can be checked by first evaluating multiple metrics:</p>
 <span><span class="co">## 7      0.7391775    41.30863          5.163579</span></span>
 <span><span class="co">## 8      0.5254225    48.97523          6.121903</span></span></code></pre>
 <p>And re-evaluating them after smoothing:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryMetrics</a></span><span class="op">(</span><span class="va">avoca_x_smooth</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   trajectory n t_start t_end duration    length mean_speed mean_angle</span></span>
 <span><span class="co">## 1          1 9    1971  2009       38  6.776356  0.1783252   26.24172</span></span>

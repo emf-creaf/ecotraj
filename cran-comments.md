@@ -1,6 +1,6 @@
 ## Submission
 
-This submission (v1.0.0) adds new R functions to the package. 
+This submission of **ecotraj** (v1.1.0) adds new R functions to the package. 
 
 ## Tested environments
 
@@ -14,4 +14,7 @@ This submission (v1.0.0) adds new R functions to the package.
 * win-builder (devel), OK
 * win-builder (old-rel), NOTE
 
+## Reverse dependencies
+
+Package **ecoregime** is a reverse dependency of **ecotraj**, but according to our tests, conflicts should not arise with this new version.
 

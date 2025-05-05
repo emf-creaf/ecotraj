@@ -8,8 +8,9 @@
 ## Introduction
 
 Package `ecotraj` is a package providing Ecological Trajectory Analysis
-(ETA), a framework to assist ecologists in the analysis of temporal
-changes in ecosystems defined on a chosen multivariate space.
+(ETA), a framework to analyse temporal changes (i.e. dynamics) in
+ecological entities defined as trajectories on a chosen multivariate
+space.
 
 ETA is related to the following publications:
 

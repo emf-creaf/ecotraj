@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### 1.1 What is Ecological Trajectory Analysis?
 
-*Ecological Trajectory Analysis* (ETA) is a framework to analyze the dynamics of ecological entities (e.g. communities or ecosystems). The key aspect of ETA is that dynamics are represented using trajectories in a chosen multivariate space (noted using $\Omega$). These trajectories are then analyzed and compared geometrically. 
+*Ecological Trajectory Analysis* (ETA) is a framework to analyze the dynamics of ecological entities (e.g. individuals, communities or ecosystems). The key aspect of ETA is that dynamics are represented using trajectories in a chosen multivariate space (noted using $\Omega$). These trajectories are then analyzed and compared geometrically. 
 
 The ETA framework was presented for community ecology in De Cáceres et al (2019), and was extended with new metrics and visualisation modes in Sturbois et al. (2021a). Procedures of trajectory analysis can be applied to data beyond community data tables. For example, the same framework was applied to stable isotope data in Sturbois et al. (2021b). 
 
@@ -281,7 +281,7 @@ trajectoryProjection(d, 9:12, 1:4)
 
 ### 4.2 Trajectory shifts
 
-Sometimes different ecosystems follow the same or similar trajectory but with different speeds, or with an observations starting at a different point in the dynamic sequence. We can quantify those differences using function `trajectoryShifts()`, which internally uses orthogonal projection. To illustrate this function, we will first build a small data set of three linear trajectories, but where the second and the third are modified:
+Sometimes different entities follow the same or similar trajectory but with different speeds, or with an observations starting at a different point in the dynamic sequence. We can quantify those differences using function `trajectoryShifts()`, which internally uses orthogonal projection. To illustrate this function, we will first build a small data set of three linear trajectories, but where the second and the third are modified:
 
 ```{r}
 #Description of entities and times

@@ -1,6 +1,6 @@
 #' ecotraj: Ecological Trajectory Analysis
 #'
-#' Assists ecologists in the analysis of temporal changes of ecosystems, defined as trajectories on a chosen multivariate space
+#' Analysis of temporal changes (i.e. dynamics) of ecological entities, defined as trajectories on a chosen multivariate space
 #'
 #' @name ecotraj-package
 #' @aliases ecotraj ecotraj-package

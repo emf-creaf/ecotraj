@@ -29,7 +29,7 @@ ETA is related to the following publications:
 - Application of ETA framework for the **assessment of ecological
   quality** (Sturbois et al. 2023).
 
-## Package installation and documentation
+## Package installation
 
 Package `ecotraj` can be found at
 [CRAN](https://cran.r-project.org/package=ecotraj). In addition, the
@@ -40,9 +40,16 @@ follows:
 remotes::install_github("emf-creaf/ecotraj")
 ```
 
-Although the package comes with function documentation, articles
-explaining how to use the package can be found at
-<https://emf-creaf.github.io/ecotraj/>.
+## Documentation and training
+
+- The package comes with function documentation including examples.
+
+- Several articles explaining the different metrics of the framework and
+  how to conduct them using package functions can be found
+  [here](https://emf-creaf.github.io/ecotraj/articles/).
+
+- Presentation slides of a course on ecological trajectory analysis can
+  be found [here](https://emf.creaf.cat/training/ecotraj_course/).
 
 ## Package functions
 

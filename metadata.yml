@@ -8,6 +8,8 @@ emf_draft: false
 nodes: ''
 authors:
 - mcaceres
+- asturbois
+- ndjeghri
 resource_link: softworks/ecotraj
 thematic: statistics
 tags:

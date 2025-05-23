@@ -39,7 +39,7 @@ library(ecotraj)
 ## 2. General approach of CETA
 
 ### 2.1 The vocabulary of CETA
-CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once ([and BBC radio is grateful](https://www.youtube.com/watch?v=AmPN8MPw2dk)). Then, there is the three types of trajectories that CETA distinguishes and characterizes:
+CETA is perhaps a bit heavy-handed on the vocabulary. We have two words for time and recognize no less than three different types of trajectories! Let's start with the way we refer to time: CETA distinguishes "**times**", representing linear time, and "**dates**" representing circular time. For instance, the 17th of December recurs every year, in that sense, we call it a date. However, the 17th of December 2009 occurred only once ([and BBC radio is grateful](https://www.youtube.com/watch?v=n6njrf_zHfw)). Then, there is the three types of trajectories that CETA distinguishes and characterizes:
 
 * **Cyclical trajectories**: Long trajectories presenting cyclical dynamics of a given periodicity (e.g. annual). They are the basis of CETA. They also constitute the inputs from which the two other types of trajectories will be derived.
 * **Cycles**: Sub-divisions of a cyclical trajectory of duration equal to its periodicity. 

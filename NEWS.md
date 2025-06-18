@@ -1,3 +1,6 @@
+# ecotraj 1.1.1
+* Trajectory subsetting according to time window limits
+
 # ecotraj 1.1.0
 * New functions is.metric() and is.synchronous().
 * Update of function trajectoryInternalVariation() (former trajectoryVariability()).

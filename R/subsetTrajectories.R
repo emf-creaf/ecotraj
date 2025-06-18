@@ -6,6 +6,7 @@
 #' @param site_selection A character vector indicating the subset of entity (site) trajectories to be selected (if NULL, all sites are included).  
 #' @param subtrajectory_selection A character vector indicating the subset of cycles or fixed date trajectories to be selected (only used when \code{x} is of class \code{fd.trajectories} or \code{cycles}).
 #' @param survey_selection An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).
+#' @param window_selection An ordered pair of time values (e.g. \code{c(lower, upper)}) to subset the observations to a time window.
 #'
 #' @returns An object (list) of class \code{trajectories} (or its children subclasses \code{fd.trajectories} or \code{cycles}), depending on the input.
 #' @details
@@ -15,9 +16,10 @@
 #' @seealso \code{\link{defineTrajectories}}, \code{\link{trajectoryCyclical}}
 #' @export
 #' @examples 
-#' #Description of entities (sites) and surveys
+#' #Description of entities surveys and times
 #' entities <- c("1","1","1","2","2","2")
 #' surveys <- c(1,2,3,1,2,3)
+#' times <- c(10, 20, 35, 10, 20, 35)
 #'   
 #' #Raw data table
 #' xy<-matrix(0, nrow=6, ncol=2)
@@ -30,13 +32,17 @@
 #' d <- dist(xy)
 #' 
 #' # Defines trajectories
-#' x <- defineTrajectories(d, entities, surveys)
+#' x <- defineTrajectories(d, entities, surveys, times = times)
 #' x
 #' 
 #' # Extracts (subset) second trajectory
 #' x_2 <- subsetTrajectories(x, "2")
 #' x_2
-subsetTrajectories<-function(x, site_selection = NULL, subtrajectory_selection = NULL, survey_selection = NULL) {
+#' 
+#' # Extracts window corresponding to observation times 20, 35
+#' x_3 <- subsetTrajectories(x, window_selection = c(20, 35))
+#' x_3
+subsetTrajectories<-function(x, site_selection = NULL, subtrajectory_selection = NULL, survey_selection = NULL, window_selection = NULL) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   sites <- x$metadata$sites
   selection <- rep(TRUE, length(sites))
@@ -65,7 +71,13 @@ subsetTrajectories<-function(x, site_selection = NULL, subtrajectory_selection =
   if(!is.null(survey_selection)) {
     if(!is.numeric(survey_selection)) stop("`survey_selection` must be a numeric (integer) vector")
     selection <- selection & (x$metadata$surveys %in% as.integer(survey_selection))
+  } 
+  if(!is.null(window_selection)) {
+    if(!is.numeric(window_selection) || (length(window_selection)!=2)) stop("`window_selection` must be a vector of two time values (lower, upper)")
+    if(window_selection[1] >= window_selection[2]) stop("The first value of `window_selection` must be smaller than the second one")
+    selection <- selection & ((x$metadata$times >= window_selection[1]) & (x$metadata$times <= window_selection[2]))
   }
+  
   msel <- as.matrix(x$d)[selection, selection]
   rownames(msel) <- 1:nrow(msel)
   colnames(msel) <- 1:ncol(msel)

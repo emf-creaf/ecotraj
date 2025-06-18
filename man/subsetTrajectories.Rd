@@ -8,7 +8,8 @@ subsetTrajectories(
   x,
   site_selection = NULL,
   subtrajectory_selection = NULL,
-  survey_selection = NULL
+  survey_selection = NULL,
+  window_selection = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ subsetTrajectories(
 \item{subtrajectory_selection}{A character vector indicating the subset of cycles or fixed date trajectories to be selected (only used when \code{x} is of class \code{fd.trajectories} or \code{cycles}).}
 
 \item{survey_selection}{An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).}
+
+\item{window_selection}{An ordered pair of time values (e.g. \code{c(lower, upper)}) to subset the observations to a time window.}
 }
 \value{
 An object (list) of class \code{trajectories} (or its children subclasses \code{fd.trajectories} or \code{cycles}), depending on the input.
@@ -31,9 +34,10 @@ When using function \code{subsetTrajectories} on cycles or fixed-date trajectori
 (hence allows selecting multiple cycles or fixed-date trajectories). Specific cycles or fixed-date trajectories can be selected using \code{trajectory_selection}.
 }
 \examples{
-#Description of entities (sites) and surveys
+#Description of entities surveys and times
 entities <- c("1","1","1","2","2","2")
 surveys <- c(1,2,3,1,2,3)
+times <- c(10, 20, 35, 10, 20, 35)
   
 #Raw data table
 xy<-matrix(0, nrow=6, ncol=2)
@@ -46,12 +50,16 @@ xy[6,1]<-1
 d <- dist(xy)
 
 # Defines trajectories
-x <- defineTrajectories(d, entities, surveys)
+x <- defineTrajectories(d, entities, surveys, times = times)
 x
 
 # Extracts (subset) second trajectory
 x_2 <- subsetTrajectories(x, "2")
 x_2
+
+# Extracts window corresponding to observation times 20, 35
+x_3 <- subsetTrajectories(x, window_selection = c(20, 35))
+x_3
 }
 \seealso{
 \code{\link{defineTrajectories}}, \code{\link{trajectoryCyclical}}

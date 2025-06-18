@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Anthony
 Sturbois/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-05-22</h4>
+            <h4 data-toc-skip class="date">2025-06-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionEQA.Rmd" class="external-link"><code>vignettes/IntroductionEQA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionEQA.Rmd</code></div>
@@ -105,10 +105,9 @@ including <strong>ecotraj</strong>:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://emf-creaf.github.io/ecotraj/">ecotraj</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: Rcpp</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vegandevs/vegan" class="external-link">vegan</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vegandevs.github.io/vegan/" class="external-link">vegan</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: permute</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: lattice</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://emf-creaf.github.io/vegclust/" class="external-link">vegclust</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/emmanuelparadis/ape" class="external-link">ape</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -142,7 +141,7 @@ estimated for 43 species of vascular plants. The first five stations
 (rows) were used to define the reference envelope, and the next 18
 stations (rows) where those for which the conservation status was to be
 assessed.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">)</span></span>
 <span><span class="co">#Showing a first lines /columns subset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -166,28 +165,28 @@ assessed.</p>
 </h3>
 <p>We first create a compositional data matrix, by extracting species
 data from the initial data table:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">[</span>,<span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">glomel</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"Ref"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">glomel_comp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">glomel</span><span class="op">$</span><span class="va">ID</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">glomel_comp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 23 43</span></span></code></pre>
 <p>Using the compositional data, we can use function
-<code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
+<code><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
 of Bray Curtis distances between ecological (community) states:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>The distance matrix <code>glomel_bc</code> defines the multivariate
 space that represents the resemblance between ecological states.</p>
 <p>To conduct EQA, we also need to define the conservation targets.
 Column <code>Ref</code> in <code>glomel</code> identifies the stations
 considered as reference. We define the <strong>state reference
 envelope</strong> using reference station IDs as follows:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_env</span> <span class="op">&lt;-</span> <span class="va">glomel</span><span class="op">$</span><span class="va">ID</span><span class="op">[</span><span class="va">glomel</span><span class="op">$</span><span class="va">Ref</span><span class="op">]</span></span></code></pre></div>
 <p>We are now ready to compare the assessed stations with respect to the
 state reference envelope using function
 <code><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope()</a></code>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span>, m<span class="op">=</span><span class="fl">1.7</span>, distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">glomel_assess</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Observation Envelope SquaredDist         Q</span></span>
@@ -201,12 +200,12 @@ state reference envelope using function
 <code>SquaredDist</code>, the squared distance to the envelope’s
 centroid. The squared distances to the envelope averaged over the
 reference points defines the variability of the envelope:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">SquaredDist</span><span class="op">[</span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Envelope</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.04496412</span></span></code></pre>
 <p>This value should be equal to a call to function
 <code><a href="../reference/referenceEnvelopes.html">stateEnvelopeVariability()</a></code> :</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/referenceEnvelopes.html">stateEnvelopeVariability</a></span><span class="op">(</span><span class="va">glomel_bc</span>, <span class="va">glomel_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.04496412</span></span></code></pre>
 <p>Function <code><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope()</a></code> also returns the
@@ -215,10 +214,10 @@ stations according to their resemblance to the set of stations used as
 reference. <code>Q</code> is comprised between 0 (lowest quality) and 1
 (highest quality). We can transform <code>Q</code> values into a
 <em>qualitative</em> assessment using:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Status</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Q</span><span class="op">&gt;=</span><span class="fl">0.5</span>,<span class="st">"Inside"</span>, <span class="st">"Outside"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>And the assessment for the 18 tested stations is:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glomel_assess</span><span class="op">[</span><span class="op">!</span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Envelope</span>,<span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##    Observation Envelope SquaredDist          Q  Status</span></span>
 <span><span class="co">## 6            2    FALSE  0.07102358 0.68459732  Inside</span></span>
@@ -246,18 +245,18 @@ reference. <code>Q</code> is comprised between 0 (lowest quality) and 1
 <p>To represent the results in a graphical way, we start by conducting a
 Principal Coordinates Analysis (PCoA) using package
 <strong>ape</strong>:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pcoa_glom</span><span class="op">&lt;-</span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/pcoa.html" class="external-link">pcoa</a></span><span class="op">(</span><span class="va">glomel_bc</span><span class="op">)</span></span></code></pre></div>
 <p>We can use function <code><a href="https://rdrr.io/r/stats/biplot.html" class="external-link">biplot()</a></code> from package
 <strong>ape</strong> to show the ordination of stations with the species
 projected as arrows:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/biplot.html" class="external-link">biplot</a></span><span class="op">(</span><span class="va">pcoa_glom</span>, <span class="va">glomel_comp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <p>To generate a different representation, we first get coordinates of
 stations in the two first dimensions of the PCoA and copy them into the
 assessment data frame:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">PCOA_DIM1_2</span> <span class="op">&lt;-</span> <span class="va">pcoa_glom</span><span class="op">[[</span><span class="st">"vectors"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Dim1</span><span class="op">&lt;-</span><span class="va">PCOA_DIM1_2</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">glomel_assess</span><span class="op">$</span><span class="va">Dim2</span><span class="op">&lt;-</span><span class="va">PCOA_DIM1_2</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
@@ -276,7 +275,7 @@ used to illustrate stations that do achieve conservation objectives (in
 green) from those that do not achieve them (in red). The
 <strong>size</strong> of dots represents the squared distance to the
 centroid of the state reference envelope:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span><span class="op">&lt;-</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">glomel_assess</span>,</span>
 <span>          mapping<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Dim1</span>,y<span class="op">=</span><span class="va">Dim2</span>,size<span class="op">=</span><span class="va">SquaredDist</span>, color<span class="op">=</span><span class="va">Status</span>, shape<span class="op">=</span><span class="va">Status</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
@@ -331,7 +330,7 @@ CTRL3, KSD_10, CD_10, CD_30, QSD_10 and QSD_30; Appendix_D).</p>
 </h3>
 <p>The data set has 32 observations (i.e. treatments*surveys) and 250
 species. We begin by loading the data:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">)</span></span>
 <span><span class="co">#Showing a first lines /columns subset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -361,7 +360,7 @@ species. We begin by loading the data:</p>
 <h3 id="definition-of-the-ressemblance-space">4.3 Definition of the ressemblance space<a class="anchor" aria-label="anchor" href="#definition-of-the-ressemblance-space"></a>
 </h3>
 <p>We separate the columns that identify the treatment and surveys.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#vector Treatment</span></span>
 <span><span class="va">Treatment</span><span class="op">&lt;-</span><span class="va">glenan</span><span class="op">$</span><span class="va">Treatment</span></span>
 <span></span>
@@ -369,14 +368,14 @@ species. We begin by loading the data:</p>
 <span><span class="va">Surveys</span><span class="op">&lt;-</span><span class="va">glenan</span><span class="op">$</span><span class="va">Surveys</span></span></code></pre></div>
 <p>We also extract the compositional data and log-transform it as
 initially performed in Tauran et al. (2020).</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#log transformation</span></span>
 <span><span class="va">grab_comp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">251</span><span class="op">:</span><span class="fl">252</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Using the compositional data, we can use function
-<code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
+<code><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
 of Bray Curtis distances between ecological (community) states:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">grab_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">grab_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">grab_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">grab_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>Like in the first example, the distance matrix <code>grab_bc</code>
 defines the multivariate space that represents the resemblance between
 ecological states of maerl beds.</p>
@@ -388,28 +387,28 @@ ecological states of maerl beds.</p>
 define the conservation targets. In this case, we define the states
 conforming our <strong>state reference envelope</strong> manually among
 the observation IDs:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Definition of the state reference envelope</span></span>
 <span><span class="va">ID</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">grab_comp</span><span class="op">)</span></span>
 <span><span class="va">grab_env</span> <span class="op">&lt;-</span> <span class="va">ID</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">20</span>,<span class="fl">21</span>,<span class="fl">25</span>,<span class="fl">29</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <p>We are now ready to compare the assessed stations with respect to the
 state reference envelope using function
 <code><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope()</a></code>:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Comparing assessed stations with respect to the state reference envelope</span></span>
 <span><span class="va">grab_assess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToStateEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>, <span class="va">grab_env</span>, m<span class="op">=</span><span class="fl">1.5</span>, </span>
 <span>                                      distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We can again check that the average of squared distances in the
 envelope is equal to the envelope variability:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">grab_assess</span><span class="op">$</span><span class="va">SquaredDist</span><span class="op">[</span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Envelope</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.0196958</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/referenceEnvelopes.html">stateEnvelopeVariability</a></span><span class="op">(</span><span class="va">grab_bc</span>, <span class="va">grab_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.0196958</span></span></code></pre>
 <p>As before we derive a qualitative assessment from <code>Q</code>
 values:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Status</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Q</span><span class="op">&gt;=</span><span class="fl">0.5</span>,<span class="st">"Inside"</span>, <span class="st">"Outside"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Status</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">9</span><span class="op">:</span><span class="fl">20</span>,<span class="fl">21</span>,<span class="fl">25</span>,<span class="fl">29</span><span class="op">)</span><span class="op">]</span><span class="op">&lt;-</span><span class="st">"Reference"</span></span>
@@ -426,7 +425,7 @@ values:</p>
 <span><span class="co">## 6    CD_30-S2    FALSE  0.03232080 0.5415827    Inside</span></span></code></pre>
 <p>We then represent the results of the state-based EQA on in the two
 first dimensions of a Principal Coordinates Analysis:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Get coordinates of stations in the two first dimensions of the PCoA</span></span>
 <span><span class="va">pcoa</span><span class="op">&lt;-</span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/pcoa.html" class="external-link">pcoa</a></span><span class="op">(</span><span class="va">grab_bc</span><span class="op">)</span></span>
 <span><span class="va">PCOA_DIM1_2</span><span class="op">&lt;-</span><span class="va">pcoa</span><span class="op">[[</span><span class="st">"vectors"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
@@ -460,7 +459,7 @@ first dimensions of a Principal Coordinates Analysis:</p>
 <p>Since we are dealing with temporal data, we can create a bar plot
 showing the evolution of the squared distance to the centroid of the
 state reference envelope during the study period for each treatment:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Treatment</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">grab_assess</span><span class="op">$</span><span class="va">Treatment</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTRL1"</span>,<span class="st">"CTRL2"</span>,<span class="st">"CTRL3"</span>,</span>
 <span>                                                      <span class="st">"CD_10"</span>,<span class="st">"CD_30"</span>, </span>
 <span>                                                      <span class="st">"QSD_10"</span>,<span class="st">"QSD_30"</span>,</span>
@@ -480,7 +479,7 @@ state reference envelope during the study period for each treatment:</p>
 <p>In addition, we can create the heatmap showing the evolution of the
 distance between control and dredged stations during the
 experimentation:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grabbc_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html" class="external-link">melt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">grab_bc</span><span class="op">)</span>,rnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"col"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#selection of the observation of interest (i.e. control stations for heat map row, and dredged stations for heat map column)</span></span>
@@ -520,28 +519,28 @@ quality assessment taking into account ecosystem dynamics. In this case,
 the conservation target is defined by a set of trajectories conforming a
 <strong>trajectory reference envelope</strong>, which in our case are
 the three control stations:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Definition of the trajectory reference envelope </span></span>
 <span><span class="va">grab_dynenv</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTRL1"</span>,<span class="st">"CTRL2"</span>,<span class="st">"CTRL3"</span><span class="op">)</span></span></code></pre></div>
 <p>We are now ready to compare the assessed trajectories (those subject
 to treatment) with respect to the trajectory reference envelope using
 function <code><a href="../reference/referenceEnvelopes.html">compareToTrajectoryEnvelope()</a></code>:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##Comparing assessed trajectories with respect to the trajectory reference envelope</span></span>
 <span><span class="va">grab_dynassess</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/referenceEnvelopes.html">compareToTrajectoryEnvelope</a></span><span class="op">(</span><span class="va">grab_bc</span>,<span class="va">Treatment</span>, <span class="va">grab_dynenv</span>, </span>
 <span>                                              m<span class="op">=</span><span class="fl">1.5</span>, distances_to_envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We can also check that the average of squared distances in the
 envelope is equal to the envelope variability:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">grab_dynassess</span><span class="op">$</span><span class="va">SquaredDist</span><span class="op">[</span><span class="va">grab_dynassess</span><span class="op">$</span><span class="va">Envelope</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.009123776</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/referenceEnvelopes.html">trajectoryEnvelopeVariability</a></span><span class="op">(</span><span class="va">grab_bc</span>, sites <span class="op">=</span> <span class="va">Treatment</span>, envelope <span class="op">=</span> <span class="va">grab_dynenv</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.009123776</span></span></code></pre>
 <p>As before, we can create a bar plot showing the squared distance to
 the centroid of the trajectory reference envelope during the study
 period for each treatment:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grab_dynassess</span><span class="op">$</span><span class="va">Treatment</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">grab_dynassess</span><span class="op">$</span><span class="va">Site</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CTRL1"</span>,<span class="st">"CTRL2"</span>,<span class="st">"CTRL3"</span>,</span>
 <span>                                                      <span class="st">"CD_10"</span>,<span class="st">"CD_30"</span>, </span>
 <span>                                                      <span class="st">"QSD_10"</span>,<span class="st">"QSD_30"</span>,</span>
@@ -586,7 +585,7 @@ approach. Journal of Experimental Marine Biology and Ecology 533,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

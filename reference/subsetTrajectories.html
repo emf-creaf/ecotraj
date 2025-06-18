@@ -59,7 +59,8 @@
 <span>  <span class="va">x</span>,</span>
 <span>  site_selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subtrajectory_selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  survey_selection <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  survey_selection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  window_selection <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,6 +83,10 @@
 <dt id="arg-survey-selection">survey_selection<a class="anchor" aria-label="anchor" href="#arg-survey-selection"></a></dt>
 <dd><p>An integer vector indicating the subset of surveys to be included (if NULL, all surveys are included).</p></dd>
 
+
+<dt id="arg-window-selection">window_selection<a class="anchor" aria-label="anchor" href="#arg-window-selection"></a></dt>
+<dd><p>An ordered pair of time values (e.g. <code>c(lower, upper)</code>) to subset the observations to a time window.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -99,9 +104,10 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#Description of entities (sites) and surveys</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#Description of entities surveys and times</span></span></span>
 <span class="r-in"><span><span class="va">entities</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">surveys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">35</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">35</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span><span class="co">#Raw data table</span></span></span>
 <span class="r-in"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">6</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
@@ -114,7 +120,7 @@
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Defines trajectories</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">entities</span>, <span class="va">surveys</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">entities</span>, <span class="va">surveys</span>, times <span class="op">=</span> <span class="va">times</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4        5</span>
@@ -126,12 +132,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metadata</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sites surveys times</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1       1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1       2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1       3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     2       1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     2       2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     2       3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1       1    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1       2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     1       3    35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     2       1    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     2       2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     2       3    35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "trajectories" "list"        </span>
@@ -146,9 +152,28 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $metadata</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sites surveys times</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     2       1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2       2     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     2       3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     2       1    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2       2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     2       3    35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "trajectories" "list"        </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extracts window corresponding to observation times 20, 35</span></span></span>
+<span class="r-in"><span><span class="va">x_3</span> <span class="op">&lt;-</span> <span class="fu">subsetTrajectories</span><span class="op">(</span><span class="va">x</span>, window_selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x_3</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.000000                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.500000 1.118034         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.414214 1.000000 1.118034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $metadata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sites surveys times</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1       2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     1       3    35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     2       2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     2       3    35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "trajectories" "list"        </span>
@@ -163,7 +188,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

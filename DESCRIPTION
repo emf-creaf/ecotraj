@@ -2,7 +2,7 @@ Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
 Version: 1.1.1
-Date: 2025-18-06
+Date: 2025-08-28
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),

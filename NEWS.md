@@ -1,5 +1,6 @@
 # ecotraj 1.1.1
 * Trajectory subsetting according to time window limits
+* Bug correction in trajectory definition (missing surveys but existing times)
 
 # ecotraj 1.1.0
 * New functions is.metric() and is.synchronous().

@@ -12,9 +12,9 @@ defineTrajectories(d, sites, surveys = NULL, times = NULL)
 
 \item{sites}{A character vector indicating the ecological entity (site, individual, community) corresponding to each ecological state (other types are converted to character).}
 
-\item{surveys}{An integer vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).}
+\item{surveys}{An integer vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order and \code{times} is not provided).}
 
-\item{times}{A numeric vector indicating survey times (if missing, survey times are made equal to surveys).}
+\item{times}{A numeric vector indicating survey times.}
 }
 \value{
 An object (list) of class \code{trajectories} with the following elements:
@@ -31,6 +31,10 @@ An object (list) of class \code{trajectories} with the following elements:
 }
 \description{
 Defines data structures for trajectory analysis
+}
+\details{
+If \code{surveys} is not provided, but \code{times} is available, surveys will be taken as the order of times. Otherwise, \code{surveys} will be assumed to be in order for all the occurrences of the same value of \code{sites}.
+If \code{times} is not provided, then it is made equal to \code{surveys}.
 }
 \examples{
 #Description of entities (sites) and surveys

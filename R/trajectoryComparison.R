@@ -557,7 +557,7 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
         ind_surv2 <- which(sites==siteIDs[i2])
         #Surveys may not be in order
         if(!is.null(surveys)) ind_surv2 <- ind_surv2[order(surveys[sites==siteIDs[i2]])]
-        if(type == "pairwise.assymetric") {
+        if(type == "pairwise.asymmetric") {
           trajectory <- ind_surv2
           target <- ind_surv1
           trajProj <- trajectoryProjection(d,target, trajectory, add=add)

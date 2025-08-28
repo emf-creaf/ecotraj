@@ -71,11 +71,11 @@
 
 
 <dt id="arg-surveys">surveys<a class="anchor" aria-label="anchor" href="#arg-surveys"></a></dt>
-<dd><p>An integer vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order).</p></dd>
+<dd><p>An integer vector indicating the survey corresponding to each ecological state (only necessary when surveys are not in order and <code>times</code> is not provided).</p></dd>
 
 
 <dt id="arg-times">times<a class="anchor" aria-label="anchor" href="#arg-times"></a></dt>
-<dd><p>A numeric vector indicating survey times (if missing, survey times are made equal to surveys).</p></dd>
+<dd><p>A numeric vector indicating survey times.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -87,6 +87,11 @@
 <li><p><code>times</code>: A numeric vector indicating survey times.</p></li>
 </ul></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If <code>surveys</code> is not provided, but <code>times</code> is available, surveys will be taken as the order of times. Otherwise, <code>surveys</code> will be assumed to be in order for all the occurrences of the same value of <code>sites</code>.
+If <code>times</code> is not provided, then it is made equal to <code>surveys</code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="subsetTrajectories.html">subsetTrajectories</a></code></p></div>

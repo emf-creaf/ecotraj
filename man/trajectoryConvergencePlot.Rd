@@ -20,7 +20,7 @@ trajectoryConvergencePlot(
   half.arrows.size = 1,
   tau.links.transp = 0.3,
   top = "between",
-  pointy = F,
+  pointy = FALSE,
   CS = NULL,
   CSinfConf = NULL,
   CSsupConf = NULL,

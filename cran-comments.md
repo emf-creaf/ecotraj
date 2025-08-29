@@ -1,10 +1,10 @@
 ## Submission
 
-This submission of **ecotraj** (v1.1.0) adds new R functions to the package. 
+This submission of **ecotraj** (v1.1.1) corrects a few bugs of previous version. 
 
 ## Tested environments
 
-* local R installation (Arch Linux), R 4.4.3, OK
+* local R installation (Arch Linux), R 4.5.1, OK
 * windows-latest (on github actions), R release, OK
 * macOS-latest (on github actions), R release, OK
 * ubuntu-latest (on github actions), R release, OK

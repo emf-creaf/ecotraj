@@ -1,3 +1,6 @@
+# ecotraj 1.1.2
+* New function trajectoryConvergencePlot by N. Djeghri
+
 # ecotraj 1.1.1
 * Trajectory subsetting according to time window limits
 * Bug correction in trajectory definition (missing surveys but existing times)

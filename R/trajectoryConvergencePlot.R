@@ -1,42 +1,69 @@
+#' @rdname trajectoryConvergencePlot
+#' @param x An object of class \code{\link{trajectories}}.
+#' @param type A string indicating the convergence test, either "pairwise.asymmetric", "pairwise.symmetric" or "both" (see \code{\link{trajectoryConvergence}}).
+#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to NULL (all links drawn).
+#' @param traj.colors The colors for the trajectories (circles). Defaults to "grey".
+#' @param traj.names The names of trajectories. Defaults to the names provided in \code{x}.
+#' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to "black".
+#' @param ... Additional parameters passed to \code{\link{polygon}} to personalize the circles representing trajectories.
+#' @param radius The radius of the circles representing trajectories. Defaults to 1.
+#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".
+#' @param conv.color The color used to mark convergent trajectories. Defaults to "red".
+#' @param div.color The color used to mark divergent trajectories. Defaults to "blue".
+#' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
+#' @param pointy Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
+#' @param CS Experimental. Allows to add arrows representing cyclical shifts in the context of CETA.
+#' @param CSinfConf Experimental. Lower confidence intervals for cyclical shifts.
+#' @param CSsupConf Experimental. Upper confidence intervals for cyclical shifts.
+#' @param coeffCS Experimental. A multiplication coefficient for the arrows representing cyclical shifts.
+#' @param lwd.arrows.CS Experimental. The width of the arrows representing cyclical shifts.
+#' @export
 trajectoryConvergencePlot <- function (x,
-                                       conv.test="pairwise.asymmetric",
-                                       col.Traj="grey",
-                                       col.border.Traj="black",
-                                       lwd.border.Traj=1,
-                                       pointy=F,
-                                       names.Traj=NULL,
-                                       col.names.Traj="black",
-                                       top="between",
-                                       radius=1,
-                                       col.conv="red",
-                                       col.div="blue",
-                                       tau.bands.transp=0.3,
+                                       type = "pairwise.asymmetric",
                                        alpha.filter=NULL,
+                                       traj.colors = "grey",
+                                       traj.names=NULL,
+                                       traj.names.colors="black",
+                                       ...,
+                                       radius=1,
+                                       top="between",
+                                       conv.color="red",
+                                       div.color="blue",
+                                       tau.links.transp=0.3,
+                                       pointy=F,
                                        CS=NULL,
                                        CSinfConf=NULL,
                                        CSsupConf=NULL,
                                        coeffCS=0.5,
                                        lwd.arrows.CS=3){
   
-  widthMult <- 1#this is a multiplication coefficient for the width of the "tau bands" it will change to make room to display more links in case "both" is selected in 
-  if (conv.test=="pairwise.asymmetric"){
+  widthMult <- 1#this is a multiplication coefficient for the width of the "tau links" it will change to make room to display more links in case "both" is selected
+  if (type=="pairwise.asymmetric"){
     ConvTest <- trajectoryConvergence(x,type="pairwise.asymmetric")
-  }else if (conv.test=="pairwise.symmetric"){
+  }else if (type=="pairwise.symmetric"){
     ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
-  }else if (conv.test=="both"){
+  }else if (type=="both"){
     ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
     ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric")
     widthMult <- 1/3
   }else{
-    stop("conv.test invalid value for conv.test")
+    stop("invalid value for type")
   }
   
-  if (is.null(names.Traj)){
-    names.Traj <- colnames(ConvTest$tau)
+  #Check for appropriate length of the parameter traj.colors
+  if (length(traj.colors)==1){
+    traj.colors <- rep(traj.colors,ncol(ConvTest$tau))
+  }else if (length(traj.colors)!=ncol(ConvTest$tau)){
+    stop("traj.colors must have the same length as the number of trajectories or length 1")
+  }
+  
+  #Give trajectory names if not provided
+  if (is.null(traj.names)){
+    traj.names <- colnames(ConvTest$tau)
   }
   
   nTraj <- ncol(ConvTest$tau)
-  #find the angles and centers of the shapes representing the trajectories
+  #Find the angles and centers of the shapes representing the trajectories
   quadrant <- (2*pi)/nTraj
   if (top=="circle"){
     angles <- seq(pi/2,length.out=nTraj,by=-quadrant)
@@ -59,14 +86,14 @@ trajectoryConvergencePlot <- function (x,
   radius <- radius*0.1 #reduce radius (just to have convenient numbers in function calling)
   
   #Draw the convergence/divergence rectangles/half arrows
-  if (conv.test=="both"){
+  if (type=="both"){
     for (i in rownames(ConvTest$tau)){
       for (j in colnames(ConvTest$tau)){
         if (i!=j){
           if (is.null(alpha.filter)||(ConvTestAsym$p.value[i,j]<alpha.filter)){
             tau <- ConvTestAsym$tau[i,j]
             tauabs <- abs(tau)
-            taucol <- ConvDivColor(tau,ConvCol=col.conv,DivCol=col.div)
+            taucol <- ConvDivColor(tau=tau,conv.color=conv.color,div.color=div.color)
             
             #find the appropriate vector (the length of our future half-arrow) and scale it to unit length
             vecX <- centersX[j]-centersX[i]
@@ -112,13 +139,13 @@ trajectoryConvergencePlot <- function (x,
             #finally draw the half-arrow!
             polygon(x=c(Xcorner1,Xcorner2,Xcorner3,Xcorner4,Xcorner5),
                     y=c(Ycorner1,Ycorner2,Ycorner3,Ycorner4,Ycorner5),
-                    col=rgb(t(col2rgb(taucol)/255),alpha=tau.bands.transp),border=taucol,lty=2)
+                    col=rgb(t(col2rgb(taucol)/255),alpha=tau.links.transp),border=taucol,lty=2)
           }
         }
       }
     }
   }
-  if (conv.test!="pairwise.asymmetric"){
+  if (type!="pairwise.asymmetric"){
     count <- 1
     for (i in rownames(ConvTest$tau)[1:(nrow(ConvTest$tau)-1)]){
       count <- count+1
@@ -126,7 +153,7 @@ trajectoryConvergencePlot <- function (x,
         if (is.null(alpha.filter)||(ConvTest$p.value[i,j]<alpha.filter)){
           tau <- ConvTest$tau[i,j]
           tauabs <- abs(tau)
-          taucol <- ConvDivColor(tau,ConvCol=col.conv,DivCol=col.div)
+          taucol <- ConvDivColor(tau=tau,conv.color=conv.color,div.color=div.color)
           
           #find the appropriate vector (the length of our future rectangle) and scale it to unit length
           vecX <- centersX[j]-centersX[i]
@@ -152,19 +179,19 @@ trajectoryConvergencePlot <- function (x,
           #finally draw the rectangle!
           polygon(x=c(Xcorner1,Xcorner2,Xcorner3,Xcorner4),
                   y=c(Ycorner1,Ycorner2,Ycorner3,Ycorner4),
-                  col=rgb(t(col2rgb(taucol)/255),alpha=tau.bands.transp),border=taucol)
+                  col=rgb(t(col2rgb(taucol)/255),alpha=tau.links.transp),border=taucol)
         }
       }
     }
   }
-  if (conv.test=="pairwise.asymmetric"){
+  if (type=="pairwise.asymmetric"){
     for (i in rownames(ConvTest$tau)){
       for (j in colnames(ConvTest$tau)){
         if (i!=j){
           if (is.null(alpha.filter)||(ConvTest$p.value[i,j]<alpha.filter)){
             tau <- ConvTest$tau[i,j]
             tauabs <- abs(tau)
-            taucol <- ConvDivColor(tau,ConvCol=col.conv,DivCol=col.div)
+            taucol <- ConvDivColor(tau=tau,conv.color=conv.color,div.color=div.color)
             
             #find the appropriate vector (the length of our future half-arrow) and scale it to unit length
             vecX <- centersX[j]-centersX[i]
@@ -193,7 +220,7 @@ trajectoryConvergencePlot <- function (x,
             #finally draw the half-arrow!
             polygon(x=c(Xcorner1,Xcorner2,Xcorner3,Xcorner4,Xcorner5),
                     y=c(Ycorner1,Ycorner2,Ycorner3,Ycorner4,Ycorner5),
-                    col=rgb(t(col2rgb(taucol)/255),alpha=tau.bands.transp),border=taucol)
+                    col=rgb(t(col2rgb(taucol)/255),alpha=tau.links.transp),border=taucol)
           }
         }
       }
@@ -201,10 +228,9 @@ trajectoryConvergencePlot <- function (x,
   }
   
   #Draw the cycle's dates
-  PointyCircle(centersX,centersY,
-               col.fill=col.Traj,col.border=col.border.Traj,rad=radius,lwd.border=lwd.border.Traj,
-               pointy=pointy,pointy.at=angles-pi/2)
-  text(centersX,centersY,names.Traj,col=col.names.Traj,font=2)
+  PointyCircle(centersX,centersY,pointyCircles.colors=traj.colors,
+               rad=radius,pointy=pointy,pointy.at=angles-pi/2,...)
+  text(centersX,centersY,traj.names,col=traj.names.colors,font=2)
   
   #Add arrows for cyclical shifts if asked!
   if (!is.null(CS)){
@@ -225,15 +251,23 @@ trajectoryConvergencePlot <- function (x,
   }
 }
 
-
+#' @rdname trajectoryConvergencePlot
+#' @param x The positions of the pointy circles to be drawn on the x axis.
+#' @param y The positions of the pointy circles to be drawn on the y axis.
+#' @param rad The radius of the pointy circles to be drawn. Defaults to 1.
+#' @param pointy Boolean. Should the circles be pointy. Defaults to FALSE.
+#' @param pointyat The angle in radiant at which the point should be drawn if \code{pointy} is FALSE.
+#' @param pointyCircles.colors The color filling the pointy circles. Defaults to "grey".
+#' @param ... Other parameters for function \code{\link{polygon}}. 
+#' @noRd
+#' @keywords internal
 PointyCircle <- function (x,
                           y,
-                          rad=1,
-                          pointy=FALSE,
-                          pointy.at=NULL,
-                          col.fill="grey",
-                          col.border="black",
-                          lwd.border=1){
+                          rad = 1,
+                          pointy = FALSE,
+                          pointy.at = NULL,
+                          pointyCircles.colors = "grey",
+                          ...){
   if (length(y)!=length(x)){
     stop("x and y must have the same length")
   }
@@ -243,20 +277,10 @@ PointyCircle <- function (x,
     }else if (length(rad)!=length(x)){
       stop("rad must have the same length as x or length 1")
     }
-    if (length(col.fill)==1){
-      col.fill <- rep(col.fill,length(x))
-    }else if (length(col.fill)!=length(x)){
-      stop("col.fill must have the same length as x or length 1")
-    }
-    if (length(col.border)==1){
-      col.border <- rep(col.border,length(x))
-    }else if (length(col.border)!=length(x)){
-      stop("col.border must have the same length as x or length 1")
-    }
-    if (length(lwd.border)==1){
-      lwd.border <- rep(lwd.border,length(x))
-    }else if (length(lwd.border)!=length(x)){
-      stop("lwd.border must have the same length as x or length 1")
+    if (length(pointyCircles.colors)==1){
+      pointyCircles.colors <- rep(pointyCircles.colors,length(x))
+    }else if (length(pointyCircles.colors)!=length(x)){
+      stop("pointyCircles.colors must have the same length as x or length 1")
     }
     if (pointy==T){
       if (length(pointy.at)==1){
@@ -280,21 +304,25 @@ PointyCircle <- function (x,
       baseX <- cos(seq(-pi,pi,0.1))
       baseY <- sin(seq(-pi,pi,0.1))
     }
-    polygon(x = baseX*rad[i]+x[i], y = baseY*rad[i]+y[i],
-            col=col.fill[i],border=col.border[i],lwd=lwd.border[i])
+    polygon(x = baseX*rad[i]+x[i], y = baseY*rad[i]+y[i],col=pointyCircles.colors,...)
   }
 }
 
-
-ConvDivColor <- function (x,
-                          ConvCol="red",
-                          DivCol="blue"){
-  if (x>0){
-    colBase <- t(col2rgb(DivCol))/255
-    output <- rgb((1-colBase)*((1-abs(x))^2)+colBase,maxColorValue = 1)
+#' @rdname trajectoryConvergencePlot
+#' @param tau The tau value outputted by the Mann-Kendall test in function \code{\link{trajectoryConvergence}}.
+#' @param conv.color The color used to mark convergent trajectories. Defaults to "red".
+#' @param div.color The color used to mark divergent trajectories. Defaults to "blue".
+#' @noRd
+#' @keywords internal
+ConvDivColor <- function (tau,
+                          conv.color="red",
+                          div.color="blue"){
+  if (tau>0){
+    colBase <- t(col2rgb(div.color))/255
+    output <- rgb((1-colBase)*((1-abs(tau))^2)+colBase,maxColorValue = 1)
   }else{
-    colBase <- t(col2rgb(ConvCol))/255
-    output <- rgb((1-colBase)*((1-abs(x))^2)+colBase,maxColorValue = 1)
+    colBase <- t(col2rgb(conv.color))/255
+    output <- rgb((1-colBase)*((1-abs(tau))^2)+colBase,maxColorValue = 1)
   }
 }
 

@@ -7,10 +7,11 @@
 #' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to "black".
 #' @param ... Additional parameters passed to \code{\link{polygon}} to personalize the circles representing trajectories.
 #' @param radius The radius of the circles representing trajectories. Defaults to 1.
-#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".
 #' @param conv.color The color used to mark convergent trajectories. Defaults to "red".
 #' @param div.color The color used to mark divergent trajectories. Defaults to "blue".
+#' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to 1.
 #' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
+#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".
 #' @param pointy Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
 #' @param CS Experimental. Allows to add arrows representing cyclical shifts in the context of CETA.
 #' @param CSinfConf Experimental. Lower confidence intervals for cyclical shifts.
@@ -20,16 +21,17 @@
 #' @export
 trajectoryConvergencePlot <- function (x,
                                        type = "pairwise.asymmetric",
-                                       alpha.filter=NULL,
+                                       alpha.filter = NULL,
                                        traj.colors = "grey",
-                                       traj.names=NULL,
-                                       traj.names.colors="black",
+                                       traj.names = NULL,
+                                       traj.names.colors = "black",
                                        ...,
-                                       radius=1,
+                                       radius = 1,
+                                       conv.color = "red",
+                                       div.color = "blue",
+                                       half.arrows.size = 1,
+                                       tau.links.transp = 0.3,
                                        top="between",
-                                       conv.color="red",
-                                       div.color="blue",
-                                       tau.links.transp=0.3,
                                        pointy=F,
                                        CS=NULL,
                                        CSinfConf=NULL,
@@ -127,11 +129,11 @@ trajectoryConvergencePlot <- function (x,
             Xcorner2 <- vecY*radius*tauabs*widthMult+centersXi
             Ycorner2 <- -vecX*radius*tauabs*widthMult+centersYi
             
-            Xcorner3 <- vecY*radius*tauabs*widthMult+centersXj-(vecX*radius+2*vecX*radius*tauabs*widthMult)
-            Ycorner3 <- -vecX*radius*tauabs*widthMult+centersYj-(vecY*radius+2*vecY*radius*tauabs*widthMult)
+            Xcorner3 <- vecY*radius*tauabs*widthMult+centersXj-(vecX*radius+2*vecX*radius*tauabs*widthMult*half.arrows.size)
+            Ycorner3 <- -vecX*radius*tauabs*widthMult+centersYj-(vecY*radius+2*vecY*radius*tauabs*widthMult*half.arrows.size)
             
-            Xcorner4 <- 1.5*vecY*radius*tauabs*widthMult+centersXj-(vecX*radius+2*vecX*radius*tauabs*widthMult)
-            Ycorner4 <- -1.5*vecX*radius*tauabs*widthMult+centersYj-(vecY*radius+2*vecY*radius*tauabs*widthMult)
+            Xcorner4 <- 1.5*vecY*radius*tauabs*widthMult*half.arrows.size+centersXj-(vecX*radius+2*vecX*radius*tauabs*widthMult*half.arrows.size)
+            Ycorner4 <- -1.5*vecX*radius*tauabs*widthMult*half.arrows.size+centersYj-(vecY*radius+2*vecY*radius*tauabs*widthMult*half.arrows.size)
             
             Xcorner5 <- centersXj-vecX*radius
             Ycorner5 <- centersYj-vecY*radius
@@ -208,11 +210,11 @@ trajectoryConvergencePlot <- function (x,
             Xcorner2 <- vecY*radius*tauabs*widthMult+centersX[i]
             Ycorner2 <- -vecX*radius*tauabs*widthMult+centersY[i]
             
-            Xcorner3 <- vecY*radius*tauabs*widthMult+centersX[j]-(vecX*radius+2*vecX*radius*tauabs*widthMult)
-            Ycorner3 <- -vecX*radius*tauabs*widthMult+centersY[j]-(vecY*radius+2*vecY*radius*tauabs*widthMult)
+            Xcorner3 <- vecY*radius*tauabs*widthMult+centersX[j]-(vecX*radius+2*vecX*radius*tauabs*widthMult*half.arrows.size)
+            Ycorner3 <- -vecX*radius*tauabs*widthMult+centersY[j]-(vecY*radius+2*vecY*radius*tauabs*widthMult*half.arrows.size)
             
-            Xcorner4 <- 1.5*vecY*radius*tauabs*widthMult+centersX[j]-(vecX*radius+2*vecX*radius*tauabs*widthMult)
-            Ycorner4 <- -1.5*vecX*radius*tauabs*widthMult+centersY[j]-(vecY*radius+2*vecY*radius*tauabs*widthMult)
+            Xcorner4 <- 1.5*vecY*radius*tauabs*widthMult*half.arrows.size+centersX[j]-(vecX*radius+2*vecX*radius*tauabs*widthMult*half.arrows.size)
+            Ycorner4 <- -1.5*vecX*radius*tauabs*widthMult*half.arrows.size+centersY[j]-(vecY*radius+2*vecY*radius*tauabs*widthMult*half.arrows.size)
             
             Xcorner5 <- centersX[j]-vecX*radius
             Ycorner5 <- centersY[j]-vecY*radius

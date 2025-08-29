@@ -102,7 +102,7 @@ the two trajectories become closer along surveys. This test requires the same nu
 \item{If \code{type = "multiple"} then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
 the test uses the sequence of variability between states corresponding to the same time.}
 }
-In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing.
+In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
 
 Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to \code{\link{trajectoryProjection}}.
@@ -187,7 +187,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 }
 \seealso{
-\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

@@ -1,3 +1,54 @@
+#' Summary plot for trajectory convergence and divergence
+#' 
+#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}.
+#' 
+#' @encoding UTF-8
+#' @name trajectoryCyclicalPlots
+#' 
+#' @details
+#' The function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
+#' In the plots, trajectories are represented by circles. The convergence or divergence between pairs of trajectories are represented by links. If convergence tests are symmetric, the links are simple. If the convergence tests are asymmetric, the links are displayed as half arrows pointing from the trajectory converging or diverging towards the trajectory being approached or diverged from.
+#' The width and color hue of the links are proportional to the tau statistic of the Mann.Kendall test performed by the \code{\link{trajectoryConvergence}} function. 
+#' The function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
+#' 
+#' The function finally offers some possibilities more relevant in the context of cyclical ecological trajectory analysis (CETA) such as the possibility to make the circles representing trajectories "pointy" so that they communicate a cyclical organization. This is useful if fixed dates trajectories are being studied (see \code{\link{extractFixedDateTrajectories}}).
+#' The function also allows to display "cyclical shifts" but values have to be provided by the user as they can be obtained in a variety of ways summarizing the outputs of \code{\link{cycleShifts}}. 
+#' 
+#' @author Nicolas Djeghri, UBO
+#' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
+#' 
+#' 
+#' @seealso \code{\link{trajectoryConvergence}}
+#' 
+#' @examples
+#' data("avoca")
+#' avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
+#'                                        method="manhattan", 
+#'                                        transform = function(x){log(x+1)})
+#' years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
+#' avoca_times <- years[avoca_surveys]
+#' avoca_x <- defineTrajectories(d = avoca_D_man,  
+#'                               sites = avoca_sites, 
+#'                               times = avoca_times)
+#' 
+#' #Raw output with asymmetric convergence test (default)
+#' trajectoryConvergencePlot(avoca_x)
+#' 
+#' #More refined output with both type of tests and only plotting significant test results (p-value < 0.05)
+#' trajectoryConvergencePlot(avoca_x,type="both",alpha.filter=0.05)
+#' 
+#' #Much more refined output with nicer colors bigger half arrows and personalized trajectory names
+#' trajectoryConvergencePlot(avoca_x,type="both",alpha.filter=0.05,
+#'                           #adjusting the attributes of the links between trajectories
+#'                           half.arrows.size = 1.5,conv.color = "orangered",div.color="dodgerblue",
+#'                           #controling the size of circles representing trajectories (links are enlarged to match it)
+#'                           radius=1.2, 
+#'                           #customizing the border of the circles representing trajectories
+#'                           traj.colors = "black",border="white",lwd=2,
+#'                           #giving trajectories new names and adjusting the names color
+#'                           traj.names=LETTERS[1:8],traj.names.colors="white")
+#'
+#' 
 #' @rdname trajectoryConvergencePlot
 #' @param x An object of class \code{\link{trajectories}}.
 #' @param type A string indicating the convergence test, either "pairwise.asymmetric", "pairwise.symmetric" or "both" (see \code{\link{trajectoryConvergence}}).
@@ -31,13 +82,13 @@ trajectoryConvergencePlot <- function (x,
                                        div.color = "blue",
                                        half.arrows.size = 1,
                                        tau.links.transp = 0.3,
-                                       top="between",
-                                       pointy=F,
-                                       CS=NULL,
-                                       CSinfConf=NULL,
-                                       CSsupConf=NULL,
-                                       coeffCS=0.5,
-                                       lwd.arrows.CS=3){
+                                       top = "between",
+                                       pointy = F,
+                                       CS = NULL,
+                                       CSinfConf = NULL,
+                                       CSsupConf = NULL,
+                                       coeffCS = 0.5,
+                                       lwd.arrows.CS = 3){
   
   widthMult <- 1#this is a multiplication coefficient for the width of the "tau links" it will change to make room to display more links in case "both" is selected
   if (type=="pairwise.asymmetric"){
@@ -317,8 +368,8 @@ PointyCircle <- function (x,
 #' @noRd
 #' @keywords internal
 ConvDivColor <- function (tau,
-                          conv.color="red",
-                          div.color="blue"){
+                          conv.color = "red",
+                          div.color = "blue"){
   if (tau>0){
     colBase <- t(col2rgb(div.color))/255
     output <- rgb((1-colBase)*((1-abs(tau))^2)+colBase,maxColorValue = 1)

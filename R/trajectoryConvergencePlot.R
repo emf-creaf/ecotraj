@@ -1,6 +1,6 @@
 #' Summary plot for trajectory convergence and divergence
 #' 
-#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-septic options are also available to study changes in cycles shapes.
+#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-specific options are also available to study changes in cycles shapes.
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclicalPlots

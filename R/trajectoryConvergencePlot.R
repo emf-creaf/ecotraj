@@ -1,30 +1,23 @@
 #' Summary plot for trajectory convergence and divergence
 #' 
-#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-specific options are also available to study changes in cycles shapes.
+#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}.
 #' 
 #' @encoding UTF-8
 #' @name trajectoryConvergencePlot
 #' 
 #' @details
-#' The function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
+#' Function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
 #' In the plots, trajectories are represented by circles. The convergence or divergence between pairs of trajectories are represented by links. If convergence tests are symmetric, the links are simple. If the convergence tests are asymmetric, the links are displayed as half arrows pointing from the trajectory converging or diverging towards the trajectory being approached or diverged from.
 #' The width and color hue of the links are proportional to the tau statistic of the Mann.Kendall test performed by the \code{\link{trajectoryConvergence}} function. 
-#' The function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
+#' Function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
 #' 
-#' 
-#' Cyclical Ecological Trajectory Analysis (CETA) specific options are particularly designed to study fixed-date trajectories convergence/divergence patterns:
-#' \itemize{
-#' \item{First, setting \code{pointy = TRUE} when the studied trajectories are the outputs of \code{\link{extractFixedDateTrajectories}} allows to suggest cyclicity.}
-#' \item{Second, the companion function \code{cycleShiftsArrows} allows to represent cyclical shifts by adding arrows to the circles representing trajectories. Clockwise arrows will represent advances, anticlockwise arrows will represent delays. Arrows length is proportional to the cyclical shift provided.
-#' Relevant measures of cyclical shifts have to be computed by the user. A variety of methods may be employed but the outputs of \code{\link{cycleShifts}} cannot be used immediately as they do not directly correspond to the fixed-date trajectories. An example of how to compute relevant measures of cyclical shifts is provided in the CETA vignette.
-#' The arguments \code{radius} and \code{top} in \code{cycleShiftsArrows} must match those in the corresponding \code{trajectoryConvergencePlot} for proper display.}
-#' }
+#' See function \code{\link{cycleShiftArrows}} for additional graphical elements to be displayed when conducting CETA.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' 
-#' @seealso \code{\link{trajectoryConvergence}},\code{\link{cycleShifts}}
+#' @seealso \code{\link{trajectoryConvergence}}, \code{\link{cycleShiftArrows}}
 #' 
 #' @examples
 #' data("avoca")
@@ -57,21 +50,6 @@
 #'                           traj.colors = "black",border = "white",lwd = 2,
 #'                           traj.names = LETTERS[1:8],traj.names.colors = "white")
 #'
-#'
-#' #CETA-specific example with made-up cyclical shifts:
-#' trajectoryConvergencePlot(avoca_x,
-#'                           type = "both",
-#'                           alpha.filter = 0.05,
-#'                           half.arrows.size = 2,
-#'                           pointy = TRUE)
-#' 
-#' #Made-up cyclical shifts (matching the number of trajectories in avoca_x)
-#' CS <- c(2.5, 1.5, 0.5, 0.5, 3, 1, 1, 2)
-#' cycleShiftsArrows(CS,
-#'                   cycle.shifts.inf.conf = CS - 0.2,
-#'                   cycle.shifts.sup.conf = CS + 0.2)
-#' 
-#' 
 #' @rdname trajectoryConvergencePlot
 #' @param x An object of class \code{\link{trajectories}}.
 #' @param type A string indicating the convergence test, either "pairwise.asymmetric", "pairwise.symmetric" or "both" (see \code{\link{trajectoryConvergence}}).
@@ -86,7 +64,7 @@
 #' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to 1.
 #' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
 #' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between".
-#' @param pointy Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
+#' @param pointy Boolean. Should the circles representing trajectories be made pointy (i.e. pointing to the next trajectory)? Useful when trajectories have some order, as in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
 #' @export
 trajectoryConvergencePlot <- function (x,
                                        type = "pairwise.asymmetric",
@@ -299,69 +277,6 @@ trajectoryConvergencePlot <- function (x,
   text(centersX,centersY,traj.names,col=traj.names.colors,font=2)
   
 }
-
-#' @rdname trajectoryConvergencePlot
-#' @param cycle.shifts Cyclical shifts computed for each fixed date trajectory plotted by \code{trajectoryConvergencePlot}.
-#' @param radius The radius of the circles representing trajectories. Defaults to 1.
-#' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between". 
-#' @param cycle.shifts.inf.conf Lower confidence intervals for cyclical shifts.
-#' @param cycle.shifts.sup.conf Upper confidence intervals for cyclical shifts.
-#' @param arrows.length.mult A multiplication coefficient for the arrows representing cyclical shifts. Attempts an automatic adjustment by default (dividing by max(cycle.shifts)).
-#' @param arrows.lwd Line width of the arrows. Defaults to 2.
-#' @export
-cycleShiftsArrows <- function (cycle.shifts,
-                               radius = 1,
-                               top = "between",
-                               cycle.shifts.inf.conf = NULL,
-                               cycle.shifts.sup.conf = NULL,
-                               arrows.length.mult = "auto",
-                               arrows.lwd = 2){
-  if ((!is.null(cycle.shifts.inf.conf))&&(is.null(cycle.shifts.sup.conf))) stop("If confidence intervals are provided, both superiors and inferiors are needed!")
-  if ((is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))) stop("If confidence intervals are provided, both superiors and inferiors are needed!")
-  
-  #scaling the arrows
-  if(arrows.length.mult == "auto"){
-    if ((!is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))){
-      cycle.shifts.inf.conf <- cycle.shifts.inf.conf/(max(cycle.shifts))
-      cycle.shifts.sup.conf <- cycle.shifts.sup.conf/(max(cycle.shifts))
-    }
-    cycle.shifts <- cycle.shifts/(max(cycle.shifts))
-    arrows.length.mult <- 1
-  }
-  
-  radius <- radius*0.1 #reduce radius (just to have convenient numbers in function calling)
-  
-  nTraj <- length(cycle.shifts)
-  #Find the angles and centers of the shapes representing the trajectories
-  quadrant <- (2*pi)/nTraj
-  if (top=="circle"){
-    angles <- seq(pi/2,length.out=nTraj,by=-quadrant)
-    centersX <- cos(angles)
-    centersY <- sin(angles)
-  }else if (top=="between"){
-    angles <- seq(pi/2-quadrant/2,length.out=nTraj,by=-quadrant)
-    centersX <- cos(angles)
-    centersY <- sin(angles)
-  }else{
-    stop("top must be either circle or between and should match the same argument in the parent convergence plot")
-  }
-  
-  baseArrowsX <- centersX*(1+radius)
-  baseArrowsY <- centersY*(1+radius)
-  if ((!is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))){
-    arrows(x0=baseArrowsY*cycle.shifts.inf.conf*arrows.length.mult+baseArrowsX,
-           y0=-baseArrowsX*cycle.shifts.inf.conf*arrows.length.mult+baseArrowsY,
-           x1=baseArrowsY*cycle.shifts.sup.conf*arrows.length.mult+baseArrowsX,
-           y1=-baseArrowsX*cycle.shifts.sup.conf*arrows.length.mult+baseArrowsY,
-           angle=90,length=0.05,col="grey30",code=3,lwd=arrows.lwd-1,xpd=NA)
-  }
-  arrows(x0=baseArrowsX,y0=baseArrowsY,
-         x1=baseArrowsY*cycle.shifts*arrows.length.mult+baseArrowsX,
-         y1=-baseArrowsX*cycle.shifts*arrows.length.mult+baseArrowsY,
-         lwd=arrows.lwd,length=0.1,xpd=NA)
-  points(baseArrowsX,baseArrowsY,pch=16)
-}
-
 
 #' @rdname trajectoryConvergencePlot
 #' @param x The positions of the pointy circles to be drawn on the x axis.

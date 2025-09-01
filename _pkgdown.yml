@@ -104,6 +104,7 @@ reference:
   - starts_with("cyclePCoA")
   - starts_with("fixedDateTrajectoryPCoA")
   - starts_with("trajectoryConvergencePlot")
+  - starts_with("cycleShiftArrows")
 
 - title: Ecological Quality Assessment
   desc:  Set of functions to determine the membership to state/trajectory envelopes

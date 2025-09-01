@@ -58,7 +58,7 @@ fixedDateTrajectoryPCoA(
 Functions \code{cyclePCoA} and \code{fixedDateTrajectoryPCoA} return the results of calling of \code{\link{cmdscale}}.
 }
 \description{
-Plotting functions for Cyclical Ecological Trajectory Analysis:
+Plotting functions to display cycles and fixed-date trajectories in Cyclical Ecological Trajectory Analysis:
 \itemize{
 \item{Function \code{cyclePCoA} removes unwanted points (see details) and performs principal coordinates analysis (\code{\link{cmdscale}}) and draws cycles in the ordination scatterplot.}
 \item{Function \code{fixedDateTrajectoryPCoA} performs principal coordinates analysis (\code{\link{cmdscale}}) and draws fixed date trajectories in the ordination scatterplot.}
@@ -116,7 +116,7 @@ cyclePCoA(cent_cyclesToy, centered = TRUE)
 Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
 }
 \seealso{
-\code{\link{trajectoryCyclical}}, \code{\link{cmdscale}}
+\code{\link{trajectoryCyclical}}, \code{\link{cmdscale}},  \code{\link{cycleShiftArrows}}
 }
 \author{
 Nicolas Djeghri, UBO

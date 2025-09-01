@@ -1,6 +1,6 @@
 #' Summary plot for trajectory convergence and divergence
 #' 
-#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}.
+#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-septic options are also available to study changes in cycles shapes.
 #' 
 #' @encoding UTF-8
 #' @name trajectoryCyclicalPlots
@@ -11,14 +11,20 @@
 #' The width and color hue of the links are proportional to the tau statistic of the Mann.Kendall test performed by the \code{\link{trajectoryConvergence}} function. 
 #' The function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
 #' 
-#' The function finally offers some possibilities more relevant in the context of cyclical ecological trajectory analysis (CETA) such as the possibility to make the circles representing trajectories "pointy" so that they communicate a cyclical organization. This is useful if fixed dates trajectories are being studied (see \code{\link{extractFixedDateTrajectories}}).
-#' The function also allows to display "cyclical shifts" but values have to be provided by the user as they can be obtained in a variety of ways summarizing the outputs of \code{\link{cycleShifts}}. 
+#' 
+#' Cyclical Ecological Trajectory Analysis (CETA) specific options are particularly designed to study fixed-date trajectories convergence/divergence patterns:
+#' \itemize{
+#' \item{First, setting \code{pointy = TRUE} when the studied trajectories are the outputs of \code{\link{extractFixedDateTrajectories}} allows to suggest cyclicity.}
+#' \item{Second, the companion function \code{cycleShiftsArrows} allows to represent cyclical shifts by adding arrows to the circles representing trajectories. Clockwise arrows will represent advances, anticlockwise arrows will represent delays. Arrows length is proportional to the cyclical shift provided.
+#' Relevant measures of cyclical shifts have to be computed by the user. A variety of methods may be employed but the outputs of \code{\link{cycleShifts}} cannot be used immediately as they do not directly correspond to the fixed-date trajectories. An example of how to compute relevant measures of cyclical shifts is provided in the CETA vignette.
+#' The arguments \code{radius} and \code{top} in \code{cycleShiftsArrows} must match those in the corresponding \code{trajectoryConvergencePlot} for proper display.}
+#' }
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' 
-#' @seealso \code{\link{trajectoryConvergence}}
+#' @seealso \code{\link{trajectoryConvergence}},\code{\link{cycleShifts}}
 #' 
 #' @examples
 #' data("avoca")
@@ -48,6 +54,13 @@
 #'                           #giving trajectories new names and adjusting the names color
 #'                           traj.names=LETTERS[1:8],traj.names.colors="white")
 #'
+#'
+#' #CETA-specific example with made-up cyclical shifts:
+#' trajectoryConvergencePlot(avoca_x,type="both",alpha.filter = 0.05,half.arrows.size = 2,pointy=T)
+#' 
+#' CS <- c(2.5,1.5,0.5,0.5,3,1,1,2)#the made up cyclical shifts (matching the number of trajectories in avoca_x)
+#' cycleShiftsArrows(CS,cycle.shifts.inf.conf = CS-0.2,cycle.shifts.sup.conf = CS+0.2)
+#' 
 #' 
 #' @rdname trajectoryConvergencePlot
 #' @param x An object of class \code{\link{trajectories}}.
@@ -64,11 +77,6 @@
 #' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
 #' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".
 #' @param pointy Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
-#' @param CS Experimental. Allows to add arrows representing cyclical shifts in the context of CETA.
-#' @param CSinfConf Experimental. Lower confidence intervals for cyclical shifts.
-#' @param CSsupConf Experimental. Upper confidence intervals for cyclical shifts.
-#' @param coeffCS Experimental. A multiplication coefficient for the arrows representing cyclical shifts.
-#' @param lwd.arrows.CS Experimental. The width of the arrows representing cyclical shifts.
 #' @export
 trajectoryConvergencePlot <- function (x,
                                        type = "pairwise.asymmetric",
@@ -83,12 +91,7 @@ trajectoryConvergencePlot <- function (x,
                                        half.arrows.size = 1,
                                        tau.links.transp = 0.3,
                                        top = "between",
-                                       pointy = FALSE,
-                                       CS = NULL,
-                                       CSinfConf = NULL,
-                                       CSsupConf = NULL,
-                                       coeffCS = 0.5,
-                                       lwd.arrows.CS = 3){
+                                       pointy = FALSE){
   
   widthMult <- 1#this is a multiplication coefficient for the width of the "tau links" it will change to make room to display more links in case "both" is selected
   if (type=="pairwise.asymmetric"){
@@ -280,29 +283,78 @@ trajectoryConvergencePlot <- function (x,
     }
   }
   
-  #Draw the cycle's dates
+  #Draw the cycle representing trajectories
   PointyCircle(centersX,centersY,pointyCircles.colors=traj.colors,
                rad=radius,pointy=pointy,pointy.at=angles-pi/2,...)
   text(centersX,centersY,traj.names,col=traj.names.colors,font=2)
   
-  #Add arrows for cyclical shifts if asked!
-  if (!is.null(CS)){
-    baseArrowsX <- centersX*(1+radius)
-    baseArrowsY <- centersY*(1+radius)
-    if ((!is.null(CSinfConf))&&(!is.null(CSsupConf))){
-      arrows(x0=baseArrowsY*CSinfConf*coeffCS+baseArrowsX,
-             y0=-baseArrowsX*CSinfConf*coeffCS+baseArrowsY,
-             x1=baseArrowsY*CSsupConf*coeffCS+baseArrowsX,
-             y1=-baseArrowsX*CSsupConf*coeffCS+baseArrowsY,
-             angle=90,length=0.05,col="grey30",code=3,lwd=lwd.arrows.CS-1)
-    }
-    arrows(x0=baseArrowsX,y0=baseArrowsY,
-           x1=baseArrowsY*CS*coeffCS+baseArrowsX,
-           y1=-baseArrowsX*CS*coeffCS+baseArrowsY,
-           lwd=lwd.arrows.CS,length=0.1)
-    points(baseArrowsX,baseArrowsY,pch=16)
-  }
 }
+
+#' @rdname trajectoryConvergencePlot
+#' @param cycle.shifts Cyclical shifts computed for each fixed date trajectory plotted by \code{trajectoryConvergencePlot}.
+#' @param radius The radius of the circles representing trajectories. Defaults to 1.
+#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between". 
+#' @param cycle.shifts.inf.conf Lower confidence intervals for cyclical shifts.
+#' @param cycle.shifts.sup.conf Upper confidence intervals for cyclical shifts.
+#' @param arrows.length.mult A multiplication coefficient for the arrows representing cyclical shifts. Attempts an automatic adjustment by default (dividing by max(cycle.shifts)).
+#' @param arrows.lwd Line width of the arrows. Defaults to 2.
+#' @export
+cycleShiftsArrows <- function (cycle.shifts,
+                               radius = 1,
+                               top = "between",
+                               cycle.shifts.inf.conf = NULL,
+                               cycle.shifts.sup.conf = NULL,
+                               arrows.length.mult = "auto",
+                               arrows.lwd = 2){
+  if ((!is.null(cycle.shifts.inf.conf))&&(is.null(cycle.shifts.sup.conf))) stop("If confidence intervals are provided, both superiors and inferiors are needed!")
+  if ((is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))) stop("If confidence intervals are provided, both superiors and inferiors are needed!")
+  
+  #scaling the arrows
+  if(arrows.length.mult == "auto"){
+    if ((!is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))){
+      cycle.shifts.inf.conf <- cycle.shifts.inf.conf/(max(cycle.shifts))
+      cycle.shifts.sup.conf <- cycle.shifts.sup.conf/(max(cycle.shifts))
+    }
+    cycle.shifts <- cycle.shifts/(max(cycle.shifts))
+    arrows.length.mult <- 1
+  }
+  
+
+  
+  
+  radius <- radius*0.1 #reduce radius (just to have convenient numbers in function calling)
+  
+  nTraj <- length(cycle.shifts)
+  #Find the angles and centers of the shapes representing the trajectories
+  quadrant <- (2*pi)/nTraj
+  if (top=="circle"){
+    angles <- seq(pi/2,length.out=nTraj,by=-quadrant)
+    centersX <- cos(angles)
+    centersY <- sin(angles)
+  }else if (top=="between"){
+    angles <- seq(pi/2-quadrant/2,length.out=nTraj,by=-quadrant)
+    centersX <- cos(angles)
+    centersY <- sin(angles)
+  }else{
+    stop("top must be either circle or between")
+  }
+  
+  baseArrowsX <- centersX*(1+radius)
+  baseArrowsY <- centersY*(1+radius)
+  if ((!is.null(cycle.shifts.inf.conf))&&(!is.null(cycle.shifts.sup.conf))){
+    arrows(x0=baseArrowsY*cycle.shifts.inf.conf*arrows.length.mult+baseArrowsX,
+           y0=-baseArrowsX*cycle.shifts.inf.conf*arrows.length.mult+baseArrowsY,
+           x1=baseArrowsY*cycle.shifts.sup.conf*arrows.length.mult+baseArrowsX,
+           y1=-baseArrowsX*cycle.shifts.sup.conf*arrows.length.mult+baseArrowsY,
+           angle=90,length=0.05,col="grey30",code=3,lwd=arrows.lwd-1,xpd=NA)
+  }
+  arrows(x0=baseArrowsX,y0=baseArrowsY,
+         x1=baseArrowsY*cycle.shifts*arrows.length.mult+baseArrowsX,
+         y1=-baseArrowsX*cycle.shifts*arrows.length.mult+baseArrowsY,
+         lwd=arrows.lwd,length=0.1,xpd=NA)
+  points(baseArrowsX,baseArrowsY,pch=16)
+}
+
 
 #' @rdname trajectoryConvergencePlot
 #' @param x The positions of the pointy circles to be drawn on the x axis.

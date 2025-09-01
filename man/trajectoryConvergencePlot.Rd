@@ -4,6 +4,7 @@
 \name{trajectoryCyclicalPlots}
 \alias{trajectoryCyclicalPlots}
 \alias{trajectoryConvergencePlot}
+\alias{cycleShiftsArrows}
 \title{Summary plot for trajectory convergence and divergence}
 \usage{
 trajectoryConvergencePlot(
@@ -20,12 +21,17 @@ trajectoryConvergencePlot(
   half.arrows.size = 1,
   tau.links.transp = 0.3,
   top = "between",
-  pointy = FALSE,
-  CS = NULL,
-  CSinfConf = NULL,
-  CSsupConf = NULL,
-  coeffCS = 0.5,
-  lwd.arrows.CS = 3
+  pointy = FALSE
+)
+
+cycleShiftsArrows(
+  cycle.shifts,
+  radius = 1,
+  top = "between",
+  cycle.shifts.inf.conf = NULL,
+  cycle.shifts.sup.conf = NULL,
+  arrows.length.mult = "auto",
+  arrows.lwd = 2
 )
 }
 \arguments{
@@ -57,18 +63,18 @@ trajectoryConvergencePlot(
 
 \item{pointy}{Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).}
 
-\item{CS}{Experimental. Allows to add arrows representing cyclical shifts in the context of CETA.}
+\item{cycle.shifts}{Cyclical shifts computed for each fixed date trajectory plotted by \code{trajectoryConvergencePlot}.}
 
-\item{CSinfConf}{Experimental. Lower confidence intervals for cyclical shifts.}
+\item{cycle.shifts.inf.conf}{Lower confidence intervals for cyclical shifts.}
 
-\item{CSsupConf}{Experimental. Upper confidence intervals for cyclical shifts.}
+\item{cycle.shifts.sup.conf}{Upper confidence intervals for cyclical shifts.}
 
-\item{coeffCS}{Experimental. A multiplication coefficient for the arrows representing cyclical shifts.}
+\item{arrows.length.mult}{A multiplication coefficient for the arrows representing cyclical shifts. Attempts an automatic adjustment by default (dividing by max(cycle.shifts)).}
 
-\item{lwd.arrows.CS}{Experimental. The width of the arrows representing cyclical shifts.}
+\item{arrows.lwd}{Line width of the arrows. Defaults to 2.}
 }
 \description{
-Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}.
+Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-septic options are also available to study changes in cycles shapes.
 }
 \details{
 The function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
@@ -76,8 +82,13 @@ In the plots, trajectories are represented by circles. The convergence or diverg
 The width and color hue of the links are proportional to the tau statistic of the Mann.Kendall test performed by the \code{\link{trajectoryConvergence}} function.
 The function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
 
-The function finally offers some possibilities more relevant in the context of cyclical ecological trajectory analysis (CETA) such as the possibility to make the circles representing trajectories "pointy" so that they communicate a cyclical organization. This is useful if fixed dates trajectories are being studied (see \code{\link{extractFixedDateTrajectories}}).
-The function also allows to display "cyclical shifts" but values have to be provided by the user as they can be obtained in a variety of ways summarizing the outputs of \code{\link{cycleShifts}}.
+Cyclical Ecological Trajectory Analysis (CETA) specific options are particularly designed to study fixed-date trajectories convergence/divergence patterns:
+\itemize{
+\item{First, setting \code{pointy = TRUE} when the studied trajectories are the outputs of \code{\link{extractFixedDateTrajectories}} allows to suggest cyclicity.}
+\item{Second, the companion function \code{cycleShiftsArrows} allows to represent cyclical shifts by adding arrows to the circles representing trajectories. Clockwise arrows will represent advances, anticlockwise arrows will represent delays. Arrows length is proportional to the cyclical shift provided.
+Relevant measures of cyclical shifts have to be computed by the user. A variety of methods may be employed but the outputs of \code{\link{cycleShifts}} cannot be used immediately as they do not directly correspond to the fixed-date trajectories. An example of how to compute relevant measures of cyclical shifts is provided in the CETA vignette.
+The arguments \code{radius} and \code{top} in \code{cycleShiftsArrows} must match those in the corresponding \code{trajectoryConvergencePlot} for proper display.}
+}
 }
 \examples{
 data("avoca")
@@ -108,9 +119,16 @@ trajectoryConvergencePlot(avoca_x,type="both",alpha.filter=0.05,
                           traj.names=LETTERS[1:8],traj.names.colors="white")
 
 
+#CETA-specific example with made-up cyclical shifts:
+trajectoryConvergencePlot(avoca_x,type="both",alpha.filter = 0.05,half.arrows.size = 2,pointy=T)
+
+CS <- c(2.5,1.5,0.5,0.5,3,1,1,2)#the made up cyclical shifts (matching the number of trajectories in avoca_x)
+cycleShiftsArrows(CS,cycle.shifts.inf.conf = CS-0.2,cycle.shifts.sup.conf = CS+0.2)
+
+
 }
 \seealso{
-\code{\link{trajectoryConvergence}}
+\code{\link{trajectoryConvergence}},\code{\link{cycleShifts}}
 }
 \author{
 Nicolas Djeghri, UBO

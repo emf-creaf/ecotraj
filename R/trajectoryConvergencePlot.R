@@ -3,7 +3,7 @@
 #' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-specific options are also available to study changes in cycles shapes.
 #' 
 #' @encoding UTF-8
-#' @name trajectoryCyclicalPlots
+#' @name trajectoryConvergencePlot
 #' 
 #' @details
 #' The function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
@@ -40,20 +40,21 @@
 #' #Raw output with asymmetric convergence test (default)
 #' trajectoryConvergencePlot(avoca_x)
 #' 
-#' #More refined output with both type of tests and only plotting significant test results (p-value < 0.05)
+#' #More refined output with both type of tests and only plotting significant 
+#' #test results (p-value < 0.05)
 #' trajectoryConvergencePlot(avoca_x,
 #'                           type = "both",
 #'                           alpha.filter = 0.05)
 #' 
-#' #Much more refined output with nicer colors bigger half arrows and personalized trajectory names
+#' #Much more refined output with nicer colors, bigger half arrows, 
+#' #personalized trajectory names, controlling the size of circles representing 
+#' #trajectories and border customization.
 #' trajectoryConvergencePlot(avoca_x,type = "both",alpha.filter = 0.05,
-#'                           #adjusting the attributes of the links between trajectories
-#'                           half.arrows.size = 1.5,conv.color = "orangered",div.color = "dodgerblue",
-#'                           #controling the size of circles representing trajectories (links are enlarged to match it)
+#'                           half.arrows.size = 1.5, 
+#'                           conv.color = "orangered",
+#'                           div.color = "dodgerblue",
 #'                           radius = 1.2, 
-#'                           #customizing the border of the circles representing trajectories
 #'                           traj.colors = "black",border = "white",lwd = 2,
-#'                           #giving trajectories new names and adjusting the names color
 #'                           traj.names = LETTERS[1:8],traj.names.colors = "white")
 #'
 #'
@@ -64,7 +65,8 @@
 #'                           half.arrows.size = 2,
 #'                           pointy = TRUE)
 #' 
-#' CS <- c(2.5, 1.5, 0.5, 0.5, 3, 1, 1, 2)#the made up cyclical shifts (matching the number of trajectories in avoca_x)
+#' #Made-up cyclical shifts (matching the number of trajectories in avoca_x)
+#' CS <- c(2.5, 1.5, 0.5, 0.5, 3, 1, 1, 2)
 #' cycleShiftsArrows(CS,
 #'                   cycle.shifts.inf.conf = CS - 0.2,
 #'                   cycle.shifts.sup.conf = CS + 0.2)

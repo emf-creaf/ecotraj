@@ -29,7 +29,7 @@
 ## usethis namespace: start
 #' @importFrom Kendall MannKendall
 #' @importFrom MASS ginv
-#' @importFrom graphics arrows text segments points
+#' @importFrom graphics arrows text segments points par polygon
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
 #' @importFrom grDevices col2rgb rgb

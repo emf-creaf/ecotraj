@@ -93,7 +93,7 @@ The arguments \code{radius} and \code{top} in \code{cycleShiftsArrows} must matc
 \examples{
 data("avoca")
 avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
-                                       method="manhattan", 
+                                       method ="manhattan", 
                                        transform = function(x){log(x+1)})
 years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
 avoca_times <- years[avoca_surveys]
@@ -105,25 +105,33 @@ avoca_x <- defineTrajectories(d = avoca_D_man,
 trajectoryConvergencePlot(avoca_x)
 
 #More refined output with both type of tests and only plotting significant test results (p-value < 0.05)
-trajectoryConvergencePlot(avoca_x,type="both",alpha.filter=0.05)
+trajectoryConvergencePlot(avoca_x,
+                          type = "both",
+                          alpha.filter = 0.05)
 
 #Much more refined output with nicer colors bigger half arrows and personalized trajectory names
-trajectoryConvergencePlot(avoca_x,type="both",alpha.filter=0.05,
+trajectoryConvergencePlot(avoca_x,type = "both",alpha.filter = 0.05,
                           #adjusting the attributes of the links between trajectories
-                          half.arrows.size = 1.5,conv.color = "orangered",div.color="dodgerblue",
+                          half.arrows.size = 1.5,conv.color = "orangered",div.color = "dodgerblue",
                           #controling the size of circles representing trajectories (links are enlarged to match it)
-                          radius=1.2, 
+                          radius = 1.2, 
                           #customizing the border of the circles representing trajectories
-                          traj.colors = "black",border="white",lwd=2,
+                          traj.colors = "black",border = "white",lwd = 2,
                           #giving trajectories new names and adjusting the names color
-                          traj.names=LETTERS[1:8],traj.names.colors="white")
+                          traj.names = LETTERS[1:8],traj.names.colors = "white")
 
 
 #CETA-specific example with made-up cyclical shifts:
-trajectoryConvergencePlot(avoca_x,type="both",alpha.filter = 0.05,half.arrows.size = 2,pointy=T)
+trajectoryConvergencePlot(avoca_x,
+                          type = "both",
+                          alpha.filter = 0.05,
+                          half.arrows.size = 2,
+                          pointy = TRUE)
 
-CS <- c(2.5,1.5,0.5,0.5,3,1,1,2)#the made up cyclical shifts (matching the number of trajectories in avoca_x)
-cycleShiftsArrows(CS,cycle.shifts.inf.conf = CS-0.2,cycle.shifts.sup.conf = CS+0.2)
+CS <- c(2.5, 1.5, 0.5, 0.5, 3, 1, 1, 2)#the made up cyclical shifts (matching the number of trajectories in avoca_x)
+cycleShiftsArrows(CS,
+                  cycle.shifts.inf.conf = CS - 0.2,
+                  cycle.shifts.sup.conf = CS + 0.2)
 
 
 }

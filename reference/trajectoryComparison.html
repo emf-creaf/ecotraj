@@ -19,7 +19,7 @@ Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays
 
     <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,7 +148,7 @@ This test uses distances of orthogonal projections (i.e. rejections) of states o
 the two trajectories become closer along surveys. This test requires the same number of surveys for all trajectories and uses the sequence of distances between states of the two trajectories corresponding to the same survey.</p></li>
 <li><p>If <code>type = "multiple"</code> then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
 the test uses the sequence of variability between states corresponding to the same time.</p></li>
-</ol><p>In all cases, a Mann-Kendall test (see <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code>) is used to determine if the sequence of values is monotonously increasing or decreasing.</p>
+</ol><p>In all cases, a Mann-Kendall test (see <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code>) is used to determine if the sequence of values is monotonously increasing or decreasing. Function <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code> provides options for plotting convergence/divergence between trajectories.</p>
 <p>Function <code>trajectoryShifts</code> is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>.
 Whenever the projection of a given target state on the reference trajectory does not exist the shift cannot be evaluated (missing values are returned).</p>
@@ -161,7 +161,7 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="trajectoryPlot.html">trajectoryPlot</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>, <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code></p></div>
+    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="trajectoryPlot.html">trajectoryPlot</a></code>, <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>, <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

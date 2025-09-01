@@ -74,7 +74,7 @@ cycleShiftsArrows(
 \item{arrows.lwd}{Line width of the arrows. Defaults to 2.}
 }
 \description{
-Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-septic options are also available to study changes in cycles shapes.
+Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}. Some CETA-specific options are also available to study changes in cycles shapes.
 }
 \details{
 The function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.

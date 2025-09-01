@@ -75,7 +75,7 @@
 #' @param div.color The color used to mark divergent trajectories. Defaults to "blue".
 #' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to 1.
 #' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
-#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".
+#' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between".
 #' @param pointy Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
 #' @export
 trajectoryConvergencePlot <- function (x,
@@ -293,7 +293,7 @@ trajectoryConvergencePlot <- function (x,
 #' @rdname trajectoryConvergencePlot
 #' @param cycle.shifts Cyclical shifts computed for each fixed date trajectory plotted by \code{trajectoryConvergencePlot}.
 #' @param radius The radius of the circles representing trajectories. Defaults to 1.
-#' @param top A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between". 
+#' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between". 
 #' @param cycle.shifts.inf.conf Lower confidence intervals for cyclical shifts.
 #' @param cycle.shifts.sup.conf Upper confidence intervals for cyclical shifts.
 #' @param arrows.length.mult A multiplication coefficient for the arrows representing cyclical shifts. Attempts an automatic adjustment by default (dividing by max(cycle.shifts)).
@@ -319,9 +319,6 @@ cycleShiftsArrows <- function (cycle.shifts,
     arrows.length.mult <- 1
   }
   
-
-  
-  
   radius <- radius*0.1 #reduce radius (just to have convenient numbers in function calling)
   
   nTraj <- length(cycle.shifts)
@@ -336,7 +333,7 @@ cycleShiftsArrows <- function (cycle.shifts,
     centersX <- cos(angles)
     centersY <- sin(angles)
   }else{
-    stop("top must be either circle or between")
+    stop("top must be either circle or between and should match the same argument in the parent convergence plot")
   }
   
   baseArrowsX <- centersX*(1+radius)

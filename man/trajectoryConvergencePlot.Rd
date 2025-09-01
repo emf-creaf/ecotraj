@@ -59,7 +59,7 @@ cycleShiftsArrows(
 
 \item{tau.links.transp}{The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).}
 
-\item{top}{A string indicating whether the top of the plotting area should contain a circle representing a trajectory ("top") or should be in between two circles ("between"). Defaults to "between".}
+\item{top}{A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between".}
 
 \item{pointy}{Boolean. Should the circles representing trajectories be made pointy? Useful in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).}
 

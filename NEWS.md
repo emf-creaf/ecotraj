@@ -1,5 +1,5 @@
-# ecotraj 1.1.2
-* New functions trajectoryConvergencePlot and cycleShiftArrows by N. Djeghri
+# ecotraj 1.2.0
+* New functions trajectoryConvergencePlot() and cycleShiftArrows() by N. Djeghri
 
 # ecotraj 1.1.1
 * Trajectory subsetting according to time window limits

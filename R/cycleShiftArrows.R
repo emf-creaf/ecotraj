@@ -30,7 +30,7 @@
 #' @seealso \code{\link{trajectoryConvergencePlot}},\code{\link{cycleShifts}}
 #' @examples
 #' \donttest{
-#' #Calling cyclical data (a monthly resolved long-term time series of north sea zooplankton)
+#' #Load cyclical data (a monthly resolved long-term time series of north sea zooplankton)
 #' data("northseaZoo")
 #' 
 #' #Define trajectories
@@ -54,11 +54,12 @@
 #'                          traj.names = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
 #'                                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
 #' 
-#' #Compute the cyclical shifts (this takes a bit of time):
+#' #Compute the cyclical shifts (this takes a bit of time)
 #' CS <- cycleShifts(traj, cycleDuration = 1)
 #' 
-#' #Obtain an average cyclical shift for each month (this is not automated by ecotraj as many ways to do it can be justified):
-#' #Here we obtain it as the slope of the regression line of cyclical shifts (y) on the corresponding time scale (x).
+#' #Obtain an average cyclical shift for each month (this is not automated by ecotraj, 
+#' #since many ways to do it can be justified). Here we obtain it as the slope of the regression 
+#' #line of cyclical shifts (y) on the corresponding time scale (x).
 #' averageCS <- integer(0)
 #' for (i in unique(CS$dateCS)){
 #'   CSmonth <- CS[CS$dateCS==i,]
@@ -66,7 +67,7 @@
 #'   averageCS <- c(averageCS,model$coefficients[2])
 #' }
 #' 
-#' #Add the average cyclical shifts to the plot:
+#' #Add the average cyclical shifts to the plot
 #' cycleShiftArrows(averageCS, radius = 1.2)
 #' 
 #' }

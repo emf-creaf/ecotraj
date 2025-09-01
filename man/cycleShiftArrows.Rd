@@ -44,29 +44,47 @@ The arguments \code{radius} and \code{top} in \code{cycleShiftArrows} must match
 }
 }
 \examples{
-data("avoca")
-avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
-                                       method ="manhattan", 
-                                       transform = function(x){log(x+1)})
-years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
-avoca_times <- years[avoca_surveys]
-avoca_x <- defineTrajectories(d = avoca_D_man,  
-                              sites = avoca_sites, 
-                              times = avoca_times)
+\donttest{
+#Calling cyclical data (a monthly resolved long-term time series of north sea zooplankton)
+data("northseaZoo")
 
+#Define trajectories
+traj <- defineTrajectories(d = dist(northseaZoo$Hellinger),
+                           times = northseaZoo$times,
+                           sites = northseaZoo$sites)
 
-#CETA-specific example of convergence/divergence plot with made-up cyclical shifts:
-trajectoryConvergencePlot(avoca_x,
-                          type = "both",
-                          alpha.filter = 0.05,
-                          half.arrows.size = 2,
-                          pointy = TRUE)
+#Simplify it using only one site
+traj <- subsetTrajectories(traj, site_selection = "NNS")
 
-#Made-up cyclical shifts (matching the number of trajectories in avoca_x)
-CS <- c(2.5, 1.5, 0.5, 0.5, 3, 1, 1, 2)
-cycleShiftArrows(CS,
-                  cycle.shifts.inf.conf = CS - 0.2,
-                  cycle.shifts.sup.conf = CS + 0.2)
+#Extract the fixed date trajectories
+fdT <- extractFixedDateTrajectories(traj, cycleDuration = 1)
+
+#Make the convergence/divergence plot
+trajectoryConvergencePlot(fdT,
+                         type = "pairwise.symmetric",
+                         radius = 1.2,
+                         alpha.filter = 0.05,
+                         half.arrows.size = 2,
+                         pointy = TRUE,
+                         traj.names = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+
+#Compute the cyclical shifts (this takes a bit of time):
+CS <- cycleShifts(traj, cycleDuration = 1)
+
+#Obtain an average cyclical shift for each month (this is not automated by ecotraj as many ways to do it can be justified):
+#Here we obtain it as the slope of the regression line of cyclical shifts (y) on the corresponding time scale (x).
+averageCS <- integer(0)
+for (i in unique(CS$dateCS)){
+  CSmonth <- CS[CS$dateCS==i,]
+  model <- lm(CSmonth$cyclicalShift~CSmonth$timeScale)
+  averageCS <- c(averageCS,model$coefficients[2])
+}
+
+#Add the average cyclical shifts to the plot:
+cycleShiftArrows(averageCS, radius = 1.2)
+
+}
 }
 \seealso{
 \code{\link{trajectoryConvergencePlot}},\code{\link{cycleShifts}}

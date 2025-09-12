@@ -331,7 +331,7 @@ PointyCircle <- function (x,
       baseX <- cos(seq(-pi,pi,0.1))
       baseY <- sin(seq(-pi,pi,0.1))
     }
-    polygon(x = baseX*rad[i]+x[i], y = baseY*rad[i]+y[i],col=pointyCircles.colors,...)
+    polygon(x = baseX*rad[i]+x[i], y = baseY*rad[i]+y[i],col=pointyCircles.colors[i],...)
   }
 }
 

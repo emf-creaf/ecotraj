@@ -24,7 +24,7 @@
 #' 
 #' The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).   
 #' 
-#' Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019:
+#' Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019):
 #'   \itemize{
 #'     \item{\code{Hausdorff}: Hausdorff distance between two segments.}
 #'     \item{\code{directed-segment}: Directed segment distance (default).}

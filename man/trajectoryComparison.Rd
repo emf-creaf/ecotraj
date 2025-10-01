@@ -35,7 +35,7 @@ trajectoryShifts(x, add = TRUE)
 
 \item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).}
 
-\item{nperm}{The number of permutations to be used in the dynamic correspondence test. Defaults to 999.}
+\item{nperm}{The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).

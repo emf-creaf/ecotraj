@@ -5,6 +5,7 @@
 #' \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 #' \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 #' \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on (1) the distances between trajectories; (2) the distance between points of one trajectory to the other; or (3) the variance of states among trajectories.}
+#' \item{Function \code{trajectoryCorrespondence} performs a permutation test of pairwise dynamic correspondence between trajectories sensitive to trajectory shape and movement direction.}
 #' \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds or time lags.}
 #' }
 #' 
@@ -24,7 +25,7 @@
 #' 
 #' The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).   
 #' 
-#' Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019:
+#' Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019):
 #'   \itemize{
 #'     \item{\code{Hausdorff}: Hausdorff distance between two segments.}
 #'     \item{\code{directed-segment}: Directed segment distance (default).}
@@ -49,6 +50,9 @@
 #'  } 
 #'  In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
 #'   
+#'  Function \code{trajectoryCorrespondence} is used to study the dynamic correspondence between pairs of trajectories (Djeghri et al. in prep) sensitive to trajectory shape and direction of movement.
+#'  The function performs a permutation test with a positive test statistic indicative of similar movement direction whereas a negative test statistic indicates trajectories going in opposed directions.
+#'  This test requires the same numbers of surveys for all trajectories.
 #'  
 #'  Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 #'  evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to \code{\link{trajectoryProjection}}. 
@@ -70,6 +74,8 @@
 #'   \item{\code{tau}: A single value or a matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix is square and if \code{type = "pairwise.asymmetric"} the statistic of the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} tau is a single value.}
 #'   \item{\code{p.value}: A single value or a matrix with the p-value of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix of p-values is square and if \code{type = "pairwise.asymmetric"} then the p-value indicates the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} p-value is a single value.}
 #' }
+#' Function \code{trajectoryCorrespondence} returns a square matrix with permutation p-values in the lower triangle and the test statistics in the upper triangle.
+#' 
 #' Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
 #' \itemize{
 #'      \item{\code{reference}: the site (trajectory) that is taken as reference for shift evaluation.}
@@ -89,6 +95,8 @@
 #' 
 #' De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). 
 #' Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
+#' 
+#' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
 #' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 #' 
@@ -135,6 +143,9 @@
 #'   
 #' #Trajectory convergence/divergence
 #' trajectoryConvergence(x)
+#' 
+#' #Trajectory dynamic correspondence
+#' trajectoryCorrespondence(x)
 #' 
 #' #### Example of trajectory shifts
 #' #Description of entities (sites) and surveys
@@ -248,7 +259,7 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
 
 #' @rdname trajectoryComparison
 #' @export
-trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add=TRUE) {
+trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add = TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "TSPD"))
   if(!is.null(symmetrization)) symmetrization <- match.arg(symmetrization, c("mean", "min", "max"))
@@ -517,7 +528,7 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
 #' @rdname trajectoryComparison
 #' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).
 #' @export
-trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
+trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   type <- match.arg(type, c("pairwise.asymmetric", "pairwise.symmetric", "multiple"))
   d <- x$d
@@ -601,6 +612,65 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
     p.value <- mk.test$sl[1]
   }
   return(list(tau = tau, p.value = p.value))
+}
+
+#' @rdname trajectoryComparison
+#' @param nperm The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.
+#' @export
+trajectoryCorrespondence <- function(x, nperm = 999){
+  if(!inherits(x,"trajectories"))
+    stop ("'x' should be of class 'trajectory'")
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+  } else {
+    sites <- x$metadata$sites
+  }
+  
+  trajs <- unique(sites)
+  
+  results <- list()
+  results <- matrix(NA,nrow=length(trajs),ncol=length(trajs))
+  rownames(results) <- trajs
+  colnames(results) <- trajs
+  
+  
+  for (j in trajs[1:(length(trajs)-1)]){
+    for (k in trajs[(which(trajs==j)+1):length(trajs)]){
+      site1 <- which(sites==j)
+      site2 <- which(sites==k)
+      
+      site1 <- site1[order(x$metadata$surveys[site1])]
+      site2 <- site2[order(x$metadata$surveys[site2])]
+      
+      #obtain a matrix d containing only the distance between 
+      #ecological states from site 1 and ecological states from site 2
+      d <- as.matrix(x$d)[site1,site2]
+      
+      if (ncol(d)==nrow(d)){
+        stat1 <- sum(diag(d))
+        stat2 <- sum(diag(d[,ncol(d):1]))
+        
+        measure <- stat2-stat1#this is the statistic that is going to be compared to permutations
+        
+        perms <- rep(NA,nperm)
+        for (i in 1:nperm){
+          dperm <- d[sample(1:nrow(d)),sample(1:ncol(d))]
+          stat1perm <- sum(diag(dperm))
+          stat2perm <- sum(diag(dperm[,ncol(dperm):1]))
+          perms[i] <- stat2perm-stat1perm
+        }
+        results[k,j] <- sum(abs(perms)>=abs(measure))/nperm
+        results[j,k] <- measure
+      }else{
+        warning(paste0("trajectories ",j, " and ",k," do not have the same number of surveys."))
+      }
+    }
+  }
+  return(results)
 }
 
 #' @rdname trajectoryComparison

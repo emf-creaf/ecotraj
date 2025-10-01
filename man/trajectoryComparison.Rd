@@ -5,6 +5,7 @@
 \alias{segmentDistances}
 \alias{trajectoryDistances}
 \alias{trajectoryConvergence}
+\alias{trajectoryCorrespondence}
 \alias{trajectoryShifts}
 \title{Trajectory comparison}
 \usage{
@@ -19,6 +20,8 @@ trajectoryDistances(
 
 trajectoryConvergence(x, type = "pairwise.asymmetric", add = TRUE)
 
+trajectoryCorrespondence(x, nperm = 999)
+
 trajectoryShifts(x, add = TRUE)
 }
 \arguments{
@@ -31,6 +34,8 @@ trajectoryShifts(x, add = TRUE)
 \item{symmetrization}{Function used to obtain a symmetric distance, so that DSPD(T1,T2) = DSPD(T2,T1) (e.g., \code{mean}, \code{max} or \code{min}). If \code{symmetrization = NULL} then the symmetrization is not conducted and the output dissimilarity matrix is not symmetric.}
 
 \item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).}
+
+\item{nperm}{The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).
@@ -48,6 +53,8 @@ Function \code{trajectoryConvergence} returns a list with two elements:
 \item{\code{tau}: A single value or a matrix with the statistic (Mann-Kendall's tau) of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix is square and if \code{type = "pairwise.asymmetric"} the statistic of the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} tau is a single value.}
 \item{\code{p.value}: A single value or a matrix with the p-value of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix of p-values is square and if \code{type = "pairwise.asymmetric"} then the p-value indicates the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} p-value is a single value.}
 }
+Function \code{trajectoryCorrespondence} returns a square matrix with permutation p-values in the lower triangle and the test statistics in the upper triangle.
+
 Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
 \itemize{
 \item{\code{reference}: the site (trajectory) that is taken as reference for shift evaluation.}
@@ -65,6 +72,7 @@ Functions to compare pairs of trajectories or trajectory segments.
 \item{Function \code{segmentDistances} calculates the distance between pairs of trajectory segments.}
 \item{Function \code{trajectoryDistances} calculates the distance between pairs of trajectories.}
 \item{Function \code{trajectoryConvergence} performs the Mann-Kendall trend test on (1) the distances between trajectories; (2) the distance between points of one trajectory to the other; or (3) the variance of states among trajectories.}
+\item{Function \code{trajectoryCorrespondence} performs a permutation test of pairwise dynamic correspondence between trajectories sensitive to trajectory shape and movement direction.}
 \item{Function \code{trajectoryShifts} calculates trajectory shifts (i.e. advances and delays) between trajectories assumed to follow a similar path but with different speeds or time lags.}
 }
 }
@@ -79,7 +87,7 @@ If parameter '\code{add}' is set to FALSE and problems of triangle inequality ex
 
 The resemblance between trajectories is done by adapting concepts and procedures used for the analysis of trajectories in space (i.e. movement data) (Besse et al. 2016).
 
-Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019:
+Parameter \code{distance.type} is the type of distance index to be calculated which for function \code{segmentDistances} has the following options (Besse et al. 2016, De \enc{Cáceres}{Caceres} et al. 2019):
 \itemize{
 \item{\code{Hausdorff}: Hausdorff distance between two segments.}
 \item{\code{directed-segment}: Directed segment distance (default).}
@@ -103,6 +111,10 @@ the two trajectories become closer along surveys. This test requires the same nu
 the test uses the sequence of variability between states corresponding to the same time.}
 }
 In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
+
+Function \code{trajectoryCorrespondence} is used to study the dynamic correspondence between pairs of trajectories (Djeghri et al. in prep) sensitive to trajectory shape and direction of movement.
+The function performs a permutation test with a positive test statistic indicative of similar movement direction whereas a negative test statistic indicates trajectories going in opposed directions.
+This test requires the same numbers of surveys for all trajectories.
 
 Function \code{trajectoryShifts} is intended to be used to compare trajectories that are assumed to follow a similar pathway. The function
 evaluates shifts (advances or delays) due to different trajectory speeds or the existence of time lags between them. This is done using calls to \code{\link{trajectoryProjection}}.
@@ -152,6 +164,9 @@ trajectoryDistances(x, distance.type = "DSPD")
 #Trajectory convergence/divergence
 trajectoryConvergence(x)
 
+#Trajectory dynamic correspondence
+trajectoryCorrespondence(x)
+
 #### Example of trajectory shifts
 #Description of entities (sites) and surveys
 entities2 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
@@ -185,6 +200,8 @@ Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and persp
 
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019).
 Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
+
+Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 }
 \seealso{
 \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}

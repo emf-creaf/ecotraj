@@ -54,6 +54,7 @@ Function \code{trajectoryConvergence} returns a list with two elements:
 \item{\code{p.value}: A single value or a matrix with the p-value of the convergence/divergence test between trajectories. If \code{type = "pairwise.symmetric"} then the matrix of p-values is square and if \code{type = "pairwise.asymmetric"} then the p-value indicates the test of the row trajectory approaching the column trajectory. If \code{type = "multiple"} p-value is a single value.}
 }
 Function \code{trajectoryCorrespondence} returns a square matrix with permutation p-values in the lower triangle and the test statistics in the upper triangle.
+
 Function \code{trajectoryShifts} returns an object of class \code{\link{data.frame}} describing trajectory shifts (i.e. advances and delays). The columns of the \code{\link{data.frame}} are:
 \itemize{
 \item{\code{reference}: the site (trajectory) that is taken as reference for shift evaluation.}

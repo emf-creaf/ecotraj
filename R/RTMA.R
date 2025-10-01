@@ -39,6 +39,7 @@
 #' 
 #' LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 #' We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.
+#' Note also that, because RTMA incorporates a correction for multiple testing, it necessitates somewhat long trajectories to operate (minimum number of survey = 6 at alpha = 0.05).
 #' 
 #' COMPUTATION TIME: The dynamic correspondence tests performed in RTMA are computationally costly permutation tests only used when all three convergence tests are non-significant.
 #' Function \code{RTMA} performs by default all tests but it is possible to only perform the tests useful for RTMA by setting \code{full.output = FALSE}.
@@ -89,6 +90,17 @@ RTMA <- function(x,
   } else {
     sites <- x$metadata$sites
   }
+  #stop in case trajectories are not of same size
+  if (any(table(sites)-mean(table(sites))!=0)) stop("RTMA only applies to trajectories with the same number of surveys")
+  
+  #Sidak correction procedure for alpha:
+  alpha <- 1-(1-alpha)^(1/4)
+  
+  #stop if trajectories are too short to yield significant results in the convergence tests given the chosen alpha
+  if (as.numeric(Kendall::MannKendall(1:table(sites)[1])$sl)>alpha) stop("Trajectories are not long enough to yield significant tests given the alpha level")
+  
+  #check if trajectories are long enough to apply RTMA at this alpha level:
+  
   trajs <- unique(sites)
   
   #preparing the output
@@ -112,9 +124,6 @@ RTMA <- function(x,
   }else{
     stop("full.output must be a logical flag.")
   }
-  
-  #Sidak correction procedure for alpha:
-  alpha <- 1-(1-alpha)^(1/4)
   
   
   #ATTRIBUTING A SCENARIO

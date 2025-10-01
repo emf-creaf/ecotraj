@@ -51,8 +51,8 @@ The results of the four tests (p-values and sign of statistic) are used to assig
 \itemize{
 \item{\code{Convergence} scenario: The two trajectories converge, exists in a weak version.}
 \item{\code{Divergence} scenario: The two trajectories diverge, exists in a weak version.}
-\item{\code{Approaching} scenario: One trajectory approaches the other (likely relatively immobile), exists in a weak version.}
-\item{\code{Departing} scenario: One trajectory moves away from the other (likely relatively immobile), exists in a weak version.}
+\item{\code{Approaching} scenario: One trajectory approaches the other (likely relatively immobile), exists in a weak version, potentially indicative of an approach by the side.}
+\item{\code{Departing} scenario: One trajectory moves away from the other (likely relatively immobile), exists in a weak version, potentially indicative of a departure from the side.}
 \item{\code{Pursuit} scenario: The two trajectories follow each other.}
 \item{\code{Catchup} scenario: As \code{Pursuit} but the following trajectory moves faster.}
 \item{\code{Escape} scenario: As \code{Pursuit} but the leading trajectory is faster.}
@@ -71,6 +71,27 @@ Function \code{RTMA} performs by default all tests but it is possible to only pe
 This will reduce computation time but the details of the output of RTMA will not contain the information on all possible dynamic correspondence tests, only on relevant ones.
 
 PLOTTING: Function \code{\link{trajectoryConvergencePlot}} provides options to plot the results of RTMA.
+}
+\examples{
+#Obtain and format some trajectories
+data("avoca")
+avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
+                                       method ="manhattan", 
+                                       transform = function(x){log(x+1)})
+years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
+avoca_times <- years[avoca_surveys]
+avoca_x <- defineTrajectories(d = avoca_D_man,  
+                              sites = avoca_sites, 
+                              times = avoca_times)
+                              
+#Visualize the trajectories
+trajectoryPCoA(avoca_x,traj.colors = RColorBrewer::brewer.pal(8,"Accent"),length=0.1,lwd=2)
+legend("bottomleft",bty="n",legend=1:8,col=RColorBrewer::brewer.pal(8,"Accent"),lwd=2,ncol=2)
+
+#Perform RTMA
+RTMA(avoca_x)
+
+
 }
 \references{
 Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.

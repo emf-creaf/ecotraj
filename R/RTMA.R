@@ -26,8 +26,8 @@
 #' \itemize{
 #'     \item{\code{Convergence} scenario: The two trajectories converge, exists in a weak version.}
 #'     \item{\code{Divergence} scenario: The two trajectories diverge, exists in a weak version.}
-#'     \item{\code{Approaching} scenario: One trajectory approaches the other (likely relatively immobile), exists in a weak version.}
-#'     \item{\code{Departing} scenario: One trajectory moves away from the other (likely relatively immobile), exists in a weak version.}
+#'     \item{\code{Approaching} scenario: One trajectory approaches the other (likely relatively immobile), exists in a weak version, potentially indicative of an approach by the side.}
+#'     \item{\code{Departing} scenario: One trajectory moves away from the other (likely relatively immobile), exists in a weak version, potentially indicative of a departure from the side.}
 #'     \item{\code{Pursuit} scenario: The two trajectories follow each other.}
 #'     \item{\code{Catchup} scenario: As \code{Pursuit} but the following trajectory moves faster.}
 #'     \item{\code{Escape} scenario: As \code{Pursuit} but the leading trajectory is faster.}
@@ -69,7 +69,26 @@
 #'
 #' @seealso \code{\link{trajectoryConvergence}}, \code{\link{trajectoryCorrespondence}}, \code{\link{trajectoryConvergencePlot}} 
 #'
-#'
+#' @examples
+#' #Obtain and format some trajectories
+#' data("avoca")
+#' avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
+#'                                        method ="manhattan", 
+#'                                        transform = function(x){log(x+1)})
+#' years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
+#' avoca_times <- years[avoca_surveys]
+#' avoca_x <- defineTrajectories(d = avoca_D_man,  
+#'                               sites = avoca_sites, 
+#'                               times = avoca_times)
+#'                               
+#' #Visualize the trajectories
+#' trajectoryPCoA(avoca_x,traj.colors = RColorBrewer::brewer.pal(8,"Accent"),length=0.1,lwd=2)
+#' legend("bottomleft",bty="n",legend=1:8,col=RColorBrewer::brewer.pal(8,"Accent"),lwd=2,ncol=2)
+#' 
+#' #Perform RTMA
+#' RTMA(avoca_x)
+#' 
+#' 
 #' @name RTMA
 #' @export
 RTMA <- function(x,
@@ -244,10 +263,10 @@ RTMA <- function(x,
           #this is the branch where only one asymmetric test is significant
           if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
             #this is the Weak Departing scenario where there is only one divergent asymmetric test significant
-            output$ScenarioAttribution[k,j] <- "Weak Departing"
+            output$ScenarioAttribution[k,j] <- "Weak/Side Departing"
           }else{
             #this is the Weak Approaching scenario where there is only one convergent asymmetric test significant
-            output$ScenarioAttribution[k,j] <- "Weak Approaching"
+            output$ScenarioAttribution[k,j] <- "Weak/Side Approaching"
           }
         }
       }

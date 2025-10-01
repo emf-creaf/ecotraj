@@ -57,7 +57,7 @@
 #'             \item{\code{DynamicCorrespondence} contains the results of the the dynamic correspondence tests (potentially partial if \code{full.out = FALSE}).}
 #'        }
 #'     }
-#'     \item{\code{parameters}, a vector containing the parameters \code{alpha} and \code{nperm}}.
+#'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
 #' 
 #' @author Nicolas Djeghri, UBO
@@ -114,6 +114,7 @@ RTMA <- function(x,
   if (any(table(sites)-mean(table(sites))!=0)) stop("RTMA only applies to trajectories with the same number of surveys")
   
   #Sidak correction procedure for alpha:
+  alphaUncor <- alpha
   alpha <- 1-(1-alpha)^(1/4)
   
   #stop if trajectories are too short to yield significant results in the convergence tests given the chosen alpha
@@ -277,8 +278,8 @@ RTMA <- function(x,
   output$DetailedTests$SymmetricConvergence <- sym
   output$DetailedTests$AsymmetricConvergence <- asym
   output$DetailedTests$DynamicCorrespondence <- Dcor
-  output$parameters <- c(alpha,nperm)
-  names(output$parameters) <- c("alpha","nperm")
+  output$parameters <- c(alphaUncor,alpha,nperm)
+  names(output$parameters) <- c("alpha","alpha corrected","nperm")
   #define its class
   class(output) <- "RTMA"
   

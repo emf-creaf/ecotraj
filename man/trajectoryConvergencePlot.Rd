@@ -26,9 +26,9 @@ trajectoryConvergencePlot(
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}. Alternatively an object of class \code{\link{RTMA}}.}
 
-\item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}).}
+\item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{class(x) == "RTMA"}.}
 
-\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \enc{Šidák}{Sidak} corrected \code{0.05} if \code{class(x) == "RTMA"}. Defaults to \code{NULL} (all links drawn) otherwise.}
+\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{class(x) == "RTMA"}.}
 
 \item{traj.colors}{The colors for the trajectories (circles). Defaults to \code{"grey"}.}
 

@@ -52,8 +52,8 @@
 #'
 #' @rdname trajectoryConvergencePlot
 #' @param x An object of class \code{\link{trajectories}}. Alternatively an object of class \code{\link{RTMA}}.
-#' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}).
-#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \enc{Šidák}{Sidak} corrected \code{0.05} if \code{class(x) == "RTMA"}. Defaults to \code{NULL} (all links drawn) otherwise.
+#' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{class(x) == "RTMA"}.
+#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{class(x) == "RTMA"}.
 #' @param traj.colors The colors for the trajectories (circles). Defaults to \code{"grey"}.
 #' @param traj.names The names of trajectories. Defaults to the names provided in \code{x}.
 #' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to \code{"black"}.
@@ -83,23 +83,29 @@ trajectoryConvergencePlot <- function (x,
                                        pointy = FALSE){
   
   widthMult <- 1#this is a multiplication coefficient for the width of the "tau links" it will change to make room to display more links in case "both" is selected
-  if (type=="pairwise.asymmetric"){
-    ConvTest <- trajectoryConvergence(x,type="pairwise.asymmetric")
-  }else if (type=="pairwise.symmetric"){
-    ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
-  }else if (type=="both"){
-    ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
-    ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric")
+  
+  if(inherits(x,"trajectories")){
+    if (type=="pairwise.asymmetric"){
+      ConvTest <- trajectoryConvergence(x,type="pairwise.asymmetric")
+    }else if (type=="pairwise.symmetric"){
+      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
+    }else if (type=="both"){
+      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
+      ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric")
+      widthMult <- 1/3
+    }else{
+      stop("invalid value for 'type'")
+    }
+  }else if (inherits(x,"RTMA")){
+    ConvTest <- x$DetailedTests$SymmetricConvergence
+    ConvTestAsym <- x$DetailedTests$AsymmetricConvergence
     widthMult <- 1/3
-  }else if (type=="RTMA"){
-    if (is.null(alpha.filer)) alpha.filter=0.05
-    RTMA <- RTMA(x,alpha=alpha.filter,nperm=nperm)
-    alpha.filter <- 1-(1-alpha.filter)^(1/4)
-    Conv
-    widthMult <- 1/3
+    type <- "both"
+    alpha.filer <- x$parameters["alpha corrected"]
   }else{
-    stop("invalid value for type")
+    stop ("'x' should be of class 'trajectory' or 'RTMA'")
   }
+  
   
   #Check for appropriate length of the parameter traj.colors
   if (length(traj.colors)==1){

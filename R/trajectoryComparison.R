@@ -259,7 +259,7 @@ segmentDistances<-function(x, distance.type ="directed-segment", add = TRUE) {
 
 #' @rdname trajectoryComparison
 #' @export
-trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add=TRUE) {
+trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" , add = TRUE) {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   distance.type <- match.arg(distance.type, c("DSPD", "SPD", "Hausdorff", "TSPD"))
   if(!is.null(symmetrization)) symmetrization <- match.arg(symmetrization, c("mean", "min", "max"))
@@ -528,7 +528,7 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
 #' @rdname trajectoryComparison
 #' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).
 #' @export
-trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
+trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   type <- match.arg(type, c("pairwise.asymmetric", "pairwise.symmetric", "multiple"))
   d <- x$d
@@ -615,9 +615,9 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add=TRUE){
 }
 
 #' @rdname trajectoryComparison
-#' @param nperm The number of permutations to be used in the dynamic correspondence test. Defaults to 999.
+#' @param nperm The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.
 #' @export
-trajectoryCorrespondence <- function(x,nperm=999){
+trajectoryCorrespondence <- function(x, nperm = 999){
   if(!inherits(x,"trajectories"))
     stop ("'x' should be of class 'trajectory'")
   if(inherits(x, "fd.trajectories")) {

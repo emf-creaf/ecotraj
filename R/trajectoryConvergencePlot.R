@@ -1,23 +1,33 @@
 #' Summary plot for trajectory convergence and divergence
 #' 
-#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}}.
+#' Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}} or to present the results of Relative Trajectory Movement Assessment (\code{\link{RTMA}}).
 #' 
 #' @encoding UTF-8
 #' @name trajectoryConvergencePlot
 #' 
 #' @details
-#' Function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories using calls to function \code{\link{trajectoryConvergence}} which performs the tests.
+#' Function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories.
+#' It has two modes of functioning:
+#' \itemize{
+#'    \item{If \code{x} is of class \code{\link{trajectories}}, the function will display the results of convergence/divergence tests by calls to function \code{\link{trajectoryConvergence}}.}
+#'    \item{If \code{x} is of class \code{\link{RTMA}},the function will display the results of convergence/divergence tests and dynamic correspondence tests stored in the \code{\link{RTMA}} object supplied.}
+#' }
 #' In the plots, trajectories are represented by circles. The convergence or divergence between pairs of trajectories are represented by links. If convergence tests are symmetric, the links are simple. If the convergence tests are asymmetric, the links are displayed as half arrows pointing from the trajectory converging or diverging towards the trajectory being approached or diverged from.
-#' The width and color hue of the links are proportional to the tau statistic of the Mann.Kendall test performed by the \code{\link{trajectoryConvergence}} function. 
+#' The width and color hue of the links are proportional to the tau statistic of the Mann-Kendall test performed by the \code{\link{trajectoryConvergence}} function. 
 #' Function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
 #' 
-#' See function \code{\link{cycleShiftArrows}} for additional graphical elements to be displayed when conducting CETA.
+#' If \code{x} is of class \code{\link{RTMA}}, \code{trajectoryConvergencePlot} will display both convergence tests as explained above, as well as cases of parallelism recognized in \code{\link{RTMA}}.
+#' \code{Parallel} scenarios are indicated by two full parallel black lines linking two trajectories, while in case of \code{Antiparallel} scenarios one of the lines is dotted.
+#' 
+#' In addition, see function \code{\link{cycleShiftArrows}} for additional graphical elements to be displayed when conducting CETA.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
+#' @references
+#' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
-#' @seealso \code{\link{trajectoryConvergence}}, \code{\link{cycleShiftArrows}}
+#' @seealso \code{\link{trajectoryConvergence}},\code{\link{RTMA}}, \code{\link{cycleShiftArrows}}
 #' 
 #' @examples
 #' data("avoca")
@@ -49,11 +59,20 @@
 #'                           radius = 1.2, 
 #'                           traj.colors = "black",border = "white",lwd = 2,
 #'                           traj.names = LETTERS[1:8],traj.names.colors = "white")
-#'
+#' #RTMA version.
+#' avoca_RTMA <- RTMA(avoca_x)
+#' trajectoryConvergencePlot(avoca_RTMA,
+#'                           half.arrows.size = 1.5, 
+#'                           conv.color = "orangered",
+#'                           div.color = "dodgerblue",
+#'                           radius = 1.2, 
+#'                           traj.colors = "black",border = "white",lwd = 2,
+#'                           traj.names = LETTERS[1:8],traj.names.colors = "white")
+#'                           
 #' @rdname trajectoryConvergencePlot
-#' @param x An object of class \code{\link{trajectories}}. Alternatively an object of class \code{\link{RTMA}}.
-#' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{class(x) == "RTMA"}.
-#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{class(x) == "RTMA"}.
+#' @param x An object of class \code{\link{trajectories}}. Alternatively, an object of class \code{\link{RTMA}}.
+#' @param type A string indicating the convergence test to be displayed, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{class(x) == "RTMA"}.
+#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{class(x) == "RTMA"} (the RTMA corrected alpha level is used instead).
 #' @param traj.colors The colors for the trajectories (circles). Defaults to \code{"grey"}.
 #' @param traj.names The names of trajectories. Defaults to the names provided in \code{x}.
 #' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to \code{"black"}.
@@ -62,14 +81,14 @@
 #' @param conv.color The color used to mark convergent trajectories. Defaults to \code{"red"}.
 #' @param div.color The color used to mark divergent trajectories. Defaults to \code{"blue"}.
 #' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to \code{1}.
-#' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
+#' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann-Kendall test (see \code{\link{trajectoryConvergence}}).
 #' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory (\code{"circle"}), or should be in between two circles (\code{"between"}). Defaults to \code{"between"}.
 #' @param pointy Boolean. Should the circles representing trajectories be made pointy (i.e. pointing to the next trajectory)? Useful when trajectories have some order, as in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
+#' @param add Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality. Disregarded if \code{class(x) == "RTMA"}.
 #' @export
 trajectoryConvergencePlot <- function (x,
                                        type = "pairwise.asymmetric",
                                        alpha.filter = NULL,
-                                       nperm=999,
                                        traj.colors = "grey",
                                        traj.names = NULL,
                                        traj.names.colors = "black",
@@ -80,18 +99,19 @@ trajectoryConvergencePlot <- function (x,
                                        half.arrows.size = 1,
                                        tau.links.transp = 0.3,
                                        top = "between",
-                                       pointy = FALSE){
+                                       pointy = FALSE,
+                                       add = TRUE){
   
   widthMult <- 1#this is a multiplication coefficient for the width of the "tau links" it will change to make room to display more links in case "both" is selected
   
   if(inherits(x,"trajectories")){
     if (type=="pairwise.asymmetric"){
-      ConvTest <- trajectoryConvergence(x,type="pairwise.asymmetric")
+      ConvTest <- trajectoryConvergence(x,type="pairwise.asymmetric",add=add)
     }else if (type=="pairwise.symmetric"){
-      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
+      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric",add=add)
     }else if (type=="both"){
-      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
-      ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric")
+      ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric",add=add)
+      ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric",add=add)
       widthMult <- 1/3
     }else{
       stop("invalid value for 'type'")
@@ -101,7 +121,7 @@ trajectoryConvergencePlot <- function (x,
     ConvTestAsym <- x$DetailedTests$AsymmetricConvergence
     widthMult <- 1/3
     type <- "both"
-    alpha.filer <- x$parameters["alpha corrected"]
+    alpha.filter <- x$parameters["alpha corrected"]
   }else{
     stop ("'x' should be of class 'trajectory' or 'RTMA'")
   }
@@ -278,6 +298,46 @@ trajectoryConvergencePlot <- function (x,
             polygon(x=c(Xcorner1,Xcorner2,Xcorner3,Xcorner4,Xcorner5),
                     y=c(Ycorner1,Ycorner2,Ycorner3,Ycorner4,Ycorner5),
                     col=rgb(t(col2rgb(taucol)/255),alpha=tau.links.transp),border=taucol)
+          }
+        }
+      }
+    }
+  }
+  #add the parallelism results for RTMA
+  if (inherits(x,"RTMA")){
+    count <- 1
+    for (i in rownames(ConvTest$tau)[1:(nrow(ConvTest$tau)-1)]){
+      count <- count+1
+      for (j in colnames(ConvTest$tau)[count:ncol(ConvTest$tau)]){
+        if ((ConvTest$p.value[i,j]>alpha.filter)&
+            (ConvTestAsym$p.value[i,j]>alpha.filter)&
+            (ConvTestAsym$p.value[j,i]>alpha.filter)&
+            (x$DetailedTests$DynamicCorrespondence[j,i]<=alpha.filter)){
+          
+          vecX <- centersX[j]-centersX[i]
+          vecY <- centersY[j]-centersY[i]
+          vecLength <- sqrt(vecX^2+vecY^2)
+          vecX <- vecX/vecLength
+          vecY <- vecY/vecLength
+          
+          Xcorner1 <- -vecY*radius*0.25+centersX[i]
+          Ycorner1 <- vecX*radius*0.25+centersY[i]
+          
+          Xcorner2 <- vecY*radius*0.25+centersX[i]
+          Ycorner2 <- -vecX*radius*0.25+centersY[i]
+          
+          Xcorner3 <- vecY*radius*0.25+centersX[j]
+          Ycorner3 <- -vecX*radius*0.25+centersY[j]
+          
+          Xcorner4 <- -vecY*radius*0.25+centersX[j]
+          Ycorner4 <- vecX*radius*0.25+centersY[j]
+          
+          if(x$DetailedTests$DynamicCorrespondence[i,j]>0){
+            segments(x0=c(Xcorner1,Xcorner2),x1=c(Xcorner4,Xcorner3),
+                     y0=c(Ycorner1,Ycorner2),y1=c(Ycorner4,Ycorner3))
+          }else{
+            segments(x0=c(Xcorner1,Xcorner2),x1=c(Xcorner4,Xcorner3),
+                     y0=c(Ycorner1,Ycorner2),y1=c(Ycorner4,Ycorner3),lty=c(1,2))
           }
         }
       }

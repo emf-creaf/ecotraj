@@ -57,6 +57,7 @@
 #'             \item{\code{DynamicCorrespondence} contains the results of the the dynamic correspondence tests (potentially partial if \code{full.out = FALSE}).}
 #'        }
 #'     }
+#'     \item{\code{parameters}, a vector containing the parameters \code{alpha} and \code{nperm}}.
 #'  }
 #' 
 #' @author Nicolas Djeghri, UBO
@@ -276,6 +277,10 @@ RTMA <- function(x,
   output$DetailedTests$SymmetricConvergence <- sym
   output$DetailedTests$AsymmetricConvergence <- asym
   output$DetailedTests$DynamicCorrespondence <- Dcor
+  output$parameters <- c(alpha,nperm)
+  names(output$parameters) <- c("alpha","nperm")
+  #define its class
+  class(output) <- "RTMA"
   
   return(output)
 }

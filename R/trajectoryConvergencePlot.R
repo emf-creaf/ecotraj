@@ -51,24 +51,25 @@
 #'                           traj.names = LETTERS[1:8],traj.names.colors = "white")
 #'
 #' @rdname trajectoryConvergencePlot
-#' @param x An object of class \code{\link{trajectories}}.
-#' @param type A string indicating the convergence test, either "pairwise.asymmetric", "pairwise.symmetric" or "both" (see \code{\link{trajectoryConvergence}}).
-#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to NULL (all links drawn).
-#' @param traj.colors The colors for the trajectories (circles). Defaults to "grey".
+#' @param x An object of class \code{\link{trajectories}}. Alternatively an object of class \code{\link{RTMA}}.
+#' @param type A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}).
+#' @param alpha.filter The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \enc{Šidák}{Sidak} corrected \code{0.05} if \code{class(x) == "RTMA"}. Defaults to \code{NULL} (all links drawn) otherwise.
+#' @param traj.colors The colors for the trajectories (circles). Defaults to \code{"grey"}.
 #' @param traj.names The names of trajectories. Defaults to the names provided in \code{x}.
-#' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to "black".
+#' @param traj.names.colors The color of the names of trajectories on the circles. Defaults to \code{"black"}.
 #' @param ... Additional parameters passed to \code{\link{polygon}} to personalize the circles representing trajectories.
-#' @param radius The radius of the circles representing trajectories. Defaults to 1.
-#' @param conv.color The color used to mark convergent trajectories. Defaults to "red".
-#' @param div.color The color used to mark divergent trajectories. Defaults to "blue".
-#' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to 1.
+#' @param radius The radius of the circles representing trajectories. Defaults to \code{1}.
+#' @param conv.color The color used to mark convergent trajectories. Defaults to \code{"red"}.
+#' @param div.color The color used to mark divergent trajectories. Defaults to \code{"blue"}.
+#' @param half.arrows.size A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to \code{1}.
 #' @param tau.links.transp The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).
-#' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between".
+#' @param top A string indicating if the top of the plotting area should contain a circle representing a trajectory (\code{"circle"}), or should be in between two circles (\code{"between"}). Defaults to \code{"between"}.
 #' @param pointy Boolean. Should the circles representing trajectories be made pointy (i.e. pointing to the next trajectory)? Useful when trajectories have some order, as in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).
 #' @export
 trajectoryConvergencePlot <- function (x,
                                        type = "pairwise.asymmetric",
                                        alpha.filter = NULL,
+                                       nperm=999,
                                        traj.colors = "grey",
                                        traj.names = NULL,
                                        traj.names.colors = "black",
@@ -89,6 +90,12 @@ trajectoryConvergencePlot <- function (x,
   }else if (type=="both"){
     ConvTest <- trajectoryConvergence(x,type="pairwise.symmetric")
     ConvTestAsym <- trajectoryConvergence(x,type="pairwise.asymmetric")
+    widthMult <- 1/3
+  }else if (type=="RTMA"){
+    if (is.null(alpha.filer)) alpha.filter=0.05
+    RTMA <- RTMA(x,alpha=alpha.filter,nperm=nperm)
+    alpha.filter <- 1-(1-alpha.filter)^(1/4)
+    Conv
     widthMult <- 1/3
   }else{
     stop("invalid value for type")

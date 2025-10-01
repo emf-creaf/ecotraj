@@ -9,6 +9,7 @@ trajectoryConvergencePlot(
   x,
   type = "pairwise.asymmetric",
   alpha.filter = NULL,
+  nperm = 999,
   traj.colors = "grey",
   traj.names = NULL,
   traj.names.colors = "black",
@@ -23,31 +24,31 @@ trajectoryConvergencePlot(
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link{trajectories}}.}
+\item{x}{An object of class \code{\link{trajectories}}. Alternatively an object of class \code{\link{RTMA}}.}
 
-\item{type}{A string indicating the convergence test, either "pairwise.asymmetric", "pairwise.symmetric" or "both" (see \code{\link{trajectoryConvergence}}).}
+\item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}).}
 
-\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to NULL (all links drawn).}
+\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \enc{Šidák}{Sidak} corrected \code{0.05} if \code{class(x) == "RTMA"}. Defaults to \code{NULL} (all links drawn) otherwise.}
 
-\item{traj.colors}{The colors for the trajectories (circles). Defaults to "grey".}
+\item{traj.colors}{The colors for the trajectories (circles). Defaults to \code{"grey"}.}
 
 \item{traj.names}{The names of trajectories. Defaults to the names provided in \code{x}.}
 
-\item{traj.names.colors}{The color of the names of trajectories on the circles. Defaults to "black".}
+\item{traj.names.colors}{The color of the names of trajectories on the circles. Defaults to \code{"black"}.}
 
 \item{...}{Additional parameters passed to \code{\link{polygon}} to personalize the circles representing trajectories.}
 
-\item{radius}{The radius of the circles representing trajectories. Defaults to 1.}
+\item{radius}{The radius of the circles representing trajectories. Defaults to \code{1}.}
 
-\item{conv.color}{The color used to mark convergent trajectories. Defaults to "red".}
+\item{conv.color}{The color used to mark convergent trajectories. Defaults to \code{"red"}.}
 
-\item{div.color}{The color used to mark divergent trajectories. Defaults to "blue".}
+\item{div.color}{The color used to mark divergent trajectories. Defaults to \code{"blue"}.}
 
-\item{half.arrows.size}{A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to 1.}
+\item{half.arrows.size}{A multiplication coefficient for the size of the arrow heads when representing asymmetric tests results. Defaults to \code{1}.}
 
 \item{tau.links.transp}{The transparency of the links representing the tau statistic of the Mann.Kendall test (see \code{\link{trajectoryConvergence}}).}
 
-\item{top}{A string indicating if the top of the plotting area should contain a circle representing a trajectory ("circle"), or should be in between two circles ("between"). Defaults to "between".}
+\item{top}{A string indicating if the top of the plotting area should contain a circle representing a trajectory (\code{"circle"}), or should be in between two circles (\code{"between"}). Defaults to \code{"between"}.}
 
 \item{pointy}{Boolean. Should the circles representing trajectories be made pointy (i.e. pointing to the next trajectory)? Useful when trajectories have some order, as in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).}
 }

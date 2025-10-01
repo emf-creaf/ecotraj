@@ -28,6 +28,7 @@ Function \code{RTMA} returns a object of class \code{\link{list}} containing:
 \item{\code{DynamicCorrespondence} contains the results of the the dynamic correspondence tests (potentially partial if \code{full.out = FALSE}).}
 }
 }
+\item{\code{parameters}, a vector containing the parameters \code{alpha} and \code{nperm}}.
 }
 }
 \description{

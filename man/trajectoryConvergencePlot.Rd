@@ -24,11 +24,11 @@ trajectoryConvergencePlot(
 )
 }
 \arguments{
-\item{x}{An object of class \code{\link{trajectories}}. Alternatively, an object of class \code{\link{RTMA}}.}
+\item{x}{An object of class \code{\link{trajectories}}. Alternatively, an object of class \code{RTMA} (returned by \code{\link{trajectoryRMA}}).}
 
-\item{type}{A string indicating the convergence test to be displayed, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{class(x) == "RTMA"}.}
+\item{type}{A string indicating the convergence test to be displayed, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"both"} (see \code{\link{trajectoryConvergence}}). Disregarded if \code{inherits(x,"RTMA")}.}
 
-\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{class(x) == "RTMA"} (the RTMA corrected alpha level is used instead).}
+\item{alpha.filter}{The minimum p-value for a link to be drawn (see \code{\link{trajectoryConvergence}}). Defaults to \code{NULL} (all links drawn). Disregarded if \code{inherits(x,"RTMA")} (the RTMA corrected alpha level is used instead).}
 
 \item{traj.colors}{The colors for the trajectories (circles). Defaults to \code{"grey"}.}
 
@@ -52,23 +52,23 @@ trajectoryConvergencePlot(
 
 \item{pointy}{Boolean. Should the circles representing trajectories be made pointy (i.e. pointing to the next trajectory)? Useful when trajectories have some order, as in the context of CETA to represent fixed date trajectories (see \code{\link{trajectoryCyclical}}).}
 
-\item{add}{Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality. Disregarded if \code{class(x) == "RTMA"}.}
+\item{add}{Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality. Disregarded if \code{inherits(x,"RTMA")}.}
 }
 \description{
-Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}} or to present the results of Relative Trajectory Movement Assessment (\code{\link{RTMA}}).
+Provides plots to represent trajectory convergence and divergence tests performed by the function \code{\link{trajectoryConvergence}} or to present the results of Relative Trajectory Movement Assessment (\code{\link{trajectoryRMA}}).
 }
 \details{
 Function \code{trajectoryConvergencePlot} provides ways to visualize pairwise convergence and divergence between trajectories.
 It has two modes of functioning:
 \itemize{
 \item{If \code{x} is of class \code{\link{trajectories}}, the function will display the results of convergence/divergence tests by calls to function \code{\link{trajectoryConvergence}}.}
-\item{If \code{x} is of class \code{\link{RTMA}},the function will display the results of convergence/divergence tests and dynamic correspondence tests stored in the \code{\link{RTMA}} object supplied.}
+\item{If \code{x} is of class \code{RTMA},the function will display the results of convergence/divergence tests and dynamic correspondence tests stored in the \code{RTMA} object supplied.}
 }
 In the plots, trajectories are represented by circles. The convergence or divergence between pairs of trajectories are represented by links. If convergence tests are symmetric, the links are simple. If the convergence tests are asymmetric, the links are displayed as half arrows pointing from the trajectory converging or diverging towards the trajectory being approached or diverged from.
 The width and color hue of the links are proportional to the tau statistic of the Mann-Kendall test performed by the \code{\link{trajectoryConvergence}} function.
 Function \code{trajectoryConvergencePlot} also offers the possibility to plot both tests at the same time.
 
-If \code{x} is of class \code{\link{RTMA}}, \code{trajectoryConvergencePlot} will display both convergence tests as explained above, as well as cases of parallelism recognized in \code{\link{RTMA}}.
+If \code{x} is of class \code{RTMA}, \code{trajectoryConvergencePlot} will display both convergence tests as explained above, as well as cases of parallelism recognized in \code{\link{trajectoryRMA}}.
 \code{Parallel} scenarios are indicated by two full parallel black lines linking two trajectories, while in case of \code{Antiparallel} scenarios one of the lines is dotted.
 
 In addition, see function \code{\link{cycleShiftArrows}} for additional graphical elements to be displayed when conducting CETA.
@@ -104,7 +104,7 @@ trajectoryConvergencePlot(avoca_x,type = "both",alpha.filter = 0.05,
                           traj.colors = "black",border = "white",lwd = 2,
                           traj.names = LETTERS[1:8],traj.names.colors = "white")
 #RTMA version.
-avoca_RTMA <- RTMA(avoca_x)
+avoca_RTMA <- trajectoryRMA(avoca_x)
 trajectoryConvergencePlot(avoca_RTMA,
                           half.arrows.size = 1.5, 
                           conv.color = "orangered",

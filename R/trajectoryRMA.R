@@ -89,7 +89,7 @@
 #' legend("bottomleft",bty="n",legend=1:8,col=RColorBrewer::brewer.pal(8,"Accent"),lwd=2,ncol=2)
 #' 
 #' #Perform RTMA
-#' RTMA(avoca_x)
+#' trajectoryRMA(avoca_x)
 #' 
 #' 
 #' @name trajectoryRMA

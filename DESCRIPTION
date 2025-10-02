@@ -24,7 +24,7 @@ URL: https://emf-creaf.github.io/ecotraj/
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: 
     ape,
     vegclust,

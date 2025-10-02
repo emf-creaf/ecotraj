@@ -20,20 +20,22 @@ trajectoryRMA(x, alpha = 0.05, nperm = 999, full.output = TRUE, add = TRUE)
 \value{
 Function \code{trajectoryRMA} returns an object of class \code{\link{list}} containing:
 \itemize{
-\item{\code{relationship}, a matrix containing the relative movements relationships attributed to each pair of trajectories.}
-\item{\code{symmetricConvergence}, a list containing the results of the symmetric convergence test.}
-\item{\code{asymmetricConvergence}, a list containing the results of the two asymmetric convergence tests.}
-\item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
-\item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
+\item{\code{dynamic_relationships}: a matrix containing the relative movement relationships attributed to each pair of trajectories.}
+\item{\code{symmetric_convergence}: a list containing the results of the symmetric convergence test.}
+\item{\code{asymmetric_convergence}: a list containing the results of the two asymmetric convergence tests.}
+\item{\code{correspondence}: a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
+\item{\code{parameters}: a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 }
-In addition to the relationships recognized by RTMA, matrix \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"Catch-up"},  \code{"Escape"}).
-In asymmetric relationships, the two trajectories have different behavior denoted by descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{relationship}, the suffixes apply to the ROW trajectories.
+In addition to the relationships recognized by RTMA, matrix \code{dynamic_relationships} provides the role of each trajectory in on asymmetric relationships.
+The role is provided in parenthesis and applies to the trajectory of the ROW index. For example, \code{"approaching (approacher)"} means
+that the trajectory of the corresponding row is approaching the trajectory of the corresponding column, which will have \code{"approaching (target)"}.
+In symmetric relationships, the wording \code{(symmetric)} is added to indicate that there is no distinction of roles.
 }
 \description{
-Relative Trajectory Movement Assessment (RTMA) is a method allowing testing and qualifying of the relative movements of ecological trajectories (e.g. "convergence", "parallel" etc., see details) as described in Djeghri et al. (in prep). It is implemented in function \code{trajectoryRMA()}.
+Relative Trajectory Movement Assessment (RTMA) is a method for testing and qualifying of the relative movements of ecological trajectories (e.g. "convergence", "parallel" etc., see details) as described in Djeghri et al. (in prep). It is implemented in function \code{trajectoryRMA()}.
 }
 \details{
-Function \code{trajectoryRMA} attributes a relationship to pairs of ecological trajectories A and B describing their relative movement. It does so by combining four tests:
+Function \code{trajectoryRMA} attributes a dynamic relationship to pairs of ecological trajectories A and B describing their relative movement. It does so by combining four tests:
 \itemize{
 \item{Three convergence tests performed through internal callings of function \code{\link{trajectoryConvergence}}:
 \itemize{
@@ -46,24 +48,27 @@ Function \code{trajectoryRMA} attributes a relationship to pairs of ecological t
 }
 To account for multiple testing, \code{trajectoryRMA} performs internally a \enc{Šidák}{Sidak} (1967) correction on the alpha level provided in parameter \code{alpha}.
 
-The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations:
+The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations.
+The following five dynamic relationships are \emph{symmetric}, i.e. applying to the two trajectories without distinction of roles:
 \itemize{
-\item{\code{"Convergence"} relationship: The two trajectories converge. Exists in a weak version.}
-\item{\code{"Divergence"} relationship: The two trajectories diverge. Exists in a weak version.}
-\item{\code{"Approaching"} relationship: One trajectory approaches the other.}
-\item{\code{"Approaching-Stationary"} relationship: As \code{"Approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
-\item{\code{"Departing"} relationship: One trajectory moves away from the other.}
-\item{\code{"Departing-Stationary"} relationship: As \code{"Departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
-\item{\code{"Pursuit"} relationship: The two trajectories follow each other.}
-\item{\code{"Catch-up"} relationship: As \code{"Pursuit"} but the following trajectory moves faster.}
-\item{\code{"Escape"} relationship: As \code{"Pursuit"} but the leading trajectory is faster.}
-\item{\code{"Parallel"} relationship: The two trajectories travel side by side with broadly similar movements.}
-\item{\code{"Antiparallel"} relationship: As \code{"Parallel"} but the two trajectories travel in opposite directions.}
-\item{\code{"Neutral"} relationship: The two trajectories have no particular movements relative to each other (effectively the Null Hypothesis for RTMA).}
+\item{\code{"convergence"} - The two trajectories converge. Exists in a weak version.}
+\item{\code{"divergence"} - The two trajectories diverge. Exists in a weak version.}
+\item{\code{"parallel"} - The two trajectories travel side by side with broadly similar movements.}
+\item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
+\item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
 }
-Some relationships are asymmetric (e.g. in \code{"Pursuit"} there is a leading and a following trajectory).
-In these asymmetric relationships the output of function \code{trajectoryRMA} gives the details (see Value section).
-In rare cases, unlikely relationships (labelled \code{"Other"}) may occur. These involve contradictory patterns hard to interpret.
+The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section).
+\itemize{
+\item{\code{"approaching"} - One trajectory approaches the other.}
+\item{\code{"approaching-stationary"} - As in \code{"approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
+\item{\code{"departing"} - One trajectory moves away from the other.}
+\item{\code{"departing-stationary"} - As in \code{"departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
+\item{\code{"pursuit"} - The two trajectories follow each other.}
+\item{\code{"catch-up"} - As in \code{"pursuit"} but the following trajectory moves faster.}
+\item{\code{"escape"} - As in \code{"pursuit"} but the leading trajectory is faster.}
+}
+
+In rare cases, unlikely relationships (labelled \code{"unknown"}) may occur. These involve contradictory patterns hard to interpret.
 
 LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.

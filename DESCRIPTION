@@ -34,7 +34,6 @@ Suggests:
     smacof,
     vegan,
     ggplot2,
-    hrbrthemes,
     reshape2,
     scales,
     tidyr,

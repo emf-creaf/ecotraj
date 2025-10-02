@@ -121,7 +121,7 @@ trajectoryConvergencePlot <- function (x,
     ConvTestAsym <- x$asymmetric_convergence
     widthMult <- 1/3
     type <- "both"
-    alpha.filter <- x$parameters["alpha corrected"]
+    alpha.filter <- x$parameters["corrected_alpha"]
   }else{
     stop ("'x' should be of class 'trajectory' or 'RTMA'")
   }

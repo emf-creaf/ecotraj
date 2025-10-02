@@ -24,9 +24,9 @@ Function \code{trajectoryRMA} returns an object of class \code{\link{list}} cont
 \item{\code{symmetric_convergence}: a list containing the results of the symmetric convergence test.}
 \item{\code{asymmetric_convergence}: a list containing the results of the two asymmetric convergence tests.}
 \item{\code{correspondence}: a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
-\item{\code{parameters}: a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
+\item{\code{parameters}: a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} \code{corrected_alpha}, and \code{nperm}}.
 }
-In addition to the relationships recognized by RTMA, matrix \code{dynamic_relationships} provides the role of each trajectory in on asymmetric relationships.
+In addition to the relationships recognized by RTMA, matrix \code{dynamic_relationships} provides the role of each trajectory in asymmetric relationships.
 The role is provided in parenthesis and applies to the trajectory of the ROW index. For example, \code{"approaching (approacher)"} means
 that the trajectory of the corresponding row is approaching the trajectory of the corresponding column, which will have \code{"approaching (target)"}.
 In symmetric relationships, the wording \code{(symmetric)} is added to indicate that there is no distinction of roles.
@@ -68,7 +68,7 @@ The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"
 \item{\code{"escape"} - As in \code{"pursuit"} but the leading trajectory is faster.}
 }
 
-In rare cases, unlikely relationships (labelled \code{"unknown"}) may occur. These involve contradictory patterns hard to interpret.
+In rare cases, unlikely relationships (labelled \code{"unknown"}, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.
 
 LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.

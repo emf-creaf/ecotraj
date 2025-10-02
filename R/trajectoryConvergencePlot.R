@@ -117,8 +117,8 @@ trajectoryConvergencePlot <- function (x,
       stop("invalid value for 'type'")
     }
   }else if (inherits(x,"RTMA")){
-    ConvTest <- x$DetailedTests$SymmetricConvergence
-    ConvTestAsym <- x$DetailedTests$AsymmetricConvergence
+    ConvTest <- x$symmetricConvergence
+    ConvTestAsym <- x$asymmetricConvergence
     widthMult <- 1/3
     type <- "both"
     alpha.filter <- x$parameters["alpha corrected"]
@@ -312,7 +312,7 @@ trajectoryConvergencePlot <- function (x,
         if ((ConvTest$p.value[i,j]>alpha.filter)&
             (ConvTestAsym$p.value[i,j]>alpha.filter)&
             (ConvTestAsym$p.value[j,i]>alpha.filter)&
-            (x$DetailedTests$DynamicCorrespondence[j,i]<=alpha.filter)){
+            (x$dynamicCorrespondence[j,i]<=alpha.filter)){
           
           vecX <- centersX[j]-centersX[i]
           vecY <- centersY[j]-centersY[i]
@@ -332,7 +332,7 @@ trajectoryConvergencePlot <- function (x,
           Xcorner4 <- -vecY*radius*0.25+centersX[j]
           Ycorner4 <- vecX*radius*0.25+centersY[j]
           
-          if(x$DetailedTests$DynamicCorrespondence[i,j]>0){
+          if(x$dynamicCorrespondence[i,j]>0){
             segments(x0=c(Xcorner1,Xcorner2),x1=c(Xcorner4,Xcorner3),
                      y0=c(Ycorner1,Ycorner2),y1=c(Ycorner4,Ycorner3))
           }else{

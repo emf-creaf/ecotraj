@@ -26,7 +26,6 @@ First of all, we load the required libraries, including `ecotraj`:
 library(ecotraj)
 library(tidyr) ## For data manipulation
 library(ggplot2) ## For plotting
-library(hrbrthemes) ## Additional themes for ggplot2
 library(scales) ## Scale functions for visualisation
 library(viridis) ## Viridis color map
 ```

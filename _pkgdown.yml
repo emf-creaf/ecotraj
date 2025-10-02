@@ -85,6 +85,8 @@ reference:
   contents:
   - starts_with("trajectoryProjection")
   - starts_with("trajectoryShifts")
+  - starts_with("trajectoryComparison")
+  - starts_with("trajectoryRMA")
   - starts_with("trajectoryDistance")
   - starts_with("segment")
   - starts_with("dynamicVariation")

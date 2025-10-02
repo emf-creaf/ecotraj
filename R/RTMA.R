@@ -9,7 +9,7 @@
 #' @param add Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' 
 #' @details
-#' Function \code{RTMA} attributes a "scenario" of relative movement to pairs of ecological trajectories A and B by combining four tests:
+#' Function \code{RTMA} attributes a relationship of relative movement to pairs of ecological trajectories A and B by combining four tests:
 #' \itemize{
 #'     \item{Three convergence tests performed through internal callings of function \code{\link{trajectoryConvergence}}:
 #'        \itemize{
@@ -22,20 +22,24 @@
 #'  } 
 #' To account for multiple testing, \code{RTMA} performs internally a \enc{Šidák}{Sidak} (1967) correction on the alpha level provided in parameter \code{alpha}.
 #' 
-#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a "scenario" describing their relative movements. RTMA recognizes a total of 10 scenarios, some existing in "weak" variations:
+#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations:
 #' \itemize{
-#'     \item{\code{Convergence} scenario: The two trajectories converge, exists in a weak version.}
-#'     \item{\code{Divergence} scenario: The two trajectories diverge, exists in a weak version.}
-#'     \item{\code{Approaching} scenario: One trajectory approaches the other (likely relatively immobile), exists in a weak version, potentially indicative of an approach by the side.}
-#'     \item{\code{Departing} scenario: One trajectory moves away from the other (likely relatively immobile), exists in a weak version, potentially indicative of a departure from the side.}
-#'     \item{\code{Pursuit} scenario: The two trajectories follow each other.}
-#'     \item{\code{Catchup} scenario: As \code{Pursuit} but the following trajectory moves faster.}
-#'     \item{\code{Escape} scenario: As \code{Pursuit} but the leading trajectory is faster.}
-#'     \item{\code{Parallel} scenario: The two trajectories travel side by side with broadly similar movements.}
-#'     \item{\code{Antiparallel} scenario: As \code{Parallel} but the two trajectories travel in opposite directions.}
-#'     \item{\code{Neutral} scenario:  The two trajectories have no particular movements relative to each other (effectively the Null Hypothesis).}
+#'     \item{\code{"Convergence"} relationship: The two trajectories converge, exists in a weak version.}
+#'     \item{\code{"Divergence"} relationship: The two trajectories diverge, exists in a weak version.}
+#'     \item{\code{"Approaching"} relationship: One trajectory approaches the other.}
+#'     \item{\code{"Approaching-Stationary"} relationship: As \code{"Approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
+#'     \item{\code{"Departing"} relationship: One trajectory moves away from the other.}
+#'     \item{\code{"Departing-Stationary"} relationship: As \code{"Departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
+#'     \item{\code{"Pursuit"} relationship: The two trajectories follow each other.}
+#'     \item{\code{"Catchup"} relationship: As \code{"Pursuit"} but the following trajectory moves faster.}
+#'     \item{\code{"Escape"} relationship: As \code{"Pursuit"} but the leading trajectory is faster.}
+#'     \item{\code{"Parallel"} relationship: The two trajectories travel side by side with broadly similar movements.}
+#'     \item{\code{"Antiparallel"} relationship: As \code{"Parallel"} but the two trajectories travel in opposite directions.}
+#'     \item{\code{"Neutral"} relationship: The two trajectories have no particular movements relative to each other (effectively the Null Hypothesis).}
 #'     }
-#' In rare cases, unlikely scenarios (labelled \code{Other}) may occur. These involve contradictory patterns hard to interpret.
+#' Some relationships are asymmetric (e.g. in \code{"Pursuit"} there is a leading and a following trajectory).
+#' In these asymmetric relationships the output of function \code{RTMA} gives the details (see Value section).
+#' In rare cases, unlikely relationships (labelled \code{"Other"}) may occur. These involve contradictory patterns hard to interpret.
 #' 
 #' LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 #' We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.
@@ -49,12 +53,14 @@
 #' @returns
 #' Function \code{RTMA} returns an object of class \code{\link{list}} containing:
 #' \itemize{
-#'     \item{\code{relationship}, a matrix containing the relative movements scenario attributed to each pair of trajectories.}
+#'     \item{\code{relationship}, a matrix containing the relative movements relationships attributed to each pair of trajectories.}
 #'     \item{\code{symmetricConvergence}, a list containing the results of the symmetric convergence test.}
 #'     \item{\code{asymmetricConvergence}, a list containing the results of the two asymmetric convergence tests.}
 #'     \item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
 #'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
+#' In addition to the relationships recognized by RTMA, \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"CatchUp"},  \code{"Escape"}).
+#' In asymmetric relationships, the two trajectories have contrasted behavior denoted in \code{relationship} by additional descriptive labels pasted to the relationship identified by RTMA using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrices, these additional labels apply to the row trajectory.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -123,7 +129,7 @@ RTMA <- function(x,
   #preparing the output
   output <- list()
   
-  #Empty scenario attribution matrix
+  #Empty relationship attribution matrix
   output$relationship <- matrix(NA,length(trajs),length(trajs))
   colnames(output$relationship) <- trajs
   rownames(output$relationship) <- trajs
@@ -143,7 +149,7 @@ RTMA <- function(x,
   }
   
   
-  #ATTRIBUTING A SCENARIO
+  #ATTRIBUTING A RELATIONSHIP
   for (j in trajs[1:(length(trajs)-1)]){
     for (k in trajs[(which(trajs==j)+1):length(trajs)]){
       
@@ -153,30 +159,46 @@ RTMA <- function(x,
           #this is the branch with a divergent symmetric test
           
           if ((asym$p.value[j,k]>alpha)&(asym$p.value[k,j]>alpha)){
-            #this is the first version of the Weak Divergence scenario (may be rare)
+            #this is the first version of the Weak Divergence relationship (may be rare)
             output$relationship[k,j] <- "Weak Divergence"
+            output$relationship[j,k] <- "Weak Divergence"
           }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
             #this is the branch where the asymmetric tests both are significant
             if (sign(asym$tau[j,k])==sign(asym$tau[k,j])){
               if (asym$tau[j,k]>0){
-                #this is the Divergence scenario, all tests agree on divergence
+                #this is the Divergence relationship, all tests agree on divergence
                 output$relationship[k,j] <- "Divergence"
+                output$relationship[j,k] <- "Divergence"
               }else{
-                #this a (very) unlikely scenario where both asymmetric test say convergence when the symmetric test says divergence
+                #this a (very) unlikely relationship where both asymmetric test say convergence when the symmetric test says divergence
                 output$relationship[k,j] <- "Other (opposed sym and asym)"
+                output$relationship[j,k] <- "Other (opposed sym and asym)"
               }
             }else{
-              #this is the Escape scenario with symmetric divergence, and disagreeing asymmetric tests
-              output$relationship[k,j] <- "Escape"
+              #this is the Escape relationship with symmetric divergence, and disagreeing asymmetric tests
+              if (asym$tau[k,j]<0){
+                output$relationship[k,j] <- "Escape_Follower"
+                output$relationship[j,k] <- "Escape_Leader"
+              }else{
+                output$relationship[k,j] <- "Escape_Leader"
+                output$relationship[j,k] <- "Escape_Follower"
+              }
             }
           }else{
             #this is the branch where only one asymmetric test is significant
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
-              #this is the Departing scenario where there is one divergent asymmetric test and symmetric divergence
-              output$relationship[k,j] <- "Departing"
+              #this is the Departing-Stationary relationship where there is one divergent asymmetric test and symmetric divergence
+              if (asym$p.value[k,j]<=alpha){
+                output$relationship[k,j] <- "Departing-Stationary_Departer"
+                output$relationship[j,k] <- "Departing-Stationary_Departee"
+              }else{
+                output$relationship[k,j] <- "Departing-Stationary_Departee"
+                output$relationship[j,k] <- "Departing-Stationary_Departer"
+              }
             }else{
-              #this is an unlikely scenario with one asymmetric test significant and opposed to the symmetric test
+              #this is an unlikely relationship with one asymmetric test significant and opposed to the symmetric test
               output$relationship[k,j] <- "Other (opposed sym and one asym)"
+              output$relationship[j,k] <- "Other (opposed sym and one asym)"
             }
           }
           
@@ -186,30 +208,47 @@ RTMA <- function(x,
           #this is the branch with a convergent symmetric test
           
           if ((asym$p.value[j,k]>alpha)&(asym$p.value[k,j]>alpha)){
-            #this is the first version of the Weak Convergence scenario (may be rare)
+            #this is the first version of the Weak Convergence relationship (may be rare)
             output$relationship[k,j] <- "Weak Convergence"
+            output$relationship[j,k] <- "Weak Convergence"
           }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
             #this is the branch where the asymmetric tests both are significant
             if (sign(asym$tau[j,k])==sign(asym$tau[k,j])){
               if (asym$tau[j,k]<0){
-                #this is the Convergence scenario, all tests agree on convergence
+                #this is the Convergence relationship, all tests agree on convergence
                 output$relationship[k,j] <- "Convergence"
+                output$relationship[j,k] <- "Convergence"
               }else{
-                #this a (very) unlikely scenario where both asymmetric test say divergence when the symmetric test says convergence
+                #this a (very) unlikely relationship where both asymmetric test say divergence when the symmetric test says convergence
                 output$relationship[k,j] <- "Other (opposed sym and asym)"
+                output$relationship[j,k] <- "Other (opposed sym and asym)"
               }
             }else{
-              #this is the CatchUp scenario with symmetric convergence, and disagreeing asymmetric tests
+              #this is the CatchUp relationship with symmetric convergence, and disagreeing asymmetric tests
               output$relationship[k,j] <- "CatchUp"
+              if (asym$tau[k,j]<0){
+                output$relationship[k,j] <- "CatchUp_Follower"
+                output$relationship[j,k] <- "CatchUp_Leader"
+              }else{
+                output$relationship[k,j] <- "CatchUp_Leader"
+                output$relationship[j,k] <- "CatchUp_Follower"
+              }
             }
           }else{
             #this is the branch where only one asymmetric test is significant
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]<0){
-              #this is the Approaching scenario where there is one convergent asymmetric test and symmetric convergence
-              output$relationship[k,j] <- "Approaching"
+              #this is the Approaching-Stationary relationship where there is one convergent asymmetric test and symmetric convergence
+              if (asym$p.value[k,j]<=alpha){
+                output$relationship[k,j] <- "Approaching-Stationary_Approacher"
+                output$relationship[j,k] <- "Approaching-Stationary_Approachee"
+              }else{
+                output$relationship[k,j] <- "Approaching-Stationary_Approachee"
+                output$relationship[j,k] <- "Approaching-Stationary_Approacher"
+              }
             }else{
-              #this is an unlikely scenario with one asymmetric test significant and opposed to the symmetric test
+              #this is an unlikely relationship with one asymmetric test significant and opposed to the symmetric test
               output$relationship[k,j] <- "Other (opposed sym and one asym)"
+              output$relationship[j,k] <- "Other (opposed sym and one asym)"
             }
           }
         }
@@ -232,39 +271,62 @@ RTMA <- function(x,
           if (Dcorbis[2,1]<=alpha){
             #this is the branch where we have Parallelism
             if (Dcorbis[1,2]>0){
-              #this is the Parallel scenario
+              #this is the Parallel relationship
               output$relationship[k,j] <- "Parallel"
+              output$relationship[j,k] <- "Parallel"
             }else{
-              #this is the Antiparallel scenario
+              #this is the Antiparallel relationship
               output$relationship[k,j] <- "Antiparallel"
+              output$relationship[j,k] <- "Antiparallel"
             }
           }else{
-            #this is the Neutral scenario (nothing significant)
+            #this is the Neutral relationship (nothing significant)
             output$relationship[k,j] <- "Neutral"
+            output$relationship[j,k] <- "Neutral"
           }
         }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
           #this is the branch where the asymmetric tests both are significant
           if (sign(asym$tau[j,k])==(sign(asym$tau[k,j]*(-1)))){
-            #this is the Pursuit scenario (no significant symmetric test and opposed asymmetric tests)
-            output$relationship[k,j] <- "Pursuit"
+            #this is the Pursuit relationship (no significant symmetric test and opposed asymmetric tests)
+            if (asym$tau[k,j]<0){
+              output$relationship[k,j] <- "Pursuit_Follower"
+              output$relationship[j,k] <- "Pursuit_Leader"
+            }else{
+              output$relationship[k,j] <- "Pursuit_Leader"
+              output$relationship[j,k] <- "Pursuit_Follower"
+            }
           }else{
             #this is an unlikely branch where the two asymmetric tests have agreement but the symmetric test is non-significant 
             if (asym$tau[j,k]<0){
-              #this is the second version of the weak convergence scenario
+              #this is the second version of the weak convergence relationship
               output$relationship[k,j] <- "Weak Convergence"
+              output$relationship[j,k] <- "Weak Convergence"
             }else{
-              #this is the second version of the weak divergence scenario
+              #this is the second version of the weak divergence relationship
               output$relationship[k,j] <- "Weak Divergence"
+              output$relationship[j,k] <- "Weak Divergence"
             }
           }
         }else{
           #this is the branch where only one asymmetric test is significant
           if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
-            #this is the Weak Departing scenario where there is only one divergent asymmetric test significant
-            output$relationship[k,j] <- "Weak/Side Departing"
+            #this is the Departing relationship where there is only one divergent asymmetric test significant
+            if (asym$p.value[k,j]<=alpha){
+              output$relationship[k,j] <- "Departing_Departer"
+              output$relationship[j,k] <- "Departing_Departee"
+            }else{
+              output$relationship[k,j] <- "Departing_Departee"
+              output$relationship[j,k] <- "Departing_Departer"
+            }
           }else{
-            #this is the Weak Approaching scenario where there is only one convergent asymmetric test significant
-            output$relationship[k,j] <- "Weak/Side Approaching"
+            #this is the Approaching relationship where there is only one convergent asymmetric test significant
+            if (asym$p.value[k,j]<=alpha){
+              output$relationship[k,j] <- "Approaching_Approacher"
+              output$relationship[j,k] <- "Approaching_Approachee"
+            }else{
+              output$relationship[k,j] <- "Approaching_Approachee"
+              output$relationship[j,k] <- "Approaching_Approacher"
+            }
           }
         }
       }

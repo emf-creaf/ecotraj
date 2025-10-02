@@ -18,16 +18,12 @@ RTMA(x, alpha = 0.05, nperm = 999, full.output = TRUE, add = TRUE)
 \item{add}{Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 }
 \value{
-Function \code{RTMA} returns a object of class \code{\link{list}} containing:
+Function \code{RTMA} returns an object of class \code{\link{list}} containing:
 \itemize{
-\item{\code{ScenarioAttribution}, a matrix containing the relative movements scenario attributed to each pair of trajectories.}
-\item{\code{DetailedTests}, containing the details of the different tests performed by RTMA with:
-\itemize{
-\item{\code{SymmetricConvergence} contains the results of the symmetric convergence test.}
-\item{\code{AsymmetricConvergence} contains the results of the two asymmetric convergence tests.}
-\item{\code{DynamicCorrespondence} contains the results of the the dynamic correspondence tests (potentially partial if \code{full.out = FALSE}).}
-}
-}
+\item{\code{relationship}, a matrix containing the relative movements scenario attributed to each pair of trajectories.}
+\item{\code{symmetricConvergence}, a list containing the results of the symmetric convergence test.}
+\item{\code{asymmetricConvergence}, a list containing the results of the two asymmetric convergence tests.}
+\item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
 \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 }
 }

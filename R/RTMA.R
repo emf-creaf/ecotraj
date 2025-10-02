@@ -47,16 +47,12 @@
 #' 
 #' PLOTTING: Function \code{\link{trajectoryConvergencePlot}} provides options to plot the results of RTMA.
 #' @returns
-#' Function \code{RTMA} returns a object of class \code{\link{list}} containing:
+#' Function \code{RTMA} returns an object of class \code{\link{list}} containing:
 #' \itemize{
-#'     \item{\code{ScenarioAttribution}, a matrix containing the relative movements scenario attributed to each pair of trajectories.}
-#'     \item{\code{DetailedTests}, containing the details of the different tests performed by RTMA with:
-#'        \itemize{
-#'             \item{\code{SymmetricConvergence} contains the results of the symmetric convergence test.}
-#'             \item{\code{AsymmetricConvergence} contains the results of the two asymmetric convergence tests.}
-#'             \item{\code{DynamicCorrespondence} contains the results of the the dynamic correspondence tests (potentially partial if \code{full.out = FALSE}).}
-#'        }
-#'     }
+#'     \item{\code{relationship}, a matrix containing the relative movements scenario attributed to each pair of trajectories.}
+#'     \item{\code{symmetricConvergence}, a list containing the results of the symmetric convergence test.}
+#'     \item{\code{asymmetricConvergence}, a list containing the results of the two asymmetric convergence tests.}
+#'     \item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
 #'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
 #' 
@@ -128,9 +124,9 @@ RTMA <- function(x,
   output <- list()
   
   #Empty scenario attribution matrix
-  output$ScenarioAttribution <- matrix(NA,length(trajs),length(trajs))
-  colnames(output$ScenarioAttribution) <- trajs
-  rownames(output$ScenarioAttribution) <- trajs
+  output$relationship <- matrix(NA,length(trajs),length(trajs))
+  colnames(output$relationship) <- trajs
+  rownames(output$relationship) <- trajs
   
   #convergence tests
   sym <- trajectoryConvergence(x,type="pairwise.symmetric",add = add)
@@ -140,7 +136,7 @@ RTMA <- function(x,
   if (full.output == TRUE){
     Dcor <- trajectoryCorrespondence(x,nperm)
   }else if (full.output == FALSE){
-    Dcor <- output$ScenarioAttribution
+    Dcor <- output$relationship
     x$metadata$sites <- sites#this is a little hack to handle correctly different class of trajectories
   }else{
     stop("full.output must be a logical flag.")
@@ -158,29 +154,29 @@ RTMA <- function(x,
           
           if ((asym$p.value[j,k]>alpha)&(asym$p.value[k,j]>alpha)){
             #this is the first version of the Weak Divergence scenario (may be rare)
-            output$ScenarioAttribution[k,j] <- "Weak Divergence"
+            output$relationship[k,j] <- "Weak Divergence"
           }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
             #this is the branch where the asymmetric tests both are significant
             if (sign(asym$tau[j,k])==sign(asym$tau[k,j])){
               if (asym$tau[j,k]>0){
                 #this is the Divergence scenario, all tests agree on divergence
-                output$ScenarioAttribution[k,j] <- "Divergence"
+                output$relationship[k,j] <- "Divergence"
               }else{
                 #this a (very) unlikely scenario where both asymmetric test say convergence when the symmetric test says divergence
-                output$ScenarioAttribution[k,j] <- "Other (opposed sym and asym)"
+                output$relationship[k,j] <- "Other (opposed sym and asym)"
               }
             }else{
               #this is the Escape scenario with symmetric divergence, and disagreeing asymmetric tests
-              output$ScenarioAttribution[k,j] <- "Escape"
+              output$relationship[k,j] <- "Escape"
             }
           }else{
             #this is the branch where only one asymmetric test is significant
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
               #this is the Departing scenario where there is one divergent asymmetric test and symmetric divergence
-              output$ScenarioAttribution[k,j] <- "Departing"
+              output$relationship[k,j] <- "Departing"
             }else{
               #this is an unlikely scenario with one asymmetric test significant and opposed to the symmetric test
-              output$ScenarioAttribution[k,j] <- "Other (opposed sym and one asym)"
+              output$relationship[k,j] <- "Other (opposed sym and one asym)"
             }
           }
           
@@ -191,29 +187,29 @@ RTMA <- function(x,
           
           if ((asym$p.value[j,k]>alpha)&(asym$p.value[k,j]>alpha)){
             #this is the first version of the Weak Convergence scenario (may be rare)
-            output$ScenarioAttribution[k,j] <- "Weak Convergence"
+            output$relationship[k,j] <- "Weak Convergence"
           }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
             #this is the branch where the asymmetric tests both are significant
             if (sign(asym$tau[j,k])==sign(asym$tau[k,j])){
               if (asym$tau[j,k]<0){
                 #this is the Convergence scenario, all tests agree on convergence
-                output$ScenarioAttribution[k,j] <- "Convergence"
+                output$relationship[k,j] <- "Convergence"
               }else{
                 #this a (very) unlikely scenario where both asymmetric test say divergence when the symmetric test says convergence
-                output$ScenarioAttribution[k,j] <- "Other (opposed sym and asym)"
+                output$relationship[k,j] <- "Other (opposed sym and asym)"
               }
             }else{
               #this is the CatchUp scenario with symmetric convergence, and disagreeing asymmetric tests
-              output$ScenarioAttribution[k,j] <- "CatchUp"
+              output$relationship[k,j] <- "CatchUp"
             }
           }else{
             #this is the branch where only one asymmetric test is significant
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]<0){
               #this is the Approaching scenario where there is one convergent asymmetric test and symmetric convergence
-              output$ScenarioAttribution[k,j] <- "Approaching"
+              output$relationship[k,j] <- "Approaching"
             }else{
               #this is an unlikely scenario with one asymmetric test significant and opposed to the symmetric test
-              output$ScenarioAttribution[k,j] <- "Other (opposed sym and one asym)"
+              output$relationship[k,j] <- "Other (opposed sym and one asym)"
             }
           }
         }
@@ -237,51 +233,51 @@ RTMA <- function(x,
             #this is the branch where we have Parallelism
             if (Dcorbis[1,2]>0){
               #this is the Parallel scenario
-              output$ScenarioAttribution[k,j] <- "Parallel"
+              output$relationship[k,j] <- "Parallel"
             }else{
               #this is the Antiparallel scenario
-              output$ScenarioAttribution[k,j] <- "Antiparallel"
+              output$relationship[k,j] <- "Antiparallel"
             }
           }else{
             #this is the Neutral scenario (nothing significant)
-            output$ScenarioAttribution[k,j] <- "Neutral"
+            output$relationship[k,j] <- "Neutral"
           }
         }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
           #this is the branch where the asymmetric tests both are significant
           if (sign(asym$tau[j,k])==(sign(asym$tau[k,j]*(-1)))){
             #this is the Pursuit scenario (no significant symmetric test and opposed asymmetric tests)
-            output$ScenarioAttribution[k,j] <- "Pursuit"
+            output$relationship[k,j] <- "Pursuit"
           }else{
             #this is an unlikely branch where the two asymmetric tests have agreement but the symmetric test is non-significant 
             if (asym$tau[j,k]<0){
               #this is the second version of the weak convergence scenario
-              output$ScenarioAttribution[k,j] <- "Weak Convergence"
+              output$relationship[k,j] <- "Weak Convergence"
             }else{
               #this is the second version of the weak divergence scenario
-              output$ScenarioAttribution[k,j] <- "Weak Divergence"
+              output$relationship[k,j] <- "Weak Divergence"
             }
           }
         }else{
           #this is the branch where only one asymmetric test is significant
           if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
             #this is the Weak Departing scenario where there is only one divergent asymmetric test significant
-            output$ScenarioAttribution[k,j] <- "Weak/Side Departing"
+            output$relationship[k,j] <- "Weak/Side Departing"
           }else{
             #this is the Weak Approaching scenario where there is only one convergent asymmetric test significant
-            output$ScenarioAttribution[k,j] <- "Weak/Side Approaching"
+            output$relationship[k,j] <- "Weak/Side Approaching"
           }
         }
       }
     }
   }
   #finish building the output
-  output$DetailedTests$SymmetricConvergence <- sym
-  output$DetailedTests$AsymmetricConvergence <- asym
-  output$DetailedTests$DynamicCorrespondence <- Dcor
+  output$symmetricConvergence <- sym
+  output$asymmetricConvergence <- asym
+  output$dynamicCorrespondence <- Dcor
   output$parameters <- c(alphaUncor,alpha,nperm)
   names(output$parameters) <- c("alpha","alpha corrected","nperm")
   #define its class
-  class(output) <- "RTMA"
+  class(output) <- c("RTMA","list")
   
   return(output)
 }

@@ -60,7 +60,7 @@
 #'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
 #' In addition to the relationships recognized by RTMA, \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"CatchUp"},  \code{"Escape"}).
-#' In asymmetric relationships, the two trajectories have contrasted behavior denoted in \code{relationship} by additional descriptive labels pasted to the relationship identified by RTMA using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrices, these additional labels apply to the row trajectory.
+#' In asymmetric relationships, the two trajectories have different behavior denoted in \code{relationship} by additional descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{"relationship"}, the suffixes apply to the ROW trajectory.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF

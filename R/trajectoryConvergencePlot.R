@@ -27,7 +27,7 @@
 #' @references
 #' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
-#' @seealso \code{\link{trajectoryConvergence}},\code{\link{RTMA}}, \code{\link{cycleShiftArrows}}
+#' @seealso \code{\link{trajectoryConvergence}},\code{\link{trajectoryRMA}}, \code{\link{cycleShiftArrows}}
 #' 
 #' @examples
 #' data("avoca")

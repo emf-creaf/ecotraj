@@ -204,7 +204,7 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 }
 \seealso{
-\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

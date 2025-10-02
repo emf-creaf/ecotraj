@@ -98,7 +98,7 @@
 #' 
 #' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
-#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 #' 
 #' @examples 
 #' #Description of entities (sites) and surveys

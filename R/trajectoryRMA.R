@@ -31,7 +31,7 @@
 #'     \item{\code{"Departing"} relationship: One trajectory moves away from the other.}
 #'     \item{\code{"Departing-Stationary"} relationship: As \code{"Departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
 #'     \item{\code{"Pursuit"} relationship: The two trajectories follow each other.}
-#'     \item{\code{"Catchup"} relationship: As \code{"Pursuit"} but the following trajectory moves faster.}
+#'     \item{\code{"Catch-up"} relationship: As \code{"Pursuit"} but the following trajectory moves faster.}
 #'     \item{\code{"Escape"} relationship: As \code{"Pursuit"} but the leading trajectory is faster.}
 #'     \item{\code{"Parallel"} relationship: The two trajectories travel side by side with broadly similar movements.}
 #'     \item{\code{"Antiparallel"} relationship: As \code{"Parallel"} but the two trajectories travel in opposite directions.}
@@ -59,8 +59,8 @@
 #'     \item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
 #'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
-#' In addition to the relationships recognized by RTMA, \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"CatchUp"},  \code{"Escape"}).
-#' In asymmetric relationships, the two trajectories have different behavior denoted in \code{relationship} by additional descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{"relationship"}, the suffixes apply to the ROW trajectory.
+#' In addition to the relationships recognized by RTMA, \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"Catch-up"},  \code{"Escape"}).
+#' In asymmetric relationships, the two trajectories have different behavior denoted in \code{relationship} by additional descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{relationship}, the suffixes apply to the ROW trajectories.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -224,14 +224,14 @@ trajectoryRMA <- function(x,
                 output$relationship[j,k] <- "Other (opposed sym and asym)"
               }
             }else{
-              #this is the CatchUp relationship with symmetric convergence, and disagreeing asymmetric tests
-              output$relationship[k,j] <- "CatchUp"
+              #this is the Catch-up relationship with symmetric convergence, and disagreeing asymmetric tests
+              output$relationship[k,j] <- "Catch-up"
               if (asym$tau[k,j]<0){
-                output$relationship[k,j] <- "CatchUp_Follower"
-                output$relationship[j,k] <- "CatchUp_Leader"
+                output$relationship[k,j] <- "Catch-up_Follower"
+                output$relationship[j,k] <- "Catch-up_Leader"
               }else{
-                output$relationship[k,j] <- "CatchUp_Leader"
-                output$relationship[j,k] <- "CatchUp_Follower"
+                output$relationship[k,j] <- "Catch-up_Leader"
+                output$relationship[j,k] <- "Catch-up_Follower"
               }
             }
           }else{

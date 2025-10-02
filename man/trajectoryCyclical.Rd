@@ -239,7 +239,7 @@ cycleMetrics(x = cyclicalTrajToy,
 
 }
 \references{
-Djeghri et al. (in preparation) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
+Djeghri et al. (under review) Going round in cycles, but going somewhere: Ecological Trajectory Analysis as a tool to decipher seasonality and other cyclical dynamics.
 }
 \seealso{
 \code{\link{trajectoryCyclicalPlots}}, \code{\link{cycleShiftArrows}}, \code{\link{trajectoryMetrics}}, \code{\link{trajectoryComparison}}, \code{\link{trajectoryConvergencePlot}}

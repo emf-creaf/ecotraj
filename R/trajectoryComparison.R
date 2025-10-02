@@ -98,7 +98,7 @@
 #' 
 #' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
-#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
 #' 
 #' @examples 
 #' #Description of entities (sites) and surveys
@@ -663,7 +663,7 @@ trajectoryCorrespondence <- function(x, nperm = 999){
           stat2perm <- sum(diag(dperm[,ncol(dperm):1]))
           perms[i] <- stat2perm-stat1perm
         }
-        results[k,j] <- sum(abs(perms)>=abs(measure))/nperm
+        results[k,j] <- sum(abs(c(perms,measure))>=abs(measure))/(nperm+1)
         results[j,k] <- measure
       }else{
         warning(paste0("trajectories ",j, " and ",k," do not have the same number of surveys."))

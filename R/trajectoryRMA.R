@@ -59,8 +59,8 @@
 #'     \item{\code{dynamicCorrespondence}, a matrix containing the results of the the dynamic correspondence tests (partial if \code{full.out = FALSE}).}
 #'     \item{\code{parameters}, a vector containing the parameters \code{alpha}, the \enc{Šidák}{Sidak} corrected \code{alpha}, and \code{nperm}}.
 #'  }
-#' In addition to the relationships recognized by RTMA, \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"Catch-up"},  \code{"Escape"}).
-#' In asymmetric relationships, the two trajectories have different behavior denoted in \code{relationship} by additional descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{relationship}, the suffixes apply to the ROW trajectories.
+#' In addition to the relationships recognized by RTMA, matrix \code{relationship} provides details on asymmetric relationships (namely \code{"Approaching"}, \code{"Approaching-Stationary"}, \code{"Departing"}, \code{"Departing-Stationary"}, \code{"Pursuit"},  \code{"Catch-up"},  \code{"Escape"}).
+#' In asymmetric relationships, the two trajectories have different behavior denoted by descriptive suffixes pasted on the relationship labels using \code{"_"} as a separator (e.g. \code{"Departing_Departer"}). In the matrix \code{relationship}, the suffixes apply to the ROW trajectories.
 #' 
 #' @author Nicolas Djeghri, UBO
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF

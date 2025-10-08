@@ -6,6 +6,7 @@
 #' @param alpha The alpha level for the tests performed in RTMA. Defaults to \code{0.05}.
 #' @param nperm Passed to function \code{\link{trajectoryCorrespondence}}. The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.
 #' @param full.output Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to \code{FALSE} will improve computation speed but yield incomplete outputs (see details).
+#' @param verbose Passed to function \code{\link{trajectoryCorrespondence}}. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to \code{FALSE}. Ignored if \code{full.output = FALSE}.
 #' @param add Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' 
 #' @details
@@ -104,6 +105,7 @@ trajectoryRMA <- function(x,
                           alpha = 0.05,
                           nperm = 999,
                           full.output = TRUE,
+                          verbose = FALSE,
                           add = TRUE
                           ){
   
@@ -143,7 +145,7 @@ trajectoryRMA <- function(x,
   
   #dynamic correspondence tests
   if (full.output == TRUE){
-    Dcor <- trajectoryCorrespondence(x,nperm)
+    Dcor <- trajectoryCorrespondence(x,nperm,verbose=verbose)
   } else if (full.output == FALSE){
     Dcor <- matrix(NA,length(trajs),length(trajs))
     colnames(Dcor) <- trajs

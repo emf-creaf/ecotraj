@@ -4,7 +4,14 @@
 \alias{trajectoryRMA}
 \title{Relative Trajectory Movement Assessment (RTMA)}
 \usage{
-trajectoryRMA(x, alpha = 0.05, nperm = 999, full.output = TRUE, add = TRUE)
+trajectoryRMA(
+  x,
+  alpha = 0.05,
+  nperm = 999,
+  full.output = TRUE,
+  verbose = FALSE,
+  add = TRUE
+)
 }
 \arguments{
 \item{x}{An object of class \code{\link{trajectories}}.}
@@ -13,7 +20,9 @@ trajectoryRMA(x, alpha = 0.05, nperm = 999, full.output = TRUE, add = TRUE)
 
 \item{nperm}{Passed to function \code{\link{trajectoryCorrespondence}}. The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.}
 
-\item{full.output}{Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to FALSE will improve computation speed but yield incomplete outputs (see details).}
+\item{full.output}{Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to \code{FALSE} will improve computation speed but yield incomplete outputs (see details).}
+
+\item{verbose}{Passed to function \code{\link{trajectoryCorrespondence}}. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to \code{FALSE}. Ignored if \code{full.output = FALSE}.}
 
 \item{add}{Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 }

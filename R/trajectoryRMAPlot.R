@@ -1,3 +1,66 @@
+#' Heat map-like plots for Relative Trajectory Movement Assessment (RTMA)
+#'
+#' Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Trajectory Movement Assessment (RTMA) performed by function \code{\link{trajectoryRMA}}.
+#' 
+#' @param x An object of class \code{\link{RTMA}}.
+#' @param mode The mode of trajectory relationship display (see details). Defaults to \code{"full"}, ignored if \code{relationships.colors}.
+#' @param relationships.colors Vector of user-chosen colors to represent trajectory relationships (see details). Overrides \code{mode}. 
+#' @param traj.names The names of trajectories. Defaults to the names provided in \code{x}.
+#' @param order.row A re-ordering (and potential selection) of the rows of the output. If provided without \code{order.col}, the re-ordering is also performed on columns.
+#' @param order.col If \code{order.row} is provided, this parameter allows to set a different order or selection for columns of the final display (allowing rectangular plots).
+#' @param vertical Flag to indicate if the top trajectory names should be rotated 90°, defaults to \code{FALSE}.
+#' @param legend Flag to indicate if the legend should be plotted, defaults to \code{FALSE}.
+#'
+#' @details
+#' Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Trajectory Movement Assessment (RTMA).
+#' A key feature of the function is its different \code{mode} of representation, allowing to put more or less emphasis on some aspect of trajectories relative movements.
+#' The 12 relative movement relationships recognized by RTMA may belong to three higher-order groups: the convergence group, the divergence group and the oriented group (see \code{\link{trajectoryRMAPlot}} for more details).
+#' The parameter \code{mode} allows to display targeted groups or combination of groups instead of the detailed relationships. Possible values for \code{mode} are:
+#' \itemize{
+#'     \item{\code{"full"}: Default value. Display the finest level relationships.}
+#'     \item{\code{"convdiv"}: Displays and groups relationships belonging to the convergence and divergence groups.}
+#'     \item{\code{"oriented"}: Displays and groups relationships belonging to the oriented group.}
+#'     \item{\code{"crossed.groups"}: Displays and groups relationships belonging simultaneously to the oriented group and either the convergence or the divergence group.}
+#'     \item{\code{"convdiv.complete"}: As \code{"convdiv"} but adding the detailed relationship for relationships not considered.}
+#'     \item{\code{"oriented.complete"}: As \code{"oriented"} but adding the detailed relationship for relationships not considered.}
+#'     \item{\code{"crossed.groups.complete"}: As \code{"crossed.groups"} but adding the detailed relationship for relationships not considered.}
+#' }
+#' Relationships belonging to the oriented group are asymmetric. Practically, this means that one trajectory is in front while the other is in the back.
+#' In the \code{trajectoryRMAPlot} output, crossed cells indicate that the corresponding ROW trajectory is the trajectory in front.
+#' 
+#' @author Nicolas Djeghri, UBO
+#' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
+#' 
+#' @references
+#' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
+#'
+#' @seealso \code{\link{trajectoryRMA}}, \code{\link{trajectoryConvergencePlot}} 
+#'
+#' @examples
+#' #Prepare data
+#' data("avoca")
+#' avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
+#'                                        method ="manhattan", 
+#'                                        transform = function(x){log(x+1)})
+#' years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
+#' avoca_times <- years[avoca_surveys]
+#' avoca_x <- defineTrajectories(d = avoca_D_man,  
+#'                               sites = avoca_sites, 
+#'                               times = avoca_times)
+#' #Perform RTMA
+#' avoca_RTMA <- trajectoryRMA(avoca_x)
+#' 
+#' #Default (full) output
+#' trajectoryRMAPlot(avoca_RTMA,legend=T)
+#' 
+#' #Play with different visualization modes of relationship groups
+#' trajectoryRMAPlot(avoca_RTMA,mode="convdiv",legend=T)
+#' trajectoryRMAPlot(avoca_RTMA,mode="oriented",legend=T)
+#' trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups",legend=T)
+#' 
+#' 
+#' @name trajectoryRMAPlot
+#' @export
 trajectoryRMAPlot <- function(x,
                               mode = "full",
                               relationships.colors = NULL,

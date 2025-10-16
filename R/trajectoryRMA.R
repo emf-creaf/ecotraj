@@ -8,6 +8,10 @@
 #' @param full.output Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to \code{FALSE} will improve computation speed but yield incomplete outputs (see details).
 #' @param verbose Passed to function \code{\link{trajectoryCorrespondence}}. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to \code{FALSE}. Ignored if \code{full.output = FALSE}.
 #' @param add Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
+#'
+#' @encoding UTF-8
+#' @aliases RTMA trajectoryRMA
+#' 
 #' 
 #' @details
 #' Function \code{trajectoryRMA} attributes a dynamic relationship to pairs of ecological trajectories A and B describing their relative movement. It does so by combining four tests:
@@ -31,7 +35,7 @@
 #'     \item{\code{"parallel"} - The two trajectories travel side by side with broadly similar movements.}
 #'     \item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
 #'     \item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
-#'  }
+#' }
 #' The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section).
 #' \itemize{
 #'     \item{\code{"approaching"} - One trajectory approaches the other.}
@@ -53,7 +57,7 @@
 #' Function \code{trajectoryRMA} performs by default all tests but it is possible to only perform the tests useful for RTMA by setting \code{full.output = FALSE}.
 #' This will reduce computation time but the details of the output of RTMA will not contain the information on all possible dynamic correspondence tests, only on relevant ones.
 #' 
-#' PLOTTING: Function \code{\link{trajectoryConvergencePlot}} provides options to plot the results of RTMA.
+#' PLOTTING: Functions \code{\link{trajectoryConvergencePlot}} and \code{\link{trajectoryRMAPlot}} provide options to plot the results of RTMA.
 #' @returns
 #' Function \code{trajectoryRMA} returns an object of class \code{\link{list}} containing:
 #' \itemize{

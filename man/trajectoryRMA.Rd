@@ -29,6 +29,7 @@ trajectoryRMA(
 \value{
 Function \code{trajectoryRMA} returns an object of class \code{\link{list}} containing:
 \itemize{
+\item{\code{dynamic_relationships_taxonomy}: a data-frame containing the names of the relative movement relationships recognized by RTMA as well as higher order groupings. This part of \code{trajectoryRMA} output is independent of the trajectories used as input and only serve as an interpretation guide (see Djeghri et al. in prep).}
 \item{\code{dynamic_relationships}: a matrix containing the relative movement relationships attributed to each pair of trajectories.}
 \item{\code{symmetric_convergence}: a list containing the results of the symmetric convergence test.}
 \item{\code{asymmetric_convergence}: a list containing the results of the two asymmetric convergence tests.}

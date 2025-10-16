@@ -347,6 +347,45 @@ trajectoryRMA <- function(x,
   output$correspondence <- Dcor
   output$parameters <- c(alphaUncor,alpha,nperm)
   names(output$parameters) <- c("alpha","corrected_alpha","nperm")
+  
+  output[["dynamic_relationships_taxonomy"]] <- data.frame(dynamic_relationship=c("neutral (symmetric)","parallel (symmetric)","antiparallel (symmetric)",
+                                                                                "convergence (symmetric)","weak convergence (symmetric)",
+                                                                                "divergence (symmetric)","weak divergence (symmetric)",
+                                                                                "approaching (approacher)","approaching (target)",
+                                                                                "departing (departer)","departing (origin)",
+                                                                                "approaching-stationary (approacher)",
+                                                                                "approaching-stationary (stationary target)",
+                                                                                "departing-stationary (departer)",
+                                                                                "departing-stationary (stationary origin)",
+                                                                                "catch-up (leader)","catch-up (follower)",
+                                                                                "pursuit (leader)","pursuit (follower)",
+                                                                                "escape (leader)","escape (follower)"),
+                                                         conv_div_group=c(NA,NA,NA,
+                                                                          "convergence group","convergence group",
+                                                                          "divergence group","divergence group",
+                                                                          "convergence group","convergence group",
+                                                                          "divergence group","divergence group",
+                                                                          "convergence group",
+                                                                          "convergence group",
+                                                                          "divergence group",
+                                                                          "divergence group",
+                                                                          "convergence group","convergence group",
+                                                                          NA,NA,
+                                                                          "divergence group","divergence group"),
+                                                         oriented_group=c(NA,NA,NA,
+                                                                          NA,NA,
+                                                                          NA,NA,
+                                                                          "oriented group (back)","oriented group (front)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (back)",
+                                                                          "oriented group (front)",
+                                                                          "oriented group (front)",
+                                                                          "oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)"))
+  rownames(output$dynamic_relationships_taxonomy) <- RTMA$dynamic_relationships_taxonomy$dynamic_relationship
+  
   #define its class
   class(output) <- c("RTMA","list")
   

@@ -184,8 +184,8 @@ trajectoryRMAPlot <- function(x,
   }
   text(rownames(rels),pos=2,x=0,y=nrows:1-0.5,xpd=NA)
   
+  #add legend
   if (legend==T){
-    
     names(relationships.colors) <- substr(names(relationships.colors),
                                           start=1,
                                           stop=(unlist(lapply(
@@ -193,7 +193,26 @@ trajectoryRMAPlot <- function(x,
                                             function(x) which(x == "(")))-2))
     
     relationships.colors <- relationships.colors[unique(names(relationships.colors))]
-    legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,
-           fill=relationships.colors,names(relationships.colors))
+    relationships.colors <- relationships.colors[c("neutral","parallel","antiparallel",
+                                                   "convergence","weak convergence","approaching-stationary","approaching",
+                                                   "catch-up","pursuit","escape",
+                                                   "departing","departing-stationary","weak divergence","divergence")]
+    
+    
+    leg <- legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,title="Relative movement\nrelationships",title.font=2,text.font=1,
+                  fill=relationships.colors[1:3],names(relationships.colors)[1:3])
+    
+    leg <- legend(x=ncols,y=leg$rect$top-leg$rect$h,title="Relative movement",title.font=2,text.font=1,title.col="white",
+                  xpd=NA,bty="n",cex=0.7,
+                  fill=relationships.colors[-(1:3)],names(relationships.colors)[-(1:3)])
+    ydist <- (leg$text$y[1]-leg$text$y[2])/2
+    rect(xleft=leg$rect$left+ncols/100,xright=leg$rect$left+leg$rect$w,
+         ytop=c(leg$text$y[1]+ydist,leg$text$y[7]+ydist),
+         ybottom=c(leg$text$y[5]-ydist,leg$text$y[11]-ydist),border=relationships.colors[c(4,14)],xpd=NA,lwd=2)
+    text(c("Convergence group","Divergence group"),cex=0.8,col=relationships.colors[c(4,14)],
+         pos=4,x=leg$rect$left+ncols/100,y=c(leg$text$y[1]+ydist*3,leg$text$y[11]-ydist*3),xpd=NA,font=4)
+    rect(xleft=leg$rect$left+ncols/200,xright=leg$rect$left+leg$rect$w+ncols/200,
+         ytop=leg$text$y[3]+ydist,ybottom=leg$text$y[9]-ydist,border=relationships.colors[9],lwd=2,xpd=NA)
+    text("Oriented group",srt=90,cex=0.8,y=leg$text$y[6],x=leg$rect$left+leg$rect$w+ncols/200,xpd=NA,col=relationships.colors[9],font=4,adj=c(0.5,1))
   }
 }

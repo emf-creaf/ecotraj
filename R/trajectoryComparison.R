@@ -616,8 +616,9 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
 
 #' @rdname trajectoryComparison
 #' @param nperm The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.
+#' @param verbose Boolean. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to \code{FALSE}.
 #' @export
-trajectoryCorrespondence <- function(x, nperm = 999){
+trajectoryCorrespondence <- function(x, nperm = 999, verbose = FALSE){
   if(!inherits(x,"trajectories"))
     stop ("'x' should be of class 'trajectory'")
   if(inherits(x, "fd.trajectories")) {
@@ -637,7 +638,7 @@ trajectoryCorrespondence <- function(x, nperm = 999){
   rownames(results) <- trajs
   colnames(results) <- trajs
   
-  
+  count <- 0
   for (j in trajs[1:(length(trajs)-1)]){
     for (k in trajs[(which(trajs==j)+1):length(trajs)]){
       site1 <- which(sites==j)
@@ -667,6 +668,10 @@ trajectoryCorrespondence <- function(x, nperm = 999){
         results[j,k] <- measure
       }else{
         warning(paste0("trajectories ",j, " and ",k," do not have the same number of surveys."))
+      }
+      if (verbose == TRUE){
+        count <- count+1
+        print(paste("Progress =",round(100*(count/((length(trajs)*(length(trajs)-1))/2)),2),"%"))
       }
     }
   }

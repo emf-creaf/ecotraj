@@ -5,8 +5,12 @@
 #' @param x An object of class \code{\link{trajectories}}.
 #' @param alpha The alpha level for the tests performed in RTMA. Defaults to \code{0.05}.
 #' @param nperm Passed to function \code{\link{trajectoryCorrespondence}}. The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.
-#' @param full.output Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to FALSE will improve computation speed but yield incomplete outputs (see details).
+#' @param full.output Flag to indicate that the full output of tests should be computed. Defaults to \code{TRUE}. Setting to \code{FALSE} will improve computation speed but yield incomplete outputs (see details).
 #' @param add Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
+#'
+#' @encoding UTF-8
+#' @aliases RTMA trajectoryRMA
+#' 
 #' 
 #' @details
 #' Function \code{trajectoryRMA} attributes a dynamic relationship to pairs of ecological trajectories A and B describing their relative movement. It does so by combining four tests:
@@ -30,8 +34,8 @@
 #'     \item{\code{"parallel"} - The two trajectories travel side by side with broadly similar movements.}
 #'     \item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
 #'     \item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
-#'  }
-#' The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section).
+#' }
+#' The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
 #' \itemize{
 #'     \item{\code{"approaching"} - One trajectory approaches the other.}
 #'     \item{\code{"approaching-stationary"} - As in \code{"approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
@@ -44,6 +48,18 @@
 #' 
 #' In rare cases, unlikely relationships (labelled \code{"unknown"}, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.
 #' 
+#' RELATIONSHIP GROUPS: It is possible to further sort trajectory relationships in broad \emph{relationship groups} (not always mutually exclusive). Three such groups are recognized in RTMA:
+#' \itemize{
+#'    \item{The \code{"convergence group"}, includes relationships that display convergence in the broadest sense with a trend of diminishing distance between the two trajectories. Formally this group includes relationships of
+#'    \code{"convergence"} and its weak version, \code{"approaching"},\code{"approaching-stationary"} and \code{"catch-up"}.}
+#'    \item{The \code{"divergence group"}, includes relationships that display divergence in the broadest sense with a trend of increasing distance between the two trajectories. Formally this group includes relationships of
+#'    \code{"divergence"} and its weak version, \code{"departing"},\code{"departing-stationary"} and \code{"escape"}.}
+#'    \item{The \code{"oriented group"}, includes relationships that have, broadly speaking, a trajectory \emph{in front} and a trajectory \emph{in the back} implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
+#'    \code{"approaching"},\code{"approaching-stationary"}, \code{"departing"},\code{"departing-stationary"}, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
+#' }
+#' Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that \code{"parallel"},\code{"antiparallel"} and \code{"neutral"} relationships stand on their own, not belonging to any groups.
+#' In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).
+#' 
 #' LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 #' We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.
 #' Note also that, because RTMA incorporates a correction for multiple testing, it needs somewhat long trajectories to operate (minimum number of survey = 6 at alpha = 0.05).
@@ -52,10 +68,11 @@
 #' Function \code{trajectoryRMA} performs by default all tests but it is possible to only perform the tests useful for RTMA by setting \code{full.output = FALSE}.
 #' This will reduce computation time but the details of the output of RTMA will not contain the information on all possible dynamic correspondence tests, only on relevant ones.
 #' 
-#' PLOTTING: Function \code{\link{trajectoryConvergencePlot}} provides options to plot the results of RTMA.
+#' PLOTTING: Functions \code{\link{trajectoryConvergencePlot}} and \code{\link{trajectoryRMAPlot}} provide options to plot the results of RTMA.
 #' @returns
-#' Function \code{trajectoryRMA} returns an object of class \code{\link{list}} containing:
+#' Function \code{trajectoryRMA} returns an object of classes \code{\link{list}} and \code{RTMA} containing:
 #' \itemize{
+#'     \item{\code{dynamic_relationships_taxonomy}: a data-frame containing the names of the relative movement relationships recognized by RTMA as well as corresponding relationship groups. This part of \code{trajectoryRMA} output is independent of the trajectories used as input and is primarily a bestiary (see details). It can be used to transform the \code{dynamic_relationships} matrix (see below) to focus on chosen relationship groups. }
 #'     \item{\code{dynamic_relationships}: a matrix containing the relative movement relationships attributed to each pair of trajectories.}
 #'     \item{\code{symmetric_convergence}: a list containing the results of the symmetric convergence test.}
 #'     \item{\code{asymmetric_convergence}: a list containing the results of the two asymmetric convergence tests.}
@@ -345,6 +362,45 @@ trajectoryRMA <- function(x,
   output$correspondence <- Dcor
   output$parameters <- c(alphaUncor,alpha,nperm)
   names(output$parameters) <- c("alpha","corrected_alpha","nperm")
+  
+  output[["dynamic_relationships_taxonomy"]] <- data.frame(dynamic_relationship=c("neutral (symmetric)","parallel (symmetric)","antiparallel (symmetric)",
+                                                                                "convergence (symmetric)","weak convergence (symmetric)",
+                                                                                "divergence (symmetric)","weak divergence (symmetric)",
+                                                                                "approaching (approacher)","approaching (target)",
+                                                                                "departing (departer)","departing (origin)",
+                                                                                "approaching-stationary (approacher)",
+                                                                                "approaching-stationary (stationary target)",
+                                                                                "departing-stationary (departer)",
+                                                                                "departing-stationary (stationary origin)",
+                                                                                "catch-up (leader)","catch-up (follower)",
+                                                                                "pursuit (leader)","pursuit (follower)",
+                                                                                "escape (leader)","escape (follower)"),
+                                                         conv_div_group=c(NA,NA,NA,
+                                                                          "convergence group","convergence group",
+                                                                          "divergence group","divergence group",
+                                                                          "convergence group","convergence group",
+                                                                          "divergence group","divergence group",
+                                                                          "convergence group",
+                                                                          "convergence group",
+                                                                          "divergence group",
+                                                                          "divergence group",
+                                                                          "convergence group","convergence group",
+                                                                          NA,NA,
+                                                                          "divergence group","divergence group"),
+                                                         oriented_group=c(NA,NA,NA,
+                                                                          NA,NA,
+                                                                          NA,NA,
+                                                                          "oriented group (back)","oriented group (front)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (back)",
+                                                                          "oriented group (front)",
+                                                                          "oriented group (front)",
+                                                                          "oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)",
+                                                                          "oriented group (front)","oriented group (back)"))
+  rownames(output$dynamic_relationships_taxonomy) <- output$dynamic_relationships_taxonomy$dynamic_relationship
+  
   #define its class
   class(output) <- c("RTMA","list")
   

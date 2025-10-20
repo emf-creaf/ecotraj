@@ -20,7 +20,7 @@ trajectoryDistances(
 
 trajectoryConvergence(x, type = "pairwise.asymmetric", add = TRUE)
 
-trajectoryCorrespondence(x, nperm = 999)
+trajectoryCorrespondence(x, nperm = 999, verbose = FALSE)
 
 trajectoryShifts(x, add = TRUE)
 }
@@ -36,6 +36,8 @@ trajectoryShifts(x, add = TRUE)
 \item{type}{A string indicating the convergence test, either \code{"pairwise.asymmetric"}, \code{"pairwise.symmetric"} or \code{"multiple"} (see details).}
 
 \item{nperm}{The number of permutations to be used in the dynamic correspondence test. Defaults to \code{999}.}
+
+\item{verbose}{Boolean. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to \code{FALSE}.}
 }
 \value{
 Function \code{trajectoryDistances} returns an object of class \code{\link{dist}} containing the distances between trajectories (if \code{symmetrization = NULL} then the object returned is of class \code{matrix}).

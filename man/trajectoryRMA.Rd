@@ -122,7 +122,7 @@ Djeghri et al. (in preparation) Uncovering the relative movements of ecological 
 \enc{Šidák}{Sidak}, Z. (1967) Rectangular confidence regions for the means of multivariate normal distributions. Journal of the American Statistical Association 62:648-633.
 }
 \seealso{
-\code{\link{trajectoryConvergence}}, \code{\link{trajectoryCorrespondence}}, \code{\link{trajectoryConvergencePlot}}
+\code{\link{trajectoryConvergence}}, \code{\link{trajectoryCorrespondence}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMAPlot}}
 }
 \author{
 Nicolas Djeghri, UBO

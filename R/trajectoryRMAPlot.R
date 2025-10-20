@@ -56,12 +56,12 @@
 #' 
 #' #Default (full) output
 #' par(mar=c(2,2,2,12)) #New margin to accomodate the legend
-#' trajectoryRMAPlot(avoca_RTMA,legend=T)
+#' trajectoryRMAPlot(avoca_RTMA,legend=TRUE)
 #' 
 #' #Play with different visualization modes of relationship groups
-#' trajectoryRMAPlot(avoca_RTMA,mode="convdiv",legend=T)
-#' trajectoryRMAPlot(avoca_RTMA,mode="oriented",legend=T)
-#' trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups",legend=T)
+#' trajectoryRMAPlot(avoca_RTMA,mode="convdiv",legend=TRUE)
+#' trajectoryRMAPlot(avoca_RTMA,mode="oriented",legend=TRUE)
+#' trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups",legend=TRUE)
 #' 
 #' 
 #' @name trajectoryRMAPlot

@@ -18,13 +18,13 @@ trajectoryRMAPlot(
 \arguments{
 \item{x}{An object of class \code{\link{RTMA}}.}
 
-\item{mode}{The mode of trajectory relationship display (see details). Defaults to \code{"full"}, ignored if \code{relationships.colors}.}
+\item{mode}{The mode of trajectory relationship display (see details). Defaults to \code{"full"}, ignored if \code{relationships.colors} is specified.}
 
-\item{relationships.colors}{Vector of user-chosen colors to represent trajectory relationships (see details). Overrides \code{mode}.}
+\item{relationships.colors}{Vector of user-chosen colors to represent trajectory relationships. Must have specific properties (see details). Overrides \code{mode}.}
 
 \item{traj.names}{The names of trajectories. Defaults to the names provided in \code{x}.}
 
-\item{order.row}{A re-ordering (and potential selection) of the rows of the output. If provided without \code{order.col}, the re-ordering is also performed on columns.}
+\item{order.row}{A re-ordering (and potential selection) of the rows of the output. If provided without \code{order.col}, the re-ordering is also applied to columns.}
 
 \item{order.col}{If \code{order.row} is provided, this parameter allows to set a different order or selection for columns of the final display (allowing rectangular plots).}
 
@@ -38,19 +38,23 @@ Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Traj
 \details{
 Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Trajectory Movement Assessment (RTMA).
 A key feature of the function is its different \code{mode} of representation, allowing to put more or less emphasis on some aspect of trajectories relative movements.
-The 12 relative movement relationships recognized by RTMA may belong to three higher-order groups: the convergence group, the divergence group and the oriented group (see \code{\link{trajectoryRMAPlot}} for more details).
+The 12 relative movement relationships recognized by RTMA may belong to three higher-order groups: the convergence group, the divergence group and the oriented group (see \code{\link{trajectoryRMA}} for more details).
 The parameter \code{mode} allows to display targeted groups or combination of groups instead of the detailed relationships. Possible values for \code{mode} are:
 \itemize{
 \item{\code{"full"}: Default value. Display the finest level relationships.}
 \item{\code{"convdiv"}: Displays and groups relationships belonging to the convergence and divergence groups.}
 \item{\code{"oriented"}: Displays and groups relationships belonging to the oriented group.}
 \item{\code{"crossed.groups"}: Displays and groups relationships belonging simultaneously to the oriented group and either the convergence or the divergence group.}
-\item{\code{"convdiv.complete"}: As \code{"convdiv"} but adding the detailed relationship for relationships not considered.}
-\item{\code{"oriented.complete"}: As \code{"oriented"} but adding the detailed relationship for relationships not considered.}
-\item{\code{"crossed.groups.complete"}: As \code{"crossed.groups"} but adding the detailed relationship for relationships not considered.}
+\item{\code{"convdiv.complete"}: As \code{"convdiv"} but adding in details the relationships that are neither from the convergence or divergence group.}
+\item{\code{"oriented.complete"}: As \code{"oriented"} but adding in details the relationships that are not from the oriented group.}
+\item{\code{"crossed.groups.complete"}: As \code{"crossed.groups"} but adding in details the relationships that do not belong to both the oriented group and either the convergence or divergence group.}
 }
 Relationships belonging to the oriented group are asymmetric. Practically, this means that one trajectory is in front while the other is in the back.
 In the \code{trajectoryRMAPlot} output, crossed cells indicate that the corresponding ROW trajectory is the trajectory in front.
+
+COLORS: Each \code{mode} comes with default colors for the heat map. Nonetheless, the parameter \code{relationships.colors} allows user-defined colors instead.
+The vectors of colors provided in \code{relationships.colors} must have length 21 with \code{\link{names}} corresponding to the names of the different relationships recognized by RTMA
+(can be found in a \code{\link{RTMA}} object \code{x} with \code{x$dynamic_relationships_taxonomy$dynamic_relationship}).
 }
 \examples{
 #Prepare data

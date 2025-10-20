@@ -20,7 +20,7 @@ trajectoryRMA(x, alpha = 0.05, nperm = 999, full.output = TRUE, add = TRUE)
 \item{add}{Passed to function \code{\link{trajectoryConvergence}}. Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
 }
 \value{
-Function \code{trajectoryRMA} returns an object of class \code{\link{list}} containing:
+Function \code{trajectoryRMA} returns an object of classes \code{\link{list}} and \code{RTMA} containing:
 \itemize{
 \item{\code{dynamic_relationships_taxonomy}: a data-frame containing the names of the relative movement relationships recognized by RTMA as well as corresponding relationship groups. This part of \code{trajectoryRMA} output is independent of the trajectories used as input and is primarily a bestiary (see details). It can be used to transform the \code{dynamic_relationships} matrix (see below) to focus on chosen relationship groups. }
 \item{\code{dynamic_relationships}: a matrix containing the relative movement relationships attributed to each pair of trajectories.}

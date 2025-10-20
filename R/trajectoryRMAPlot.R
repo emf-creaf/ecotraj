@@ -55,6 +55,7 @@
 #' avoca_RTMA <- trajectoryRMA(avoca_x)
 #' 
 #' #Default (full) output
+#' par(mar=c(2,2,2,12)) #New margin to accomodate the legend
 #' trajectoryRMAPlot(avoca_RTMA,legend=T)
 #' 
 #' #Play with different visualization modes of relationship groups
@@ -197,7 +198,7 @@ trajectoryRMAPlot <- function(x,
                                                    "convergence","weak convergence","approaching-stationary","approaching",
                                                    "catch-up","pursuit","escape",
                                                    "departing","departing-stationary","weak divergence","divergence")]
-    
+    relationships.colors[is.na(relationships.colors)] <- "black"
     
     leg <- legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,title="Relative movement\nrelationships",title.font=2,text.font=1,
                   fill=relationships.colors[1:3],names(relationships.colors)[1:3])

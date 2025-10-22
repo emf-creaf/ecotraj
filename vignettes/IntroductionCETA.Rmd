@@ -451,7 +451,7 @@ points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Path,type="l",col="blue")
 
 ```{r fig = TRUE, fig.height=5, fig.width=7, fig.align = "center"}
 #Second figure: Directionality
-plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Years",ylim=c(0.36,0.45),col="red")
+plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Month",ylim=c(0.36,0.45),col="red")
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooDir,type="l",col="blue")
 ```
 

@@ -9,7 +9,7 @@
 #' @param order.row A re-ordering (and potential selection) of the rows of the output. If provided without \code{order.col}, the re-ordering is also applied to columns.
 #' @param order.col If \code{order.row} is provided, this parameter allows to set a different order or selection for columns of the final display (allowing rectangular plots).
 #' @param vertical Flag to indicate if the top trajectory names should be rotated 90°, defaults to \code{FALSE}.
-#' @param legend Flag to indicate if the legend should be plotted, defaults to \code{FALSE}.
+#' @param legend Flag to indicate if the legend should be plotted, defaults to \code{TRUE}.
 #'
 #' @details
 #' Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Trajectory Movement Assessment (RTMA).
@@ -55,13 +55,12 @@
 #' avoca_RTMA <- trajectoryRMA(avoca_x)
 #' 
 #' #Default (full) output
-#' par(mar=c(2,2,2,12)) #New margin to accomodate the legend
-#' trajectoryRMAPlot(avoca_RTMA,legend=TRUE)
+#' trajectoryRMAPlot(avoca_RTMA)
 #' 
 #' #Play with different visualization modes of relationship groups
-#' trajectoryRMAPlot(avoca_RTMA,mode="convdiv",legend=TRUE)
-#' trajectoryRMAPlot(avoca_RTMA,mode="oriented",legend=TRUE)
-#' trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups",legend=TRUE)
+#' trajectoryRMAPlot(avoca_RTMA,mode="convdiv")
+#' trajectoryRMAPlot(avoca_RTMA,mode="oriented")
+#' trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups")
 #' 
 #' 
 #' @name trajectoryRMAPlot
@@ -73,7 +72,7 @@ trajectoryRMAPlot <- function(x,
                               order.row = NULL,
                               order.col = NULL,
                               vertical = FALSE,
-                              legend = FALSE
+                              legend = TRUE
                               ){
   if (!inherits(x,"RTMA")) stop("'x' must be of class RTMA.")
   if(is.null(relationships.colors)){
@@ -82,8 +81,8 @@ trajectoryRMAPlot <- function(x,
                   "convdiv.complete",
                   "crossed.groups.complete")){
       relationships.colors <- c("white","grey70","grey30",
-                                "red2","red3",
-                                "blue2","blue3",
+                                "red3","red2",
+                                "blue3","blue2",
                                 "orange","orange",
                                 "deepskyblue","deepskyblue",
                                 "darkorange2",
@@ -195,9 +194,9 @@ trajectoryRMAPlot <- function(x,
     
     relationships.colors <- relationships.colors[unique(names(relationships.colors))]
     relationships.colors <- relationships.colors[c("neutral","parallel","antiparallel",
-                                                   "convergence","weak convergence","approaching-stationary","approaching",
+                                                   "convergence","weak convergence","approaching","weak approaching",
                                                    "catch-up","pursuit","escape",
-                                                   "departing","departing-stationary","weak divergence","divergence")]
+                                                   "weak departing","departing","weak divergence","divergence")]
     relationships.colors[is.na(relationships.colors)] <- "black"
     
     leg <- legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,title="Relative movement\nrelationships",title.font=2,text.font=1,

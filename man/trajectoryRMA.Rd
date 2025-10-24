@@ -51,7 +51,7 @@ Function \code{trajectoryRMA} attributes a dynamic relationship to pairs of ecol
 }
 To account for multiple testing, \code{trajectoryRMA} performs internally a \enc{Šidák}{Sidak} (1967) correction on the alpha level provided in parameter \code{alpha}.
 
-The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations.
+The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 10 relationships, some existing in "weak" variations.
 The following five dynamic relationships are \emph{symmetric}, i.e. applying to the two trajectories without distinction of roles:
 \itemize{
 \item{\code{"convergence"} - The two trajectories converge. Exists in a weak version.}
@@ -60,12 +60,10 @@ The following five dynamic relationships are \emph{symmetric}, i.e. applying to 
 \item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
 \item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
 }
-The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
+The following five dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
 \itemize{
-\item{\code{"approaching"} - One trajectory approaches the other.}
-\item{\code{"approaching-stationary"} - As in \code{"approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
-\item{\code{"departing"} - One trajectory moves away from the other.}
-\item{\code{"departing-stationary"} - As in \code{"departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
+\item{\code{"approaching"} - One trajectory approaches the other. Exists in a weak version.}
+\item{\code{"departing"} - One trajectory moves away from the other. Exists in a weak version.}
 \item{\code{"pursuit"} - The two trajectories follow each other.}
 \item{\code{"catch-up"} - As in \code{"pursuit"} but the following trajectory moves faster.}
 \item{\code{"escape"} - As in \code{"pursuit"} but the leading trajectory is faster.}
@@ -76,11 +74,11 @@ In rare cases, unlikely relationships (labelled \code{"unknown"}, with a short d
 RELATIONSHIP GROUPS: It is possible to further sort trajectory relationships in broad \emph{relationship groups} (not always mutually exclusive). Three such groups are recognized in RTMA:
 \itemize{
 \item{The \code{"convergence group"}, includes relationships that display convergence in the broadest sense with a trend of diminishing distance between the two trajectories. Formally this group includes relationships of
-\code{"convergence"} and its weak version, \code{"approaching"},\code{"approaching-stationary"} and \code{"catch-up"}.}
+\code{"convergence"} and \code{"approaching"} and their weak versions, as well as \code{"catch-up"}.}
 \item{The \code{"divergence group"}, includes relationships that display divergence in the broadest sense with a trend of increasing distance between the two trajectories. Formally this group includes relationships of
-\code{"divergence"} and its weak version, \code{"departing"},\code{"departing-stationary"} and \code{"escape"}.}
+\code{"divergence"} and  \code{"departing"} and their weak versions, as well as \code{"escape"}.}
 \item{The \code{"oriented group"}, includes relationships that have, broadly speaking, a trajectory \emph{in front} and a trajectory \emph{in the back} implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
-\code{"approaching"},\code{"approaching-stationary"}, \code{"departing"},\code{"departing-stationary"}, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
+\code{"approaching"} and \code{"departing"} and their weak versions, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
 }
 Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that \code{"parallel"},\code{"antiparallel"} and \code{"neutral"} relationships stand on their own, not belonging to any groups.
 In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).

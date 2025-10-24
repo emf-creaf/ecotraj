@@ -12,7 +12,7 @@ trajectoryRMAPlot(
   order.row = NULL,
   order.col = NULL,
   vertical = FALSE,
-  legend = FALSE
+  legend = TRUE
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ trajectoryRMAPlot(
 
 \item{vertical}{Flag to indicate if the top trajectory names should be rotated 90°, defaults to \code{FALSE}.}
 
-\item{legend}{Flag to indicate if the legend should be plotted, defaults to \code{FALSE}.}
+\item{legend}{Flag to indicate if the legend should be plotted, defaults to \code{TRUE}.}
 }
 \description{
 Function \code{trajectoryRMAPlot} provides heat map-like plots for Relative Trajectory Movement Assessment (RTMA) performed by function \code{\link{trajectoryRMA}}.
@@ -71,13 +71,12 @@ avoca_x <- defineTrajectories(d = avoca_D_man,
 avoca_RTMA <- trajectoryRMA(avoca_x)
 
 #Default (full) output
-par(mar=c(2,2,2,12)) #New margin to accomodate the legend
-trajectoryRMAPlot(avoca_RTMA,legend=TRUE)
+trajectoryRMAPlot(avoca_RTMA)
 
 #Play with different visualization modes of relationship groups
-trajectoryRMAPlot(avoca_RTMA,mode="convdiv",legend=TRUE)
-trajectoryRMAPlot(avoca_RTMA,mode="oriented",legend=TRUE)
-trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups",legend=TRUE)
+trajectoryRMAPlot(avoca_RTMA,mode="convdiv")
+trajectoryRMAPlot(avoca_RTMA,mode="oriented")
+trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups")
 
 
 }

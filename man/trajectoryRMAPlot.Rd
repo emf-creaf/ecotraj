@@ -71,7 +71,6 @@ avoca_x <- defineTrajectories(d = avoca_D_man,
 avoca_RTMA <- trajectoryRMA(avoca_x)
 
 #Default (full) output
-par(mar=c(2,2,2,12)) #New margin to accomodate the legend
 trajectoryRMAPlot(avoca_RTMA)
 
 #Play with different visualization modes of relationship groups

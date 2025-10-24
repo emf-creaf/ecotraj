@@ -26,7 +26,7 @@
 #'  } 
 #' To account for multiple testing, \code{trajectoryRMA} performs internally a \enc{Šidák}{Sidak} (1967) correction on the alpha level provided in parameter \code{alpha}.
 #' 
-#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations. 
+#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 10 relationships, some existing in "weak" variations. 
 #' The following five dynamic relationships are \emph{symmetric}, i.e. applying to the two trajectories without distinction of roles:
 #' \itemize{
 #'     \item{\code{"convergence"} - The two trajectories converge. Exists in a weak version.}
@@ -35,12 +35,10 @@
 #'     \item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
 #'     \item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
 #' }
-#' The following seven dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
+#' The following five dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
 #' \itemize{
-#'     \item{\code{"approaching"} - One trajectory approaches the other.}
-#'     \item{\code{"approaching-stationary"} - As in \code{"approaching"} but the trajectory approached is stationary relative to the approaching trajectory.}
-#'     \item{\code{"departing"} - One trajectory moves away from the other.}
-#'     \item{\code{"departing-stationary"} - As in \code{"departing"} but the trajectory departed from is stationary relative to the departing trajectory.}
+#'     \item{\code{"approaching"} - One trajectory approaches the other. Exists in a weak version.}
+#'     \item{\code{"departing"} - One trajectory moves away from the other. Exists in a weak version.}
 #'     \item{\code{"pursuit"} - The two trajectories follow each other.}
 #'     \item{\code{"catch-up"} - As in \code{"pursuit"} but the following trajectory moves faster.}
 #'     \item{\code{"escape"} - As in \code{"pursuit"} but the leading trajectory is faster.}
@@ -51,11 +49,11 @@
 #' RELATIONSHIP GROUPS: It is possible to further sort trajectory relationships in broad \emph{relationship groups} (not always mutually exclusive). Three such groups are recognized in RTMA:
 #' \itemize{
 #'    \item{The \code{"convergence group"}, includes relationships that display convergence in the broadest sense with a trend of diminishing distance between the two trajectories. Formally this group includes relationships of
-#'    \code{"convergence"} and its weak version, \code{"approaching"},\code{"approaching-stationary"} and \code{"catch-up"}.}
+#'    \code{"convergence"} and \code{"approaching"} and their weak versions, as well as \code{"catch-up"}.}
 #'    \item{The \code{"divergence group"}, includes relationships that display divergence in the broadest sense with a trend of increasing distance between the two trajectories. Formally this group includes relationships of
-#'    \code{"divergence"} and its weak version, \code{"departing"},\code{"departing-stationary"} and \code{"escape"}.}
+#'    \code{"divergence"} and  \code{"departing"} and their weak versions, as well as \code{"escape"}.}
 #'    \item{The \code{"oriented group"}, includes relationships that have, broadly speaking, a trajectory \emph{in front} and a trajectory \emph{in the back} implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
-#'    \code{"approaching"},\code{"approaching-stationary"}, \code{"departing"},\code{"departing-stationary"}, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
+#'    \code{"approaching"} and \code{"departing"} and their weak versions, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
 #' }
 #' Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that \code{"parallel"},\code{"antiparallel"} and \code{"neutral"} relationships stand on their own, not belonging to any groups.
 #' In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).
@@ -211,11 +209,11 @@ trajectoryRMA <- function(x,
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
               #this is the Departing-Stationary relationship where there is one divergent asymmetric test and symmetric divergence
               if (asym$p.value[k,j]<=alpha){
-                relationships[k,j] <- "departing-stationary (departer)"
-                relationships[j,k] <- "departing-stationary (stationary origin)"
+                relationships[k,j] <- "departing (departer)"
+                relationships[j,k] <- "departing (origin)"
               }else{
-                relationships[k,j] <- "departing-stationary (stationary origin)"
-                relationships[j,k] <- "departing-stationary (departer)"
+                relationships[k,j] <- "departing (origin)"
+                relationships[j,k] <- "departing (departer)"
               }
             }else{
               #this is an unlikely relationship with one asymmetric test significant and opposed to the symmetric test
@@ -260,11 +258,11 @@ trajectoryRMA <- function(x,
             if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]<0){
               #this is the Approaching-Stationary relationship where there is one convergent asymmetric test and symmetric convergence
               if (asym$p.value[k,j]<=alpha){
-                relationships[k,j] <- "approaching-stationary (approacher)"
-                relationships[j,k] <- "approaching-stationary (stationary target)"
+                relationships[k,j] <- "approaching (approacher)"
+                relationships[j,k] <- "approaching (target)"
               }else{
-                relationships[k,j] <- "approaching-stationary (stationary target)"
-                relationships[j,k] <- "approaching-stationary (approacher)"
+                relationships[k,j] <- "approaching (target)"
+                relationships[j,k] <- "approaching (approacher)"
               }
             }else{
               #this is an unlikely relationship with one asymmetric test significant and opposed to the symmetric test
@@ -333,20 +331,20 @@ trajectoryRMA <- function(x,
           if (asym$tau[c(j,k),c(j,k)][which(asym$p.value[c(j,k),c(j,k)]<=alpha)]>0){
             #this is the Departing relationship where there is only one divergent asymmetric test significant
             if (asym$p.value[k,j]<=alpha){
-              relationships[k,j] <- "departing (departer)"
-              relationships[j,k] <- "departing (origin)"
+              relationships[k,j] <- "weak departing (departer)"
+              relationships[j,k] <- "weak departing (origin)"
             }else{
-              relationships[k,j] <- "departing (origin)"
-              relationships[j,k] <- "departing (departer)"
+              relationships[k,j] <- "weak departing (origin)"
+              relationships[j,k] <- "weak departing (departer)"
             }
           }else{
             #this is the Approaching relationship where there is only one convergent asymmetric test significant
             if (asym$p.value[k,j]<=alpha){
-              relationships[k,j] <- "approaching (approacher)"
-              relationships[j,k] <- "approaching (target)"
+              relationships[k,j] <- "weak approaching (approacher)"
+              relationships[j,k] <- "weak approaching (target)"
             }else{
-              relationships[k,j] <- "approaching (target)"
-              relationships[j,k] <- "approaching (approacher)"
+              relationships[k,j] <- "weak approaching (target)"
+              relationships[j,k] <- "weak approaching (approacher)"
             }
           }
         }
@@ -366,12 +364,12 @@ trajectoryRMA <- function(x,
   output[["dynamic_relationships_taxonomy"]] <- data.frame(dynamic_relationship=c("neutral (symmetric)","parallel (symmetric)","antiparallel (symmetric)",
                                                                                 "convergence (symmetric)","weak convergence (symmetric)",
                                                                                 "divergence (symmetric)","weak divergence (symmetric)",
-                                                                                "approaching (approacher)","approaching (target)",
-                                                                                "departing (departer)","departing (origin)",
-                                                                                "approaching-stationary (approacher)",
-                                                                                "approaching-stationary (stationary target)",
-                                                                                "departing-stationary (departer)",
-                                                                                "departing-stationary (stationary origin)",
+                                                                                "weak approaching (approacher)","weak approaching (target)",
+                                                                                "weak departing (departer)","weak departing (origin)",
+                                                                                "approaching (approacher)",
+                                                                                "approaching (target)",
+                                                                                "departing (departer)",
+                                                                                "departing (origin)",
                                                                                 "catch-up (leader)","catch-up (follower)",
                                                                                 "pursuit (leader)","pursuit (follower)",
                                                                                 "escape (leader)","escape (follower)"),

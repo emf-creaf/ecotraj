@@ -82,8 +82,8 @@ trajectoryRMAPlot <- function(x,
                   "convdiv.complete",
                   "crossed.groups.complete")){
       relationships.colors <- c("white","grey70","grey30",
-                                "red2","red3",
-                                "blue2","blue3",
+                                "red3","red2",
+                                "blue3","blue2",
                                 "orange","orange",
                                 "deepskyblue","deepskyblue",
                                 "darkorange2",
@@ -96,8 +96,8 @@ trajectoryRMAPlot <- function(x,
       if (mode=="oriented.complete"){
         relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "green3"
       }else if (mode=="convdiv.complete"){
-        relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red2"
-        relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue2"
+        relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red3"
+        relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue3"
       }else if (mode=="crossed.groups.complete"){
         conv <- grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)
         div <- grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)
@@ -110,8 +110,8 @@ trajectoryRMAPlot <- function(x,
       relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "green3"
     }else if (mode=="convdiv"){
       relationships.colors <- rep(NA,nrow(x$dynamic_relationships_taxonomy))
-      relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red2"
-      relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue2"
+      relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red3"
+      relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue3"
     }else if(mode=="crossed.groups"){
       relationships.colors <- rep(NA,nrow(x$dynamic_relationships_taxonomy))
       conv <- grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)
@@ -195,9 +195,9 @@ trajectoryRMAPlot <- function(x,
     
     relationships.colors <- relationships.colors[unique(names(relationships.colors))]
     relationships.colors <- relationships.colors[c("neutral","parallel","antiparallel",
-                                                   "convergence","weak convergence","approaching-stationary","approaching",
+                                                   "convergence","weak convergence","approaching","weak approaching",
                                                    "catch-up","pursuit","escape",
-                                                   "departing","departing-stationary","weak divergence","divergence")]
+                                                   "weak departing","departing","weak divergence","divergence")]
     relationships.colors[is.na(relationships.colors)] <- "black"
     
     leg <- legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,title="Relative movement\nrelationships",title.font=2,text.font=1,

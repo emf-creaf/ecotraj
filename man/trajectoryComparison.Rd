@@ -112,7 +112,7 @@ the two trajectories become closer along surveys. This test requires the same nu
 \item{If \code{type = "multiple"} then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
 the test uses the sequence of variability between states corresponding to the same time.}
 }
-In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
+In all cases, a Mann-Kendall test (see \code{\link{cor.test}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
 
 Function \code{trajectoryCorrespondence} is used to study the dynamic correspondence between pairs of trajectories (Djeghri et al. in prep) sensitive to trajectory shape and direction of movement.
 The function performs a permutation test with a positive test statistic indicative of similar movement direction whereas a negative test statistic indicates trajectories going in opposed directions.
@@ -206,7 +206,7 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
 Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 }
 \seealso{
-\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+\code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link{cor.test}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

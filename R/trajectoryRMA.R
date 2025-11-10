@@ -141,7 +141,11 @@ trajectoryRMA <- function(x,
   alpha <- 1-(1-alpha)^(1/4)
   
   #stop if trajectories are too short to yield significant results in the convergence tests given the chosen alpha
-  if (as.numeric(Kendall::MannKendall(1:table(sites)[1])$sl)>alpha) stop("Trajectories are not long enough to yield significant tests given the alpha level")
+  ts <- 1:table(sites)[1]
+  suppressWarnings(
+    mk.test <- cor.test(ts, 1:length(ts), method = "kendall")
+  )
+  if (as.numeric(mk.test$p.value)>alpha) stop("Trajectories are not long enough to yield significant tests given the alpha level")
   
   #check if trajectories are long enough to apply RTMA at this alpha level:
   

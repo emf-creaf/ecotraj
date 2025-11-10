@@ -48,7 +48,7 @@
 #'     \item{If \code{type = "multiple"} then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
 #'  the test uses the sequence of variability between states corresponding to the same time.}
 #'  } 
-#'  In all cases, a Mann-Kendall test (see \code{\link[Kendall]{MannKendall}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
+#'  In all cases, a Mann-Kendall test (see \code{\link{cor.test}}) is used to determine if the sequence of values is monotonously increasing or decreasing. Function \code{\link{trajectoryConvergencePlot}} provides options for plotting convergence/divergence between trajectories.
 #'   
 #'  Function \code{trajectoryCorrespondence} is used to study the dynamic correspondence between pairs of trajectories (Djeghri et al. in prep) sensitive to trajectory shape and direction of movement.
 #'  The function performs a permutation test with a positive test statistic indicative of similar movement direction whereas a negative test statistic indicates trajectories going in opposed directions.
@@ -98,7 +98,7 @@
 #' 
 #' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
 #' 
-#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link[Kendall]{MannKendall}}
+#' @seealso \code{\link{trajectoryMetrics}}, \code{\link{trajectoryPlot}}, \code{\link{trajectoryConvergencePlot}}, \code{\link{trajectoryRMA}}, \code{\link{transformTrajectories}}, \code{\link{trajectoryProjection}}, \code{\link{cor.test}}
 #' 
 #' @examples 
 #' #Description of entities (sites) and surveys
@@ -573,26 +573,32 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
           target <- ind_surv1
           trajProj <- trajectoryProjection(d,target, trajectory, add=add)
           dT <- trajProj$distanceToTrajectory
-          mk.test <- MannKendall(dT)
-          tau[i1,i2] <- mk.test$tau
-          p.value[i1,i2] <- mk.test$sl
+          suppressWarnings(
+            mk.test <- cor.test(dT, 1:length(dT), method = "kendall")
+          )
+          tau[i1,i2] <- mk.test$estimate
+          p.value[i1,i2] <- mk.test$p.value
           trajectory <- ind_surv1
           target <- ind_surv2
           trajProj <- trajectoryProjection(d,target, trajectory, add=add)
           dT <- trajProj$distanceToTrajectory
-          mk.test <- MannKendall(dT)
-          tau[i2,i1] <- mk.test$tau
-          p.value[i2,i1] <- mk.test$sl
+          suppressWarnings(
+            mk.test <- cor.test(dT, 1:length(dT), method = "kendall")
+          )
+          tau[i2,i1] <- mk.test$estimate
+          p.value[i2,i1] <- mk.test$p.value
         } 
         else { # Symmetric
           if(length(ind_surv1)==length(ind_surv2)) {
             dT <- numeric(length(ind_surv1))
             for(j in 1:length(ind_surv1)) dT[j] = dmat[ind_surv1[j], ind_surv2[j]]
-            mk.test <- MannKendall(dT)
-            tau[i1,i2] <- mk.test$tau
-            p.value[i1,i2] <- mk.test$sl
-            tau[i2,i1] <- mk.test$tau
-            p.value[i2,i1] <- mk.test$sl
+            suppressWarnings(
+              mk.test <- cor.test(dT, 1:length(dT), method = "kendall")
+            )
+            tau[i2,i1] <- mk.test$estimate
+            p.value[i2,i1] <- mk.test$p.value
+            tau[i1,i2] <- mk.test$estimate
+            p.value[i1,i2] <- mk.test$p.value
           } else {
             warning(paste0("sites ",i1, " and ",i2," do not have the same number of surveys."))
           }
@@ -607,9 +613,11 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
       dmat_sub <- dmat[times==times1[i],times==times1[i]]
       varD[i] <- sum(diag(.gowerCentered(dmat_sub)))
     }
-    mk.test <- MannKendall(varD)
-    tau <- mk.test$tau[1]
-    p.value <- mk.test$sl[1]
+    suppressWarnings(
+      mk.test <- cor.test(varD, 1:length(varD), method = "kendall")
+    )
+    tau <- mk.test$estimate
+    p.value <- mk.test$p.value
   }
   return(list(tau = tau, p.value = p.value))
 }

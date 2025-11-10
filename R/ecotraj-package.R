@@ -27,13 +27,12 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom Kendall MannKendall
 #' @importFrom MASS ginv
 #' @importFrom graphics arrows text rect segments points par polygon
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
 #' @importFrom grDevices col2rgb rgb
-#' @importFrom stats as.dist cmdscale dist model.matrix quantile
+#' @importFrom stats as.dist cmdscale cor.test dist model.matrix quantile
 #' @importFrom utils combn
 #' @useDynLib ecotraj, .registration = TRUE
 ## usethis namespace: end

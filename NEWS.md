@@ -1,6 +1,7 @@
 # ecotraj 1.2.0
 * New functions trajectoryConvergencePlot() and cycleShiftArrows() by N. Djeghri
 * New functions trajectoryCorrespondence(), trajectoryRMA() and trajectoryRMAPlot() by N. Djeghri
+* Dependency from MannKendall package removed. Now the Mann-Kendall test is performed by calls to cor.test(method = "kendall")
 
 # ecotraj 1.1.1
 * Trajectory subsetting according to time window limits

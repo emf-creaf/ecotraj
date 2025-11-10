@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres / Nicolas Djeghri</h4>
             
-            <h4 data-toc-skip class="date">2025-10-02</h4>
+            <h4 data-toc-skip class="date">2025-11-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionETA.Rmd" class="external-link"><code>vignettes/IntroductionETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionETA.Rmd</code></div>
@@ -799,10 +799,10 @@ between pairs of synchronous observations of the two trajectories
 <span><span class="co">## 3 0.9128709 0.9128709        NA</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p.value</span></span>
-<span><span class="co">##           1         2         3</span></span>
-<span><span class="co">## 1        NA 0.1485617 0.1485617</span></span>
-<span><span class="co">## 2 0.1485617        NA 0.1485617</span></span>
-<span><span class="co">## 3 0.1485617 0.1485617        NA</span></span></code></pre>
+<span><span class="co">##            1          2          3</span></span>
+<span><span class="co">## 1         NA 0.07095149 0.07095149</span></span>
+<span><span class="co">## 2 0.07095149         NA 0.07095149</span></span>
+<span><span class="co">## 3 0.07095149 0.07095149         NA</span></span></code></pre>
 <p>The function performs the Mann-Whitney trend test. Values of the
 statistic (‘tau’) larger than 0 (i.e. positive) correspond to
 trajectories that are <em>diverging</em>, whereas values lower than 0
@@ -818,13 +818,13 @@ is analyzed:</p>
 <span><span class="co">##           1         2         3</span></span>
 <span><span class="co">## 1        NA 0.9128709 0.9128709</span></span>
 <span><span class="co">## 2 0.9128709        NA 0.9128709</span></span>
-<span><span class="co">## 3 0.9128709 0.6666666        NA</span></span>
+<span><span class="co">## 3 0.9128709 0.6666667        NA</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p.value</span></span>
-<span><span class="co">##           1         2         3</span></span>
-<span><span class="co">## 1        NA 0.1485617 0.1485617</span></span>
-<span><span class="co">## 2 0.1485617        NA 0.1485617</span></span>
-<span><span class="co">## 3 0.1485617 0.3081795        NA</span></span></code></pre>
+<span><span class="co">##            1          2          3</span></span>
+<span><span class="co">## 1         NA 0.07095149 0.07095149</span></span>
+<span><span class="co">## 2 0.07095149         NA 0.07095149</span></span>
+<span><span class="co">## 3 0.07095149 0.33333333         NA</span></span></code></pre>
 <p>The asymmetric test is useful to determine if one trajectory is
 becoming closer to the other or if it is departing from the other. The
 asymmetric test can be applied on non-synchronous trajectories. The
@@ -844,10 +844,11 @@ convergence/divergence between all trajectories in the data, using
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryConvergence</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"multiple"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $tau</span></span>
-<span><span class="co">## [1] 0.9128709</span></span>
+<span><span class="co">##       tau </span></span>
+<span><span class="co">## 0.9128709 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p.value</span></span>
-<span><span class="co">## [1] 0.1485617</span></span></code></pre>
+<span><span class="co">## [1] 0.07095149</span></span></code></pre>
 <p>In this case we are testing whether the average distance between
 ecological states corresponding to the same observation time is
 increasing or decreasing with time. In all these tests trajectories are
@@ -1251,10 +1252,11 @@ convergence, which we can do because trajectories are synchronous:</p>
 <div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryConvergence</a></span><span class="op">(</span><span class="va">avoca_x</span>, type<span class="op">=</span><span class="st">"multiple"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $tau</span></span>
-<span><span class="co">## [1] -0.8333333</span></span>
+<span><span class="co">##        tau </span></span>
+<span><span class="co">## -0.8333333 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p.value</span></span>
-<span><span class="co">## [1] 0.002499029</span></span></code></pre>
+<span><span class="co">## [1] 0.0008542769</span></span></code></pre>
 <p>In this case we obtain that tau is negative (i.e. variance between
 states is decreasing with time) and the test is significant, which
 indicates that forest structures are overall converging. This general
@@ -1266,41 +1268,41 @@ between pairs of plots would be assessed using:</p>
 <span><span class="co">##             1           2          3          4          5          6</span></span>
 <span><span class="co">## 1          NA -0.05555556 -0.4444444 -0.4444444 -0.4444444 -0.4444444</span></span>
 <span><span class="co">## 2 -0.05555556          NA -0.3888889  0.1111111 -0.3333333 -0.3888889</span></span>
-<span><span class="co">## 3 -0.44444445 -0.38888890         NA  0.4444444 -0.1111111 -0.6666667</span></span>
-<span><span class="co">## 4 -0.44444445  0.11111111  0.4444444         NA  0.6111111  0.2777778</span></span>
-<span><span class="co">## 5 -0.44444445 -0.33333334 -0.1111111  0.6111111         NA  0.4444444</span></span>
-<span><span class="co">## 6 -0.44444445 -0.38888890 -0.6666667  0.2777778  0.4444444         NA</span></span>
-<span><span class="co">## 7 -0.05555556 -0.33333334 -0.3888889  0.4444444  0.1666667 -0.7777778</span></span>
-<span><span class="co">## 8 -0.94444442 -0.83333331 -0.6666667 -0.4444444 -0.5555556 -0.5555556</span></span>
+<span><span class="co">## 3 -0.44444444 -0.38888889         NA  0.4444444 -0.1111111 -0.6666667</span></span>
+<span><span class="co">## 4 -0.44444444  0.11111111  0.4444444         NA  0.6111111  0.2777778</span></span>
+<span><span class="co">## 5 -0.44444444 -0.33333333 -0.1111111  0.6111111         NA  0.4444444</span></span>
+<span><span class="co">## 6 -0.44444444 -0.38888889 -0.6666667  0.2777778  0.4444444         NA</span></span>
+<span><span class="co">## 7 -0.05555556 -0.33333333 -0.3888889  0.4444444  0.1666667 -0.7777778</span></span>
+<span><span class="co">## 8 -0.94444444 -0.83333333 -0.6666667 -0.4444444 -0.5555556 -0.5555556</span></span>
 <span><span class="co">##             7          8</span></span>
 <span><span class="co">## 1 -0.05555556 -0.9444444</span></span>
-<span><span class="co">## 2 -0.33333334 -0.8333333</span></span>
-<span><span class="co">## 3 -0.38888890 -0.6666667</span></span>
-<span><span class="co">## 4  0.44444445 -0.4444444</span></span>
+<span><span class="co">## 2 -0.33333333 -0.8333333</span></span>
+<span><span class="co">## 3 -0.38888889 -0.6666667</span></span>
+<span><span class="co">## 4  0.44444444 -0.4444444</span></span>
 <span><span class="co">## 5  0.16666667 -0.5555556</span></span>
-<span><span class="co">## 6 -0.77777779 -0.5555556</span></span>
+<span><span class="co">## 6 -0.77777778 -0.5555556</span></span>
 <span><span class="co">## 7          NA -0.5000000</span></span>
 <span><span class="co">## 8 -0.50000000         NA</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $p.value</span></span>
-<span><span class="co">##             1           2          3          4          5           6</span></span>
-<span><span class="co">## 1          NA 0.916965246 0.11785091 0.11785091 0.11785091 0.117850907</span></span>
-<span><span class="co">## 2 0.916965246          NA 0.17530808 0.75445414 0.25145215 0.175308079</span></span>
-<span><span class="co">## 3 0.117850907 0.175308079         NA 0.11785090 0.75445420 0.016488666</span></span>
-<span><span class="co">## 4 0.117850907 0.754454136 0.11785090         NA 0.02856767 0.348082542</span></span>
-<span><span class="co">## 5 0.117850907 0.251452148 0.75445420 0.02856767         NA 0.117850900</span></span>
-<span><span class="co">## 6 0.117850907 0.175308079 0.01648867 0.34808254 0.11785090          NA</span></span>
-<span><span class="co">## 7 0.916965246 0.251452148 0.17530808 0.11785090 0.60216761 0.004878566</span></span>
-<span><span class="co">## 8 0.000580667 0.002499029 0.01648867 0.11785091 0.04760397 0.047603969</span></span>
-<span><span class="co">##             7           8</span></span>
-<span><span class="co">## 1 0.916965246 0.000580667</span></span>
-<span><span class="co">## 2 0.251452148 0.002499029</span></span>
-<span><span class="co">## 3 0.175308079 0.016488666</span></span>
-<span><span class="co">## 4 0.117850900 0.117850907</span></span>
-<span><span class="co">## 5 0.602167606 0.047603969</span></span>
-<span><span class="co">## 6 0.004878566 0.047603969</span></span>
-<span><span class="co">## 7          NA 0.076332748</span></span>
-<span><span class="co">## 8 0.076332748          NA</span></span></code></pre>
+<span><span class="co">##              1            2          3          4          5           6</span></span>
+<span><span class="co">## 1           NA 0.9194554674 0.11943893 0.11943893 0.11943893 0.119438933</span></span>
+<span><span class="co">## 2 9.194555e-01           NA 0.18018078 0.76141424 0.25951830 0.180180776</span></span>
+<span><span class="co">## 3 1.194389e-01 0.1801807760         NA 0.11943893 0.76141424 0.012665344</span></span>
+<span><span class="co">## 4 1.194389e-01 0.7614142416 0.11943893         NA 0.02474096 0.358487654</span></span>
+<span><span class="co">## 5 1.194389e-01 0.2595182981 0.76141424 0.02474096         NA 0.119438933</span></span>
+<span><span class="co">## 6 1.194389e-01 0.1801807760 0.01266534 0.35848765 0.11943893          NA</span></span>
+<span><span class="co">## 7 9.194555e-01 0.2595182981 0.18018078 0.11943893 0.61220238 0.002425044</span></span>
+<span><span class="co">## 8 4.960317e-05 0.0008542769 0.01266534 0.11943893 0.04461530 0.044615300</span></span>
+<span><span class="co">##             7            8</span></span>
+<span><span class="co">## 1 0.919455467 4.960317e-05</span></span>
+<span><span class="co">## 2 0.259518298 8.542769e-04</span></span>
+<span><span class="co">## 3 0.180180776 1.266534e-02</span></span>
+<span><span class="co">## 4 0.119438933 1.194389e-01</span></span>
+<span><span class="co">## 5 0.612202381 4.461530e-02</span></span>
+<span><span class="co">## 6 0.002425044 4.461530e-02</span></span>
+<span><span class="co">## 7          NA 7.517637e-02</span></span>
+<span><span class="co">## 8 0.075176367           NA</span></span></code></pre>
 <p>Inspecting these results we can conclude that several pairs of plots
 are significantly converging (notably with plot ‘8’), but there is also
 a significant divergence between plots ‘4’ and ‘5’. We can display this

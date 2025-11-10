@@ -84,7 +84,7 @@ Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays
 <span></span>
 <span><span class="fu">trajectoryConvergence</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"pairwise.asymmetric"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">trajectoryCorrespondence</span><span class="op">(</span><span class="va">x</span>, nperm <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
+<span><span class="fu">trajectoryCorrespondence</span><span class="op">(</span><span class="va">x</span>, nperm <span class="op">=</span> <span class="fl">999</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">trajectoryShifts</span><span class="op">(</span><span class="va">x</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -115,6 +115,10 @@ Function trajectoryShifts calculates trajectory shifts (i.e. advances and delays
 
 <dt id="arg-nperm">nperm<a class="anchor" aria-label="anchor" href="#arg-nperm"></a></dt>
 <dd><p>The number of permutations to be used in the dynamic correspondence test. Defaults to <code>999</code>.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Boolean. Should the function indicate its progress? Useful to estimate computing time if many comparisons are performed. Defaults to <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -158,7 +162,7 @@ This test uses distances of orthogonal projections (i.e. rejections) of states o
 the two trajectories become closer along surveys. This test requires the same number of surveys for all trajectories and uses the sequence of distances between states of the two trajectories corresponding to the same survey.</p></li>
 <li><p>If <code>type = "multiple"</code> then the function performs a single test of convergence among all trajectories. This test needs trajectories to be synchronous. In this case,
 the test uses the sequence of variability between states corresponding to the same time.</p></li>
-</ol><p>In all cases, a Mann-Kendall test (see <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code>) is used to determine if the sequence of values is monotonously increasing or decreasing. Function <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code> provides options for plotting convergence/divergence between trajectories.</p>
+</ol><p>In all cases, a Mann-Kendall test (see <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></code>) is used to determine if the sequence of values is monotonously increasing or decreasing. Function <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code> provides options for plotting convergence/divergence between trajectories.</p>
 <p>Function <code>trajectoryCorrespondence</code> is used to study the dynamic correspondence between pairs of trajectories (Djeghri et al. in prep) sensitive to trajectory shape and direction of movement.
 The function performs a permutation test with a positive test statistic indicative of similar movement direction whereas a negative test statistic indicates trajectories going in opposed directions.
 This test requires the same numbers of surveys for all trajectories.</p>
@@ -175,7 +179,7 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="trajectoryPlot.html">trajectoryPlot</a></code>, <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code>, <code><a href="trajectoryRMA.html">trajectoryRMA</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>, <code><a href="https://rdrr.io/pkg/Kendall/man/MannKendall.html" class="external-link">MannKendall</a></code></p></div>
+    <div class="dont-index"><p><code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code>, <code><a href="trajectoryPlot.html">trajectoryPlot</a></code>, <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code>, <code><a href="trajectoryRMA.html">trajectoryRMA</a></code>, <code><a href="transformTrajectories.html">transformTrajectories</a></code>, <code><a href="trajectoryProjection.html">trajectoryProjection</a></code>, <code><a href="https://rdrr.io/r/stats/cor.test.html" class="external-link">cor.test</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -426,13 +430,13 @@ Trajectory analysis in community ecology. Ecological Monographs 89, e01350.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           1         2         3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA 0.9128709 0.9128709</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9128709        NA 0.9128709</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9128709 0.6666666        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9128709 0.6666667        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           1         2         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA 0.1485617 0.1485617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.1485617        NA 0.1485617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.1485617 0.3081795        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            1          2          3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         NA 0.07095149 0.07095149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.07095149         NA 0.07095149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.07095149 0.33333333         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Trajectory dynamic correspondence</span></span></span>

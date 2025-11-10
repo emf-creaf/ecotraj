@@ -79,7 +79,7 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An object of class <code><a href="defineTrajectories.html">trajectories</a></code>. Alternatively, an object of class <code>RTMA</code> (returned by <code><a href="trajectoryRMA.html">trajectoryRMA</a></code>).</p></dd>
+<dd><p>An object of class <code><a href="defineTrajectories.html">trajectories</a></code>. Alternatively, an object of class <code><a href="trajectoryRMA.html">RTMA</a></code>.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -142,11 +142,11 @@
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Function <code>trajectoryConvergencePlot</code> provides ways to visualize pairwise convergence and divergence between trajectories.
 It has two modes of functioning:</p><ul><li><p>If <code>x</code> is of class <code><a href="defineTrajectories.html">trajectories</a></code>, the function will display the results of convergence/divergence tests by calls to function <code><a href="trajectoryComparison.html">trajectoryConvergence</a></code>.</p></li>
-<li><p>If <code>x</code> is of class <code>RTMA</code>,the function will display the results of convergence/divergence tests and dynamic correspondence tests stored in the <code>RTMA</code> object supplied.</p></li>
+<li><p>If <code>x</code> is of class <code><a href="trajectoryRMA.html">RTMA</a></code>,the function will display the results of convergence/divergence tests and dynamic correspondence tests stored in the <code><a href="trajectoryRMA.html">RTMA</a></code> object supplied.</p></li>
 </ul><p>In the plots, trajectories are represented by circles. The convergence or divergence between pairs of trajectories are represented by links. If convergence tests are symmetric, the links are simple. If the convergence tests are asymmetric, the links are displayed as half arrows pointing from the trajectory converging or diverging towards the trajectory being approached or diverged from.
 The width and color hue of the links are proportional to the tau statistic of the Mann-Kendall test performed by the <code><a href="trajectoryComparison.html">trajectoryConvergence</a></code> function.
 Function <code>trajectoryConvergencePlot</code> also offers the possibility to plot both tests at the same time.</p>
-<p>If <code>x</code> is of class <code>RTMA</code>, <code>trajectoryConvergencePlot</code> will display both convergence tests as explained above, as well as cases of parallelism recognized in <code><a href="trajectoryRMA.html">trajectoryRMA</a></code>.
+<p>If <code>x</code> is of class <code><a href="trajectoryRMA.html">RTMA</a></code>, <code>trajectoryConvergencePlot</code> will display both convergence tests as explained above, as well as cases of parallelism recognized in <code><a href="trajectoryRMA.html">trajectoryRMA</a></code>.
 <code>Parallel</code> scenarios are indicated by two full parallel black lines linking two trajectories, while in case of <code>Antiparallel</code> scenarios one of the lines is dotted.</p>
 <p>In addition, see function <code><a href="cycleShiftArrows.html">cycleShiftArrows</a></code> for additional graphical elements to be displayed when conducting CETA.</p>
     </div>

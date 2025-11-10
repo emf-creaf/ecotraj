@@ -75,7 +75,7 @@
 
 
 <dt id="arg-full-output">full.output<a class="anchor" aria-label="anchor" href="#arg-full-output"></a></dt>
-<dd><p>Flag to indicate that the full output of tests should be computed. Defaults to <code>TRUE</code>. Setting to FALSE will improve computation speed but yield incomplete outputs (see details).</p></dd>
+<dd><p>Flag to indicate that the full output of tests should be computed. Defaults to <code>TRUE</code>. Setting to <code>FALSE</code> will improve computation speed but yield incomplete outputs (see details).</p></dd>
 
 
 <dt id="arg-add">add<a class="anchor" aria-label="anchor" href="#arg-add"></a></dt>
@@ -84,7 +84,8 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Function <code>trajectoryRMA</code> returns an object of class <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> containing:</p><ul><li><p><code>dynamic_relationships</code>: a matrix containing the relative movement relationships attributed to each pair of trajectories.</p></li>
+    <p>Function <code>trajectoryRMA</code> returns an object of classes <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> and <code>RTMA</code> containing:</p><ul><li><p><code>dynamic_relationships_taxonomy</code>: a data-frame containing the names of the relative movement relationships recognized by RTMA as well as corresponding relationship groups. This part of <code>trajectoryRMA</code> output is independent of the trajectories used as input and is primarily a bestiary (see details). It can be used to transform the <code>dynamic_relationships</code> matrix (see below) to focus on chosen relationship groups.</p></li>
+<li><p><code>dynamic_relationships</code>: a matrix containing the relative movement relationships attributed to each pair of trajectories.</p></li>
 <li><p><code>symmetric_convergence</code>: a list containing the results of the symmetric convergence test.</p></li>
 <li><p><code>asymmetric_convergence</code>: a list containing the results of the two asymmetric convergence tests.</p></li>
 <li><p><code>correspondence</code>: a matrix containing the results of the the dynamic correspondence tests (partial if <code>full.out = FALSE</code>).</p></li>
@@ -103,27 +104,33 @@ In symmetric relationships, the wording <code>(symmetric)</code> is added to ind
 </ul></li>
 <li><p>One dynamic correspondence test performed through internal callings to function <code><a href="trajectoryComparison.html">trajectoryCorrespondence</a></code>.</p></li>
 </ul><p>To account for multiple testing, <code>trajectoryRMA</code> performs internally a Šidák (1967) correction on the alpha level provided in parameter <code>alpha</code>.</p>
-<p>The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 12 relationships, some existing in "weak" variations.
+<p>The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 10 relationships, some existing in "weak" variations.
 The following five dynamic relationships are <em>symmetric</em>, i.e. applying to the two trajectories without distinction of roles:</p><ul><li><p><code>"convergence"</code> - The two trajectories converge. Exists in a weak version.</p></li>
 <li><p><code>"divergence"</code> - The two trajectories diverge. Exists in a weak version.</p></li>
 <li><p><code>"parallel"</code> - The two trajectories travel side by side with broadly similar movements.</p></li>
 <li><p><code>"antiparallel"</code> - As in <code>"parallel"</code> but the two trajectories travel in opposite directions.</p></li>
 <li><p><code>"neutral"</code> - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).</p></li>
-</ul><p>The following seven dynamic relationships are <em>asymmetric</em> (e.g. in <code>"pursuit"</code> there is a leading and a following trajectory). In these asymmetric relationships the output of function <code>trajectoryRMA</code> gives the role of each trajectory (see Value section).</p><ul><li><p><code>"approaching"</code> - One trajectory approaches the other.</p></li>
-<li><p><code>"approaching-stationary"</code> - As in <code>"approaching"</code> but the trajectory approached is stationary relative to the approaching trajectory.</p></li>
-<li><p><code>"departing"</code> - One trajectory moves away from the other.</p></li>
-<li><p><code>"departing-stationary"</code> - As in <code>"departing"</code> but the trajectory departed from is stationary relative to the departing trajectory.</p></li>
+</ul><p>The following five dynamic relationships are <em>asymmetric</em> (e.g. in <code>"pursuit"</code> there is a leading and a following trajectory). In these asymmetric relationships the output of function <code>trajectoryRMA</code> gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is <em>oriented</em> (see below, relationship groups).</p><ul><li><p><code>"approaching"</code> - One trajectory approaches the other. Exists in a weak version.</p></li>
+<li><p><code>"departing"</code> - One trajectory moves away from the other. Exists in a weak version.</p></li>
 <li><p><code>"pursuit"</code> - The two trajectories follow each other.</p></li>
 <li><p><code>"catch-up"</code> - As in <code>"pursuit"</code> but the following trajectory moves faster.</p></li>
 <li><p><code>"escape"</code> - As in <code>"pursuit"</code> but the leading trajectory is faster.</p></li>
 </ul><p>In rare cases, unlikely relationships (labelled <code>"unknown"</code>, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.</p>
+<p>RELATIONSHIP GROUPS: It is possible to further sort trajectory relationships in broad <em>relationship groups</em> (not always mutually exclusive). Three such groups are recognized in RTMA:</p><ul><li><p>The <code>"convergence group"</code>, includes relationships that display convergence in the broadest sense with a trend of diminishing distance between the two trajectories. Formally this group includes relationships of
+<code>"convergence"</code> and <code>"approaching"</code> and their weak versions, as well as <code>"catch-up"</code>.</p></li>
+<li><p>The <code>"divergence group"</code>, includes relationships that display divergence in the broadest sense with a trend of increasing distance between the two trajectories. Formally this group includes relationships of
+<code>"divergence"</code> and  <code>"departing"</code> and their weak versions, as well as <code>"escape"</code>.</p></li>
+<li><p>The <code>"oriented group"</code>, includes relationships that have, broadly speaking, a trajectory <em>in front</em> and a trajectory <em>in the back</em> implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
+<code>"approaching"</code> and <code>"departing"</code> and their weak versions, <code>"catch-up"</code>, <code>"escape"</code> and <code>"pursuit"</code>.</p></li>
+</ul><p>Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that <code>"parallel"</code>,<code>"antiparallel"</code> and <code>"neutral"</code> relationships stand on their own, not belonging to any groups.
+In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).</p>
 <p>LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 We advise users to not only rely on RTMA but to also visualize trajectories using function <code><a href="trajectoryPlot.html">trajectoryPCoA</a></code> for ecological interpretations. See Djeghri et al. (in prep) for more details.
 Note also that, because RTMA incorporates a correction for multiple testing, it needs somewhat long trajectories to operate (minimum number of survey = 6 at alpha = 0.05).</p>
 <p>COMPUTATION TIME: The dynamic correspondence tests performed in RTMA are computationally costly permutation tests only used when all three convergence tests are non-significant.
 Function <code>trajectoryRMA</code> performs by default all tests but it is possible to only perform the tests useful for RTMA by setting <code>full.output = FALSE</code>.
 This will reduce computation time but the details of the output of RTMA will not contain the information on all possible dynamic correspondence tests, only on relevant ones.</p>
-<p>PLOTTING: Function <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code> provides options to plot the results of RTMA.</p>
+<p>PLOTTING: Functions <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code> and <code><a href="trajectoryRMAPlot.html">trajectoryRMAPlot</a></code> provide options to plot the results of RTMA.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -132,7 +139,7 @@ This will reduce computation time but the details of the output of RTMA will not
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="trajectoryComparison.html">trajectoryConvergence</a></code>, <code><a href="trajectoryComparison.html">trajectoryCorrespondence</a></code>, <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code></p></div>
+    <div class="dont-index"><p><code><a href="trajectoryComparison.html">trajectoryConvergence</a></code>, <code><a href="trajectoryComparison.html">trajectoryCorrespondence</a></code>, <code><a href="trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></code>, <code><a href="trajectoryRMAPlot.html">trajectoryRMAPlot</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -161,92 +168,83 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-in"><span><span class="co">#Perform RTMA</span></span></span>
 <span class="r-in"><span><span class="fu">trajectoryRMA</span><span class="op">(</span><span class="va">avoca_x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dynamic_relationships</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 NA                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "parallel (symmetric)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "approaching (target)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "pursuit (leader)"                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "parallel (symmetric)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching (target)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "departing (departer)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching-stationary (stationary target)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2                                            3                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "parallel (symmetric)"                       "approaching (approacher)"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 NA                                           "approaching (approacher)"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "approaching (target)"                       NA                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "pursuit (leader)"                           "approaching (target)"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "parallel (symmetric)"                       "approaching (approacher)"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching (target)"                       "weak convergence (symmetric)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "approaching (target)"                       "parallel (symmetric)"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching-stationary (stationary target)" "approaching (target)"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4                          5                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "pursuit (follower)"       "parallel (symmetric)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "pursuit (follower)"       "parallel (symmetric)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "approaching (approacher)" "approaching (target)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 NA                         "departing (departer)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "departing (origin)"       NA                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching (approacher)" "approaching (target)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "neutral (symmetric)"      "departing (departer)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "neutral (symmetric)"      "neutral (symmetric)" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "approaching (approacher)"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "approaching (approacher)"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "weak convergence (symmetric)"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "approaching (target)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "approaching (approacher)"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 NA                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "approaching-stationary (stationary target)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7                                     8                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "departing (origin)"                  "approaching-stationary (approacher)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "approaching (approacher)"            "approaching-stationary (approacher)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "parallel (symmetric)"                "approaching (approacher)"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "neutral (symmetric)"                 "neutral (symmetric)"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "departing (origin)"                  "neutral (symmetric)"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching-stationary (approacher)" "approaching (approacher)"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 NA                                    "approaching (approacher)"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"                NA                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1                           2                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 NA                          "parallel (symmetric)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "parallel (symmetric)"      NA                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "weak approaching (target)" "weak approaching (target)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "pursuit (leader)"          "pursuit (leader)"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "parallel (symmetric)"      "parallel (symmetric)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "weak approaching (target)" "weak approaching (target)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "weak departing (departer)" "weak approaching (target)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"      "approaching (target)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3                               4                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "weak approaching (approacher)" "pursuit (follower)"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "weak approaching (approacher)" "pursuit (follower)"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 NA                              "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "weak approaching (target)"     NA                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "weak approaching (approacher)" "pursuit (follower)"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "convergence (symmetric)"       "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "parallel (symmetric)"          "neutral (symmetric)"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"          "neutral (symmetric)"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5                           6                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "parallel (symmetric)"      "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "parallel (symmetric)"      "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "weak approaching (target)" "convergence (symmetric)"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "pursuit (leader)"          "weak approaching (target)"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 NA                          "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "weak approaching (target)" NA                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "weak departing (departer)" "approaching (target)"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "weak approaching (target)" "weak approaching (target)"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7                               8                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 "weak departing (origin)"       "approaching (approacher)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 "weak approaching (approacher)" "approaching (approacher)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 "parallel (symmetric)"          "approaching (approacher)"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "neutral (symmetric)"           "neutral (symmetric)"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 "weak departing (origin)"       "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching (approacher)"      "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 NA                              "weak approaching (approacher)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "weak approaching (target)"     NA                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $symmetric_convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $symmetric_convergence$tau</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             1           2          3          4          5          6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          NA -0.05555556 -0.4444444 -0.4444444 -0.4444444 -0.4444444</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.05555556          NA -0.3888889  0.1111111 -0.3333333 -0.3888889</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.44444445 -0.38888890         NA  0.4444444 -0.1111111 -0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -0.44444445  0.11111111  0.4444444         NA  0.6111111  0.2777778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -0.44444445 -0.33333334 -0.1111111  0.6111111         NA  0.4444444</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.44444445 -0.38888890 -0.6666667  0.2777778  0.4444444         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -0.05555556 -0.33333334 -0.3888889  0.4444444  0.1666667 -0.7777778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.94444442 -0.83333331 -0.6666667 -0.4444444 -0.5555556 -0.5555556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.44444444 -0.38888889         NA  0.4444444 -0.1111111 -0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -0.44444444  0.11111111  0.4444444         NA  0.6111111  0.2777778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -0.44444444 -0.33333333 -0.1111111  0.6111111         NA  0.4444444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.44444444 -0.38888889 -0.6666667  0.2777778  0.4444444         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -0.05555556 -0.33333333 -0.3888889  0.4444444  0.1666667 -0.7777778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.94444444 -0.83333333 -0.6666667 -0.4444444 -0.5555556 -0.5555556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             7          8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.05555556 -0.9444444</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.33333334 -0.8333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.38888890 -0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.44444445 -0.4444444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.33333333 -0.8333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.38888889 -0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.44444444 -0.4444444</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.16666667 -0.5555556</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.77777779 -0.5555556</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.77777778 -0.5555556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7          NA -0.5000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.50000000         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $symmetric_convergence$p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1           2          3          4          5           6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          NA 0.916965246 0.11785091 0.11785091 0.11785091 0.117850907</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.916965246          NA 0.17530808 0.75445414 0.25145215 0.175308079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.117850907 0.175308079         NA 0.11785090 0.75445420 0.016488666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.117850907 0.754454136 0.11785090         NA 0.02856767 0.348082542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.117850907 0.251452148 0.75445420 0.02856767         NA 0.117850900</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.117850907 0.175308079 0.01648867 0.34808254 0.11785090          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.916965246 0.251452148 0.17530808 0.11785090 0.60216761 0.004878566</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.000580667 0.002499029 0.01648867 0.11785091 0.04760397 0.047603969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             7           8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.916965246 0.000580667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.251452148 0.002499029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.175308079 0.016488666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.117850900 0.117850907</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.602167606 0.047603969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.004878566 0.047603969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          NA 0.076332748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.076332748          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              1            2          3          4          5           6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           NA 0.9194554674 0.11943893 0.11943893 0.11943893 0.119438933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 9.194555e-01           NA 0.18018078 0.76141424 0.25951830 0.180180776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.194389e-01 0.1801807760         NA 0.11943893 0.76141424 0.012665344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.194389e-01 0.7614142416 0.11943893         NA 0.02474096 0.358487654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.194389e-01 0.2595182981 0.76141424 0.02474096         NA 0.119438933</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.194389e-01 0.1801807760 0.01266534 0.35848765 0.11943893          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 9.194555e-01 0.2595182981 0.18018078 0.11943893 0.61220238 0.002425044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 4.960317e-05 0.0008542769 0.01266534 0.11943893 0.04461530 0.044615300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             7            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.919455467 4.960317e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.259518298 8.542769e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.180180776 1.266534e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.119438933 1.194389e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.612202381 4.461530e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.002425044 4.461530e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          NA 7.517637e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.075176367           NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $asymmetric_convergence</span>
@@ -255,11 +253,11 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          NA -0.1111111 -0.7222222 -0.7777778 -0.5000000 -0.8333333 -0.5555556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.11111111         NA -0.8333333 -0.7222222 -0.3888889 -0.8333333 -0.8333333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.05555556  0.2222222         NA -0.7777778  0.2777778 -1.0000000 -0.6111111</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.77777779  0.7222222  0.5000000         NA  0.7222222  0.2777778  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.77777778  0.7222222  0.5000000         NA  0.7222222  0.2777778  0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 -0.50000000 -0.4444444 -0.8333333 -0.6666667         NA -0.7222222 -0.2777778</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.11111111  0.0000000 -0.7777778 -0.8888889  0.5555556         NA -0.7777778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.83333331  0.5555556 -0.5000000  0.3333333  0.7777778 -0.5000000         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.27777779 -0.1111111  0.5000000 -0.3888889 -0.1111111  0.0000000  0.1111111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.83333333  0.5555556 -0.5000000  0.3333333  0.7777778 -0.5000000         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.27777778 -0.1111111  0.5000000 -0.3888889 -0.1111111  0.0000000  0.1111111</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.8888889</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.7222222</span>
@@ -271,24 +269,24 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $asymmetric_convergence$p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1           2           3           4           5           6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          NA 0.754454195 0.009149152 0.004878566 0.076332748 0.002499029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.754454195          NA 0.002499029 0.009149152 0.175308079 0.002499029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.916965246 0.465512276          NA 0.004878566 0.348082542 0.000263261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.004878521 0.009149194 0.076332808          NA 0.009149194 0.348082542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.076332748 0.117850907 0.002499029 0.016488666          NA 0.009149152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.754454136 1.000000000 0.004878566 0.001229385 0.047603965          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.002498984 0.047603965 0.076332748 0.251452208 0.004878521 0.076332748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.348082602 0.754454195 0.076332808 0.175308079 0.754454195 1.000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             7           8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.047603969 0.001229385</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.002499029 0.009149152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.028567679 0.002499029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.000000000 0.175308079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.348082602 0.016488666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.004878566 0.002499029</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          NA 0.009149152</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.754454136          NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              1           2            3            4           5            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           NA 0.761414242 0.0058862434 0.0024250441 0.075176367 8.542769e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.7614142416          NA 0.0008542769 0.0058862434 0.180180776 8.542769e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9194554674 0.476708554           NA 0.0024250441 0.358487654 5.511464e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.0024250441 0.005886243 0.0751763668           NA 0.005886243 3.584877e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.0751763668 0.119438933 0.0008542769 0.0126653439          NA 5.886243e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.7614142416 1.000000000 0.0024250441 0.0002425044 0.044615300           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.0008542769 0.044615300 0.0751763668 0.2595182981 0.002425044 7.517637e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.3584876543 0.761414242 0.0751763668 0.1801807760 0.761414242 1.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              7            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.0446152998 0.0002425044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.0008542769 0.0058862434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.0247409612 0.0008542769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.0000000000 0.1801807760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.3584876543 0.0126653439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.0024250441 0.0008542769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           NA 0.0058862434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.7614142416           NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correspondence</span>
@@ -305,6 +303,52 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> $parameters</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           alpha corrected_alpha           nperm </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      0.05000000      0.01274146    999.00000000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $dynamic_relationships_taxonomy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        dynamic_relationship    conv_div_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> neutral (symmetric)                     neutral (symmetric)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parallel (symmetric)                   parallel (symmetric)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> antiparallel (symmetric)           antiparallel (symmetric)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> convergence (symmetric)             convergence (symmetric) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak convergence (symmetric)   weak convergence (symmetric) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> divergence (symmetric)               divergence (symmetric)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak divergence (symmetric)     weak divergence (symmetric)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak approaching (approacher) weak approaching (approacher) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak approaching (target)         weak approaching (target) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak departing (departer)         weak departing (departer)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak departing (origin)             weak departing (origin)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> approaching (approacher)           approaching (approacher) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> approaching (target)                   approaching (target) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> departing (departer)                   departing (departer)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> departing (origin)                       departing (origin)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> catch-up (leader)                         catch-up (leader) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> catch-up (follower)                     catch-up (follower) convergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pursuit (leader)                           pursuit (leader)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pursuit (follower)                       pursuit (follower)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> escape (leader)                             escape (leader)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> escape (follower)                         escape (follower)  divergence group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       oriented_group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> neutral (symmetric)                             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parallel (symmetric)                            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> antiparallel (symmetric)                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> convergence (symmetric)                         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak convergence (symmetric)                    &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> divergence (symmetric)                          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak divergence (symmetric)                     &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak approaching (approacher)  oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak approaching (target)     oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak departing (departer)     oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> weak departing (origin)        oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> approaching (approacher)       oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> approaching (target)          oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> departing (departer)          oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> departing (origin)             oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> catch-up (leader)             oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> catch-up (follower)            oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pursuit (leader)              oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pursuit (follower)             oriented group (back)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> escape (leader)               oriented group (front)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> escape (follower)              oriented group (back)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "RTMA" "list"</span>

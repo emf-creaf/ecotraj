@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Anthony
 Sturbois/Miquel De Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-11-10</h4>
+            <h4 data-toc-skip class="date">2025-11-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionEQA.Rmd" class="external-link"><code>vignettes/IntroductionEQA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionEQA.Rmd</code></div>
@@ -171,10 +171,10 @@ data from the initial data table:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">glomel_comp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 23 43</span></span></code></pre>
 <p>Using the compositional data, we can use function
-<code><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
+<code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
 of Bray Curtis distances between ecological (community) states:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">glomel_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">glomel_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>The distance matrix <code>glomel_bc</code> defines the multivariate
 space that represents the resemblance between ecological states.</p>
 <p>To conduct EQA, we also need to define the conservation targets.
@@ -252,7 +252,7 @@ Principal Coordinates Analysis (PCoA) using package
 projected as arrows:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/biplot.html" class="external-link">biplot</a></span><span class="op">(</span><span class="va">pcoa_glom</span>, <span class="va">glomel_comp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="672"></p>
 <p>To generate a different representation, we first get coordinates of
 stations in the two first dimensions of the PCoA and copy them into the
 assessment data frame:</p>
@@ -295,7 +295,7 @@ centroid of the state reference envelope:</p>
 <span>    axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="672"></p>
 </div>
 </div>
 <div class="section level2">
@@ -372,10 +372,10 @@ initially performed in Tauran et al. (2020).</p>
 <code class="sourceCode R"><span><span class="co">#log transformation</span></span>
 <span><span class="va">grab_comp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p</a></span><span class="op">(</span><span class="va">glenan</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">251</span><span class="op">:</span><span class="fl">252</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p>Using the compositional data, we can use function
-<code><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
+<code><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist()</a></code> from package <strong>vegan</strong> to calculate
 of Bray Curtis distances between ecological (community) states:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">grab_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://vegandevs.github.io/vegan/reference/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">grab_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">grab_bc</span> <span class="op">&lt;-</span> <span class="fu">vegan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/vegdist.html" class="external-link">vegdist</a></span><span class="op">(</span><span class="va">grab_comp</span>, method <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 <p>Like in the first example, the distance matrix <code>grab_bc</code>
 defines the multivariate space that represents the resemblance between
 ecological states of maerl beds.</p>
@@ -455,7 +455,7 @@ first dimensions of a Principal Coordinates Analysis:</p>
 <span>    axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" width="672"></p>
 <p>Since we are dealing with temporal data, we can create a bar plot
 showing the evolution of the squared distance to the centroid of the
 state reference envelope during the study period for each treatment:</p>
@@ -475,7 +475,7 @@ state reference envelope during the study period for each treatment:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">Treatment</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" width="672"></p>
 <p>In addition, we can create the heatmap showing the evolution of the
 distance between control and dredged stations during the
 experimentation:</p>
@@ -509,7 +509,7 @@ experimentation:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_raster</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="trajectory-based-eqa">4.5 Trajectory-based EQA<a class="anchor" aria-label="anchor" href="#trajectory-based-eqa"></a>
@@ -556,7 +556,7 @@ period for each treatment:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span><span class="st">"Squared distance to the reference envelope"</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle<span class="op">=</span><span class="fl">90</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
+<p><img src="IntroductionEQA_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" width="672"></p>
 </div>
 </div>
 <div class="section level2">
@@ -585,7 +585,7 @@ approach. Journal of Experimental Marine Biology and Ecology 533,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

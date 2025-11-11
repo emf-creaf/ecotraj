@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres / Nicolas Djeghri</h4>
             
-            <h4 data-toc-skip class="date">2025-11-10</h4>
+            <h4 data-toc-skip class="date">2025-11-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/IntroductionETA.Rmd" class="external-link"><code>vignettes/IntroductionETA.Rmd</code></a></small>
       <div class="d-none name"><code>IntroductionETA.Rmd</code></div>
@@ -429,7 +429,7 @@ displays the complete space:</p>
 <span>               survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Entity 1"</span>, <span class="st">"Entity 2"</span>, <span class="st">"Entity 3"</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">"n"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/pcoa-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/pcoa-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>While trajectory of entity ‘1’ (black arrows) is made of three
 segments of the same length and direction, trajectory of entity ‘2’ (red
 arrows) has a second and third segments that bend and are shorter than
@@ -443,7 +443,7 @@ matrix <code>xy</code> and function <code><a href="../reference/trajectoryPlot.h
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Entity 1"</span>, <span class="st">"Entity 2"</span>, <span class="st">"Entity 3"</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">"n"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/xy-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/xy-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>While <code><a href="../reference/trajectoryPlot.html">trajectoryPCoA()</a></code> uses PCoA (also known as
 classical Multidimensional Scaling) to display trajectories, users can
 display ecosystem trajectories using other ordination techniques such as
@@ -464,7 +464,7 @@ trajectories if we combine them with function
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Entity 2"</span>, <span class="st">"Entity 3"</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">"n"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -737,7 +737,7 @@ where the second and the third are modified:</p>
 <span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Trajectory 1"</span>, <span class="st">"Trajectory 2"</span>, <span class="st">"Trajectory 3"</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">"n"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-30-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>We now build the usual <code>trajectories</code> object:</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy3</span><span class="op">)</span>, <span class="va">entities3</span>, times <span class="op">=</span> <span class="va">times3</span><span class="op">)</span></span></code></pre></div>
@@ -832,7 +832,7 @@ results of pairwise convergence/divergence tests can be displayed
 graphically using function <code><a href="../reference/trajectoryConvergencePlot.html">trajectoryConvergencePlot()</a></code>:</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryConvergencePlot.html">trajectoryConvergencePlot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"both"</span>, radius <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-37-1.png" width="384" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-37-1.png" class="r-plt" width="384" style="display: block; margin: auto;"></p>
 <p>Where blue colors indicate divergence, symmetric tests are shown
 using solid lines and asymmetric tests are shown in dashed arrows. In
 this synthetic example the three trajectories are diverging, but a more
@@ -923,7 +923,7 @@ mMDS.</p>
 <span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>,<span class="fl">1</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">xret</span>, labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"s"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>,<span class="fl">3</span><span class="op">)</span>, pos<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, pt.bg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>,<span class="st">"blue"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Trajectory 1"</span>, <span class="st">"Trajectory 2"</span>, <span class="st">"Trajectory 3"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-40-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-40-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="distances-between-trajectories">4.4.2 Distances between trajectories<a class="anchor" aria-label="anchor" href="#distances-between-trajectories"></a>
@@ -990,7 +990,7 @@ mMDS.</p>
 <span>     bg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, </span>
 <span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.0</span>,<span class="fl">1</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1.0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, pt.bg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>,<span class="st">"blue"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Trajectory 1"</span>, <span class="st">"Trajectory 2"</span>, <span class="st">"Trajectory 3"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-43-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-43-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -1112,7 +1112,7 @@ plot:</p>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/avoca_pcoa-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/avoca_pcoa-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>Note that in this case, the full
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 includes more than two dimensions, and PCoA is representing 43% of total
@@ -1137,7 +1137,7 @@ this case produces a similar result:</p>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/avoca_mmds-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/avoca_mmds-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>One can inspect specific trajectories using
 <code><a href="../reference/subsetTrajectories.html">subsetTrajectories()</a></code>. This allows getting a better view of
 particular trajectories, here that of forest plot ‘3’:</p>
@@ -1146,7 +1146,7 @@ particular trajectories, here that of forest plot ‘3’:</p>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"3"</span><span class="op">)</span>,</span>
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/trajectory_3-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/trajectory_3-1.png" class="r-plt" width="864" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>In the right hand, we added a representation of the change in the
@@ -1162,7 +1162,7 @@ forest plot ‘4’:</p>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"4"</span><span class="op">)</span>,</span>
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/trajectory_4-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/trajectory_4-1.png" class="r-plt" width="864" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>This second trajectory is less straight and seems to include a turn
@@ -1241,7 +1241,7 @@ angle values:</p>
 <code class="sourceCode R"><span><span class="va">avoca_rho</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryMetrics.html">trajectoryAngles</a></span><span class="op">(</span><span class="va">avoca_x</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">rho</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">avoca_rho</span>, <span class="va">avoca_dir</span>, xlab <span class="op">=</span> <span class="st">"rho(T)"</span>, ylab <span class="op">=</span> <span class="st">"dir(T)"</span>, type<span class="op">=</span><span class="st">"n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">avoca_rho</span>, <span class="va">avoca_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-50-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="convergence-between-trajectories">5.4 Convergence between trajectories<a class="anchor" aria-label="anchor" href="#convergence-between-trajectories"></a>
@@ -1312,14 +1312,14 @@ divergence graphically using:</p>
 <span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, </span>
 <span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/trajectories_4_5_plot-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/trajectories_4_5_plot-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p>To interpret this result we can compare the corresponding changes in
 diameter distribution:</p>
 <div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/trajectories_4_5_diam-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/trajectories_4_5_diam-1.png" class="r-plt" width="864" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>Apparently, the divergence would be explained by the fact that while
@@ -1339,7 +1339,7 @@ statistically-significant tests:</p>
 <span>                          div.color <span class="op">=</span> <span class="st">"dodgerblue"</span>,</span>
 <span>                          traj.colors <span class="op">=</span> <span class="st">"black"</span>,border <span class="op">=</span> <span class="st">"white"</span>,lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                          traj.names.colors <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-53-1.png" width="480" style="display: block; margin: auto;">
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-53-1.png" class="r-plt" width="480" style="display: block; margin: auto;">
 where we can easily see that all significant pairwise comparisons
 indicate convergence, except for the divergence between plots ‘4’ and
 ‘5’.</p>
@@ -1353,7 +1353,7 @@ complex result is obtained:</p>
 <span>                          div.color <span class="op">=</span> <span class="st">"dodgerblue"</span>,</span>
 <span>                          traj.colors <span class="op">=</span> <span class="st">"black"</span>,border <span class="op">=</span> <span class="st">"white"</span>,lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                          traj.names.colors <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-54-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="distances-between-trajectories-1">5.5 Distances between trajectories<a class="anchor" aria-label="anchor" href="#distances-between-trajectories-1"></a>
@@ -1396,7 +1396,7 @@ mMDS to produce an ordination of resemblances between trajectories:</p>
 <span>     ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Axis 2"</span><span class="op">)</span>, col<span class="op">=</span><span class="st">"black"</span>,</span>
 <span>     bg<span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">21</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, labels<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, pos<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/avoca_DT_PCoA-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/avoca_DT_PCoA-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="dynamic-variation-1">5.6 Dynamic variation<a class="anchor" aria-label="anchor" href="#dynamic-variation-1"></a>
@@ -1426,7 +1426,7 @@ using:</p>
 <span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/subsetTrajectories.html">subsetTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, <span class="st">"8"</span><span class="op">)</span>,</span>
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span>, time.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">plotTrajDiamDist</span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="IntroductionETA_files/figure-html/trajectory_8-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="IntroductionETA_files/figure-html/trajectory_8-1.png" class="r-plt" width="864" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 <p>Apparently, the distinctiveness of plot ‘8’ from the remaining stems
@@ -1466,7 +1466,7 @@ Ecological Monographs, 92, e1501. <a href="https://doi.org/10.1002/ecm.1501" cla
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

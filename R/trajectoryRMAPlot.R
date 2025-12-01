@@ -81,43 +81,43 @@ trajectoryRMAPlot <- function(x,
                   "convdiv.complete",
                   "crossed.groups.complete")){
       relationships.colors <- c("white","grey70","grey30",
-                                "red3","red2",
-                                "blue3","blue2",
-                                "orange","orange",
-                                "deepskyblue","deepskyblue",
-                                "darkorange2",
-                                "darkorange2",
-                                "dodgerblue2",
-                                "dodgerblue2",
-                                "yellow2","yellow2",
-                                "green3","green3",
-                                "aquamarine2","aquamarine2")
+                                "#BA1E02FF","#E4460AFF",
+                                "#434FBBFF","#4686FBFF",
+                                "#FABA39FF","#FABA39FF",
+                                "#1AE4B6FF","#1AE4B6FF",
+                                "#FB8022FF",
+                                "#FB8022FF",
+                                "#28BBECFF",
+                                "#28BBECFF",
+                                "#D9E436FF","#D9E436FF",
+                                "#A2FC3CFF","#A2FC3CFF",
+                                "#56FA75FF","#56FA75FF")
       if (mode=="oriented.complete"){
-        relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "green3"
+        relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "#A2FC3CFF"
       }else if (mode=="convdiv.complete"){
-        relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red2"
-        relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue2"
+        relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "#BA1E02FF"
+        relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "#434FBBFF"
       }else if (mode=="crossed.groups.complete"){
         conv <- grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)
         div <- grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)
         oriented <- grep("oriented",x$dynamic_relationships_taxonomy$oriented_group)
-        relationships.colors[intersect(conv,oriented)] <- "yellow2"
-        relationships.colors[intersect(div,oriented)] <- "aquamarine2"
+        relationships.colors[intersect(conv,oriented)] <- "#D9E436FF"
+        relationships.colors[intersect(div,oriented)] <- "#56FA75FF"
       }
     }else if(mode=="oriented"){
       relationships.colors <- rep(NA,nrow(x$dynamic_relationships_taxonomy))
-      relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "green3"
+      relationships.colors[!is.na(x$dynamic_relationships_taxonomy$oriented_group)] <- "#A2FC3CFF"
     }else if (mode=="convdiv"){
       relationships.colors <- rep(NA,nrow(x$dynamic_relationships_taxonomy))
-      relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "red2"
-      relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "blue2"
+      relationships.colors[grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "#BA1E02FF"
+      relationships.colors[grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)] <- "#434FBBFF"
     }else if(mode=="crossed.groups"){
       relationships.colors <- rep(NA,nrow(x$dynamic_relationships_taxonomy))
       conv <- grep("convergence",x$dynamic_relationships_taxonomy$conv_div_group)
       div <- grep("divergence",x$dynamic_relationships_taxonomy$conv_div_group)
       oriented <- grep("oriented",x$dynamic_relationships_taxonomy$oriented_group)
-      relationships.colors[intersect(conv,oriented)] <- "yellow2"
-      relationships.colors[intersect(div,oriented)] <- "aquamarine2"
+      relationships.colors[intersect(conv,oriented)] <- "#D9E436FF"
+      relationships.colors[intersect(div,oriented)] <- "#56FA75FF"
       
     }else stop("Invalid string for 'mode'.")
     names(relationships.colors) <- x$dynamic_relationships_taxonomy$dynamic_relationship

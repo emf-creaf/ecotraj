@@ -1,6 +1,6 @@
 ## Submission
 
-This submission of **ecotraj** (v1.1.1) corrects a few bugs of previous version. 
+This submission of **ecotraj** (v1.2.0) implements new functions and removes dependency from package **MannKendall**. 
 
 ## Tested environments
 

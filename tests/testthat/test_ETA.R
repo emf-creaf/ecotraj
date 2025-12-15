@@ -46,6 +46,9 @@ test_that("Trajectories can be analyzed",{
   expect_s3_class(trajectoryShifts(x), "data.frame")
   expect_s3_class(trajectoryWindowMetrics(x, 1), "data.frame")
   expect_type(dynamicVariation(x), "list")
+  expect_type(dynamicVariation(x, distance.type = "DSPD"), "list")
+  expect_type(dynamicVariation(x, distance.type = "SPD"), "list")
+  expect_type(dynamicVariation(x, distance.type = "TSPD"), "list")
 })
 
 # Shuffle surveys and check if the results are the same
@@ -78,4 +81,7 @@ test_that("Trajectory analysis gives the same result after shuffling surveys",{
   expect_equal(trajectoryConvergence(x), trajectoryConvergence(x2))
   expect_equal(trajectoryShifts(x), trajectoryShifts(x2))
   expect_equal(dynamicVariation(x), dynamicVariation(x2))
+  expect_equal(dynamicVariation(x, distance.type = "DSPD"), dynamicVariation(x2, distance.type = "DSPD"))
+  expect_equal(dynamicVariation(x, distance.type = "SPD"), dynamicVariation(x2, distance.type = "SPD"))
+  expect_equal(dynamicVariation(x, distance.type = "TSPD"), dynamicVariation(x2, distance.type = "TSPD"))
 })

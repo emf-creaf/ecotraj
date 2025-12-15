@@ -103,6 +103,8 @@ In the case of function \code{trajectoryDistances} the following values are poss
 \item{\code{TSPD}: Time-Sensitive Path Distance (experimental).}
 }
 
+When using \code{trajectoryDistances} on trajectory cycles, then the elements to be compared are cycles (using internal states only). In this case, if TSPD is used cycle dates are used for time comparison, instead of trajectory absolute times.
+
 Function \code{trajectoryConvergence} is used to study convergence/divergence between trajectories. There are three possible tests, the first two concerning pairwise comparisons between trajectories.
 \enumerate{
 \item{If \code{type = "pairwise.asymmetric"} then all pairwise comparisons are considered and the test is asymmetric, meaning that we test for trajectory A approaching trajectory B along time.

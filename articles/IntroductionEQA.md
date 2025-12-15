@@ -94,9 +94,9 @@ dim(glomel_comp)
     ## [1] 23 43
 
 Using the compositional data, we can use function
-[`vegdist()`](https://rdrr.io/pkg/vegan/man/vegdist.html) from package
-**vegan** to calculate of Bray Curtis distances between ecological
-(community) states:
+[`vegdist()`](https://vegandevs.github.io/vegan/reference/vegdist.html)
+from package **vegan** to calculate of Bray Curtis distances between
+ecological (community) states:
 
 ``` r
 glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
@@ -338,9 +338,9 @@ grab_comp<-log1p(glenan[,-c(251:252)])
 ```
 
 Using the compositional data, we can use function
-[`vegdist()`](https://rdrr.io/pkg/vegan/man/vegdist.html) from package
-**vegan** to calculate of Bray Curtis distances between ecological
-(community) states:
+[`vegdist()`](https://vegandevs.github.io/vegan/reference/vegdist.html)
+from package **vegan** to calculate of Bray Curtis distances between
+ecological (community) states:
 
 ``` r
 grab_bc <- vegan::vegdist(grab_comp, method = "bray")

@@ -192,9 +192,9 @@ possible (De Cáceres et al. 2019):
 - `TSPD`: Time-Sensitive Path Distance (experimental).
 
 When using `trajectoryDistances` on trajectory cycles, then the elements
-to be compared are cycles (using internal states only). In this case, if
-TSPD is used cycle dates are used for time comparison, instead of
-trajectory absolute times.
+to be compared are cycles. In this case, if TSPD is used the time of the
+first survey is subtracted to all times of the cycle, so that cycle
+dates are effectively used.
 
 Function `trajectoryConvergence` is used to study convergence/divergence
 between trajectories. There are three possible tests, the first two

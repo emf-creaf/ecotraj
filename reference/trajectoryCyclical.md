@@ -418,8 +418,8 @@ trajectoryLengths(x = fdTrajToy)
 #or distances between trajectories:
 trajectoryDistances(x = cyclesToy)
 #>           A_C1      A_C2
-#> A_C2 0.4456664          
-#> A_C3 0.7336207 0.4451322
+#> A_C2 0.4602096          
+#> A_C3 0.8276663 0.4602096
 trajectoryDistances(x = fdTrajToy)
 #>           A_fdT_0   A_fdT_1   A_fdT_2   A_fdT_3   A_fdT_4   A_fdT_5   A_fdT_6
 #> A_fdT_1 0.3072093                                                            

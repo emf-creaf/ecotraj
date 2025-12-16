@@ -156,7 +156,7 @@ If parameter '<code>add</code>' is set to FALSE and problems of triangle inequal
 <li><p><code>SPD</code>: Segment Path Distance.</p></li>
 <li><p><code>DSPD</code>: Directed Segment Path Distance (default).</p></li>
 <li><p><code>TSPD</code>: Time-Sensitive Path Distance (experimental).</p></li>
-</ul><p>When using <code>trajectoryDistances</code> on trajectory cycles, then the elements to be compared are cycles (using internal states only). In this case, if TSPD is used cycle dates are used for time comparison, instead of trajectory absolute times.</p>
+</ul><p>When using <code>trajectoryDistances</code> on trajectory cycles, then the elements to be compared are cycles. In this case, if TSPD is used the time of the first survey is subtracted to all times of the cycle, so that cycle dates are effectively used.</p>
 <p>Function <code>trajectoryConvergence</code> is used to study convergence/divergence between trajectories. There are three possible tests, the first two concerning pairwise comparisons between trajectories.</p><ol><li><p>If <code>type = "pairwise.asymmetric"</code> then all pairwise comparisons are considered and the test is asymmetric, meaning that we test for trajectory A approaching trajectory B along time.
 This test uses distances of orthogonal projections (i.e. rejections) of states of one trajectory onto the other.</p></li>
 <li><p>If <code>type = "pairwise.symmetric"</code> then all pairwise comparisons are considered but we test whether

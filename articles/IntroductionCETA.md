@@ -404,8 +404,8 @@ trajectoryDistances(cycleToy)
 ```
 
     ##           A_C1      A_C2
-    ## A_C2 0.5035048          
-    ## A_C3 0.7792153 0.5088347
+    ## A_C2 0.5231294          
+    ## A_C3 0.8695007 0.5047277
 
 However, when visualizing through PCoA, the duplicated ecological states
 must be removed. This is handled by the dedicated function
@@ -436,9 +436,9 @@ Of course after centering,the distances between cycles will go down:
 trajectoryDistances(cycleToy_cent)
 ```
 
-    ##           A_C1      A_C2
-    ## A_C2 0.1885308          
-    ## A_C3 0.1407973 0.1781426
+    ##            A_C1       A_C2
+    ## A_C2 0.14729156           
+    ## A_C3 0.09448688 0.12116359
 
 For visualization, if cycles are centered, the duplicated ecological
 states will no longer overlap, so they must be retained in PCoA. This is

@@ -39,7 +39,7 @@
 #'     \item{\code{TSPD}: Time-Sensitive Path Distance (experimental).}
 #'  }
 #'  
-#'  When using \code{trajectoryDistances} on trajectory cycles, then the elements to be compared are cycles (using internal states only). In this case, if TSPD is used cycle dates are used for time comparison, instead of trajectory absolute times. 
+#'  When using \code{trajectoryDistances} on trajectory cycles, then the elements to be compared are cycles. In this case, if TSPD is used the time of the first survey is subtracted to all times of the cycle, so that cycle dates are effectively used. 
 #'  
 #'  Function \code{trajectoryConvergence} is used to study convergence/divergence between trajectories. There are three possible tests, the first two concerning pairwise comparisons between trajectories.
 #'  \enumerate{
@@ -273,10 +273,12 @@ trajectoryDistances<-function(x, distance.type="DSPD", symmetrization = "mean" ,
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
   } else if(inherits(x, "cycles")) {
-    surveys <- x$metadata$surveys[x$metadata$internal]
-    sites <- x$metadata$cycles[x$metadata$internal]
-    times <- x$metadata$dates[x$metadata$internal]
-    d <- as.dist(as.matrix(x$d)[x$metadata$internal, x$metadata$internal])
+    sites <- x$metadata$cycles
+    # This allows comparing the appropriate times in TSPD
+    for(c in unique(sites)) {
+      sel_c <- (sites==c)
+      times[sel_c] <- times[sel_c] - min(times[sel_c])
+    }
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
   } else {

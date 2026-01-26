@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres</h4>
             
-            <h4 data-toc-skip class="date">2025-12-16</h4>
+            <h4 data-toc-skip class="date">2026-01-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/Dissimilarities.Rmd" class="external-link"><code>vignettes/Dissimilarities.Rmd</code></a></small>
       <div class="d-none name"><code>Dissimilarities.Rmd</code></div>
@@ -140,7 +140,7 @@ illustrate the effect of the square root transformation.</p>
 matrix we see a straight trajectory:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="576" style="display: block; margin: auto;">
+<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;">
 Here we see that Bray-Curtis dissimilarity responds linearly to the
 proposed sequence of community dynamics. To confirm this geometry, we
 can calculate the geometric properties of the trajectory (i.e. length,
@@ -178,7 +178,7 @@ dissimilarities decreases. This has an effect on the overall shape of
 the trajectory, which surprisingly now looks like:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_sqrt</span>, survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>In addition to the distortion observed, the number of dimensions of
 the data have increased (i.e the sum of variance explained by the two
 axes is 88% &lt; 100%), so we cannot be sure that the angles are well
@@ -282,7 +282,7 @@ will see.</p>
 <span><span class="co">## 11 of the first 12 eigenvalues are &gt; 0</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): zero-length</span></span>
 <span><span class="co">## arrow is of indeterminate angle and so skipped</span></span></code></pre>
-<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pcoaD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">pcoa</span><span class="op">$</span><span class="va">points</span><span class="op">)</span></span>
 <span><span class="va">x_pcoa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">pcoaD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></span></code></pre></div>
@@ -296,7 +296,7 @@ dissimilarity:</p>
 <span>                          length<span class="op">=</span><span class="fl">0.1</span>, axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in arrows(x[niini], y[niini], x[nifin], y[nifin], ...): zero-length</span></span>
 <span><span class="co">## arrow is of indeterminate angle and so skipped</span></span></code></pre>
-<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Finally, we also transform dissimilarities using metric
 multidimensional scaling (mMDS), provided by package
 <code>smacof</code>:</p>
@@ -307,7 +307,7 @@ multidimensional scaling (mMDS), provided by package
 <span>               length<span class="op">=</span><span class="fl">0.1</span>, axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in arrows(xp[niini], yp[niini], xp[nifin], yp[nifin], ...): zero-length</span></span>
 <span><span class="co">## arrow is of indeterminate angle and so skipped</span></span></code></pre>
-<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Dissimilarities_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_mmds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">mmdsD</span>,<span class="va">sites</span>,<span class="va">surveys</span><span class="op">)</span></span></code></pre></div>
 <p>While the three plots look different, the differences are not

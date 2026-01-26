@@ -2,16 +2,16 @@
 
 ## 1. Introduction
 
-### 1.1 Going round in cycles, but go somewhere! What CETA does, and where it sits
+### 1.1 Going round in cycles but going somewhere! What CETA does, and where it sits
 
 *Cyclical Ecological Trajectory Analysis* (CETA) is an extension of
 *Ecological Trajectory Analysis* (ETA) allowing it to handle
 trajectories presenting regular cyclical dynamics (e.g. seasons,
 day-night cycle):
 
-- Djeghri et al. (in preparation) Going round in cycles, but going
-  somewhere: Ecological Trajectory Analysis as a tool to decipher
-  seasonality and other cyclical dynamics.
+- Djeghri et al. (in preparation) Going round in cycles but going
+  somewhere: Deciphering cyclical dynamics using Ecological Trajectory
+  Analysis.
 
 Before starting, it is important to clarify what CETA does and what it
 does not, as well as what we mean by *regular cyclical dynamics*.
@@ -29,9 +29,7 @@ prime motivation in designing CETA. CETA is therefore not designed to
 address many other dynamics that ecologists would refer to as “cyclical”
 such as disturbance-recovery cycles, because the time duration of those
 cycles is not fixed (i.e. they are not periodic). These may be better
-addressed with clever use of the more general ETA framework. The primary
-research field we envision for CETA lies in a middle ground between
-phenology, community, and ecosystem ecology.
+addressed with clever use of the more general ETA framework.
 
 ### 1.2 About this vignette
 
@@ -752,7 +750,7 @@ community at those two periods. For instance, around 2000, echinoderm
 larvae became seasonally dominant in the North Sea. It is possible that
 the “jump” in convexity is linked to this event, as a large dominance of
 one taxa in a given season would indeed pull the cycles towards one
-dimension only, possibly increasing cycle convexity.
+dimension only, increasing cycle convexity.
 
 Let’s now look at the distances between cycles:
 
@@ -967,7 +965,7 @@ corrplot(matrix(as.vector(NNSfdtrajConv$tau)*as.numeric(NNSfdtrajConv$p.value<0.
 
 ![](IntroductionCETA_files/figure-html/unnamed-chunk-48-1.png) In those
 graphs, blue indicates divergence while red indicates convergence of
-fixed date tajectories. In both part of the North Sea, we see a
+fixed date tajectories. In both parts of the North Sea, we see a
 convergence of spring and summer months and a divergence winter month
 with summer months. One possible interpretation is that summers and
 winters are getting more contrasted.
@@ -978,7 +976,7 @@ The last aspect that CETA allows to investigate is cyclical shifts
 (e.g. advances and delays similar to approaches in phenology). The
 function that does it is
 [`cycleShifts()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md).
-This one will take a bit long to compute, it works a lot!
+This one will take some time to compute, it works a lot!
 
 ``` r
 CSNSZoo <- cycleShifts(x_northseaZoo,
@@ -996,16 +994,17 @@ head(CSNSZoo)
 
 Broadly,
 [`cycleShifts()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
-works by compute `cyclicalShift` by comparing **the position of an
-ecological state of interest on its cycle** (at a date `dateCS`,and time
-`timeCS`) to **the position of the ecological state of same date on a
-reference cycle** (at time `timeRef`). The two ecological states are
-separated by an amount of time `timeScale`. Which cycles to choose to
-compute a cyclical shift can be rather arbitrary so instead we can
-simply use all possible comparison and extract a trend from a graph of
-`cyclicalShift` against `timeScale`. We do it below for all dates
-(i.e. months of the year) and display only one of the graphs as an
-example:
+works by comparing **the position of an ecological state of interest on
+its cycle** (at a date `dateCS`,and time `timeCS`) to **the position of
+the ecological state of same date on a reference cycle** (at time
+`timeRef`). The two ecological states are separated by an amount of time
+`timeScale`. Choosing a pair of cycles to compute a cyclical shift can
+be rather arbitrary. Here we compute all possible comparison and extract
+a trend from a graph of `cyclicalShift` against `timeScale`. This
+approach allows using the whole time-series, limiting arbitrary choices.
+
+We do it below for all dates (i.e. months of the year) and display only
+one of the graphs as an example:
 
 ``` r
 slopes <- integer(0)

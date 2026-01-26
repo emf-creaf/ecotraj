@@ -132,9 +132,9 @@ variables.
   archipelago through elementome trajectories. Ecological Indicators,
   176, 113630 (<https://doi.org/10.1016/j.ecolind.2025.113630>).
 
-- Djeghri et al (under review) Going round in cycles, but going
-  somewhere: Ecological Trajectory Analysis as a tool to decipher
-  seasonality and other cyclical dynamics.
+- Djeghri et al (under review) Going round in cycles but going
+  somewhere: Deciphering cyclical dynamics using Ecological Trajectory
+  Analysis.
 
 - Djeghri et al. (in preparation) Uncovering the relative movements of
   ecological trajectories.

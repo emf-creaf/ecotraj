@@ -114,7 +114,7 @@ The R package [**ecoregime**](https://mspinillos.github.io/ecoregime/), by Marti
 
 + de la Casa J, Nogué S, De Cáceres M, Pla-Rabés S, Sardans J, Benavente M, Giralt S, Hernandez A, Raposeiro PM & Peñuelas J (2025) Understanding two millenia ecosystem perturbations on the Azores archipelago through elementome trajectories. Ecological Indicators, 176, 113630 (https://doi.org/10.1016/j.ecolind.2025.113630).
 
-+ Djeghri et al (2026) Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs (accepted).
++ Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé A, Gauthier O, De Cáceres M (2026). Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs.
 
 + Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
 

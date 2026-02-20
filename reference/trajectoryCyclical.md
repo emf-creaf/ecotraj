@@ -336,9 +336,10 @@ can be found in the associated vignette.
 
 ## References
 
-Djeghri et al. (2026) Going round in cycles, but going somewhere:
-Ecological Trajectory Analysis as a tool to decipher seasonality and
-other cyclical dynamics. Ecological Monographs (accepted).
+Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé
+A, Gauthier O, De Cáceres M (2026). Going round in cycles but going
+somewhere: Deciphering cyclical dynamics using Ecological Trajectory
+Analysis. Ecological Monographs.
 
 ## See also
 

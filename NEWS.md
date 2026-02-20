@@ -21,7 +21,7 @@
 
 # ecotraj 1.0.0
 * Trajectory data structures have been introduced.
-* New functions for cyclical trajectory analysis (Djeghri et al, in prep.).
+* New functions for cyclical trajectory analysis (Djeghri et al, 2026).
 * New ETA metrics trajectoryVariability() and trajectorySpeeds().
 * Permutational test added for trajectoryDirectionality().
 * New function trajectoryMetrics() for evaluation of multiple metrics.

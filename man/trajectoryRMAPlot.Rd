@@ -81,7 +81,7 @@ trajectoryRMAPlot(avoca_RTMA,mode="crossed.groups")
 
 }
 \references{
-Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
+Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
 }
 \seealso{
 \code{\link{trajectoryRMA}}, \code{\link{trajectoryConvergencePlot}}

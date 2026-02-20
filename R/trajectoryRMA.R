@@ -87,7 +87,7 @@
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' @references
-#' Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
+#' Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
 #' 
 #' \enc{Šidák}{Sidak}, Z. (1967) Rectangular confidence regions for the means of multivariate normal distributions. Journal of the American Statistical Association 62:648-633.
 #'

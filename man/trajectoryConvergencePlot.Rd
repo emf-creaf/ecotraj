@@ -115,7 +115,7 @@ trajectoryConvergencePlot(avoca_RTMA,
                           
 }
 \references{
-Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
+Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
 }
 \seealso{
 \code{\link{trajectoryConvergence}},\code{\link{trajectoryRMA}}, \code{\link{cycleShiftArrows}}

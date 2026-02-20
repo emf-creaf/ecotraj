@@ -20,8 +20,7 @@ ETA is related to the following publications:
 - ETA extension of **metrics** and **visualisation modes** (Sturbois et
   al. 2021a).
 
-- ETA extension to **cyclical** trajectory data (Djeghri et al. under
-  review).
+- ETA extension to **cyclical** trajectory data (Djeghri et al. 2026).
 
 - Interpretation of trajectory **relative movements** (Djeghri et al. in
   prep.).
@@ -132,9 +131,9 @@ variables.
   archipelago through elementome trajectories. Ecological Indicators,
   176, 113630 (<https://doi.org/10.1016/j.ecolind.2025.113630>).
 
-- Djeghri et al (under review) Going round in cycles but going
-  somewhere: Deciphering cyclical dynamics using Ecological Trajectory
-  Analysis.
+- Djeghri et al (2026) Going round in cycles but going somewhere:
+  Deciphering cyclical dynamics using Ecological Trajectory Analysis.
+  Ecological Monographs.
 
 - Djeghri et al. (in preparation) Uncovering the relative movements of
   ecological trajectories.

@@ -23,9 +23,9 @@ ETA is related to the following publications:
 
 * ETA extension of **metrics** and **visualisation modes** (Sturbois et al. 2021a). 
 
-* ETA extension to **cyclical** trajectory data (Djeghri et al. under review).
+* ETA extension to **cyclical** trajectory data (Djeghri et al. 2026).
 
-* Interpretation of trajectory **relative movements** (Djeghri et al. in prep.).
+* Interpretation of trajectory **relative movements** (Djeghri et al. under review).
 
 * Application to a multivariate space defined by **stable isotope** data (Sturbois et al. 2021b).
 
@@ -114,9 +114,9 @@ The R package [**ecoregime**](https://mspinillos.github.io/ecoregime/), by Marti
 
 + de la Casa J, Nogué S, De Cáceres M, Pla-Rabés S, Sardans J, Benavente M, Giralt S, Hernandez A, Raposeiro PM & Peñuelas J (2025) Understanding two millenia ecosystem perturbations on the Azores archipelago through elementome trajectories. Ecological Indicators, 176, 113630 (https://doi.org/10.1016/j.ecolind.2025.113630).
 
-+ Djeghri et al (under review) Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis.
++ Djeghri et al (2026) Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs (accepted).
 
-+ Djeghri et al. (in preparation) Uncovering the relative movements of ecological trajectories.
++ Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
 
 + Sturbois A, De Cáceres M, Sánchez-Pinillos M, Schaal G, Gauthier O, Le Mao P, Ponsero A, & Desroy N (2021a). Extending community trajectory analysis : New metrics and representation. Ecological Modelling, 440, 109400 (https://doi.org/10.1016/j.ecolmodel.2020.109400).
 

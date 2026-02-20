@@ -212,7 +212,7 @@ provide options to plot the results of RTMA.
 
 ## References
 
-Djeghri et al. (in preparation) Uncovering the relative movements of
+Djeghri et al. (under review) Uncovering the relative movements of
 ecological trajectories.
 
 Šidák, Z. (1967) Rectangular confidence regions for the means of

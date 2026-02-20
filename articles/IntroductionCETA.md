@@ -9,9 +9,9 @@
 trajectories presenting regular cyclical dynamics (e.g. seasons,
 day-night cycle):
 
-- Djeghri et al. (in preparation) Going round in cycles but going
-  somewhere: Deciphering cyclical dynamics using Ecological Trajectory
-  Analysis.
+- Djeghri et al. (2026) Going round in cycles but going somewhere:
+  Deciphering cyclical dynamics using Ecological Trajectory Analysis.
+  Ecological Monographs (accepted).
 
 Before starting, it is important to clarify what CETA does and what it
 does not, as well as what we mean by *regular cyclical dynamics*.

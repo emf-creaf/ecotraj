@@ -126,9 +126,9 @@ intended use is to set the parameter `centered` to `TRUE`.
 
 ## References
 
-Djeghri et al. (under review) Going round in cycles, but going
-somewhere: Ecological Trajectory Analysis as a tool to decipher
-seasonality and other cyclical dynamics.
+Djeghri et al. (2026) Going round in cycles, but going somewhere:
+Ecological Trajectory Analysis as a tool to decipher seasonality and
+other cyclical dynamics. Ecological Monographs (accepted).
 
 ## See also
 

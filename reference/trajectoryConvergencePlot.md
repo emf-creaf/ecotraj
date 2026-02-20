@@ -161,7 +161,7 @@ for additional graphical elements to be displayed when conducting CETA.
 
 ## References
 
-Djeghri et al. (in preparation) Uncovering the relative movements of
+Djeghri et al. (under review) Uncovering the relative movements of
 ecological trajectories.
 
 ## See also

@@ -1,5 +1,6 @@
 # ecotraj 1.2.1
 * When using trajectoryDistances with "cycles" objects the elements to be compared are cycles and dates are used for time comparison. 
+* Bug correction in extractCycles() by N. Djeghri
 
 # ecotraj 1.2.0
 * New functions trajectoryConvergencePlot() and cycleShiftArrows() by N. Djeghri

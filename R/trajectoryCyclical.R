@@ -235,7 +235,9 @@ extractCycles <- function(x,
     tend <- c(tend,tendi)
     Traj <- c(Traj,rep(i,length(tstarti)))
     
-    namesCycles <- c(namesCycles,paste0(i,paste0("_C",1:length(tstarti))))
+    if (length(tstarti)>0){
+      namesCycles <- c(namesCycles,paste0(i,paste0("_C",1:length(tstarti))))
+    }
   }
   
   #End of the loop, we then add the vectors for the boundary conditions

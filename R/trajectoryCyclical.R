@@ -448,8 +448,7 @@ cycleShifts <- function (x,
                             minEcolStates)
     
     if (centering){
-      Cycles <- centerTrajectories(Cycles,
-                                   exclude=which(Cycles$metadata$internal==FALSE))
+      Cycles <- centerTrajectories(Cycles)
     }
     
     for (j in 1:length(siteIDs)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)

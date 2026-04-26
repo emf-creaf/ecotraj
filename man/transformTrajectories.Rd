@@ -6,6 +6,7 @@
 \alias{smoothTrajectories}
 \alias{centerTrajectories}
 \alias{interpolateTrajectories}
+\alias{averageTrajectories}
 \title{Transform trajectories}
 \usage{
 smoothTrajectories(
@@ -16,6 +17,8 @@ smoothTrajectories(
 )
 
 centerTrajectories(x, exclude = integer(0))
+
+averageTrajectories(x)
 
 interpolateTrajectories(x, times)
 }
@@ -41,12 +44,13 @@ The following functions are provided to transform trajectories:
 \itemize{
 \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
+\item{Function \code{averageTrajectories} returns an "average" trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. }
 \item{Function \code{interpolateTrajectories} relocates trajectory ecological states to those corresponding to input times, via interpolation.}
 }
 }
 \details{
 Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
-Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
+Functions \code{centerTrajectories} and \code{averageTrajectories} perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
 }
 \references{
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.

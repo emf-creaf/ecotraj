@@ -49,6 +49,7 @@ test_that("Trajectories can be transformed", {
   x <- defineTrajectories(d, sites, surveys)
   expect_s3_class(centerTrajectories(x),"trajectories")
   expect_s3_class(smoothTrajectories(x),"trajectories")
+  expect_s3_class(averageTrajectories(x),"trajectories")
   expect_s3_class(interpolateTrajectories(x, c(1.5, 2.5)),"trajectories")
 })
 

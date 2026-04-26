@@ -17,19 +17,20 @@
 #' \itemize{
 #' \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 #' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
+#' \item{Function \code{averageTrajectories} returns an "average" trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. }
 #' \item{Function \code{interpolateTrajectories} relocates trajectory ecological states to those corresponding to input times, via interpolation.}
 #' }
 #'  
 #' 
 #' @encoding UTF-8
 #' @name transformTrajectories
-#' @aliases centerTrajectories smoothTrajectories interpolateTrajectories
+#' @aliases centerTrajectories smoothTrajectories interpolateTrajectories averageTrajectories
 #' 
 #' @param x An object of class \code{\link{trajectories}}.
 #' 
 #' @details 
 #' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
-#' Function \code{centerTrajectories} performs centering of trajectories using matrix algebra as explained in Anderson (2017).
+#' Functions \code{centerTrajectories} and \code{averageTrajectories} perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
 #'
 #' @return 
 #' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories}, also the
@@ -183,6 +184,57 @@ centerTrajectories<-function(x, exclude = integer(0)) {
   }
   # Replace distance matrix by dcent
   x$d <- as.dist(dcent)
+  return(x)
+}
+
+#' @rdname transformTrajectories
+#' @export
+averageTrajectories<-function(x) {
+  if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
+  
+  d <- x$d
+  surveys <- x$metadata$surveys
+  if(inherits(x, "fd.trajectories")) {
+    sites <- x$metadata$fdT
+  } else if(inherits(x, "cycles")) {
+    sites <- x$metadata$cycles
+    exclude <- unique(c(exclude,which(x$metadata$internal==FALSE)))
+  } else if(inherits(x, "sections")) {
+    sites <- x$metadata$sections
+    exclude <- unique(c(exclude,which(x$metadata$internal==FALSE)))
+  } else {
+    sites <- x$metadata$sites
+  }
+  
+  Dmat <-as.matrix(d)
+  n <- nrow(Dmat)
+  I <- diag(n)
+  
+  # Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
+  G <- .gowerCentered(d)
+  
+  #model matrix
+  df <- data.frame(a = factor(surveys))
+  M <- model.matrix(~a,df, contrasts = list(a = "contr.helmert"))
+  #Projection matrix
+  H <- M%*%MASS::ginv(t(M)%*%M)%*%t(M)
+  #Projected G matrix (when there are no excluded sites, the H matrix is symmetrical)
+  P <- t(H)%*%G%*%H
+  #Backtransform to distances
+  dcent<-matrix(0,n,n)
+  for(i in 1:n) {
+    for(j in i:n) {
+      dsq <- (P[i,i]-2*P[i,j]+P[j,j])
+      if(dsq > 0) {
+        dcent[i,j] = sqrt(dsq) #truncate negative squared distances
+        dcent[j,i] = dcent[i,j]
+      }
+    }
+  }
+  # Replace distance matrix by dcent
+  x$d <- as.dist(dcent)
+  # Subset first trajectory (all of them are equal after averaging)
+  x <- subsetTrajectories(x, site_selection = sites[1])
   return(x)
 }
 

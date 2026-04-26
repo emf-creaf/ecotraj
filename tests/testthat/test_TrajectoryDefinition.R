@@ -50,6 +50,7 @@ test_that("Trajectories can be transformed", {
   expect_s3_class(centerTrajectories(x),"trajectories")
   expect_s3_class(smoothTrajectories(x),"trajectories")
   expect_s3_class(averageTrajectories(x),"trajectories")
+  expect_s3_class(averageTrajectories(x, keep_members=TRUE),"trajectories")
   expect_s3_class(interpolateTrajectories(x, c(1.5, 2.5)),"trajectories")
 })
 

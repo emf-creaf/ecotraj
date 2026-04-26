@@ -18,7 +18,12 @@ smoothTrajectories(
 
 centerTrajectories(x, exclude = integer(0))
 
-averageTrajectories(x)
+averageTrajectories(
+  x,
+  group = NULL,
+  keep_members = FALSE,
+  output_name = "average"
+)
 
 interpolateTrajectories(x, times)
 }
@@ -31,7 +36,13 @@ interpolateTrajectories(x, times)
 
 \item{fixed_endpoints}{A logical flag to force keeping the location of trajectory endpoints unmodified}
 
-\item{exclude}{An integer vector indicating sites that are excluded from trajectory centroid computation. Note: for objects of class \code{\link{cycles}}, \code{external} are excluded by default.}
+\item{exclude}{An integer vector indicating observations that are excluded from trajectory centroid computation. Note: for objects of class \code{\link{cycles}}, \code{external} are excluded by default.}
+
+\item{group}{Character vector of the sites (trajectories) to be averaged. If \code{NULL} all trajectories contribute to the average}
+
+\item{keep_members}{Boolean flag to keep the group member trajectories in the result}
+
+\item{output_name}{A string with the name for the average trajectory}
 
 \item{times}{A numeric vector indicating new observation times for trajectories. Values should be comprised between time limits of the original trajectories.}
 }
@@ -51,6 +62,7 @@ The following functions are provided to transform trajectories:
 \details{
 Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
 Functions \code{centerTrajectories} and \code{averageTrajectories} perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
+Function \code{averageTrajectories} requires synchronous input trajectories.
 }
 \references{
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.

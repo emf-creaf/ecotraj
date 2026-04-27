@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ecotraj</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,7 @@
                         <h4 data-toc-skip class="author">Miquel De
 Cáceres / Nicolas Djeghri</h4>
             
-            <h4 data-toc-skip class="date">2026-02-20</h4>
+            <h4 data-toc-skip class="date">2026-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/emf-creaf/ecotraj/blob/HEAD/vignettes/TransformingTrajectories.Rmd" class="external-link"><code>vignettes/TransformingTrajectories.Rmd</code></a></small>
       <div class="d-none name"><code>TransformingTrajectories.Rmd</code></div>
@@ -89,14 +89,16 @@ Cáceres / Nicolas Djeghri</h4>
 <h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>In this vignette you will learn to <strong>transform</strong>
-trajectory data in three different ways. By transforming, we mean
+trajectory data in different different ways. By transforming, we mean
 <strong>modifying the distance matrix</strong> that represents the
 resemblance between ecological states. This is equivalent to
 (implicitly) modifying the coordinates (position) of ecological states
 in the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
-space. However, one of the transformations also includes a modification
-of observation times.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+space. However, some transformations also includes a modification of
+observation times. We also include in this set of transformations a
+function that allows <strong>averaging</strong> a set of target
+trajectories.</p>
 <p>First of all, we load <code>ecotraj</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://emf-creaf.github.io/ecotraj/">ecotraj</a></span><span class="op">)</span></span></code></pre></div>
@@ -115,7 +117,7 @@ that require synchronous trajectory data. Trajectory interpolation
 allows recalculating positions along trajectory pathways so that
 observation times are the same across all trajectories, hence obtaining
 a synchronous data set. Interpolation is done in the multivariate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 space but is linear.</p>
 </div>
 <div class="section level3">
@@ -131,7 +133,7 @@ that describe the observation of each entity (i.e. site):</p>
 with entities ‘2’ and ‘3’ being observed earlier than entity ‘1’. We
 then define a matrix whose coordinates correspond to the set of
 ecological states observed. We assume that the ecosystem space
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 has two dimensions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -333,7 +335,7 @@ state of each entity (i.e. site):</p>
 consecutive for the each entity. However, we do define a matrix whose
 coordinates correspond to the set of ecological states observed. We
 assume that the ecosystem space
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
 has two dimensions:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -358,7 +360,7 @@ has two dimensions:</p>
 <p>The trajectories can be displayed using a PCoA on the distance matrix
 as follows:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
 <p>Centering trajectories is straightforward using function
@@ -370,7 +372,7 @@ where the distance matrix has been modified to represent the distances
 after centering. The effect of centering can be shown by repeating PCoA
 on the modified object:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
 <p>Function <code><a href="../reference/transformTrajectories.html">centerTrajectories()</a></code> operates on distance
@@ -470,7 +472,7 @@ supplying the vector we created to parameter <code>exclude</code>:</p>
 <code class="sourceCode R"><span><span class="va">x_cent_excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">centerTrajectories</a></span><span class="op">(</span><span class="va">x</span>, exclude <span class="op">=</span> <span class="va">excluded</span><span class="op">)</span></span></code></pre></div>
 <p>We can see the effect of the new centering using:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent_excluded</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_cent_excluded</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-31-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
 <p>As before, we could check the equivalence with a centering using
@@ -542,7 +544,7 @@ using function <code><a href="../reference/transformTrajectories.html">smoothTra
 </h3>
 <p>Function <code><a href="../reference/transformTrajectories.html">smoothTrajectories()</a></code> smoothes out noise from
 trajectories by applying a Gaussian kernel over each trajectory:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mrow><mn>2</mn><mo>⋅</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>r</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>e</mi><mi>x</mi><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mi>r</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><mrow><mn>2</mn><mo>⋅</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
 K(x, x_r) = exp\left( - \frac{(x - x_r)^2}{2\cdot b^2} \right)
 \end{equation}</annotation></semantics></math> where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
@@ -626,6 +628,200 @@ variability are reduced while trajectory directionality is increased.
 Whether these effects are desirable or not, will depend on the
 application, but generally speaking smoothing should only be used to
 clarify trajectory paths visually.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="averaging-trajectories">5 Averaging trajectories<a class="anchor" aria-label="anchor" href="#averaging-trajectories"></a>
+</h2>
+<div class="section level3">
+<h3 id="what-is-trajectory-averaging">5.1 What is trajectory averaging?<a class="anchor" aria-label="anchor" href="#what-is-trajectory-averaging"></a>
+</h3>
+<p>One may be interested in the properties of a trajectory that
+summarizes the dynamics of a given set of entities. Trajectory averaging
+involves the definition of a new trajectory whose states are
+multivariate means of the corresponding observations in a set of target
+entities. Average trajectories can only be calculated if the input
+trajectories are <strong>synchronous</strong> (see function
+<code><a href="../reference/is.synchronous.html">is.synchronous()</a></code>), because the observations to be averaged
+must exist for all the target entities. The average trajectory is added
+to the output object of class <code>trajectories</code>, which can also
+include the original trajectories that were averaged as well as other
+trajectories that are left unchanged.</p>
+</div>
+<div class="section level3">
+<h3 id="simple-averaging-example">5.2 Simple averaging example<a class="anchor" aria-label="anchor" href="#simple-averaging-example"></a>
+</h3>
+<p>Again, we will employ the same simple example used in the
+introduction to trajectory analysis. Let us first define the vectors
+that describe the state of each entity (i.e. site):</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">entities</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"1"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"2"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span>,<span class="st">"3"</span><span class="op">)</span></span></code></pre></div>
+<p>We do not define <code>surveys</code>, so that they are assumed to be
+consecutive for the each entity. However, we do define a matrix whose
+coordinates correspond to the set of ecological states observed. We
+assume that the ecosystem space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+has two dimensions:</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xy</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">12</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">3</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">7</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1.5</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">8</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">2.0</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">7</span>,<span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">0.5</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">8</span>,<span class="fl">1</span><span class="op">]</span><span class="op">&lt;-</span><span class="fl">1.0</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">1</span><span class="op">]</span><span class="op">+</span><span class="fl">0.25</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">11</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1.0</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">12</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span><span class="fl">1.5</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">xy</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">xy</span><span class="op">[</span><span class="fl">11</span><span class="op">:</span><span class="fl">12</span>,<span class="fl">2</span><span class="op">]</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.25</span>,<span class="fl">1.0</span><span class="op">)</span></span></code></pre></div>
+<p>We define trajectories using:</p>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="va">xy</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defineTrajectories.html">defineTrajectories</a></span><span class="op">(</span><span class="va">D</span>, <span class="va">entities</span><span class="op">)</span></span></code></pre></div>
+<p>The trajectories can be displayed using a PCoA on the distance matrix
+as follows:</p>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>               survey.labels <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-39-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>Averaging trajectories is straightforward using function
+<code><a href="../reference/transformTrajectories.html">averageTrajectories()</a></code>:</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x_ave</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p>By default the function will return an object of class
+<code>trajectories</code> containing only one trajectory, corresponding
+to the average:</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x_ave</span></span></code></pre></div>
+<pre><code><span><span class="co">## $d</span></span>
+<span><span class="co">##           1         2         3</span></span>
+<span><span class="co">## 2 1.0000000                    </span></span>
+<span><span class="co">## 3 1.6029487 0.6346478          </span></span>
+<span><span class="co">## 4 2.0833333 1.1577037 0.5335937</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $metadata</span></span>
+<span><span class="co">##     sites surveys times</span></span>
+<span><span class="co">## 1 average       1     1</span></span>
+<span><span class="co">## 2 average       2     2</span></span>
+<span><span class="co">## 3 average       3     3</span></span>
+<span><span class="co">## 4 average       4     4</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "trajectories" "list"</span></span></code></pre>
+<p>The effect of averaging can be shown by repeating PCoA on the
+modified object:</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_ave</span>, lwd <span class="op">=</span> <span class="fl">2</span>, survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-42-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>We can choose to keep the original trajectories along with the
+trajectory average, by using <code>keep_members</code>:</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x_ave_members</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">x</span>, keep_members <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>In the following plot we use gray color to identify the original
+trajectories, and black for the average trajectory:</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">x_ave_members</span>, traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>,<span class="st">"gray"</span>, <span class="st">"gray"</span>, <span class="st">"black"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>               survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>It is also possible to average a subset of the original trajectories,
+while keeping the remaining unaltered. For example, we average here the
+trajectories of sites <code>"2"</code> and <code>"3"</code>:</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">x</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2"</span>, <span class="st">"3"</span><span class="op">)</span>, keep_members <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
+<span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"green"</span>,<span class="st">"gray"</span>, <span class="st">"gray"</span>, <span class="st">"black"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>               survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-45-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>Or sites <code>"1"</code> and <code>"2"</code>:</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">x</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span>, keep_members <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
+<span>               traj.colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>,<span class="st">"gray"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>               survey.labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="averaging-in-a-real-example">5.3 Averaging in a real example<a class="anchor" aria-label="anchor" href="#averaging-in-a-real-example"></a>
+</h3>
+<p>Let’s take again the forest plot data:</p>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_x</span>,</span>
+<span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
+<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-47-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>We can first have the question of whether we could group the eight
+plots into a lower number of dynamic entities. For that we first
+calculate trajectory distances:</p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avoca_D</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryComparison.html">trajectoryDistances</a></span><span class="op">(</span><span class="va">avoca_x</span>, distance.type <span class="op">=</span> <span class="st">"TSPD"</span><span class="op">)</span></span></code></pre></div>
+<p>And we use PCoA to display dynamic relationships:</p>
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mMDS</span> <span class="op">&lt;-</span> <span class="fu">smacof</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/smacof/man/smacofSym.html" class="external-link">mds</a></span><span class="op">(</span><span class="va">avoca_D</span><span class="op">)</span></span>
+<span><span class="va">mMDS</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## smacof::mds(delta = avoca_D)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model: Symmetric SMACOF </span></span>
+<span><span class="co">## Number of objects: 8 </span></span>
+<span><span class="co">## Stress-1 value: 0.092 </span></span>
+<span><span class="co">## Number of iterations: 16</span></span></code></pre>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xret</span> <span class="op">&lt;-</span> <span class="va">mMDS</span><span class="op">$</span><span class="va">conf</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xret</span>, xlab<span class="op">=</span><span class="st">"axis 1"</span>, ylab <span class="op">=</span> <span class="st">"axis 2"</span>, asp<span class="op">=</span><span class="fl">1</span>, pch<span class="op">=</span><span class="fl">21</span>,</span>
+<span>     bg<span class="op">=</span><span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
+<span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.0</span>,<span class="fl">1</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1.0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">xret</span>, labels<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, pos<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-49-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
+<p>At this point, we may decide to average the three groups of forest
+plots:</p>
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"7"</span><span class="op">)</span></span>
+<span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5"</span>, <span class="st">"3"</span>,<span class="st">"6"</span><span class="op">)</span></span>
+<span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"4"</span>, <span class="st">"8"</span><span class="op">)</span> </span></code></pre></div>
+<p>The following code sequentially replaces each group of trajectories
+by its corresponding average trajectory (we use parameter
+<code>output_name</code> to provide a different name to each
+average):</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avoca_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">avoca_x</span>, group <span class="op">=</span> <span class="va">g1</span>, output_name <span class="op">=</span> <span class="st">"group 1"</span><span class="op">)</span></span>
+<span><span class="va">avoca_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">avoca_groups</span>, group <span class="op">=</span> <span class="va">g2</span>, output_name <span class="op">=</span> <span class="st">"group 2"</span><span class="op">)</span></span>
+<span><span class="va">avoca_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transformTrajectories.html">averageTrajectories</a></span><span class="op">(</span><span class="va">avoca_groups</span>, group <span class="op">=</span> <span class="va">g3</span>, output_name <span class="op">=</span> <span class="st">"group 3"</span><span class="op">)</span></span></code></pre></div>
+<p>We finish by displaying the three average trajectories:</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/trajectoryPlot.html">trajectoryPCoA</a></span><span class="op">(</span><span class="va">avoca_groups</span>,</span>
+<span>               traj.colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">3</span>,<span class="st">"Accent"</span><span class="op">)</span>, </span>
+<span>               axes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, length<span class="op">=</span><span class="fl">0.1</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, bty<span class="op">=</span><span class="st">"n"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"group"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">3</span>,<span class="st">"Accent"</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="TransformingTrajectories_files/figure-html/unnamed-chunk-52-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

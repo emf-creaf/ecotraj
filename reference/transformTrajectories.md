@@ -8,6 +8,10 @@ The following functions are provided to transform trajectories:
 - Function `centerTrajectories` shifts all trajectories to the center of
   the multivariate space and returns a modified distance matrix.
 
+- Function `averageTrajectories` creates an "average" trajectory where
+  the position of each observation is the average of the position of the
+  corresponding observations of the input trajectories.
+
 - Function `interpolateTrajectories` relocates trajectory ecological
   states to those corresponding to input times, via interpolation.
 
@@ -22,6 +26,13 @@ smoothTrajectories(
 )
 
 centerTrajectories(x, exclude = integer(0))
+
+averageTrajectories(
+  x,
+  group = NULL,
+  keep_members = FALSE,
+  output_name = "average"
+)
 
 interpolateTrajectories(x, times)
 ```
@@ -49,10 +60,23 @@ interpolateTrajectories(x, times)
 
 - exclude:
 
-  An integer vector indicating sites that are excluded from trajectory
-  centroid computation. Note: for objects of class
+  An integer vector indicating observations that are excluded from
+  trajectory centroid computation. Note: for objects of class
   [`cycles`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md),
   `external` are excluded by default.
+
+- group:
+
+  Character vector of the sites (trajectories) to be averaged. If `NULL`
+  all trajectories contribute to the average
+
+- keep_members:
+
+  Boolean flag to keep the group member trajectories in the result
+
+- output_name:
+
+  A string with the name for the average trajectory
 
 - times:
 
@@ -65,14 +89,16 @@ interpolateTrajectories(x, times)
 A modified object of class
 [`trajectories`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md),
 where distance matrix has been transformed. When calling
-`interpolateTrajectories`, also the number of observations and metadata
-is likely to be affected.
+`interpolateTrajectories` and `averageTrajectories`, also the number of
+observations and metadata is likely to be affected.
 
 ## Details
 
-Details of calculations are given in De Cáceres et al (2019). Function
-`centerTrajectories` performs centering of trajectories using matrix
-algebra as explained in Anderson (2017).
+Details of calculations are given in De Cáceres et al (2019). Functions
+`centerTrajectories` and `averageTrajectories` perform
+centering/averaging of trajectories using matrix algebra as explained in
+Anderson (2017). Function `averageTrajectories` requires synchronous
+input trajectories.
 
 ## References
 

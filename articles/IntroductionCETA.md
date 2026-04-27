@@ -40,6 +40,7 @@ to obtain metrics describing cyclical trajectories.
 Let’s first call the package:
 
 ``` r
+
 library(ecotraj)
 ```
 
@@ -77,6 +78,7 @@ regular ETA. Let’s build a toy dataset with **one cyclical trajectory**
 composed of **three cycles** to make this more visual:
 
 ``` r
+
 #Let's define our toy sampling times:
 timesToy <- 0:30 #The sampling times of the time series
 cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
@@ -103,6 +105,7 @@ As with classical ETA, we define the cyclical trajectory using
 [`defineTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md):
 
 ``` r
+
 xToy <- defineTrajectories(dToy, sites = sitesToy, times = timesToy)
 ```
 
@@ -113,6 +116,7 @@ function
 as we would do for any trajectory within ETA.
 
 ``` r
+
 trajectoryPCoA(xToy, 
                lwd = 2,length = 0.2)
 ```
@@ -141,6 +145,7 @@ Let’s start with
 as it is the simplest one to handle:
 
 ``` r
+
 fdtrajToy <- extractFixedDateTrajectories(xToy,
                                           cycleDuration = cycleDurationToy,
                                           namesFixedDate = paste("M",1:10))
@@ -157,6 +162,7 @@ Let’s look at the output given by
 [`extractFixedDateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 class(fdtrajToy)
 ```
 
@@ -166,6 +172,7 @@ The class `fd.trajectories` identifies the object as a subclass of
 `trajectories`. Its elements are the usual ones:
 
 ``` r
+
 names(fdtrajToy)
 ```
 
@@ -176,6 +183,7 @@ information necessary to read it as a descriptor of **fixed-date
 trajectories**.
 
 ``` r
+
 head(fdtrajToy$metadata)
 ```
 
@@ -205,6 +213,7 @@ Whenever the ETA functions identify the input object as one of class
 fixed-date trajectories using:
 
 ``` r
+
 trajectoryDirectionality(fdtrajToy)
 ```
 
@@ -216,6 +225,7 @@ trajectoryDirectionality(fdtrajToy)
 Or the distances between fixed-date trajectories using:
 
 ``` r
+
 trajectoryDistances(fdtrajToy)
 ```
 
@@ -245,6 +255,7 @@ For visualization, it is possible to use the general
 function as:
 
 ``` r
+
 trajectoryPCoA(fdtrajToy,
                lwd = 2,length = 0.2,
                traj.colors = c("blue","red","black","grey","orange","green3","brown","purple","pink","yellow"))
@@ -257,6 +268,7 @@ trajectories that uses a circular color palette for the fixed dates
 trajectories and can represent the original cyclical trajectory:
 
 ``` r
+
 fixedDateTrajectoryPCoA(fdtrajToy,
                         lwd = 2, length = 0.2)
 ```
@@ -280,6 +292,7 @@ allowing to flexibly choose when a cycle start: *e.g. an annual cycle
 does not always need to start in January*).
 
 ``` r
+
 cycleToy <- extractCycles(xToy,
                           cycleDuration = cycleDurationToy)
 ```
@@ -290,6 +303,7 @@ Just like
 has outputs `d` and `metadata`:
 
 ``` r
+
 names(cycleToy)
 ```
 
@@ -304,6 +318,7 @@ returns the column named `internal`, which has no analog in
 [`extractFixedDateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 head(cycleToy$metadata)
 ```
 
@@ -369,6 +384,7 @@ Let’s explore the outputs of
 to make all this clearer:
 
 ``` r
+
 #Number of ecological states in the original distance matrix:
 nrow(as.matrix(dToy))
 ```
@@ -376,6 +392,7 @@ nrow(as.matrix(dToy))
     ## [1] 31
 
 ``` r
+
 #Number of ecological states in the matrix returned by extractCycles():
 nrow(as.matrix(cycleToy$d))
 ```
@@ -399,6 +416,7 @@ functions use the values of the `cycles` column as substitute for
 distances:
 
 ``` r
+
 trajectoryDistances(cycleToy)
 ```
 
@@ -411,6 +429,7 @@ must be removed. This is handled by the dedicated function
 [`cyclePCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md):
 
 ``` r
+
 cyclePCoA(cycleToy,sites.colors="orangered")
 ```
 
@@ -426,12 +445,14 @@ and performs the centering with appropriate handling of external
 ecological states:
 
 ``` r
+
 cycleToy_cent <- centerTrajectories(cycleToy)
 ```
 
 Of course after centering,the distances between cycles will go down:
 
 ``` r
+
 trajectoryDistances(cycleToy_cent)
 ```
 
@@ -446,6 +467,7 @@ also handled by the function
 the user MUST state that the cycles have been centered:**
 
 ``` r
+
 cyclePCoA(x = cycleToy_cent, sites.colors = "orangered", centered = TRUE)
 ```
 
@@ -470,6 +492,7 @@ take the same inputs as
 [`extractCycles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 cycleConvexity(xToy,
                cycleDuration = cycleDurationToy)
 ```
@@ -497,6 +520,7 @@ function takes the same inputs as
 [`extractCycles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 cycleShifts(xToy, cycleDuration = cycleDurationToy)
 ```
 
@@ -575,16 +599,19 @@ relative variations in abundances are studied here.
 Let’s call the data:
 
 ``` r
+
 data("northseaZoo")
 ```
 
 ``` r
+
 names(northseaZoo)
 ```
 
     ## [1] "Hellinger" "times"     "sites"
 
 ``` r
+
 head(northseaZoo$times)
 ```
 
@@ -605,6 +632,7 @@ Hellinger-transformed community data yield Hellinger distances between
 communities. We can therefore use the `dist` function from base R.
 
 ``` r
+
 northseaZoo$Dist <- dist(northseaZoo$Hellinger)
 ```
 
@@ -614,6 +642,7 @@ with information regarding sites and surveys to get a object of class
 [`defineTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md).
 
 ``` r
+
 x_northseaZoo <- defineTrajectories(d = northseaZoo$Dist,
                                     sites = northseaZoo$sites,
                                     times = northseaZoo$times)
@@ -629,6 +658,7 @@ As before, we can use the
 function to display the two cyclical trajectories:
 
 ``` r
+
 trajectoryPCoA(x_northseaZoo,
                traj.colors = c("blue","red"),
                length = 0.05)
@@ -648,6 +678,7 @@ We can use the function
 to get data in a format describing the seasonal cycles:
 
 ``` r
+
 cyclesNSZoo <- extractCycles(x_northseaZoo,
                              cycleDuration = 1,
                              minEcolStates = 12)
@@ -659,6 +690,7 @@ cyclesNSZoo <- extractCycles(x_northseaZoo,
 Let’s visualize the cycles!
 
 ``` r
+
 cyclePCoA(cyclesNSZoo,
           sites.colors = c("blue","red"),
           length = 0.05,
@@ -687,6 +719,7 @@ some interesting characteristics of the seasonal cycles of North Sea
 zooplankton. For instance one can obtain cycle length:
 
 ``` r
+
 cyclesZooLengths <- trajectoryLengths(cyclesNSZoo)
 ```
 
@@ -697,6 +730,7 @@ but using the same inputs as for
 [`extractCycles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 cyclesZooConv <- cycleConvexity(x_northseaZoo,
                                   cycleDuration = 1,
                                   minEcolStates = 12)
@@ -707,6 +741,7 @@ a way mirroring trajectory length and directionality in non-cyclical
 ETA. Let’s graph the outputs:
 
 ``` r
+
 #First let's build some broad descriptive statistics for individual cycles: what year, and what site?
 yearCycles <- floor(tapply(cyclesNSZoo$metadata$times,cyclesNSZoo$metadata$cycles,min))
 sitesCycles <- tapply(cyclesNSZoo$metadata$sites,cyclesNSZoo$metadata$cycles,unique)
@@ -729,6 +764,7 @@ NNScycles <- NNScycles[as.character(1958:2021),]
 ```
 
 ``` r
+
 #First figure: Lengths
 plot(SNScycles$yearCycles,SNScycles$cyclesZooLengths.Path,type="l",las=1,ylab="Cycle lengths",xlab="Years",ylim=c(2.5,5),col="red")
 points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Path,type="l",col="blue")
@@ -737,6 +773,7 @@ points(NNScycles$yearCycles,NNScycles$cyclesZooLengths.Path,type="l",col="blue")
 ![](IntroductionCETA_files/figure-html/unnamed-chunk-33-1.png)
 
 ``` r
+
 #Second figure: Convexity
 plot(SNScycles$yearCycles,SNScycles$cyclesZooConv,type="l",las=1,ylab="Cycle convexity",xlab="Years",ylim=c(0.25,0.5),col="red")
 points(NNScycles$yearCycles,NNScycles$cyclesZooConv,type="l",col="blue")
@@ -756,6 +793,7 @@ dimension only, increasing cycle convexity.
 Let’s now look at the distances between cycles:
 
 ``` r
+
 cyclesZooDistances <- trajectoryDistances(cyclesNSZoo)
 ```
 
@@ -764,11 +802,13 @@ can be visualized by principal coordinates analysis (PCoA) putting us in
 the “space of cycles”:
 
 ``` r
+
 library(ape)
 PCoAZoo <- pcoa(cyclesZooDistances)
 ```
 
 ``` r
+
 colPoints <- c("red","blue")
 names(colPoints) <- c("SNS","NNS")
 plot(PCoAZoo$vectors[,1:2],asp=1,col=NA,
@@ -793,6 +833,7 @@ perform what we call “second-stage” trajectory analysis using the
 distance between cycles as our distance matrix:
 
 ``` r
+
 x_second_stage <- defineTrajectories(d = cyclesZooDistances,
                                      sites = sitesCycles,
                                      surveys = yearCycles)
@@ -812,6 +853,7 @@ Where second-stage trajectory analysis may be more precious is when it
 is used on dissimilarities between centered cycles as such:
 
 ``` r
+
 #we first center the cycles
 centered_cyclesNSZoo <- centerTrajectories(cyclesNSZoo)
 
@@ -842,6 +884,7 @@ using
 [`extractFixedDateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md):
 
 ``` r
+
 fdtrajNSZoo <- extractFixedDateTrajectories(x_northseaZoo,
                                             cycleDuration = 1,
                                             namesFixedDate =
@@ -853,6 +896,7 @@ function
 [`fixedDateTrajectoryPCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md):
 
 ``` r
+
 fixedDateTrajectoryPCoA(fdtrajNSZoo,
                         sites.lty=c(1,2))
 ```
@@ -865,6 +909,7 @@ As we did for cycles, we can compute shape metrics on fixed-date
 trajectories:
 
 ``` r
+
 fdtrajZooLengths <- trajectoryLengths(fdtrajNSZoo)
 fdtrajZooDir <- trajectoryDirectionality(fdtrajNSZoo)
 ```
@@ -872,6 +917,7 @@ fdtrajZooDir <- trajectoryDirectionality(fdtrajNSZoo)
 And put them in a convenient dataframe:
 
 ``` r
+
 #descriptive stats
 monthFDT <- tapply(fdtrajNSZoo$metadata$dates,fdtrajNSZoo$metadata$fdT,min)
 sitesFDT <- tapply(fdtrajNSZoo$metadata$sites,fdtrajNSZoo$metadata$fdT,unique)
@@ -897,6 +943,7 @@ NNSfdT$monthFDT <- NNSfdT$monthFDT*12+0.5
 Before graphing them:
 
 ``` r
+
 #First figure: Lengths
 plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooLengths.Path,type="l",las=1,ylab="Fixed-date trajectory lengths",xlab="Month",ylim=c(8,25),col="red")
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Path,type="l",col="blue")
@@ -905,6 +952,7 @@ points(NNSfdT$monthFDT,NNSfdT$fdtrajZooLengths.Path,type="l",col="blue")
 ![](IntroductionCETA_files/figure-html/unnamed-chunk-44-1.png)
 
 ``` r
+
 #Second figure: Directionality
 plot(SNSfdT$monthFDT,SNSfdT$fdtrajZooDir,type="l",las=1,ylab="Fixed-date trajectory directionality",xlab="Month",ylim=c(0.36,0.45),col="red")
 points(NNSfdT$monthFDT,NNSfdT$fdtrajZooDir,type="l",col="blue")
@@ -924,6 +972,7 @@ Nonetheless, a metric of peculiar interest in fixed-date trajectories
 might be convergence:
 
 ``` r
+
 #We will do it for the two sites (NNS and SNS) separately, so lets pull them apart
 SNSfdtraj <- subsetTrajectories(fdtrajNSZoo,site_selection = "SNS")
 NNSfdtraj <- subsetTrajectories(fdtrajNSZoo,site_selection = "NNS")
@@ -954,6 +1003,7 @@ library(corrplot)
 Let’s now visualize it for SNS:
 
 ``` r
+
 corrplot(matrix(as.vector(SNSfdtrajConv$tau)*as.numeric(SNSfdtrajConv$p.value<0.05),12,12))
 ```
 
@@ -961,6 +1011,7 @@ corrplot(matrix(as.vector(SNSfdtrajConv$tau)*as.numeric(SNSfdtrajConv$p.value<0.
 NNS:
 
 ``` r
+
 corrplot(matrix(as.vector(NNSfdtrajConv$tau)*as.numeric(NNSfdtrajConv$p.value<0.05),12,12))
 ```
 
@@ -980,6 +1031,7 @@ function that does it is
 This one will take some time to compute, it works a lot!
 
 ``` r
+
 CSNSZoo <- cycleShifts(x_northseaZoo,
                        cycleDuration = 1)
 head(CSNSZoo)
@@ -1008,6 +1060,7 @@ We do it below for all dates (i.e. months of the year) and display only
 one of the graphs as an example:
 
 ``` r
+
 slopes <- integer(0)
 for (i in c("SNS","NNS")){
   for (j in unique(CSNSZoo$dateCS)){
@@ -1040,12 +1093,14 @@ for (i in c("SNS","NNS")){
 ![](IntroductionCETA_files/figure-html/unnamed-chunk-50-1.png)
 
 ``` r
+
 colnames(slopes) <- c("sites","month","slope")
 ```
 
 Let’s now show all the trends, first for the SNS:
 
 ``` r
+
 plot(x=slopes$month[slopes$sites=="SNS"]*12+0.5,
      y=slopes$slope[slopes$sites=="SNS"]*10,
      las=1,type="b",
@@ -1060,6 +1115,7 @@ abline(h=0)
 And then for the NNS:
 
 ``` r
+
 plot(x=slopes$month[slopes$sites=="NNS"]*12+0.5,
      y=slopes$slope[slopes$sites=="NNS"]*10,
      las=1,type="b",

@@ -16,18 +16,21 @@ First of all, we load the libraries required for the examples, including
 **ecotraj**:
 
 ``` r
+
 library(ecotraj)
 ```
 
     ## Loading required package: Rcpp
 
 ``` r
+
 library(vegan)
 ```
 
     ## Loading required package: permute
 
 ``` r
+
 library(vegclust)
 library(ape)
 library(ggplot2)
@@ -60,6 +63,7 @@ stations (rows) where those for which the conservation status was to be
 assessed.
 
 ``` r
+
 data(glomel)
 #Showing a first lines /columns subset
 head(glomel[,1:8])
@@ -86,6 +90,7 @@ We first create a compositional data matrix, by extracting species data
 from the initial data table:
 
 ``` r
+
 glomel_comp <- as.matrix(glomel[,!(names(glomel) %in% c("ID", "Ref"))])
 rownames(glomel_comp) <- glomel$ID 
 dim(glomel_comp)
@@ -99,6 +104,7 @@ from package **vegan** to calculate of Bray Curtis distances between
 ecological (community) states:
 
 ``` r
+
 glomel_bc <- vegan::vegdist(glomel_comp, method = "bray")
 ```
 
@@ -111,6 +117,7 @@ define the **state reference envelope** using reference station IDs as
 follows:
 
 ``` r
+
 glomel_env <- glomel$ID[glomel$Ref]
 ```
 
@@ -119,6 +126,7 @@ state reference envelope using function
 [`compareToStateEnvelope()`](https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.md):
 
 ``` r
+
 glomel_assess <- compareToStateEnvelope(glomel_bc, glomel_env, m=1.7, distances_to_envelope = TRUE)
 head(glomel_assess)
 ```
@@ -138,6 +146,7 @@ The squared distances to the envelope averaged over the reference points
 defines the variability of the envelope:
 
 ``` r
+
 mean(glomel_assess$SquaredDist[glomel_assess$Envelope])
 ```
 
@@ -148,6 +157,7 @@ This value should be equal to a call to function
 :
 
 ``` r
+
 stateEnvelopeVariability(glomel_bc, glomel_env)
 ```
 
@@ -162,12 +172,14 @@ quality). We can transform `Q` values into a *qualitative* assessment
 using:
 
 ``` r
+
 glomel_assess$Status<-c(ifelse(glomel_assess$Q>=0.5,"Inside", "Outside"))
 ```
 
 And the assessment for the 18 tested stations is:
 
 ``` r
+
 glomel_assess[!glomel_assess$Envelope,]
 ```
 
@@ -197,6 +209,7 @@ To represent the results in a graphical way, we start by conducting a
 Principal Coordinates Analysis (PCoA) using package **ape**:
 
 ``` r
+
 pcoa_glom<-ape::pcoa(glomel_bc)
 ```
 
@@ -205,6 +218,7 @@ from package **ape** to show the ordination of stations with the species
 projected as arrows:
 
 ``` r
+
 biplot(pcoa_glom, glomel_comp)
 ```
 
@@ -215,6 +229,7 @@ stations in the two first dimensions of the PCoA and copy them into the
 assessment data frame:
 
 ``` r
+
 PCOA_DIM1_2 <- pcoa_glom[["vectors"]][,1:2]
 glomel_assess$Dim1<-PCOA_DIM1_2[,1]
 glomel_assess$Dim2<-PCOA_DIM1_2[,2]
@@ -237,6 +252,7 @@ achieve them (in red). The **size** of dots represents the squared
 distance to the centroid of the state reference envelope:
 
 ``` r
+
 p<-ggplot(glomel_assess,
           mapping=aes(x=Dim1,y=Dim2,size=SquaredDist, color=Status, shape=Status))+
   geom_point()+
@@ -290,6 +306,7 @@ The data set has 32 observations (i.e. treatments\*surveys) and 250
 species. We begin by loading the data:
 
 ``` r
+
 data(glenan)
 #Showing a first lines /columns subset
 head(glenan[,1:6])
@@ -322,6 +339,7 @@ head(glenan[,1:6])
 We separate the columns that identify the treatment and surveys.
 
 ``` r
+
 #vector Treatment
 Treatment<-glenan$Treatment
 
@@ -333,6 +351,7 @@ We also extract the compositional data and log-transform it as initially
 performed in Tauran et al. (2020).
 
 ``` r
+
 #log transformation
 grab_comp<-log1p(glenan[,-c(251:252)])
 ```
@@ -343,6 +362,7 @@ from package **vegan** to calculate of Bray Curtis distances between
 ecological (community) states:
 
 ``` r
+
 grab_bc <- vegan::vegdist(grab_comp, method = "bray")
 ```
 
@@ -358,6 +378,7 @@ conforming our **state reference envelope** manually among the
 observation IDs:
 
 ``` r
+
 #Definition of the state reference envelope
 ID<-rownames(grab_comp)
 grab_env <- ID[c(1,9:20,21,25,29)]
@@ -368,6 +389,7 @@ state reference envelope using function
 [`compareToStateEnvelope()`](https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.md):
 
 ``` r
+
 #Comparing assessed stations with respect to the state reference envelope
 grab_assess <- compareToStateEnvelope(grab_bc, grab_env, m=1.5, 
                                       distances_to_envelope = TRUE)
@@ -377,12 +399,14 @@ We can again check that the average of squared distances in the envelope
 is equal to the envelope variability:
 
 ``` r
+
 mean(grab_assess$SquaredDist[grab_assess$Envelope])
 ```
 
     ## [1] 0.0196958
 
 ``` r
+
 stateEnvelopeVariability(grab_bc, grab_env)
 ```
 
@@ -391,6 +415,7 @@ stateEnvelopeVariability(grab_bc, grab_env)
 As before we derive a qualitative assessment from `Q` values:
 
 ``` r
+
 grab_assess$Status<-c(ifelse(grab_assess$Q>=0.5,"Inside", "Outside"))
 
 grab_assess$Status[c(1,9:20,21,25,29)]<-"Reference"
@@ -412,6 +437,7 @@ We then represent the results of the state-based EQA on in the two first
 dimensions of a Principal Coordinates Analysis:
 
 ``` r
+
 #Get coordinates of stations in the two first dimensions of the PCoA
 pcoa<-ape::pcoa(grab_bc)
 PCOA_DIM1_2<-pcoa[["vectors"]][,1:2]
@@ -450,6 +476,7 @@ showing the evolution of the squared distance to the centroid of the
 state reference envelope during the study period for each treatment:
 
 ``` r
+
 grab_assess$Treatment<-factor(grab_assess$Treatment,c("CTRL1","CTRL2","CTRL3",
                                                       "CD_10","CD_30", 
                                                       "QSD_10","QSD_30",
@@ -474,6 +501,7 @@ distance between control and dredged stations during the
 experimentation:
 
 ``` r
+
 grabbc_sel <- melt(as.matrix(grab_bc),rnames = c("row", "col"))
 
 #selection of the observation of interest (i.e. control stations for heat map row, and dredged stations for heat map column)
@@ -516,6 +544,7 @@ the conservation target is defined by a set of trajectories conforming a
 control stations:
 
 ``` r
+
 #Definition of the trajectory reference envelope 
 grab_dynenv<-c("CTRL1","CTRL2","CTRL3")
 ```
@@ -526,6 +555,7 @@ function
 [`compareToTrajectoryEnvelope()`](https://emf-creaf.github.io/ecotraj/reference/referenceEnvelopes.md):
 
 ``` r
+
 ##Comparing assessed trajectories with respect to the trajectory reference envelope
 grab_dynassess <- compareToTrajectoryEnvelope(grab_bc,Treatment, grab_dynenv, 
                                               m=1.5, distances_to_envelope = TRUE)
@@ -535,12 +565,14 @@ We can also check that the average of squared distances in the envelope
 is equal to the envelope variability:
 
 ``` r
+
 mean(grab_dynassess$SquaredDist[grab_dynassess$Envelope])
 ```
 
     ## [1] 0.009123776
 
 ``` r
+
 trajectoryEnvelopeVariability(grab_bc, sites = Treatment, envelope = grab_dynenv)
 ```
 
@@ -551,6 +583,7 @@ centroid of the trajectory reference envelope during the study period
 for each treatment:
 
 ``` r
+
 grab_dynassess$Treatment<-factor(grab_dynassess$Site,c("CTRL1","CTRL2","CTRL3",
                                                       "CD_10","CD_30", 
                                                       "QSD_10","QSD_30",

@@ -3,15 +3,18 @@
 ## 1. Introduction
 
 In this vignette you will learn to **transform** trajectory data in
-three different ways. By transforming, we mean **modifying the distance
-matrix** that represents the resemblance between ecological states. This
-is equivalent to (implicitly) modifying the coordinates (position) of
-ecological states in the $`\Omega`$ space. However, one of the
-transformations also includes a modification of observation times.
+different different ways. By transforming, we mean **modifying the
+distance matrix** that represents the resemblance between ecological
+states. This is equivalent to (implicitly) modifying the coordinates
+(position) of ecological states in the $`\Omega`$ space. However, some
+transformations also includes a modification of observation times. We
+also include in this set of transformations a function that allows
+**averaging** a set of target trajectories.
 
 First of all, we load `ecotraj`:
 
 ``` r
+
 library(ecotraj)
 ```
 
@@ -37,6 +40,7 @@ to trajectory analysis. Let us first define the vectors that describe
 the observation of each entity (i.e. site):
 
 ``` r
+
 entities = c("1","1","1","1","2","2","2","2","3","3","3","3")
 times <- c(1.0,2.0,3.0,4.0,1.0,1.75,2.5,3.25,1.0,1.5,2.0,2.5)
 ```
@@ -48,6 +52,7 @@ states observed. We assume that the ecosystem space $`\Omega`$ has two
 dimensions:
 
 ``` r
+
 xy<-matrix(0, nrow=12, ncol=2)
 xy[2,2]<-1
 xy[3,2]<-2
@@ -68,6 +73,7 @@ xy[11:12,2]<-c(1.25,1.0)
 We define trajectories using:
 
 ``` r
+
 x <- defineTrajectories(dist(xy), entities, times = times)
 ```
 
@@ -75,6 +81,7 @@ We can see the differences graphically, adding observation times as
 labels:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black","red", "blue"), time.labels = TRUE,
                lwd = 2)
@@ -87,6 +94,7 @@ Let us assume we want to perform a global divergence test, but this
 requires synchronous trajectories and these are not:
 
 ``` r
+
 is.synchronous(x)
 ```
 
@@ -97,12 +105,14 @@ In this case we choose the observation times of entity ‘3’ and this will
 imply interpolation for entities ‘1’ and ‘2’:
 
 ``` r
+
 x_inter <- interpolateTrajectories(x, times = c(1, 1.5, 2.0, 2.5))
 ```
 
 The trajectory plot after interpolation looks like:
 
 ``` r
+
 trajectoryPCoA(x_inter, 
                traj.colors = c("black","red", "blue"), time.labels = TRUE,
                lwd = 2)
@@ -115,6 +125,7 @@ legend("topright", col=c("black","red", "blue"),
 And now we can perform the global test for convergence/divergence:
 
 ``` r
+
 trajectoryConvergence(x_inter, type="multiple")
 ```
 
@@ -135,6 +146,7 @@ be small. In particular, it may inflate directionality. Let’s compare
 trajectory metrics before:
 
 ``` r
+
 trajectoryMetrics(x)
 ```
 
@@ -150,6 +162,7 @@ trajectoryMetrics(x)
 with after interpolation:
 
 ``` r
+
 trajectoryMetrics(x_inter)
 ```
 
@@ -181,6 +194,7 @@ affected by different disturbances during the sampling period
 the data set, which includes 72 plot observations:
 
 ``` r
+
 data("avoca")
 ```
 
@@ -192,6 +206,7 @@ communities. Methods Ecol Evol 4:1167–1177.
 <https://doi.org/10.1111/2041-210X.12116>):
 
 ``` r
+
 avoca_D_man <- vegclust::vegdiststruct(avoca_strat, method="manhattan", transform = function(x){log(x+1)})
 ```
 
@@ -200,6 +215,7 @@ start ETA by defining our trajectories, which implies combining the
 information about distances, sites and surveys:
 
 ``` r
+
 years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
 avoca_times <- years[avoca_surveys]
 avoca_x <- defineTrajectories(avoca_D_man,  
@@ -213,6 +229,7 @@ to display the relations between forest plot states in this space and to
 draw the trajectory of each plot:
 
 ``` r
+
 oldpar <- par(mar=c(4,4,1,1))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
@@ -227,6 +244,7 @@ In the original definition the time difference between consecutive
 surveys is between 3 and 6 years. Lets homogenize to 4 years:
 
 ``` r
+
 years_regular <- seq(1971, 2009, by=4)
 years_regular
 ```
@@ -237,6 +255,7 @@ We will loose 2009, but this will be closely represented by 2007. Lets
 perform the interpolation:
 
 ``` r
+
 avoca_x_inter <- interpolateTrajectories(avoca_x, years_regular)
 ```
 
@@ -244,6 +263,7 @@ We can see the effect on the trajectory plot, which should be small
 (appart from the axis inversion):
 
 ``` r
+
 oldpar <- par(mar=c(4,4,1,1))
 trajectoryPCoA(avoca_x_inter,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
@@ -256,6 +276,7 @@ legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Acce
 Let’s see the effect on the trajectory of forest plot ‘4’:
 
 ``` r
+
 oldpar <- par(mfrow=c(1,2))
 trajectoryPCoA(subsetTrajectories(avoca_x, "4"),
                length=0.1, lwd=2, time.labels = TRUE)
@@ -266,6 +287,7 @@ trajectoryPCoA(subsetTrajectories(avoca_x_inter, "4"),
 ![](TransformingTrajectories_files/figure-html/trajectory_8-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -297,6 +319,7 @@ trajectory analysis. Let us first define the vectors that describe the
 state of each entity (i.e. site):
 
 ``` r
+
 entities = c("1","1","1","1","2","2","2","2","3","3","3","3")
 ```
 
@@ -306,6 +329,7 @@ correspond to the set of ecological states observed. We assume that the
 ecosystem space $`\Omega`$ has two dimensions:
 
 ``` r
+
 xy<-matrix(0, nrow=12, ncol=2)
 xy[2,2]<-1
 xy[3,2]<-2
@@ -326,6 +350,7 @@ xy[11:12,2]<-c(1.25,1.0)
 We define trajectories using:
 
 ``` r
+
 D <- dist(xy)
 x <- defineTrajectories(D, entities)
 ```
@@ -334,7 +359,8 @@ The trajectories can be displayed using a PCoA on the distance matrix as
 follows:
 
 ``` r
-trajectoryPCoA(x, traj.colors = c("black","red", "blue"), lwd = 2,
+
+trajectoryPCoA(x, traj.colors = c("green","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
@@ -344,6 +370,7 @@ Centering trajectories is straightforward using function
 [`centerTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md):
 
 ``` r
+
 x_cent <- centerTrajectories(x)
 ```
 
@@ -353,7 +380,8 @@ centering. The effect of centering can be shown by repeating PCoA on the
 modified object:
 
 ``` r
-trajectoryPCoA(x_cent, traj.colors = c("black","red", "blue"), lwd = 2,
+
+trajectoryPCoA(x_cent, traj.colors = c("green","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
@@ -368,6 +396,7 @@ trajectory centroids. For that we build a matrix containing centroid
 coordinates, which are repeated for all states of each trajectory:
 
 ``` r
+
 m <- cbind(c(rep(mean(xy[1:4,1]),4), rep(mean(xy[5:8,1]),4), rep(mean(xy[9:12,1]),4)),
                    c(rep(mean(xy[1:4,2]),4), rep(mean(xy[5:8,2]),4), rep(mean(xy[9:12,2]),4)))
 m
@@ -390,6 +419,7 @@ m
 Centering operation is equal to the subtraction:
 
 ``` r
+
 xy_cent <- (xy - m)
 xy_cent
 ```
@@ -411,6 +441,7 @@ xy_cent
 We can compare the equivalence of the two approaches using:
 
 ``` r
+
 max(as.vector(x_cent$d) - as.vector(dist(xy_cent)))
 ```
 
@@ -422,6 +453,7 @@ Trajectory centering does not modify the properties of individual
 trajectories, as can be seen by comparing trajectory metrics before:
 
 ``` r
+
 trajectoryMetrics(x)
 ```
 
@@ -437,6 +469,7 @@ trajectoryMetrics(x)
 with the same metrics after centering:
 
 ``` r
+
 trajectoryMetrics(x_cent)
 ```
 
@@ -468,6 +501,7 @@ trajectories that were surveyed later than the first segment (i.e. the
 third and fourth observations of each trajectory):
 
 ``` r
+
 excluded <- c(3:4,7:8,11:12)
 ```
 
@@ -476,13 +510,15 @@ Then we can call again
 but supplying the vector we created to parameter `exclude`:
 
 ``` r
+
 x_cent_excluded <- centerTrajectories(x, exclude = excluded)
 ```
 
 We can see the effect of the new centering using:
 
 ``` r
-trajectoryPCoA(x_cent_excluded, traj.colors = c("black","red", "blue"), lwd = 2,
+
+trajectoryPCoA(x_cent_excluded, traj.colors = c("green","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
@@ -500,6 +536,7 @@ to display the relations between forest plot states in this space and to
 draw the trajectory of each plot before and after centering:
 
 ``` r
+
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
@@ -514,6 +551,7 @@ title("After centering")
 ![](TransformingTrajectories_files/figure-html/unnamed-chunk-32-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -522,6 +560,7 @@ initial or final states. To do so we define vectors that exclude the
 remaining states from centering:
 
 ``` r
+
 all_but_first <- 9:length(avoca_sites)
 all_but_last <- 1:(length(avoca_sites)-8)
 ```
@@ -529,6 +568,7 @@ all_but_last <- 1:(length(avoca_sites)-8)
 Then we conduct the two centerings:
 
 ``` r
+
 avoca_cent_initial <- centerTrajectories(avoca_x, 
                                          exclude = all_but_first) 
 avoca_cent_final <- centerTrajectories(avoca_x, 
@@ -538,6 +578,7 @@ avoca_cent_final <- centerTrajectories(avoca_x,
 We can compare their effect using:
 
 ``` r
+
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
 trajectoryPCoA(avoca_cent_initial,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
@@ -552,6 +593,7 @@ title("Reference: final state")
 ![](TransformingTrajectories_files/figure-html/unnamed-chunk-35-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -592,12 +634,14 @@ performs the smoothing operation and returns a modified distance matrix
 describing distances between ecological states:
 
 ``` r
+
 avoca_x_smooth <- smoothTrajectories(avoca_x)
 ```
 
 The following trajectory plot illustrates the effect of smoothing:
 
 ``` r
+
 oldpar <- par(mar=c(4,4,1,1), mfrow=c(1,2))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
@@ -612,6 +656,7 @@ title("After smoothing")
 ![](TransformingTrajectories_files/figure-html/trajectory_smooth_plot-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -619,6 +664,7 @@ Trajectory smoothing logically alters several trajectory metrics. This
 can be checked by first evaluating multiple metrics:
 
 ``` r
+
 trajectoryMetrics(avoca_x)
 ```
 
@@ -644,6 +690,7 @@ trajectoryMetrics(avoca_x)
 And re-evaluating them after smoothing:
 
 ``` r
+
 trajectoryMetrics(avoca_x_smooth)
 ```
 
@@ -671,3 +718,291 @@ are reduced while trajectory directionality is increased. Whether these
 effects are desirable or not, will depend on the application, but
 generally speaking smoothing should only be used to clarify trajectory
 paths visually.
+
+## 5 Averaging trajectories
+
+### 5.1 What is trajectory averaging?
+
+One may be interested in the properties of a trajectory that summarizes
+the dynamics of a given set of entities. Trajectory averaging involves
+the definition of a new trajectory whose states are multivariate means
+of the corresponding observations in a set of target entities. Average
+trajectories can only be calculated if the input trajectories are
+**synchronous** (see function
+[`is.synchronous()`](https://emf-creaf.github.io/ecotraj/reference/is.synchronous.md)),
+because the observations to be averaged must exist for all the target
+entities. The average trajectory is added to the output object of class
+`trajectories`, which can also include the original trajectories that
+were averaged as well as other trajectories that are left unchanged.
+
+### 5.2 Simple averaging example
+
+Again, we will employ the same simple example used in the introduction
+to trajectory analysis. Let us first define the vectors that describe
+the state of each entity (i.e. site):
+
+``` r
+
+entities = c("1","1","1","1","2","2","2","2","3","3","3","3")
+```
+
+We do not define `surveys`, so that they are assumed to be consecutive
+for the each entity. However, we do define a matrix whose coordinates
+correspond to the set of ecological states observed. We assume that the
+ecosystem space $`\Omega`$ has two dimensions:
+
+``` r
+
+xy<-matrix(0, nrow=12, ncol=2)
+xy[2,2]<-1
+xy[3,2]<-2
+xy[4,2]<-3
+xy[5:6,2] <- xy[1:2,2]
+xy[7,2]<-1.5
+xy[8,2]<-2.0
+xy[5:6,1] <- 0.25
+xy[7,1]<-0.5
+xy[8,1]<-1.0
+xy[9:10,1] <- xy[5:6,1]+0.25
+xy[11,1] <- 1.0
+xy[12,1] <-1.5
+xy[9:10,2] <- xy[5:6,2]
+xy[11:12,2]<-c(1.25,1.0)
+```
+
+We define trajectories using:
+
+``` r
+
+D <- dist(xy)
+x <- defineTrajectories(D, entities)
+```
+
+The trajectories can be displayed using a PCoA on the distance matrix as
+follows:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(x, traj.colors = c("green","red", "blue"), lwd = 2,
+               survey.labels = T)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-39-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+Averaging trajectories is straightforward using function
+[`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md):
+
+``` r
+
+x_ave <- averageTrajectories(x)
+```
+
+By default the function will return an object of class `trajectories`
+containing only one trajectory, corresponding to the average:
+
+``` r
+
+x_ave
+```
+
+    ## $d
+    ##           1         2         3
+    ## 2 1.0000000                    
+    ## 3 1.6029487 0.6346478          
+    ## 4 2.0833333 1.1577037 0.5335937
+    ## 
+    ## $metadata
+    ##     sites surveys times
+    ## 1 average       1     1
+    ## 2 average       2     2
+    ## 3 average       3     3
+    ## 4 average       4     4
+    ## 
+    ## attr(,"class")
+    ## [1] "trajectories" "list"
+
+The effect of averaging can be shown by repeating PCoA on the modified
+object:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(x_ave, lwd = 2, survey.labels = TRUE)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-42-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+We can choose to keep the original trajectories along with the
+trajectory average, by using `keep_members`:
+
+``` r
+
+x_ave_members <- averageTrajectories(x, keep_members = TRUE)
+```
+
+In the following plot we use gray color to identify the original
+trajectories, and black for the average trajectory:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(x_ave_members, traj.colors = c("gray","gray", "gray", "black"), lwd = 2,
+               survey.labels = TRUE)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-44-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+It is also possible to average a subset of the original trajectories,
+while keeping the remaining unaltered. For example, we average here the
+trajectories of sites `"2"` and `"3"`:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(averageTrajectories(x, group = c("2", "3"), keep_members = TRUE), 
+               traj.colors = c("green","gray", "gray", "black"), lwd = 2,
+               survey.labels = TRUE)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-45-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+Or sites `"1"` and `"2"`:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(averageTrajectories(x, group = c("1", "2"), keep_members = TRUE), 
+               traj.colors = c("gray","gray", "blue", "black"), lwd = 2,
+               survey.labels = TRUE)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-46-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+### 5.3 Averaging in a real example
+
+Let’s take again the forest plot data:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(avoca_x,
+               traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-47-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+We can first have the question of whether we could group the eight plots
+into a lower number of dynamic entities. For that we first calculate
+trajectory distances:
+
+``` r
+
+avoca_D <- trajectoryDistances(avoca_x, distance.type = "TSPD")
+```
+
+And we use PCoA to display dynamic relationships:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+mMDS <- smacof::mds(avoca_D)
+mMDS
+```
+
+    ## 
+    ## Call:
+    ## smacof::mds(delta = avoca_D)
+    ## 
+    ## Model: Symmetric SMACOF 
+    ## Number of objects: 8 
+    ## Stress-1 value: 0.092 
+    ## Number of iterations: 16
+
+``` r
+
+xret <- mMDS$conf
+plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
+     bg=RColorBrewer::brewer.pal(8,"Accent"), 
+     xlim=c(-1.0,1), ylim=c(-1,1.0))
+text(xret, labels=1:8, pos=1)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-49-1.png)
+
+``` r
+
+par(oldpar)
+```
+
+At this point, we may decide to average the three groups of forest
+plots:
+
+``` r
+
+g1 <- c("1", "2", "7")
+g2 <- c("5", "3","6")
+g3 <- c("4", "8") 
+```
+
+The following code sequentially replaces each group of trajectories by
+its corresponding average trajectory (we use parameter `output_name` to
+provide a different name to each average):
+
+``` r
+
+avoca_groups <- averageTrajectories(avoca_x, group = g1, output_name = "group 1")
+avoca_groups <- averageTrajectories(avoca_groups, group = g2, output_name = "group 2")
+avoca_groups <- averageTrajectories(avoca_groups, group = g3, output_name = "group 3")
+```
+
+We finish by displaying the three average trajectories:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(avoca_groups,
+               traj.colors = RColorBrewer::brewer.pal(3,"Accent"), 
+               axes=c(1,2), length=0.1, lwd=2)
+legend("topright", bty="n", legend = paste("group", 1:3), 
+       col = RColorBrewer::brewer.pal(3,"Accent"), lwd=2)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-52-1.png)
+
+``` r
+
+par(oldpar)
+```

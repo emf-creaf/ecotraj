@@ -13,6 +13,7 @@ compare different alternatives and provide some recommendations on this
 issue.
 
 ``` r
+
 library(ecotraj)
 ```
 
@@ -29,6 +30,7 @@ of individuals of the first species and a corresponding decrease of the
 others, while keeping a total abundance of 100 individuals:
 
 ``` r
+
 sites <- as.character(rep(1,4))
 surveys <- 1:4
 spdata <- rbind(c(35,30,20,15),
@@ -41,6 +43,7 @@ We now use function `vegdist` from package `vegan` to calculate the
 Bray-Curtis coefficient:
 
 ``` r
+
 D = vegan::vegdist(spdata, "bray")
 is.metric(D)
 ```
@@ -48,6 +51,7 @@ is.metric(D)
     ## [1] TRUE
 
 ``` r
+
 D
 ```
 
@@ -63,6 +67,7 @@ illustrate the effect of the square root transformation.
 We start by defining our trajectories:
 
 ``` r
+
 x <- defineTrajectories(D,sites,surveys)
 ```
 
@@ -70,6 +75,7 @@ If we draw the resemblance space corresponding to this dissimilarity
 matrix we see a straight trajectory:
 
 ``` r
+
 trajectoryPCoA(x, survey.labels = TRUE)
 ```
 
@@ -80,6 +86,7 @@ calculate the geometric properties of the trajectory (i.e. length, angle
 between consecutive segments and overall directionality):
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -87,6 +94,7 @@ trajectoryLengths(x)
     ## 1 0.15 0.15 0.15 0.45
 
 ``` r
+
 trajectoryAngles(x)
 ```
 
@@ -94,6 +102,7 @@ trajectoryAngles(x)
     ## 1     0     0    0  0   1
 
 ``` r
+
 trajectoryDirectionality(x)
 ```
 
@@ -106,6 +115,7 @@ root of the dissimilarity values, as would be necessary to achieve a
 metric (and Euclidean) space in a more complex data set:
 
 ``` r
+
 sqrtD = sqrt(D)
 sqrtD
 ```
@@ -118,6 +128,7 @@ sqrtD
 We redefine our trajectories with the new dissimilarity matrix:
 
 ``` r
+
 x_sqrt <- defineTrajectories(sqrtD,sites,surveys)
 ```
 
@@ -128,6 +139,7 @@ dissimilarities decreases. This has an effect on the overall shape of
 the trajectory, which surprisingly now looks like:
 
 ``` r
+
 trajectoryPCoA(x_sqrt, survey.labels = TRUE)
 ```
 
@@ -140,6 +152,7 @@ represented. If we re-calculate the properties of the trajectory taking
 into account all dimensions we obtain:
 
 ``` r
+
 trajectoryLengths(x_sqrt)
 ```
 
@@ -147,6 +160,7 @@ trajectoryLengths(x_sqrt)
     ## 1 0.3872983 0.3872983 0.3872983 1.161895
 
 ``` r
+
 trajectoryAngles(x_sqrt)
 ```
 
@@ -154,6 +168,7 @@ trajectoryAngles(x_sqrt)
     ## 1    90    90   90  0   1
 
 ``` r
+
 trajectoryAngles(x_sqrt, all=TRUE)
 ```
 
@@ -161,6 +176,7 @@ trajectoryAngles(x_sqrt, all=TRUE)
     ## 1 90 90 90 90   90  0   1
 
 ``` r
+
 trajectoryDirectionality(x_sqrt)
 ```
 
@@ -191,6 +207,7 @@ We use simulated dynamics to build another trajectory with more species
 (50) and the size of the community (50 individuals):
 
 ``` r
+
 Nsteps <- 50
 CC <- 50
 Nreplace <- CC*0.05
@@ -202,6 +219,7 @@ probabilities of offspring for each species according to some ecological
 conditions:
 
 ``` r
+
 x <- c(0, 1, 0, 67, 1, 3, 0, 2, 2, 2, 1, 6, 2, 0, 0, 2, 5, 1, 6, 0)
 poffspring <- c(0, 0, 0.002, 0.661 ,0 ,0, 0.037, 0.281, 0, 0, 0, 0.008, 0, 0, 0.005, 0.003, 0, 0, 0, 0)
 ```
@@ -210,6 +228,7 @@ We can now simulate the dynamics by sequentially applying stochastic
 deaths and recruitment:
 
 ``` r
+
 m <- matrix(0, nrow=Nsteps+1, ncol=length(x))
 m[1, ] = x
 for(k in 1:Nsteps) {
@@ -226,6 +245,7 @@ Then we decide how frequently (with respect to the simulated step) a
 sample of the community is taken, here every four steps:
 
 ``` r
+
 Sj <- seq(1,Nsteps+1, by=4) #Sample every four steps
 mj <- m[Sj,]
 surveys <- 1:length(Sj)
@@ -235,6 +255,7 @@ sites <- as.character(rep(1,length(Sj)))
 Now we are ready to calculate the Bray-Curtis dissimilarity:
 
 ``` r
+
 D <- vegan::vegdist(mj,"bray")
 ```
 
@@ -243,6 +264,7 @@ triangle inequality (depending on the simulation). This can be inspected
 using function `is.metric`:
 
 ``` r
+
 is.metric(D, tol=0.0000001)
 ```
 
@@ -260,6 +282,7 @@ trajectories, but has problems when measuring angular properties, as we
 will see.
 
 ``` r
+
 x <- defineTrajectories(D,sites,surveys)
 pcoa<-trajectoryPCoA(subsetTrajectories(x, "1"),
                      length=0.1, axes=c(1,2), survey.labels = TRUE)
@@ -274,6 +297,7 @@ pcoa<-trajectoryPCoA(subsetTrajectories(x, "1"),
 ![](Dissimilarities_files/figure-html/unnamed-chunk-16-1.png)
 
 ``` r
+
 pcoaD <- dist(pcoa$points)
 x_pcoa <- defineTrajectories(pcoaD,sites,surveys)
 ```
@@ -283,6 +307,7 @@ recruitment. Let’s now look at the square root of the Bray-Curtis
 dissimilarity:
 
 ``` r
+
 sqrtD <- sqrt(D)
 x_sqrt <- defineTrajectories(sqrtD,sites,surveys)
 pcoaSqrt <- trajectoryPCoA(subsetTrajectories(x_sqrt, "1"),
@@ -298,6 +323,7 @@ Finally, we also transform dissimilarities using metric multidimensional
 scaling (mMDS), provided by package `smacof`:
 
 ``` r
+
 res <- smacof::mds(D, ndim = length(Sj)-1, type = "interval")
 mmdsD <- dist(res$conf)
 trajectoryPlot(res$conf, sites, surveys,
@@ -310,6 +336,7 @@ trajectoryPlot(res$conf, sites, surveys,
 ![](Dissimilarities_files/figure-html/unnamed-chunk-18-1.png)
 
 ``` r
+
 x_mmds <- defineTrajectories(mmdsD,sites,surveys)
 ```
 
@@ -318,6 +345,7 @@ While the three plots look different, the differences are not striking
 solutions:
 
 ``` r
+
 smacof::stress0(D,pcoaSqrt$points, type="interval")
 ```
 
@@ -331,6 +359,7 @@ smacof::stress0(D,pcoaSqrt$points, type="interval")
     ## Number of iterations: 0
 
 ``` r
+
 smacof::stress0(D,pcoa$points, type="interval")
 ```
 
@@ -344,6 +373,7 @@ smacof::stress0(D,pcoa$points, type="interval")
     ## Number of iterations: 0
 
 ``` r
+
 smacof::stress0(D,res$conf, type="interval")
 ```
 
@@ -362,6 +392,7 @@ not limited by ordination plots and we can take into account all
 dimensions.
 
 ``` r
+
 anglesD <- trajectoryAngles(x)
 anglesSqrtD <- trajectoryAngles(x_sqrt)
 anglesPcoaD <- trajectoryAngles(x_pcoa)
@@ -397,6 +428,7 @@ MDS provides a value that is again closer to that of local
 transformation, compared to PCoA and the square root:
 
 ``` r
+
 trajectoryDirectionality(x)
 ```
 
@@ -404,6 +436,7 @@ trajectoryDirectionality(x)
     ## 0.8770056
 
 ``` r
+
 trajectoryDirectionality(x_sqrt)
 ```
 
@@ -411,6 +444,7 @@ trajectoryDirectionality(x_sqrt)
     ## 0.4810576
 
 ``` r
+
 trajectoryDirectionality(x_pcoa)
 ```
 
@@ -418,6 +452,7 @@ trajectoryDirectionality(x_pcoa)
     ## 0.5927582
 
 ``` r
+
 trajectoryDirectionality(x_mmds)
 ```
 

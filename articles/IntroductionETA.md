@@ -35,6 +35,7 @@ section a real example is presented.
 First of all, we load `ecotraj`:
 
 ``` r
+
 library(ecotraj)
 ```
 
@@ -75,6 +76,7 @@ Let us first define the vectors that describe the ecological entity and
 the survey order of each observation:
 
 ``` r
+
 entities <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 surveys <- c(1,2,3,4,1,2,3,4,1,2,3,4)
 ```
@@ -86,6 +88,7 @@ we assume here that the ecological state space $`\Omega`$ has two
 dimensions:
 
 ``` r
+
 xy<-matrix(0, nrow=12, ncol=2)
 xy[2,2]<-1
 xy[3,2]<-2
@@ -122,6 +125,7 @@ The matrix of Euclidean distances $`d`$ between ecological states in
 $`\Omega`$ is then:
 
 ``` r
+
 d <- dist(xy)
 d
 ```
@@ -164,6 +168,7 @@ entity/survey information in a single object using function
 [`defineTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md):
 
 ``` r
+
 x <- defineTrajectories(d, entities, surveys)
 ```
 
@@ -173,6 +178,7 @@ list) of class `trajectories` that contains all the information for
 analysis:
 
 ``` r
+
 class(x)
 ```
 
@@ -181,6 +187,7 @@ class(x)
 This object contains two elements:
 
 ``` r
+
 names(x)
 ```
 
@@ -190,6 +197,7 @@ Element `d` contains the input distance matrix, whereas `metadata` is a
 data frame including information of observations:
 
 ``` r
+
 x$metadata
 ```
 
@@ -219,6 +227,7 @@ If so, the function will (correctly, in this case) interpret that every
 repetition of a given entity corresponds to a new survey:
 
 ``` r
+
 x <- defineTrajectories(d, entities)
 x$metadata
 ```
@@ -240,6 +249,7 @@ x$metadata
 Let us assume the following sampling times, in units of years:
 
 ``` r
+
 times <- c(1.0,2.2,3.1,4.2,1.0,1.5,2.8,3.9,1.6,2.8,3.9,4.3)
 ```
 
@@ -248,6 +258,7 @@ The call to
 using explicit survey times would be:
 
 ``` r
+
 xt <- defineTrajectories(d, entities, times = times)
 xt$metadata
 ```
@@ -275,12 +286,14 @@ entities have been surveyed at different times, so that trajectories are
 [`is.synchronous()`](https://emf-creaf.github.io/ecotraj/reference/is.synchronous.md):
 
 ``` r
+
 is.synchronous(x)
 ```
 
     ## [1] TRUE
 
 ``` r
+
 is.synchronous(xt)
 ```
 
@@ -297,6 +310,7 @@ objects of class `trajectories`, For example, we can decide to work with
 the trajectories of the second and third entities (sites):
 
 ``` r
+
 x23 <- subsetTrajectories(x, site_selection = c("2", "3"))
 x23
 ```
@@ -328,6 +342,7 @@ x23
 We can decide to focus on the last three surveys:
 
 ``` r
+
 x23s <- subsetTrajectories(x, 
                            site_selection = c("2", "3"), 
                            survey_selection = c(2, 3, 4))
@@ -367,6 +382,7 @@ Since $`\Omega`$ has only two dimensions in this example, the Principal
 Coordinates Analysis (PCoA) on $`d`$ displays the complete space:
 
 ``` r
+
 trajectoryPCoA(x, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = TRUE)
 legend("topright", col=c("black","red", "blue"), 
@@ -387,6 +403,7 @@ matrix `xy` and function
 [`trajectoryPlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryPlot.md):
 
 ``` r
+
 trajectoryPlot(xy, entities, surveys, traj.colors = c("black","red", "blue"), lwd = 2,
                survey.labels = T)
 legend("topright", col=c("black","red", "blue"), 
@@ -415,6 +432,7 @@ function
 [`subsetTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/subsetTrajectories.md):
 
 ``` r
+
 trajectoryPCoA(subsetTrajectories(x, site_selection = c("2", "3")), 
                traj.colors = c("red", "blue"), lwd = 2,
                survey.labels = T)
@@ -437,6 +455,7 @@ the total path length using function
 [`trajectoryLengths()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md):
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -449,6 +468,7 @@ Since the difference between `x` and `xt` is in observation times, we
 will obtain the same result when calculating lengths on `xt`:
 
 ``` r
+
 trajectoryLengths(xt)
 ```
 
@@ -463,6 +483,7 @@ segments and the total path speed using function
 [`trajectorySpeeds()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md):
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -479,6 +500,7 @@ segment lengths (but not the average trajectory speed). We will obtain a
 different result for speeds with `xt`:
 
 ``` r
+
 trajectorySpeeds(xt)
 ```
 
@@ -492,6 +514,7 @@ trajectory using
 [`trajectoryInternalVariation()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md):
 
 ``` r
+
 trajectoryInternalVariation(x)
 ```
 
@@ -522,6 +545,7 @@ Function
 allows calculating the angles between consecutive segments:
 
 ``` r
+
 trajectoryAngles(x)
 ```
 
@@ -549,6 +573,7 @@ This is done by specifying `all=TRUE` in
 [`trajectoryAngles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md):
 
 ``` r
+
 trajectoryAngles(x, all=TRUE)
 ```
 
@@ -571,6 +596,7 @@ and segment lengths and is implemented in function
 [`trajectoryDirectionality()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md):
 
 ``` r
+
 trajectoryDirectionality(x)
 ```
 
@@ -592,6 +618,7 @@ call to
 This will only provide metrics that apply to the whole trajectory path:
 
 ``` r
+
 trajectoryMetrics(x)
 ```
 
@@ -608,6 +635,7 @@ If we calculate metrics on `xt` we will confirm that only trajectory
 speeds are affected by observation times:
 
 ``` r
+
 trajectoryMetrics(xt)
 ```
 
@@ -642,6 +670,7 @@ trajectory, which have to be entered twice. For example for the two
 example trajectories we would have:
 
 ``` r
+
 trajectoryProjection(d, 1:4, 1:4)
 ```
 
@@ -662,6 +691,7 @@ positions larger than 1/3 and 2/3, respectively, because the second and
 third segments are shorter:
 
 ``` r
+
 trajectoryProjection(d, 5:8, 5:8)
 ```
 
@@ -685,6 +715,7 @@ study the projection of third state of the trajectory of entity ‘2’
 which happens to be in the half of the trajectory:
 
 ``` r
+
 trajectoryProjection(d, 7, 1:4)
 ```
 
@@ -699,6 +730,7 @@ projects its fourth point to the same relative position as its second
 point.
 
 ``` r
+
 trajectoryProjection(d, 9:12, 1:4)
 ```
 
@@ -725,6 +757,7 @@ function, we will first build a small data set of three linear
 trajectories, but where the second and the third are modified:
 
 ``` r
+
 #Description of entities and times
 entities3 <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times3 <- c(1,2,3,4,1,2,3,4,1,2,3,4)
@@ -743,6 +776,7 @@ xy3[9:12,2] <- xy3[1:4,2]*1.25  # 1.25 times faster than entity "1"
 We can see the differences graphically:
 
 ``` r
+
 trajectoryPlot(xy3, entities3,  
                traj.colors = c("black","red", "blue"), lwd = 2)
 legend("topright", col=c("black","red", "blue"), 
@@ -754,12 +788,14 @@ legend("topright", col=c("black","red", "blue"),
 We now build the usual `trajectories` object:
 
 ``` r
+
 x3 <- defineTrajectories(dist(xy3), entities3, times = times3)
 ```
 
 We can check that indeed the third trajectory is faster using:
 
 ``` r
+
 trajectorySpeeds(x3)
 ```
 
@@ -774,6 +810,7 @@ allows comparing different observations to a reference trajectory. For
 example we can compare trajectory for entities “1” and “2”:
 
 ``` r
+
 trajectoryShifts(subsetTrajectories(x3, c("1","2")))
 ```
 
@@ -795,6 +832,7 @@ be determined (because the reference trajectory is too short).
 We can also compare trajectories “1” and “3”:
 
 ``` r
+
 trajectoryShifts(subsetTrajectories(x3, c("1","3")))
 ```
 
@@ -822,6 +860,7 @@ the sequences of distances between pairs of synchronous observations of
 the two trajectories (i.e. first-first, second-second, …):
 
 ``` r
+
 trajectoryConvergence(x, type = "pairwise.symmetric")
 ```
 
@@ -847,6 +886,7 @@ case, synchronicity is not required and the sequence of distances
 *between every point of one trajectory and the other* is analyzed:
 
 ``` r
+
 trajectoryConvergence(x, type = "pairwise.asymmetric")
 ```
 
@@ -870,6 +910,7 @@ function
 [`trajectoryConvergencePlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryConvergencePlot.md):
 
 ``` r
+
 trajectoryConvergencePlot(x, type = "both", radius = 2)
 ```
 
@@ -885,6 +926,7 @@ also perform a **global** test of convergence/divergence between all
 trajectories in the data, using `type = "multiple"`:
 
 ``` r
+
 trajectoryConvergence(x, type = "multiple")
 ```
 
@@ -923,6 +965,7 @@ Cáceres et al. 2019), which can be obtained by calling function
 `segmentDistances`:
 
 ``` r
+
 Ds <- segmentDistances(x)$Dseg
 Ds
 ```
@@ -955,6 +998,7 @@ trajectory ‘1’ (named `1[3-4]`) and the first segment of trajectory ‘3’
 One can display distances between segments in two dimensions using mMDS.
 
 ``` r
+
 mMDS <- smacof::mds(Ds)
 mMDS
 ```
@@ -969,6 +1013,7 @@ mMDS
     ## Number of iterations: 15
 
 ``` r
+
 xret <- mMDS$conf
 plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
      bg=c(rep("black",3), rep("red",3), rep("blue",3)), 
@@ -992,6 +1037,7 @@ distance* (see eq. 13 in De Cáceres et al. 2019) or the *time-sensitive
 path distance* (unpublished):
 
 ``` r
+
 trajectoryDistances(x, distance.type = "Hausdorff")
 ```
 
@@ -1000,6 +1046,7 @@ trajectoryDistances(x, distance.type = "Hausdorff")
     ## 3 2.061553 1.500000
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -1008,6 +1055,7 @@ trajectoryDistances(x, distance.type = "SPD")
     ## 3 0.9538119 0.4702263
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -1016,6 +1064,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 3 1.1345910 0.5714490
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -1028,6 +1077,7 @@ non-symmetric distances one uses, for example (see eq. 11 in De Cáceres
 et al. 2019):
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD", symmetrization = NULL)
 ```
 
@@ -1044,6 +1094,7 @@ building a new space (noted as $`\Omega_T`$). One can display the
 location of trajectories in two dimensions using mMDS.
 
 ``` r
+
 mMDS <- smacof::mds(trajectoryDistances(x, distance.type = "TSPD"))
 mMDS
 ```
@@ -1058,6 +1109,7 @@ mMDS
     ## Number of iterations: 1
 
 ``` r
+
 xret <- mMDS$conf
 plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
      bg=c("black", "red", "blue"), 
@@ -1077,6 +1129,7 @@ variation**., and these questions can be addressed using function
 for example:
 
 ``` r
+
 dynamicVariation(x)
 ```
 
@@ -1104,6 +1157,7 @@ which means that we may get slightly different results if we change the
 trajectory dissimilarity coefficient:
 
 ``` r
+
 dynamicVariation(x, distance.type = "TSPD")
 ```
 
@@ -1131,6 +1185,7 @@ affected by different disturbances during the sampling period
 the data set, which includes 72 plot observations:
 
 ``` r
+
 data("avoca")
 ```
 
@@ -1150,6 +1205,7 @@ communities. Methods Ecol Evol 4:1167–1177.
 <https://doi.org/10.1111/2041-210X.12116>):
 
 ``` r
+
 avoca_D_man <- vegclust::vegdiststruct(avoca_strat, 
                                        method="manhattan", 
                                        transform = function(x){log(x+1)})
@@ -1167,6 +1223,7 @@ nine surveys were conducted in years 1970/72, 1974, 1978, 1983, 1987,
 synchronously, we can define observation times using:
 
 ``` r
+
 years <- c(1971, 1974, 1978, 1983, 1987, 1993, 1999, 2004, 2009)
 avoca_times <- years[avoca_surveys]
 ```
@@ -1174,6 +1231,7 @@ avoca_times <- years[avoca_surveys]
 And then define trajectories using:
 
 ``` r
+
 avoca_x <- defineTrajectories(d = avoca_D_man,  
                               sites = avoca_sites, 
                               times = avoca_times)
@@ -1183,6 +1241,7 @@ In this dataset trajectories are synchronous, as indicated by function
 [`is.synchronous()`](https://emf-creaf.github.io/ecotraj/reference/is.synchronous.md).
 
 ``` r
+
 is.synchronous(avoca_x)
 ```
 
@@ -1192,6 +1251,7 @@ On the other hand, the Manhattan metric produces a distance matrix (and
 $`\Omega`$ space) that is indeed metric:
 
 ``` r
+
 is.metric(avoca_x)
 ```
 
@@ -1206,6 +1266,7 @@ to display the relations between forest plot states in this space and to
 draw the trajectory of each plot:
 
 ``` r
+
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
@@ -1224,6 +1285,7 @@ Another option is to use mMDS to represent trajectories, which in this
 case produces a similar result:
 
 ``` r
+
 mMDS <- smacof::mds(avoca_D_man)
 mMDS
 ```
@@ -1238,6 +1300,7 @@ mMDS
     ## Number of iterations: 49
 
 ``` r
+
 trajectoryPlot(mMDS$conf,  avoca_sites, avoca_surveys,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
@@ -1252,6 +1315,7 @@ This allows getting a better view of particular trajectories, here that
 of forest plot ‘3’:
 
 ``` r
+
 oldpar <- par(mfrow=c(1,2))
 trajectoryPCoA(subsetTrajectories(avoca_x, "3"),
                length=0.1, lwd=2, time.labels = TRUE)
@@ -1261,6 +1325,7 @@ plotTrajDiamDist(3)
 ![](IntroductionETA_files/figure-html/trajectory_3-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -1273,6 +1338,7 @@ from one diameter class to the other. The whole trajectory looks mostly
 directional. Let’s now inspect the trajectory of forest plot ‘4’:
 
 ``` r
+
 oldpar <- par(mfrow=c(1,2))
 trajectoryPCoA(subsetTrajectories(avoca_x, "4"),
                length=0.1, lwd=2, time.labels = TRUE)
@@ -1282,6 +1348,7 @@ plotTrajDiamDist(4)
 ![](IntroductionETA_files/figure-html/trajectory_4-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -1300,6 +1367,7 @@ of plot ‘3’, mostly because includes a lengthier last segment (i.e. the
 recruitment of new individuals):
 
 ``` r
+
 trajectoryLengths(avoca_x)
 ```
 
@@ -1328,6 +1396,7 @@ directional, but the angles of trajectory of ‘4’ are larger, on
 aveerage:
 
 ``` r
+
 avoca_ang <- trajectoryAngles(avoca_x)
 avoca_ang
 ```
@@ -1357,6 +1426,7 @@ we can confirm that the trajectory for forest plot ‘4’ is less straight
 than that of plot ‘3’:
 
 ``` r
+
 avoca_dir <- trajectoryDirectionality(avoca_x)
 avoca_dir
 ```
@@ -1370,6 +1440,7 @@ and the mean resultant vector length that uses angular information only
 and assesses the constancy of angle values:
 
 ``` r
+
 avoca_rho <- trajectoryAngles(avoca_x, all=TRUE)$rho
 plot(avoca_rho, avoca_dir, xlab = "rho(T)", ylab = "dir(T)", type="n")
 text(avoca_rho, avoca_dir, as.character(1:8))
@@ -1384,6 +1455,7 @@ time. This question can be addressed using an overall test of
 convergence, which we can do because trajectories are synchronous:
 
 ``` r
+
 trajectoryConvergence(avoca_x, type="multiple")
 ```
 
@@ -1401,6 +1473,7 @@ trend may not be true for specific pairs of plots. Converge/divergence
 between pairs of plots would be assessed using:
 
 ``` r
+
 trajectoryConvergence(avoca_x, type="pairwise.symmetric")
 ```
 
@@ -1450,6 +1523,7 @@ significant divergence between plots ‘4’ and ‘5’. We can display this
 divergence graphically using:
 
 ``` r
+
 trajectoryPCoA(subsetTrajectories(avoca_x, c("4", "5")),
                traj.colors = RColorBrewer::brewer.pal(8,"Accent")[4:5], 
                axes=c(1,2), length=0.1, lwd=2)
@@ -1462,6 +1536,7 @@ To interpret this result we can compare the corresponding changes in
 diameter distribution:
 
 ``` r
+
 oldpar <- par(mfrow=c(1,2))
 plotTrajDiamDist(4)
 plotTrajDiamDist(5)
@@ -1470,6 +1545,7 @@ plotTrajDiamDist(5)
 ![](IntroductionETA_files/figure-html/trajectories_4_5_diam-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 
@@ -1485,6 +1561,7 @@ numerically, we can employ function
 where we can focus on statistically-significant tests:
 
 ``` r
+
 trajectoryConvergencePlot(avoca_x, type = "pairwise.symmetric",
                           alpha.filter = 0.05,
                           conv.color = "orangered",
@@ -1502,6 +1579,7 @@ Finally, we can use the same function to display the result of
 is obtained:
 
 ``` r
+
 trajectoryConvergencePlot(avoca_x, type = "pairwise.asymmetric",
                           alpha.filter = 0.05,
                           conv.color = "orangered",
@@ -1518,6 +1596,7 @@ We can calculate the resemblance between forest plot trajectories using
 [`trajectoryDistances()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryComparison.md):
 
 ``` r
+
 avoca_D_traj_man <- trajectoryDistances(avoca_x, distance.type="DSPD")
 print(round(avoca_D_traj_man,3))
 ```
@@ -1539,6 +1618,7 @@ those of the ‘3’-‘5’ pair. We can again use mMDS to produce an
 ordination of resemblances between trajectories:
 
 ``` r
+
 mMDS<-smacof::mds(avoca_D_traj_man)
 mMDS
 ```
@@ -1553,6 +1633,7 @@ mMDS
     ## Number of iterations: 25
 
 ``` r
+
 x<-mMDS$conf[,1]
 y<-mMDS$conf[,2]
 plot(x,y, type="p", asp=1, xlab=paste0("Axis 1"), 
@@ -1570,6 +1651,7 @@ can use function
 [`dynamicVariation()`](https://emf-creaf.github.io/ecotraj/reference/dynamicVariation.md):
 
 ``` r
+
 dynamicVariation(avoca_x, distance.type="DSPD")
 ```
 
@@ -1591,6 +1673,7 @@ that were located closer to the center of the previous ordination plot.
 The more unique plot is ‘8’, which we can isolate and inspect using:
 
 ``` r
+
 oldpar <- par(mfrow=c(1,2))
 trajectoryPCoA(subsetTrajectories(avoca_x, "8"),
                length=0.1, lwd=2, time.labels = TRUE)
@@ -1600,6 +1683,7 @@ plotTrajDiamDist(8)
 ![](IntroductionETA_files/figure-html/trajectory_8-1.png)
 
 ``` r
+
 par(oldpar)
 ```
 

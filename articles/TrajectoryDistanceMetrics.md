@@ -11,6 +11,7 @@ that geometric calculations can be followed more easily. First of all,
 we load `ecotraj`:
 
 ``` r
+
 library(ecotraj)
 ```
 
@@ -98,6 +99,7 @@ We compare first a linear trajectory with its oposed one, i.e. a
 trajectory going in the exact oposite sense.
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2", "2")
 times <- c(0,1,2,3,0,1,2,3)
   
@@ -116,6 +118,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 We can display the two (overlapping) trajectories using:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -126,6 +129,7 @@ trajectoryPCoA(x,
 The two trajectories have the same lengths and speeds:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -134,6 +138,7 @@ trajectoryLengths(x)
     ## 2  1  1  1    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -145,6 +150,7 @@ When we examine trajectory (temporal) shifts we see the oposing
 character:
 
 ``` r
+
 trajectoryShifts(x)
 ```
 
@@ -162,6 +168,7 @@ Calculating SPD yields zero dissimilarity, because the distance does not
 take into account differences in direction:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -171,6 +178,7 @@ trajectoryDistances(x, distance.type = "SPD")
 The other two dissimilarity metrics do yield non-zero values:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -178,6 +186,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 2 1
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -190,6 +199,7 @@ Here we compare three trajectories with the same linear pathway and
 speed. They only differ in the number of segments used to describe them:
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","3","3")
 times <- c(0,1,2,3,0,1.5,3,0,3)
   
@@ -207,6 +217,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 We plot the three trajectories in separate panels for clarity:
 
 ``` r
+
 par(mfrow=c(3,1))
 trajectoryPCoA(subsetTrajectories(x,"1"), 
                traj.colors = c("black"), lwd = 2,
@@ -224,6 +235,7 @@ Note that reversals may occur because of PCoA eigen analysis. But
 together the trajectories look like:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -235,6 +247,7 @@ We can check that the three trajectories have the same total length and
 average speed:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -244,6 +257,7 @@ trajectoryLengths(x)
     ## 3 3.0  NA NA    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -255,6 +269,7 @@ trajectorySpeeds(x)
 There are no temporal shifts between the trajectories:
 
 ``` r
+
 trajectoryShifts(x)
 ```
 
@@ -282,6 +297,7 @@ Here SPD yields zero distance, because the three trajectories have the
 same shape:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -294,6 +310,7 @@ DSPD seems to be affected by the different segmentation of trajectories,
 so that it yields non-zero values:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -305,6 +322,7 @@ In contrast, TSPD yields again zero distance values, because the
 trajectories do not differ in neither speed or shape.
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -318,6 +336,7 @@ In this example the three trajectories have the same segments and
 pathways, but they differ in the speed of changes:
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times <- c(0,0.5,1,1.5,0,1,2,3,0,2,4,6)
   
@@ -334,6 +353,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 Again we use separate plots to show the differences in speed:
 
 ``` r
+
 par(mfrow=c(3,1))
 trajectoryPCoA(subsetTrajectories(x,"1"), 
                traj.colors = c("black"), lwd = 2,
@@ -351,6 +371,7 @@ We can check that there are no differences in segment or total path
 lengths, but they indeed differ in trajectory speed:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -360,6 +381,7 @@ trajectoryLengths(x)
     ## 3  1  1  1    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -371,6 +393,7 @@ trajectorySpeeds(x)
 Differences in speed also lead to temporal shifts between trajectories:
 
 ``` r
+
 trajectoryShifts(x)
 ```
 
@@ -404,6 +427,7 @@ If we calculate distances using SPD, the distance metric does not detect
 the differences in speed and tells us that the trajectories are equal:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -414,6 +438,7 @@ trajectoryDistances(x, distance.type = "SPD")
 And the same happens with DSPD:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -425,6 +450,7 @@ It is only when we apply TSPD that we can observe differences between
 trajectories:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -441,6 +467,7 @@ Let us now evaluate a case where trajectories are the same but have been
 displaced in one dimension:
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times <- c(1,2,3,4,1,2,3,4,1,2,3,4)
 
@@ -460,6 +487,7 @@ We use a single plot, though not very clear, to display the three
 trajectories:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -469,6 +497,7 @@ trajectoryPCoA(x,
 In this case differences do not exist in terms of lengths nor speeds:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -478,6 +507,7 @@ trajectoryLengths(x)
     ## 3  1  1  1    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -489,6 +519,7 @@ trajectorySpeeds(x)
 But (temporal) shifts reflect the spatial ones:
 
 ``` r
+
 trajectoryShifts(x)
 ```
 
@@ -522,6 +553,7 @@ In this case, all three metrics are responsive to differences in
 trajectory location:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -530,6 +562,7 @@ trajectoryDistances(x, distance.type = "SPD")
     ## 3 0.250 0.125
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -538,6 +571,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 3 0.3333333 0.5000000
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -552,6 +586,7 @@ times but they differ in total path length due to differences in
 trajectory speed.
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times <- c(0,1,2,3,0,1,2,3,0,1,2,3)
   
@@ -568,6 +603,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 We draw the three (overlapping) trajectories:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -578,6 +614,7 @@ trajectoryPCoA(x,
 In this case both lengths and speeds are different between trajectories:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -587,6 +624,7 @@ trajectoryLengths(x)
     ## 3 2.0 2.0 2.0  6.0
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -598,6 +636,7 @@ trajectorySpeeds(x)
 This is also translated to trajectory shifts:
 
 ``` r
+
 trajectoryShifts(x)
 ```
 
@@ -631,6 +670,7 @@ Since the trajectories differ in length, this is captured by all three
 metrics:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -639,6 +679,7 @@ trajectoryDistances(x, distance.type = "SPD")
     ## 3 0.5000 0.1875
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -647,6 +688,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 3 1.3333333 0.9166667
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -665,6 +707,7 @@ Here the three trajectories have the same length and speed, but
 trajectory 2 and 3 are progressively curved:
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 surveys <- c(1,2,3,4,1,2,3,4,1,2,3,4)
 
@@ -687,6 +730,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 ```
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -700,6 +744,7 @@ trajectoryPCoA(x,
 As expected, no differences are found in terms of lengths or speeds:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -709,6 +754,7 @@ trajectoryLengths(x)
     ## 3  1  1  1    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -721,6 +767,7 @@ The three distance metrics are responsive to differences of trajectory
 shape:
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -729,6 +776,7 @@ trajectoryDistances(x, distance.type = "SPD")
     ## 3 0.6250000 0.4267767
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -737,6 +785,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 3 0.9023689 0.6868867
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 
@@ -751,6 +800,7 @@ survey times, so that the observed trajectory shapes correspond also to
 different speeds:
 
 ``` r
+
 sites <- c("1","1","1","1","2","2","2","2","3","3","3","3")
 times <- c(0,0.5,1,1.5,0,1,2,3,0,2,4,6)
 
@@ -775,6 +825,7 @@ x <- defineTrajectories(dist(xy), sites = sites, times = times)
 The trajectory plot looks as before, except for the time labels:
 
 ``` r
+
 trajectoryPCoA(x, 
                traj.colors = c("black", "red", "blue"), lwd = 2,
                time.labels = TRUE)
@@ -788,6 +839,7 @@ trajectoryPCoA(x,
 In this case trajectories differ in speed but not length:
 
 ``` r
+
 trajectoryLengths(x)
 ```
 
@@ -797,6 +849,7 @@ trajectoryLengths(x)
     ## 3  1  1  1    3
 
 ``` r
+
 trajectorySpeeds(x)
 ```
 
@@ -808,6 +861,7 @@ trajectorySpeeds(x)
 The three metrics detect differences in shape, as before.
 
 ``` r
+
 trajectoryDistances(x, distance.type = "SPD")
 ```
 
@@ -816,6 +870,7 @@ trajectoryDistances(x, distance.type = "SPD")
     ## 3 0.6250000 0.4267767
 
 ``` r
+
 trajectoryDistances(x, distance.type = "DSPD")
 ```
 
@@ -824,6 +879,7 @@ trajectoryDistances(x, distance.type = "DSPD")
     ## 3 0.9023689 0.6868867
 
 ``` r
+
 trajectoryDistances(x, distance.type = "TSPD")
 ```
 

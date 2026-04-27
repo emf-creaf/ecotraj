@@ -36,6 +36,7 @@ First of all, we load the required libraries, including `ecotraj`:
 We begin by loading the package dataset `furseals`:
 
 ``` r
+
 data("furseals")
 ```
 
@@ -72,6 +73,7 @@ distance between stable isotope compositions (i.e state) of each whisker
 section and the initial stable isotope composition):
 
 ``` r
+
 Net_changes<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
                                  furseals$ID_SITA,
                                  furseals$Time, relativeToInitial=TRUE) 
@@ -119,6 +121,7 @@ the stable isotope composition of consecutive whisker sections in the
 stable isotope space:
 
 ``` r
+
 Segment_lengths<-trajectoryLengths2D(furseals[,c("d13C","d15N")],
                                      furseals$ID_SITA,
                                      furseals$Time, relativeToInitial=FALSE) 
@@ -165,6 +168,7 @@ Finally, we determine the angle ($`\alpha`$) of consecutive trajectory
 segments with respect to the second axis of the 2D stable isotope space:
 
 ``` r
+
 Angles<-trajectoryAngles2D(furseals[,c("d13C","d15N")],
                            furseals$ID_SITA,
                            furseals$Time, betweenSegments=FALSE)
@@ -214,6 +218,7 @@ their foraging strategy. We need first to calculate distances between
 pairs of complete trajectories in the stable isotope space:
 
 ``` r
+
 D <- dist(furseals[,c("d13C","d15N")])
 furseals_x <- defineTrajectories(D, furseals$ID_SITA)
 Ds<-trajectoryDistances(furseals_x, distance.type = "DSPD",
@@ -225,6 +230,7 @@ Then, we can use function
 hierarchiacl clustering on the symmetric matrix `D`:
 
 ``` r
+
 colstd<-c("black","yellow","green","blue","grey","red")
 pt<-c(16,16,16,16)
 hsxy <- hclust(Ds, "ward.D2")
@@ -240,6 +246,7 @@ We cut the dendrogram at height `Hst` to obtain a vector of cluster
 membership and copy it in `furseals` as a factor:
 
 ``` r
+
 groups <- cutree(hsxy, h=Hst)
 furseals$cluster <- as.factor(groups)
 ```
@@ -251,6 +258,7 @@ corresponding to combinations of species and gender. To facilitate such
 plots, we create of a vector with the combination of species and gender:
 
 ``` r
+
 furseals$sp_gender<-paste(furseals$Sexe, furseals$Species, sep=" ")
 ```
 
@@ -262,6 +270,7 @@ to t30 (i.e. most recent to oldest SI state). Colors corresponds to
 trajectory clusters and shape to breeding sites:
 
 ``` r
+
 ggplot(data=furseals,aes(x=d13C,y=d15N,color=cluster,shape=Place))+
   geom_point()+
   geom_path(aes(x=d13C,y=d15N,group=ID_SITA,color=cluster),
@@ -281,6 +290,7 @@ individuals, in plots corresponding to combinations of species and
 gender We prepare a subset of the data called `NC`:
 
 ``` r
+
 NC<-Net_changes[,-30]
 NC$cluster<-furseals$cluster[1:47]
 NC$ID<-as.numeric(rownames(NC))
@@ -291,6 +301,7 @@ We then prepare the subset. We notably transform NC to a longer format,
 order the data set and add the vector sp_gender:
 
 ``` r
+
 NCline <- tidyr::pivot_longer(NC, 1:29, 
                               names_to ="Time_from_present", 
                               values_to="Net_changes", 
@@ -307,6 +318,7 @@ stable isotope values from t1 to t30 (i.e. most recent to oldest stable
 isotope values). Colours corresponds to trajectory clusters:
 
 ``` r
+
 ggplot(data=NCline,aes(x=Time_from_present,y=Net_changes,color=Clusters))+
   geom_path(aes(x=Time_from_present,y=Net_changes,group=ID,color=Clusters),
             arrow = arrow(length = unit(0.10, "cm")))+
@@ -325,6 +337,7 @@ a long data structure. We create a vector of direction to class Angle
 $`\alpha`$ values by range of 15°:
 
 ``` r
+
 Angl<-Angles
 colnames(Angl)<-2:30
 Angl$ID<-as.numeric(rownames(Angl))
@@ -363,6 +376,7 @@ by range (15$`\circ`$) of direction. Bars size represent the number of
 trajectory segments (all individual within each trajectory clusters).
 
 ``` r
+
 ggplot(data=df_sorted, aes(x=dir.binned, y=nb, fill=Clusters)) +
   geom_bar(stat="identity")+
   scale_y_continuous(limits = c(0,110), expand = c(0, 0), 
@@ -387,6 +401,7 @@ data to create a trajectory diagram.
 We begin by loading the package dataset `pike`:
 
 ``` r
+
 data("pike")
 ```
 
@@ -418,6 +433,7 @@ individual (i.e. the distance between stable isotope compositions at
 release and at recapture):
 
 ``` r
+
 Net_changes<-trajectoryLengths2D(pike[,7:8],pike$ID,pike$Time, relativeToInitial=TRUE) 
 colnames(Net_changes)<-c("Net_changes", "Trajectory")
 pike$Net_Changes<-Net_changes$Net_changes
@@ -428,6 +444,7 @@ Then, we can use function
 hierarchical clustering on the symmetric matrix `D`:
 
 ``` r
+
 D=dist(pike[,7:8])
 pike_x <- defineTrajectories(D, pike$ID)
 Ds<-trajectoryDistances(pike_x, distance.type = "DSPD",
@@ -438,6 +455,7 @@ We cut the dendrogram at height `Hst` to obtain a vector of cluster
 membership and copy it in `pike`:
 
 ``` r
+
 Hst=3
 colstd<-c("black","yellow","green","blue","grey","red")
 hsxy <- hclust(Ds, "ward.D2")
@@ -449,6 +467,7 @@ x<-rect.hclust (hsxy, h=Hst,
 ![](SITA_files/figure-html/unnamed-chunk-16-1.png)
 
 ``` r
+
 # Store clusters into a new data column
 pike$Cluster<-cutree(hsxy, h=Hst)
 ```
@@ -459,6 +478,7 @@ We prepare the data set to compute trajectory diagrams and density
 curves:
 
 ``` r
+
 Pike1<-pike[pike$Time %in% 1,]
 Pike1<-Pike1[order(Pike1$ID, decreasing=FALSE),]
 Pike1$Net_changes<-0
@@ -475,6 +495,7 @@ The dashed line separates piscivorous from zooplanktivorous individuals
 \> 10)\].
 
 ``` r
+
 ggplot(data=data,aes(x=d13C,y=d15N,shape=Trophic_status_initial))+
   geom_point(aes(size=Net_changes))+
   geom_path(aes(x=d13C,y=d15N,group=ID,color=factor(Cluster)),arrow = arrow(length = unit(0.30, "cm")))+
@@ -490,6 +511,7 @@ Density curves X represents the distribution of all samples according to
 $`\delta13C`$ values, and capture (green=release; red=departure):
 
 ``` r
+
 gg_dist_d13C = ggplot(data, aes(d13C, fill=TimeL)) + geom_density(alpha=.5) 
 gg_dist_d13C = gg_dist_d13C + ylab(expression(delta^13*"C"*" density"))
 gg_dist_d13C = gg_dist_d13C + theme(axis.title.y=element_blank(),
@@ -509,6 +531,7 @@ Density curves Y represents the distribution of all samples according to
 $`\delta15N`$ values, and capture (green=release; red=departure):
 
 ``` r
+
 gg_dist_d15N = ggplot(data, aes(d15N, fill=TimeL)) + geom_density(alpha=.5) 
 gg_dist_d15N = gg_dist_d15N + ylab(expression(delta^15*"N"*" density"))
 gg_dist_d15N =gg_dist_d15N 
@@ -558,6 +581,7 @@ using directions and net changes calculated for all pairs of dates
 We begin by loading the package dataset `isoscape`:
 
 ``` r
+
 data("isoscape")
 ```
 
@@ -568,6 +592,7 @@ to compute the isoscape trajectory map with notably: Latitude,
 Longitude, Years, Angles and segment lenghts values:
 
 ``` r
+
 sites<-isoscape$station
 surveys<-isoscape$Year
 Angl<-trajectoryAngles2D(isoscape[,3:4],sites,surveys, betweenSegments = FALSE)
@@ -589,6 +614,7 @@ Angles $`\alpha`$ need to be transformed for the use with `geom_spoke`.
 We then add transformed values in a new column `Angles2`.
 
 ``` r
+
 angle<-data$Angles
 Angles2<-c()
 for (i in 1:length(angle)) {
@@ -619,6 +645,7 @@ illustrate modelled trajectory segment length at each station (i.e. the
 magnitude of change).
 
 ``` r
+
 ggplot(data, 
           aes(x = Longitude, 
               y = Latitude, 
@@ -641,6 +668,7 @@ ggplot(data,
 We begin by loading the package dataset `heatmapdata`:
 
 ``` r
+
 data("heatmapdata")
 ```
 
@@ -648,6 +676,7 @@ data("heatmapdata")
 all inter-annual consecutive periods between 1998 and 2017:
 
 ``` r
+
 head(heatmapdata)
 ```
 
@@ -675,6 +704,7 @@ stable isotope values (0-90°: + $`\delta13C`$ and + $`\delta15N`$;
 and - $`\delta15N`$; 180-270°: + $`\delta13C`$ and - $`\delta15N`$):
 
 ``` r
+
 #direction range
 deg <- 15
 
@@ -714,6 +744,7 @@ The final dataset used to create the trajectory heat map is composed of
 four variables (“Directions”,“Periods”,“Nb_stations”,“Lengths”):
 
 ``` r
+
 head(dfa)
 ```
 
@@ -734,6 +765,7 @@ indicate the number of stations exhibited by a given range of direction
 within a given period.
 
 ``` r
+
 ggplot(dfa, aes(Periods, Directions, fill= Nb_stations)) + 
   geom_tile() +
   scale_fill_viridis(discrete=FALSE) +
@@ -748,6 +780,7 @@ times, 1231 exhibiting the chosen angle. The blue gradient indicates the
 net change magnitude.
 
 ``` r
+
 df.Xbarplot<-aggregate(dfa$Lengths, by = list(dfa$Periods), FUN = sum)
 colnames(df.Xbarplot)<-c("Periods","Lengths")
 bp.x <- ggplot(data = df.Xbarplot, aes(x = factor(Periods), y = Lengths)) + 
@@ -768,6 +801,7 @@ $`\delta13C`$ and - $`\delta15N`$; Red: 90-180°: + $`\delta13C`$ and -
 $`\delta15N`$; Green: 180-270°: + $`\delta13C`$ and - $`\delta15N`$).
 
 ``` r
+
 df.Ybarplot<-aggregate(dfa$Lengths, by = list(dfa$Directions), FUN = sum)
 colnames(df.Ybarplot)<-c("Directions","Lengths")
 df.Ybarplot$ISpattern<- c(rep("+d13C/+d15N",6),rep("+d13C/-d15N",6),rep("-d13C/-d15N",6), rep("-d13C/+d15N",6))

@@ -41,6 +41,7 @@ latest stable `ecotraj` R package can also be installed from GitHub as
 follows:
 
 ``` r
+
 remotes::install_github("emf-creaf/ecotraj")
 ```
 
@@ -87,6 +88,7 @@ framework:
 | [`interpolateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md) | Relocates trajectory ecological states to those corresponding to input times, via linear interpolation. |
 | [`smoothTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md) | Performs multivariate smoothing on trajectory data using a Gaussian kernel. |
 | [`centerTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md) | Shifts all trajectories to the center of the multivariate space and returns a modified distance matrix. |
+| [`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md) | Creates an “average” trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. |
 
 **Functions specific for Cyclical Ecological Trajectory Analysis
 (CETA)**
@@ -271,6 +273,7 @@ Transforming trajectories
 
 - [`smoothTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   [`centerTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
+  [`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   [`interpolateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   : Transform trajectories
 

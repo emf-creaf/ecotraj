@@ -528,8 +528,8 @@ trajectoryConvergence(x)
 trajectoryCorrespondence(x)
 #>       1        2        3
 #> 1    NA 4.363029 2.242967
-#> 2 0.074       NA 2.775852
-#> 3 0.099 0.089000       NA
+#> 2 0.052       NA 2.775852
+#> 3 0.082 0.083000       NA
 
 #### Example of trajectory shifts
 #Description of entities (sites) and surveys

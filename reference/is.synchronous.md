@@ -1,7 +1,9 @@
 # Synchronicity in trajectory observations
 
 Checks whether trajectories are synchronous, meaning that observation
-times are equal
+times are equal. For objects of class `cycles` the check is performed on
+dates. For objects of class `fd.trajectories`, the check is performed
+correcting for inherent differences in dates.
 
 ## Usage
 

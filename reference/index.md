@@ -113,6 +113,7 @@ Transforming trajectories
 
 - [`smoothTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   [`centerTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
+  [`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   [`interpolateTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
   : Transform trajectories
 

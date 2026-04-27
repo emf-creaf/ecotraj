@@ -1,3 +1,6 @@
+# ecotraj 1.2.2
+* New function averageTrajectories()
+
 # ecotraj 1.2.1
 * When using trajectoryDistances with "cycles" objects the elements to be compared are cycles and dates are used for time comparison. 
 * Bug correction in extractCycles() by N. Djeghri

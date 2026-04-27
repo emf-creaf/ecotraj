@@ -17,7 +17,7 @@
 #' \itemize{
 #' \item{Function \code{smoothTrajectories} performs multivariate smoothing on trajectory data using a Gaussian kernel.}
 #' \item{Function \code{centerTrajectories} shifts all trajectories to the center of the multivariate space and returns a modified distance matrix.}
-#' \item{Function \code{averageTrajectories} returns an "average" trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. }
+#' \item{Function \code{averageTrajectories} creates an "average" trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. }
 #' \item{Function \code{interpolateTrajectories} relocates trajectory ecological states to those corresponding to input times, via interpolation.}
 #' }
 #'  

@@ -88,6 +88,7 @@ framework:
 | `interpolateTrajectories()` | Relocates trajectory ecological states to those corresponding to input times, via linear interpolation. |
 | `smoothTrajectories()` | Performs multivariate smoothing on trajectory data using a Gaussian kernel. |
 | `centerTrajectories()` | Shifts all trajectories to the center of the multivariate space and returns a modified distance matrix. |
+| `averageTrajectories()` | Creates an “average” trajectory where the position of each observation is the average of the position of the corresponding observations of the input trajectories. |
 
 **Functions specific for Cyclical Ecological Trajectory Analysis
 (CETA)**

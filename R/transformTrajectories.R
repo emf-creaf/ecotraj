@@ -34,8 +34,8 @@
 #' Function \code{averageTrajectories} requires synchronous input trajectories.
 #'
 #' @return 
-#' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories}, also the
-#' number of observations and metadata is likely to be affected.
+#' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories} and \code{averageTrajectories},
+#' also the number of observations and metadata is likely to be affected.
 #' 
 #' @author 
 #' Miquel De \enc{Cáceres}{Caceres}, CREAF
@@ -196,6 +196,11 @@ centerTrajectories<-function(x, exclude = integer(0)) {
 averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name = "average") {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(!is.synchronous(x)) stop("Trajectories need to be synchronous for trajectory averaging.")
+  if((length(unique(x$metadata$sites))>1)&
+     (inherits(x, "cycles")|inherits(x, "fd.trajectories"))&
+     (is.null(group))){
+        warning("For classes cycles and fd.trajectories, averaging is done by default across all sites, consider setting the group parameter to include trajectories from only one site")
+  }
   
   d <- x$d
   surveys <- x$metadata$surveys
@@ -208,6 +213,8 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   } else {
     sites <- x$metadata$sites
   }
+  
+  
   # Check group definition
   if(is.null(group)) {
     group <- unique(sites)
@@ -264,9 +271,42 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   x$d <- as.dist(Dmat_final[is_selected, is_selected])
   meta_ave <- x$metadata[sites %in% group, , drop = FALSE]
   meta_ave <- meta_ave[average_selection, , drop = FALSE]
+  
+  if(inherits(x, "cycles")){
+    meta_ave$cycles <- output_name
+  }else if (inherits(x, "fd.trajectories")){
+    meta_ave$fdT <- output_name
+  }else if(inherits(x, "sections")){
+    meta_ave$sections <- output_name
+  }
   meta_ave$sites <- output_name
+  
   x$metadata <- rbind(x$metadata[member_selection, , drop = FALSE], meta_ave)
   row.names(x$metadata) <- 1:nrow(x$metadata)
+  
+  #For cycles, we do not use the true average of external states
+  #instead we take the average from the opposed end of the cycle
+  #this guaranties the closure of the average cycle
+  if(inherits(x, "cycles")){
+    avExt <- which((x$metadata$cycles==output_name)&(x$metadata$internal==FALSE))
+    avFirst <- which((x$metadata$cycles==output_name)&(x$metadata$internal==TRUE))[1]
+    
+    dModif <- as.matrix(x$d)
+    dModif <- rbind(cbind(dModif,dModif[avFirst,]),c(dModif[avFirst,],0)) #duplicate first internal state
+    dModif <- dModif[-avExt,-avExt]#remove average cycle's external states
+    x$d <- as.dist(dModif)
+    
+    x$metadata <- rbind(x$metadata,x$metadata[avFirst,])
+    x$metadata <- x$metadata[-avExt,]
+    
+    #metadata adjustments:
+    aver <- which(x$metadata$cycles==output_name)
+    x$metadata$surveys[nrow(x$metadata)] <- x$metadata$surveys[nrow(x$metadata)]+max(x$metadata$surveys[aver])
+    x$metadata$surveys[aver] <- order(x$metadata$surveys[aver])
+    x$metadata$times[nrow(x$metadata)] <- x$metadata$times[nrow(x$metadata)]+max(x$metadata$times[aver])
+    x$metadata$internal[nrow(x$metadata)] <- FALSE
+  }
+  
   return(x)
 }
 

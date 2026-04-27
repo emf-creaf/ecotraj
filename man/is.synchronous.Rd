@@ -13,7 +13,7 @@ is.synchronous(x)
 A boolean indicating whether trajectories are synchronous
 }
 \description{
-Checks whether trajectories are synchronous, meaning that observation times are equal
+Checks whether trajectories are synchronous, meaning that observation times are equal. For objects of class \code{cycles} the check is performed on dates. For objects of class \code{fd.trajectories}, the check is performed correcting for inherent differences in dates.
 }
 \examples{
 #Description of sites and surveys

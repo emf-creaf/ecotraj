@@ -278,9 +278,8 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
     meta_ave$fdT <- output_name
   }else if(inherits(x, "sections")){
     meta_ave$sections <- output_name
-  }else{
-    meta_ave$sites <- output_name
   }
+  meta_ave$sites <- output_name
   
   x$metadata <- rbind(x$metadata[member_selection, , drop = FALSE], meta_ave)
   row.names(x$metadata) <- 1:nrow(x$metadata)
@@ -290,11 +289,22 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   #this guaranties the closure of the average cycle
   if(inherits(x, "cycles")){
     avExt <- which((x$metadata$cycles==output_name)&(x$metadata$internal==FALSE))
-    avFirst <- which((x$metadata$cycles==output_name)&(x$metadata$surveys==1))
+    avFirst <- which((x$metadata$cycles==output_name)&(x$metadata$internal==TRUE))[1]
+    
     dModif <- as.matrix(x$d)
-    dModif[avExt,] <- dModif[avFirst,]
-    dModif[,avExt] <- dModif[,avFirst]
+    dModif <- rbind(cbind(dModif,dModif[avFirst,]),c(dModif[avFirst,],0)) #duplicate first internal state
+    dModif <- dModif[-avExt,-avExt]#remove average cycle's external states
     x$d <- as.dist(dModif)
+    
+    x$metadata <- rbind(x$metadata,x$metadata[avFirst,])
+    x$metadata <- x$metadata[-avExt,]
+    
+    #metadata adjustments:
+    aver <- which(x$metadata$cycles==output_name)
+    x$metadata$surveys[nrow(x$metadata)] <- x$metadata$surveys[nrow(x$metadata)]+max(x$metadata$surveys[aver])
+    x$metadata$surveys[aver] <- order(x$metadata$surveys[aver])
+    x$metadata$times[nrow(x$metadata)] <- x$metadata$times[nrow(x$metadata)]+max(x$metadata$times[aver])
+    x$metadata$internal[nrow(x$metadata)] <- FALSE
   }
   
   return(x)

@@ -1,6 +1,6 @@
 #' Synchronicity in trajectory observations
 #' 
-#' Checks whether trajectories are synchronous, meaning that observation times are equal
+#' Checks whether trajectories are synchronous, meaning that observation times are equal. For objects of class \code{cycles} the check is performed on dates. For objects of class \code{fd.trajectories}, the check is performed correcting for inherent differences in dates.
 #'
 #' @param x An object of class \code{trajectories} (or its children subclasses \code{fd.trajectories} or \code{cycles})
 #'
@@ -35,8 +35,10 @@ is.synchronous<-function(x) {
   times <- x$metadata$times
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
+    times <- x$metadat$times-x$metadata$dates
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+    times <- x$metadata$dates
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
   } else {

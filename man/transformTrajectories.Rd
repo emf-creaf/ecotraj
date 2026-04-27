@@ -47,8 +47,8 @@ interpolateTrajectories(x, times)
 \item{times}{A numeric vector indicating new observation times for trajectories. Values should be comprised between time limits of the original trajectories.}
 }
 \value{
-A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories}, also the
-number of observations and metadata is likely to be affected.
+A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories} and \code{averageTrajectories},
+also the number of observations and metadata is likely to be affected.
 }
 \description{
 The following functions are provided to transform trajectories:

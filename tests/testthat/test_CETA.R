@@ -55,6 +55,7 @@ test_that("Cycles can be build, subset and analyzed",{
   expect_s3_class(subsetTrajectories(cycleToy, subtrajectory_selection = "A_C3"), "cycles")
   expect_s3_class(centerTrajectories(cycleToy), "cycles")
   expect_s3_class(smoothTrajectories(cycleToy), "cycles")
+  expect_s3_class(averageTrajectories(cycleToy), "cycles")
   expect_s3_class(trajectoryLengths(cycleToy), "data.frame")
   expect_s3_class(trajectorySpeeds(cycleToy), "data.frame")
   expect_warning(trajectoryMetrics(cycleToy))

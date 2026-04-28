@@ -26,13 +26,17 @@
 #' @name transformTrajectories
 #' @aliases centerTrajectories smoothTrajectories interpolateTrajectories averageTrajectories
 #' 
-#' @param x An object of class \code{\link{trajectories}}.
+#' @param x An object of class \code{\link{trajectories}} (or of a sub-class such as \code{\link{cycles}}). Function \code{averageTrajectories} requires synchronous input trajectories.
 #' 
 #' @details 
-#' Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019). 
+#' We recommend reading the article "Transforming trajectories" on the package website prior to use these functions.
+#' 
+#' Details of calculations for trajectory centering are given in De \enc{Cáceres}{Caceres} et al (2019). 
 #' Functions \code{centerTrajectories} and \code{averageTrajectories} perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
-#' Function \code{averageTrajectories} requires synchronous input trajectories.
-#'
+#' 
+#' When using transformation functions on objects of class \code{\link{cycles}} or \code{\link{fd.trajectories}}, the corresponding transformations are applied to trajectory subsections (e.g. cycles) instead of
+#' being applied to the whole trajectory.
+#' 
 #' @return 
 #' A modified object of class \code{\link{trajectories}}, where distance matrix has been transformed. When calling \code{interpolateTrajectories} and \code{averageTrajectories},
 #' also the number of observations and metadata is likely to be affected.
@@ -47,7 +51,7 @@
 #' 
 #' Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 #' 
-#' @seealso \code{\link{trajectoryPlot}} \code{\link{trajectoryMetrics}}
+#' @seealso \code{\link{trajectoryPlot}} \code{\link{trajectoryMetrics}} \code{\link{trajectoryComparison}}
 #' 
 
 
@@ -196,7 +200,7 @@ centerTrajectories<-function(x, exclude = integer(0)) {
 averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name = "average") {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(!is.synchronous(x)) stop("Trajectories need to be synchronous for trajectory averaging.")
-  if(sum(x$metadata$sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
+  if(sum(x$metadata$sites %in% output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   if((length(unique(x$metadata$sites))>1)&
      (inherits(x, "cycles")|inherits(x, "fd.trajectories"))&
      (is.null(group))){
@@ -214,7 +218,7 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   } else {
     sites <- x$metadata$sites
   }
-  if(sum(sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
+  if(sum(sites %in% output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   
   # Check group definition
   if(is.null(group)) {

@@ -28,7 +28,7 @@ averageTrajectories(
 interpolateTrajectories(x, times)
 }
 \arguments{
-\item{x}{An object of class \code{\link{trajectories}}.}
+\item{x}{An object of class \code{\link{trajectories}} (or of a sub-class such as \code{\link{cycles}}). Function \code{averageTrajectories} requires synchronous input trajectories.}
 
 \item{survey_times}{A vector indicating the survey time for all surveys (if \code{NULL}, time between consecutive surveys is considered to be one)}
 
@@ -60,9 +60,13 @@ The following functions are provided to transform trajectories:
 }
 }
 \details{
-Details of calculations are given in De \enc{Cáceres}{Caceres} et al (2019).
+We recommend reading the article "Transforming trajectories" on the package website prior to use these functions.
+
+Details of calculations for trajectory centering are given in De \enc{Cáceres}{Caceres} et al (2019).
 Functions \code{centerTrajectories} and \code{averageTrajectories} perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
-Function \code{averageTrajectories} requires synchronous input trajectories.
+
+When using transformation functions on objects of class \code{\link{cycles}} or \code{\link{fd.trajectories}}, the corresponding transformations are applied to trajectory subsections (e.g. cycles) instead of
+being applied to the whole trajectory.
 }
 \references{
 De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
@@ -70,7 +74,7 @@ De \enc{Cáceres}{Caceres} M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ,
 Anderson (2017). Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. 1-15. Article ID: stat07841.
 }
 \seealso{
-\code{\link{trajectoryPlot}} \code{\link{trajectoryMetrics}}
+\code{\link{trajectoryPlot}} \code{\link{trajectoryMetrics}} \code{\link{trajectoryComparison}}
 }
 \author{
 Miquel De \enc{Cáceres}{Caceres}, CREAF

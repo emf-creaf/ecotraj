@@ -1,5 +1,5 @@
 # ecotraj 1.2.2
-* New function averageTrajectories()
+* New function averageTrajectories() to average trajectories (or cycles)
 
 # ecotraj 1.2.1
 * When using trajectoryDistances with "cycles" objects the elements to be compared are cycles and dates are used for time comparison. 

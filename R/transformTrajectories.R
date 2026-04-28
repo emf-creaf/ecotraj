@@ -196,6 +196,7 @@ centerTrajectories<-function(x, exclude = integer(0)) {
 averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name = "average") {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(!is.synchronous(x)) stop("Trajectories need to be synchronous for trajectory averaging.")
+  if(sum(x$metadata$sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   if((length(unique(x$metadata$sites))>1)&
      (inherits(x, "cycles")|inherits(x, "fd.trajectories"))&
      (is.null(group))){
@@ -213,7 +214,7 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   } else {
     sites <- x$metadata$sites
   }
-  
+  if(sum(sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   
   # Check group definition
   if(is.null(group)) {

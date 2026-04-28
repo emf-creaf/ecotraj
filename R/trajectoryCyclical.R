@@ -42,7 +42,11 @@
 #' The function instead compute the most adapted set of cycles to obtain the metric.
 #' 
 #' 
-#' Note: Function \code{cycleShifts} is computation intensive for large data sets, it may not execute immediately.
+#' **Additional notes on function \code{cycleShifts}:** \code{cycleShifts} can be executed in two modes:\code{"real"} and \code{"average"}.
+#' In \code{"real"} mode, \code{cycleShifts} takes real cycles from the dataset as reference for the computation of cyclical shifts.
+#' In \code{"average"} mode, \code{cycleShifts} takes average cycles computed for the different sites (by calls to function \code{\link{averageTrajectories}}) as reference.
+#' The \code{"real"} mode has the  advantage of using only observed ecological states whereas the \code{"average"} mode is  particularly useful to build time series of cyclical shifts (see CETA vignette).
+#' Note that function \code{cycleShifts} is computation intensive for large data sets, it may not execute immediately.
 #' 
 #' Further information and detailed examples of the use of CETA functions can be found in the associated vignette.
 #' 
@@ -84,8 +88,8 @@
 #'      \item{\code{site}: the site for which each cycle shift has been computed.}
 #'      \item{\code{dateCS}: the date for which a cycle shift has been computed.}
 #'      \item{\code{timeCS}: the time of the ecological state for which a cycle shift has been computed (i.e. the time associated to the projected ecological state).}
-#'      \item{\code{timeRef}: the time associated to the reference ecological state.}
-#'      \item{\code{timeScale}: the time difference between the reference and the projected ecological state.}
+#'      \item{\code{timeRef}: the time associated to the reference ecological state (a name if \code{mode = "average"}).}
+#'      \item{\code{timeScale}: the time difference between the reference and the projected ecological state (\code{NA} if \code{mode = "average"}).}
 #'      \item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
 #' }
 #' 
@@ -408,12 +412,14 @@ cycleConvexity <- function(x,
 }
 
 #' @rdname trajectoryCyclical
+#' @param mode Either \code{"real"} or \code{"average"}. Should real cycles or an average cycle be used as a reference? Defaults to \code{"real"}. See details.  
 #' @param datesCS An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.
 #' @param centering An optional boolean. Should the cycles be centered before computing cyclical shifts? Defaults to \code{TRUE}.
 #' @param add Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.
 #' @export
 cycleShifts <- function (x,
                          cycleDuration,
+                         mode = "real",
                          dates = NULL,
                          datesCS = NULL,
                          centering = TRUE,
@@ -424,6 +430,7 @@ cycleShifts <- function (x,
   if(inherits(x, "fd.trajectories")) stop("'x' should NOT be of class `fd.trajectories`")
   if(inherits(x, "cycles")) stop("'x' should NOT be of class `cycles`")
   if(inherits(x, "sections")) stop("'x' should NOT be of class `sections`")
+  if((mode!="real") & (mode!="average")) stop("Invalid value for parameter 'mode'")
   
   d <- x$d
   sites <- x$metadata$sites
@@ -452,46 +459,85 @@ cycleShifts <- function (x,
     }
     
     for (j in 1:length(siteIDs)){#This loop goes through the sites (we only compare cyclical shifts from the same sites)
-      siteTag <- which(Cycles$metadata$sites==siteIDs[j])
-      dateTag <- which(Cycles$metadata$dates==i)
-      dateTag <- intersect(siteTag,dateTag)
-      
-      AllRefCycles <- unique(Cycles$metadata$cycles[siteTag])
-      AllRefCycles <- AllRefCycles[1:(length(AllRefCycles)-1)]
-      for (k in AllRefCycles){#This loop goes through all the Cycles that will be used as reference.
-        CrefTag <- which(Cycles$metadata$cycles==k)
-        CrefTag <- CrefTag[order(Cycles$metadata$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
-        drefTag <- dateTag[dateTag%in%CrefTag]#a tag for the reference date
-        dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
+      if (mode=="real"){
+        siteTag <- which(Cycles$metadata$sites==siteIDs[j])
+        dateTag <- which(Cycles$metadata$dates==i)
+        dateTag <- intersect(siteTag,dateTag)
         
-        if ((length(drefTag)==1) & (length(dateTag)>0)){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
-          #Note: there is no need to reorder the cycles as extractCycles always output them in chronological order for a given site
+        AllRefCycles <- unique(Cycles$metadata$cycles[siteTag])
+        AllRefCycles <- AllRefCycles[1:(length(AllRefCycles)-1)]
+        for (k in AllRefCycles){#This loop goes through all the Cycles that will be used as reference.
+          CrefTag <- which(Cycles$metadata$cycles==k)
+          CrefTag <- CrefTag[order(Cycles$metadata$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
+          drefTag <- dateTag[dateTag%in%CrefTag]#a tag for the reference date
+          dateTag <- dateTag[dateTag>max(CrefTag)]#This line ensures that the date (dateTag) which will be compared to the reference are posterior in time
           
-          #Find out onto which segment of Cref the ecological states of interest are projected
-          projCS <- trajectoryProjection(d=Cycles$d,
-                                         target=dateTag,
-                                         trajectory=CrefTag,
-                                         add=add)
-          
-          segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
-          
-          #get the "times" of the projection of the ecological states
-          timesProj <- Cycles$metadata$times[segmentsTag[,1]]+
-            ((Cycles$metadata$times[segmentsTag[,2]]-Cycles$metadata$times[segmentsTag[,1]])*segmentsTag[,3])
-          
-          #get the Cyclical shifts:
-          cyclicalShift <- timesProj-Cycles$metadata$times[drefTag]
-          timeRef <- rep(Cycles$metadata$times[drefTag],length(dateTag))
-          timeCS <- Cycles$metadata$times[dateTag]
-          #Add some "metadata" to accompany Dt
-          PartialOutput <- data.frame(sites = rep(siteIDs[j],length(timeRef)),
-                                      dateCS = rep(i,length(timeRef)),
-                                      timeCS = timeCS,
-                                      timeRef = timeRef,
-                                      timeScale = timeCS - timeRef,
-                                      cyclicalShift = cyclicalShift)
-          Output <- rbind(Output,PartialOutput)
+          if ((length(drefTag)==1) & (length(dateTag)>0)){#a condition to test if the dates we want to compare exist (i.e. do they have associated ecological states?)
+            #Note: there is no need to reorder the cycles as extractCycles always output them in chronological order for a given site
+            
+            #Find out onto which segment of Cref the ecological states of interest are projected
+            projCS <- trajectoryProjection(d=Cycles$d,
+                                           target=dateTag,
+                                           trajectory=CrefTag,
+                                           add=add)
+            
+            segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
+            
+            #get the "times" of the projection of the ecological states
+            timesProj <- Cycles$metadata$times[segmentsTag[,1]]+
+              ((Cycles$metadata$times[segmentsTag[,2]]-Cycles$metadata$times[segmentsTag[,1]])*segmentsTag[,3])
+            
+            #get the Cyclical shifts:
+            cyclicalShift <- timesProj-Cycles$metadata$times[drefTag]
+            timeRef <- rep(Cycles$metadata$times[drefTag],length(dateTag))
+            timeCS <- Cycles$metadata$times[dateTag]
+            #Add some "metadata" to accompany the cyclical shifts computed
+            PartialOutput <- data.frame(sites = rep(siteIDs[j],length(timeRef)),
+                                        dateCS = rep(i,length(timeRef)),
+                                        timeCS = timeCS,
+                                        timeRef = timeRef,
+                                        timeScale = timeCS - timeRef,
+                                        cyclicalShift = cyclicalShift)
+            Output <- rbind(Output,PartialOutput)
+          }
         }
+      }else if (mode=="average"){
+        CyclesAV <- subsetTrajectories(Cycles,site_selection = siteIDs[j])
+        
+        nameAV <- paste("average site",siteIDs[j])
+        CyclesAV <- averageTrajectories(CyclesAV,keep_members = TRUE,output_name = nameAV)
+        
+        dateTag <- which((CyclesAV$metadata$dates==i)&(CyclesAV$metadata$cycles!=nameAV))
+        
+        CrefTag <- which(CyclesAV$metadata$cycles==nameAV)
+        CrefTag <- CrefTag[order(CyclesAV$metadata$times[CrefTag])]#this line re-orders the cycle according to its times to be sure its properly represented in trajectoryProjection below
+        drefTag <- which((CyclesAV$metadata$dates==i)&(CyclesAV$metadata$cycles==nameAV))#a tag for the reference date
+        
+        
+        #Find out onto which segment of Cref the ecological states of interest are projected
+        projCS <- trajectoryProjection(d=CyclesAV$d,
+                                       target=dateTag,
+                                       trajectory=CrefTag,
+                                       add=add)
+        
+        segmentsTag <- cbind(CrefTag[projCS$segment],CrefTag[projCS$segment+1],projCS$relativeSegmentPosition)
+        
+        #get the "times" of the projection of the ecological states
+        timesProj <- CyclesAV$metadata$times[segmentsTag[,1]]+
+          ((CyclesAV$metadata$times[segmentsTag[,2]]-CyclesAV$metadata$times[segmentsTag[,1]])*segmentsTag[,3])
+        
+        #get the Cyclical shifts:
+        cyclicalShift <- timesProj-CyclesAV$metadata$times[drefTag]
+        timeRef <- rep(nameAV,length(dateTag))
+        timeCS <- CyclesAV$metadata$times[dateTag]
+        #Add some "metadata" to accompany the cyclical shifts computed
+        PartialOutput <- data.frame(sites = rep(siteIDs[j],length(timeRef)),
+                                    dateCS = rep(i,length(timeRef)),
+                                    timeCS = timeCS,
+                                    timeRef = timeRef,
+                                    timeScale = NA,
+                                    cyclicalShift = cyclicalShift)
+        Output <- rbind(Output,PartialOutput)
       }
     }
   }

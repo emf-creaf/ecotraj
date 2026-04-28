@@ -43,6 +43,7 @@ cycleConvexity(
 cycleShifts(
   x,
   cycleDuration,
+  mode = "real",
   dates = NULL,
   datesCS = NULL,
   centering = TRUE,
@@ -78,6 +79,8 @@ cycleMetrics(
 \item{namesFixedDate}{An optional vector of names associated to each \code{fixedDate}. Defaults to \code{round(fixedDate,2)}.}
 
 \item{add}{Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.}
+
+\item{mode}{Either \code{"real"} or \code{"average"}. Should real cycles or an average cycle be used as a reference? Defaults to \code{"real"}. See details.}
 
 \item{datesCS}{An optional vector indicating the dates for which a cyclical shift must be computed. Default to \code{unique(dates)} resulting in the computation of all possible cyclical shifts.}
 
@@ -121,8 +124,8 @@ Function \code{cycleShifts} returns an object of class \code{\link{data.frame}} 
 \item{\code{site}: the site for which each cycle shift has been computed.}
 \item{\code{dateCS}: the date for which a cycle shift has been computed.}
 \item{\code{timeCS}: the time of the ecological state for which a cycle shift has been computed (i.e. the time associated to the projected ecological state).}
-\item{\code{timeRef}: the time associated to the reference ecological state.}
-\item{\code{timeScale}: the time difference between the reference and the projected ecological state.}
+\item{\code{timeRef}: the time associated to the reference ecological state (a name if \code{mode = "average"}).}
+\item{\code{timeScale}: the time difference between the reference and the projected ecological state (\code{NA} if \code{mode = "average"}).}
 \item{\code{cyclicalShift}: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.}
 }
 
@@ -167,7 +170,11 @@ There is three important exceptions to that rule: the functions \code{cycleConve
 For \code{cycleConvexity}, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For \code{cycleShifts}, this is because cyclical shifts are not obtained with respect to a particular set of cycles. For \code{cycleMetrics}, this is because it calls \code{cycleConvexity}.
 The function instead compute the most adapted set of cycles to obtain the metric.
 
-Note: Function \code{cycleShifts} is computation intensive for large data sets, it may not execute immediately.
+\strong{Additional notes on function \code{cycleShifts}:} \code{cycleShifts} can be executed in two modes:\code{"real"} and \code{"average"}.
+In \code{"real"} mode, \code{cycleShifts} takes real cycles from the dataset as reference for the computation of cyclical shifts.
+In \code{"average"} mode, \code{cycleShifts} takes average cycles computed for the different sites (by calls to function \code{\link{averageTrajectories}}) as reference.
+The \code{"real"} mode has the  advantage of using only observed ecological states whereas the \code{"average"} mode is  particularly useful to build time series of cyclical shifts (see CETA vignette).
+Note that function \code{cycleShifts} is computation intensive for large data sets, it may not execute immediately.
 
 Further information and detailed examples of the use of CETA functions can be found in the associated vignette.
 }

@@ -196,6 +196,7 @@ centerTrajectories<-function(x, exclude = integer(0)) {
 averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name = "average") {
   if(!inherits(x, "trajectories")) stop("'x' should be of class `trajectories`")
   if(!is.synchronous(x)) stop("Trajectories need to be synchronous for trajectory averaging.")
+  if(sum(x$metadata$sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   if((length(unique(x$metadata$sites))>1)&
      (inherits(x, "cycles")|inherits(x, "fd.trajectories"))&
      (is.null(group))){
@@ -213,7 +214,7 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
   } else {
     sites <- x$metadata$sites
   }
-  
+  if(sum(sites%in%output_name)>0) stop("'output_name' should not correspond to a site or sub-trajectory name")
   
   # Check group definition
   if(is.null(group)) {
@@ -291,6 +292,9 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
     avExt <- which((x$metadata$cycles==output_name)&(x$metadata$internal==FALSE))
     avFirst <- which((x$metadata$cycles==output_name)&(x$metadata$internal==TRUE))[1]
     
+    aver <- which(x$metadata$cycles==output_name)
+    cycleDur <- max(x$metadata$times[aver])-min(x$metadata$times[aver])
+    
     dModif <- as.matrix(x$d)
     dModif <- rbind(cbind(dModif,dModif[avFirst,]),c(dModif[avFirst,],0)) #duplicate first internal state
     dModif <- dModif[-avExt,-avExt]#remove average cycle's external states
@@ -303,7 +307,7 @@ averageTrajectories<-function(x, group = NULL, keep_members = FALSE, output_name
     aver <- which(x$metadata$cycles==output_name)
     x$metadata$surveys[nrow(x$metadata)] <- x$metadata$surveys[nrow(x$metadata)]+max(x$metadata$surveys[aver])
     x$metadata$surveys[aver] <- order(x$metadata$surveys[aver])
-    x$metadata$times[nrow(x$metadata)] <- x$metadata$times[nrow(x$metadata)]+max(x$metadata$times[aver])
+    x$metadata$times[nrow(x$metadata)] <- x$metadata$times[nrow(x$metadata)]+cycleDur
     x$metadata$internal[nrow(x$metadata)] <- FALSE
   }
   

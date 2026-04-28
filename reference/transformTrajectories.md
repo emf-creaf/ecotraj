@@ -42,7 +42,11 @@ interpolateTrajectories(x, times)
 - x:
 
   An object of class
-  [`trajectories`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md).
+  [`trajectories`](https://emf-creaf.github.io/ecotraj/reference/defineTrajectories.md)
+  (or of a sub-class such as
+  [`cycles`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)).
+  Function `averageTrajectories` requires synchronous input
+  trajectories.
 
 - survey_times:
 
@@ -94,11 +98,20 @@ observations and metadata is likely to be affected.
 
 ## Details
 
-Details of calculations are given in De Cáceres et al (2019). Functions
-`centerTrajectories` and `averageTrajectories` perform
-centering/averaging of trajectories using matrix algebra as explained in
-Anderson (2017). Function `averageTrajectories` requires synchronous
-input trajectories.
+We recommend reading the article "Transforming trajectories" on the
+package website prior to use these functions.
+
+Details of calculations for trajectory centering are given in De Cáceres
+et al (2019). Functions `centerTrajectories` and `averageTrajectories`
+perform centering/averaging of trajectories using matrix algebra as
+explained in Anderson (2017).
+
+When using transformation functions on objects of class
+[`cycles`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
+or
+[`fd.trajectories`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md),
+the corresponding transformations are applied to trajectory subsections
+(e.g. cycles) instead of being applied to the whole trajectory.
 
 ## References
 
@@ -114,6 +127,7 @@ ID: stat07841.
 
 [`trajectoryPlot`](https://emf-creaf.github.io/ecotraj/reference/trajectoryPlot.md)
 [`trajectoryMetrics`](https://emf-creaf.github.io/ecotraj/reference/trajectoryMetrics.md)
+[`trajectoryComparison`](https://emf-creaf.github.io/ecotraj/reference/trajectoryComparison.md)
 
 ## Author
 

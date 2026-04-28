@@ -543,7 +543,9 @@ The output gives the
 computed in the same units as the input `time`, with positive values
 indicating advance and negative values indicating delay. The other
 columns give information on what exactly was compared. We will come back
-to this output in the real example below.
+to this output and explore the two modes of
+[`cycleShifts()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
+in the real example below.
 
 ### 2.5 Summary of the CETA approach
 
@@ -1132,3 +1134,79 @@ shift: there is maximal advance (positive shift) in spring and autumn.
 The advance computed is not negligible, communities take around 6 to 12
 days of advance every decade at those months (at least in term of
 composition)!
+
+A legitimate question to ask at this point is: when did those advances
+or delay happened? With the method illustrated above, we only compute
+broad trends. It would be nice to compute detailed time series. The
+problem with cyclical shift, is that we need a reference point. An
+approach would be to use the first cycle as reference and to only look
+at the cyclical shifts computed with respect to that cycle. This can be
+done from the output above but this risks the whole analysis on one
+cycle that might not be a good reference.
+
+An alternative is to use an average cycle. This is precisely what the
+parameter `mode` of function
+[`cycleShifts()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
+allows to do. Let’s compute it below for only the month of April (by
+setting parameter `dateCS`) to reduce computation time.
+
+``` r
+
+#this rather complicated line recovers the date corresponding to april in this dataset:
+April <- unique(x_northseaZoo$metadata$times-floor(x_northseaZoo$metadata$times))[4]
+
+#Note that we set here minEcolStates to 12 to have only complete cycles
+#This is because we need complete trajectories for trajectory averaging
+#(otherwise, the function will throw an error, feel free to try!)
+CSNSZooAVApr <- cycleShifts(x_northseaZoo,
+                            cycleDuration = 1,
+                            minEcolStates = 12,
+                            datesCS = April,
+                            mode="average")
+head(CSNSZooAVApr)
+```
+
+    ##   sites    dateCS   timeCS          timeRef timeScale cyclicalShift
+    ## 1   NNS 0.2916667 1959.292 average site NNS        NA    0.03985642
+    ## 2   NNS 0.2916667 1960.292 average site NNS        NA   -0.01294546
+    ## 3   NNS 0.2916667 1961.292 average site NNS        NA   -0.03893503
+    ## 4   NNS 0.2916667 1962.292 average site NNS        NA   -0.06114550
+    ## 5   NNS 0.2916667 1963.292 average site NNS        NA   -0.04775594
+    ## 6   NNS 0.2916667 1964.292 average site NNS        NA   -0.04160720
+
+Note that the output is slightly different from what it was in the other
+mode. `timeScale` now contains `NA`, `timeRef` contains a name
+corresponding to the average cycle used as reference. This is because
+the average cycle has no particular position in time making those two
+metrics irrelevant.
+
+We can then plot cyclical shifts as time series to see period of fast or
+slow change for the SNS and NNS:
+
+``` r
+
+#Note the multiplication by 365 to get the cyclical shift in days
+plot(x=CSNSZooAVApr$timeCS[CSNSZooAVApr$sites=="SNS"],
+     y=CSNSZooAVApr$cyclicalShift[CSNSZooAVApr$sites=="SNS"]*365,
+     type="b",las=1,
+     ylab="Cyclical shifts (days)",xlab="Year",
+     main="April advances and delays, SNS")
+```
+
+![](IntroductionCETA_files/figure-html/unnamed-chunk-54-1.png)
+
+``` r
+
+plot(x=CSNSZooAVApr$timeCS[CSNSZooAVApr$sites=="NNS"],
+     y=CSNSZooAVApr$cyclicalShift[CSNSZooAVApr$sites=="NNS"]*365,
+     type="b",las=1,
+     ylab="Cyclical shifts (days)",xlab="Year",
+     main="April advances and delays, NNS")
+```
+
+![](IntroductionCETA_files/figure-html/unnamed-chunk-55-1.png)
+
+Both regions show a clear advancing trend, in agreement with the
+previous analysis. But the SNS seemed like it had more “stepwise”
+transition than the NNS regarding advances and delays for the month of
+April at least!

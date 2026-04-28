@@ -94,7 +94,7 @@ Function interpolateTrajectories relocates trajectory ecological states to those
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An object of class <code><a href="defineTrajectories.html">trajectories</a></code>.</p></dd>
+<dd><p>An object of class <code><a href="defineTrajectories.html">trajectories</a></code> (or of a sub-class such as <code><a href="trajectoryCyclical.html">cycles</a></code>). Function <code>averageTrajectories</code> requires synchronous input trajectories.</p></dd>
 
 
 <dt id="arg-survey-times">survey_times<a class="anchor" aria-label="anchor" href="#arg-survey-times"></a></dt>
@@ -136,9 +136,11 @@ also the number of observations and metadata is likely to be affected.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Details of calculations are given in De Cáceres et al (2019).
-Functions <code>centerTrajectories</code> and <code>averageTrajectories</code> perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).
-Function <code>averageTrajectories</code> requires synchronous input trajectories.</p>
+    <p>We recommend reading the article "Transforming trajectories" on the package website prior to use these functions.</p>
+<p>Details of calculations for trajectory centering are given in De Cáceres et al (2019).
+Functions <code>centerTrajectories</code> and <code>averageTrajectories</code> perform centering/averaging of trajectories using matrix algebra as explained in Anderson (2017).</p>
+<p>When using transformation functions on objects of class <code><a href="trajectoryCyclical.html">cycles</a></code> or <code><a href="trajectoryCyclical.html">fd.trajectories</a></code>, the corresponding transformations are applied to trajectory subsections (e.g. cycles) instead of
+being applied to the whole trajectory.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -147,7 +149,7 @@ Function <code>averageTrajectories</code> requires synchronous input trajectorie
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="trajectoryPlot.html">trajectoryPlot</a></code> <code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code></p></div>
+    <div class="dont-index"><p><code><a href="trajectoryPlot.html">trajectoryPlot</a></code> <code><a href="trajectoryMetrics.html">trajectoryMetrics</a></code> <code><a href="trajectoryComparison.html">trajectoryComparison</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

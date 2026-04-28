@@ -61,6 +61,7 @@ cycleConvexity(
 cycleShifts(
   x,
   cycleDuration,
+  mode = "real",
   dates = NULL,
   datesCS = NULL,
   centering = TRUE,
@@ -132,6 +133,11 @@ cycleMetrics(
   Flag to indicate that constant values should be added (local
   transformation) to correct triplets of distance values that do not
   fulfill the triangle inequality.
+
+- mode:
+
+  Either `"real"` or `"average"`. Should real cycles or an average cycle
+  be used as a reference? Defaults to `"real"`. See details.
 
 - datesCS:
 
@@ -238,10 +244,11 @@ details). The columns of the
   been computed (i.e. the time associated to the projected ecological
   state).
 
-- `timeRef`: the time associated to the reference ecological state.
+- `timeRef`: the time associated to the reference ecological state (a
+  name if `mode = "average"`).
 
 - `timeScale`: the time difference between the reference and the
-  projected ecological state.
+  projected ecological state (`NA` if `mode = "average"`).
 
 - `cyclicalShift`: the cyclical shift computed (an advance if positive,
   a delay if negative) in the same units as the times input.
@@ -328,8 +335,17 @@ obtained with respect to a particular set of cycles. For `cycleMetrics`,
 this is because it calls `cycleConvexity`. The function instead compute
 the most adapted set of cycles to obtain the metric.
 
-Note: Function `cycleShifts` is computation intensive for large data
-sets, it may not execute immediately.
+**Additional notes on function `cycleShifts`:** `cycleShifts` can be
+executed in two modes:`"real"` and `"average"`. In `"real"` mode,
+`cycleShifts` takes real cycles from the dataset as reference for the
+computation of cyclical shifts. In `"average"` mode, `cycleShifts` takes
+average cycles computed for the different sites (by calls to function
+[`averageTrajectories`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md))
+as reference. The `"real"` mode has the advantage of using only observed
+ecological states whereas the `"average"` mode is particularly useful to
+build time series of cyclical shifts (see CETA vignette). Note that
+function `cycleShifts` is computation intensive for large data sets, it
+may not execute immediately.
 
 Further information and detailed examples of the use of CETA functions
 can be found in the associated vignette.

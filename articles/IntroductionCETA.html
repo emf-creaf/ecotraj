@@ -533,7 +533,8 @@ can be long for large datasets. The function takes the same inputs as
 units as the input <code>time</code>, with positive values indicating
 advance and negative values indicating delay. The other columns give
 information on what exactly was compared. We will come back to this
-output in the real example below.</p>
+output and explore the two modes of <code><a href="../reference/trajectoryCyclical.html">cycleShifts()</a></code> in the
+real example below.</p>
 </div>
 <div class="section level3">
 <h3 id="summary-of-the-ceta-approach">2.5 Summary of the CETA approach<a class="anchor" aria-label="anchor" href="#summary-of-the-ceta-approach"></a>
@@ -968,6 +969,64 @@ cyclical shift: there is maximal advance (positive shift) in spring and
 autumn. The advance computed is not negligible, communities take around
 6 to 12 days of advance every decade at those months (at least in term
 of composition)!</p>
+<p>A legitimate question to ask at this point is: when did those
+advances or delay happened? With the method illustrated above, we only
+compute broad trends. It would be nice to compute detailed time series.
+The problem with cyclical shift, is that we need a reference point. An
+approach would be to use the first cycle as reference and to only look
+at the cyclical shifts computed with respect to that cycle. This can be
+done from the output above but this risks the whole analysis on one
+cycle that might not be a good reference.</p>
+<p>An alternative is to use an average cycle. This is precisely what the
+parameter <code>mode</code> of function <code><a href="../reference/trajectoryCyclical.html">cycleShifts()</a></code>
+allows to do. Let’s compute it below for only the month of April (by
+setting parameter <code>dateCS</code>) to reduce computation time.</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#this rather complicated line recovers the date corresponding to april in this dataset:</span></span>
+<span><span class="va">April</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">x_northseaZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">times</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">x_northseaZoo</span><span class="op">$</span><span class="va">metadata</span><span class="op">$</span><span class="va">times</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">#Note that we set here minEcolStates to 12 to have only complete cycles</span></span>
+<span><span class="co">#This is because we need complete trajectories for trajectory averaging</span></span>
+<span><span class="co">#(otherwise, the function will throw an error, feel free to try!)</span></span>
+<span><span class="va">CSNSZooAVApr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trajectoryCyclical.html">cycleShifts</a></span><span class="op">(</span><span class="va">x_northseaZoo</span>,</span>
+<span>                            cycleDuration <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                            minEcolStates <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>                            datesCS <span class="op">=</span> <span class="va">April</span>,</span>
+<span>                            mode<span class="op">=</span><span class="st">"average"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">CSNSZooAVApr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   sites    dateCS   timeCS          timeRef timeScale cyclicalShift</span></span>
+<span><span class="co">## 1   NNS 0.2916667 1959.292 average site NNS        NA    0.03985642</span></span>
+<span><span class="co">## 2   NNS 0.2916667 1960.292 average site NNS        NA   -0.01294546</span></span>
+<span><span class="co">## 3   NNS 0.2916667 1961.292 average site NNS        NA   -0.03893503</span></span>
+<span><span class="co">## 4   NNS 0.2916667 1962.292 average site NNS        NA   -0.06114550</span></span>
+<span><span class="co">## 5   NNS 0.2916667 1963.292 average site NNS        NA   -0.04775594</span></span>
+<span><span class="co">## 6   NNS 0.2916667 1964.292 average site NNS        NA   -0.04160720</span></span></code></pre>
+<p>Note that the output is slightly different from what it was in the
+other mode. <code>timeScale</code> now contains <code>NA</code>,
+<code>timeRef</code> contains a name corresponding to the average cycle
+used as reference. This is because the average cycle has no particular
+position in time making those two metrics irrelevant.</p>
+<p>We can then plot cyclical shifts as time series to see period of fast
+or slow change for the SNS and NNS:</p>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Note the multiplication by 365 to get the cyclical shift in days</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">timeCS</span><span class="op">[</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span>,</span>
+<span>     y<span class="op">=</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">cyclicalShift</span><span class="op">[</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"SNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">365</span>,</span>
+<span>     type<span class="op">=</span><span class="st">"b"</span>,las<span class="op">=</span><span class="fl">1</span>,</span>
+<span>     ylab<span class="op">=</span><span class="st">"Cyclical shifts (days)"</span>,xlab<span class="op">=</span><span class="st">"Year"</span>,</span>
+<span>     main<span class="op">=</span><span class="st">"April advances and delays, SNS"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-54-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">timeCS</span><span class="op">[</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span>,</span>
+<span>     y<span class="op">=</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">cyclicalShift</span><span class="op">[</span><span class="va">CSNSZooAVApr</span><span class="op">$</span><span class="va">sites</span><span class="op">==</span><span class="st">"NNS"</span><span class="op">]</span><span class="op">*</span><span class="fl">365</span>,</span>
+<span>     type<span class="op">=</span><span class="st">"b"</span>,las<span class="op">=</span><span class="fl">1</span>,</span>
+<span>     ylab<span class="op">=</span><span class="st">"Cyclical shifts (days)"</span>,xlab<span class="op">=</span><span class="st">"Year"</span>,</span>
+<span>     main<span class="op">=</span><span class="st">"April advances and delays, NNS"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="IntroductionCETA_files/figure-html/unnamed-chunk-55-1.png" class="r-plt" alt="" width="700"></p>
+<p>Both regions show a clear advancing trend, in agreement with the
+previous analysis. But the SNS seemed like it had more “stepwise”
+transition than the NNS regarding advances and delays for the month of
+April at least!</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

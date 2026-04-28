@@ -106,6 +106,7 @@ CETA operates by subdividing cyclical trajectories into two types of sub-traject
 <span><span class="fu">cycleShifts</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">cycleDuration</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"real"</span>,</span>
 <span>  dates <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  datesCS <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  centering <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -164,6 +165,10 @@ CETA operates by subdividing cyclical trajectories into two types of sub-traject
 <dd><p>Flag to indicate that constant values should be added (local transformation) to correct triplets of distance values that do not fulfill the triangle inequality.</p></dd>
 
 
+<dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
+<dd><p>Either <code>"real"</code> or <code>"average"</code>. Should real cycles or an average cycle be used as a reference? Defaults to <code>"real"</code>. See details.</p></dd>
+
+
 <dt id="arg-datescs">datesCS<a class="anchor" aria-label="anchor" href="#arg-datescs"></a></dt>
 <dd><p>An optional vector indicating the dates for which a cyclical shift must be computed. Default to <code>unique(dates)</code> resulting in the computation of all possible cyclical shifts.</p></dd>
 
@@ -196,8 +201,8 @@ CETA operates by subdividing cyclical trajectories into two types of sub-traject
 <p>Function <code>cycleShifts</code> returns an object of class <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> describing cyclical shifts (i.e. advances and delays). Importantly, outputs of <code>extractCycles</code> should not be used as inputs for <code>cycleShifts</code> (see details). The columns of the <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></code> are:</p><ul><li><p><code>site</code>: the site for which each cycle shift has been computed.</p></li>
 <li><p><code>dateCS</code>: the date for which a cycle shift has been computed.</p></li>
 <li><p><code>timeCS</code>: the time of the ecological state for which a cycle shift has been computed (i.e. the time associated to the projected ecological state).</p></li>
-<li><p><code>timeRef</code>: the time associated to the reference ecological state.</p></li>
-<li><p><code>timeScale</code>: the time difference between the reference and the projected ecological state.</p></li>
+<li><p><code>timeRef</code>: the time associated to the reference ecological state (a name if <code>mode = "average"</code>).</p></li>
+<li><p><code>timeScale</code>: the time difference between the reference and the projected ecological state (<code>NA</code> if <code>mode = "average"</code>).</p></li>
 <li><p><code>cyclicalShift</code>: the cyclical shift computed (an advance if positive, a delay if negative) in the same units as the times input.</p></li>
 </ul><p>Function <code>cycleMetrics</code> returns a data frame where rows are cycles and columns are different cycle metrics.</p>
     </div>
@@ -218,7 +223,11 @@ The proposed solution in CETA (in the case of this specific example) is to set t
 There is three important exceptions to that rule: the functions <code>cycleConvexity</code>, <code>cycleShifts</code> and <code>cycleMetrics</code>. Instead, the inputs of these three functions should parallel the inputs of <code>extractCycles</code> in a given analysis.
 For <code>cycleConvexity</code>, this is because convexity uses angles obtained from the whole cyclical trajectory, and not only the cycles. For <code>cycleShifts</code>, this is because cyclical shifts are not obtained with respect to a particular set of cycles. For <code>cycleMetrics</code>, this is because it calls <code>cycleConvexity</code>.
 The function instead compute the most adapted set of cycles to obtain the metric.</p>
-<p>Note: Function <code>cycleShifts</code> is computation intensive for large data sets, it may not execute immediately.</p>
+<p><strong>Additional notes on function <code>cycleShifts</code>:</strong> <code>cycleShifts</code> can be executed in two modes:<code>"real"</code> and <code>"average"</code>.
+In <code>"real"</code> mode, <code>cycleShifts</code> takes real cycles from the dataset as reference for the computation of cyclical shifts.
+In <code>"average"</code> mode, <code>cycleShifts</code> takes average cycles computed for the different sites (by calls to function <code><a href="transformTrajectories.html">averageTrajectories</a></code>) as reference.
+The <code>"real"</code> mode has the  advantage of using only observed ecological states whereas the <code>"average"</code> mode is  particularly useful to build time series of cyclical shifts (see CETA vignette).
+Note that function <code>cycleShifts</code> is computation intensive for large data sets, it may not execute immediately.</p>
 <p>Further information and detailed examples of the use of CETA functions can be found in the associated vignette.</p>
     </div>
     <div class="section level2">

@@ -2,7 +2,7 @@
 
 ## ecotraj 1.2.2
 
-- New function averageTrajectories()
+- New function averageTrajectories() to average trajectories (or cycles)
 
 ## ecotraj 1.2.1
 

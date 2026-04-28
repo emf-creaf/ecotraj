@@ -3,13 +3,13 @@
 ## 1. Introduction
 
 In this vignette you will learn to **transform** trajectory data in
-different different ways. By transforming, we mean **modifying the
-distance matrix** that represents the resemblance between ecological
-states. This is equivalent to (implicitly) modifying the coordinates
-(position) of ecological states in the $`\Omega`$ space. However, some
-transformations also includes a modification of observation times. We
-also include in this set of transformations a function that allows
-**averaging** a set of target trajectories.
+different ways. By transforming, we mean **modifying the distance
+matrix** that represents the resemblance between ecological states. This
+is equivalent to (implicitly) modifying the coordinates (position) of
+ecological states in the $`\Omega`$ space. However, some transformations
+also includes a modification of observation times. We also include in
+this set of transformations a function that allows **averaging** a set
+of target trajectories.
 
 First of all, we load `ecotraj`:
 
@@ -597,6 +597,98 @@ title("Reference: final state")
 par(oldpar)
 ```
 
+### 3.6 Centering cycles
+
+When dealing with cyclical trajectories, it is possible to center the
+cycles of a given trajectory. Let’s use the same **one cyclical
+trajectory** composed of **three cycles** that was presented in the
+introduction to cyclical trajectory analysis:
+
+``` r
+
+#Let's define our toy sampling times:
+timesToy <- 0:30 #The sampling times of the time series
+cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
+datesToy <- timesToy%%cycleDurationToy #The dates associated to each times
+
+#And state where the sampling occurred, for now let's only use one site "A"
+sitesToy <- rep(c("A"),length(timesToy))
+
+#Then prepare some toy data:
+#Prepare a noise and trend term to make the data more interesting
+noise <- 0.05
+trend <- 0.05
+
+#Make cyclical data (note that we apply the trend only to x):
+x <- sin((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)+trend*timesToy
+y <- cos((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)
+matToy <- cbind(x,y)
+
+#And express it as a distance matrix (ETA is based on distances, increasing its generality)
+dToy <- dist(matToy)
+xToy <- defineTrajectories(dToy, sites = sitesToy, times = timesToy)
+```
+
+We can visualize the cyclical trajectory using the function
+[`trajectoryPCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryPlot.md),
+where we see the trend that was added to the data:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+trajectoryPCoA(xToy, 
+               lwd = 2,length = 0.2)
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-37-1.png)
+
+We use function
+[`extractCycles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
+to identify individual cycles from the cyclical trajectory:
+
+``` r
+
+cycleToy <- extractCycles(xToy,
+                          cycleDuration = cycleDurationToy)
+```
+
+and visualize the result with function
+[`cyclePCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md),
+which will use a different color intensity for each cycle:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+cyclePCoA(cycleToy, sites.colors="orangered")
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-39-1.png)
+
+Centering cycles is done in the same way as for non-cyclic trajectories.
+When function
+[`centerTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
+identifies that the input object is an entity of class `cycles` then the
+trajectories to be centered will be cycles, instead of whole
+trajectories:
+
+``` r
+
+cycleCent <- centerTrajectories(cycleToy)
+```
+
+We can call again function
+[`cyclePCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md)
+to see the effect of centering, which removed the trend (between cycles)
+of the original data:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+cyclePCoA(cycleCent, sites.colors="orangered")
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-41-1.png)
+
 ## 4 Smoothing trajectories
 
 ### 4.1 What is trajectory smoothing?
@@ -788,7 +880,7 @@ trajectoryPCoA(x, traj.colors = c("green","red", "blue"), lwd = 2,
                survey.labels = T)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-39-1.png)
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-45-1.png)
 
 ``` r
 
@@ -836,7 +928,7 @@ oldpar <- par(mar=c(4,4,1,1))
 trajectoryPCoA(x_ave, lwd = 2, survey.labels = TRUE)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-42-1.png)
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-48-1.png)
 
 ``` r
 
@@ -861,7 +953,7 @@ trajectoryPCoA(x_ave_members, traj.colors = c("gray","gray", "gray", "black"), l
                survey.labels = TRUE)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-44-1.png)
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-50-1.png)
 
 ``` r
 
@@ -870,39 +962,29 @@ par(oldpar)
 
 It is also possible to average a subset of the original trajectories,
 while keeping the remaining unaltered. For example, we average here the
-trajectories of sites `"2"` and `"3"`:
+trajectories of entities ‘2’ and ‘3’:
 
 ``` r
 
-oldpar <- par(mar=c(4,4,1,1))
+par(mar=c(4,4,1,1))
 trajectoryPCoA(averageTrajectories(x, group = c("2", "3"), keep_members = TRUE), 
                traj.colors = c("green","gray", "gray", "black"), lwd = 2,
                survey.labels = TRUE)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-45-1.png)
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-51-1.png)
+
+Or trajectories of entities ‘1’ and ‘2’:
 
 ``` r
 
-par(oldpar)
-```
-
-Or sites `"1"` and `"2"`:
-
-``` r
-
-oldpar <- par(mar=c(4,4,1,1))
+par(mar=c(4,4,1,1))
 trajectoryPCoA(averageTrajectories(x, group = c("1", "2"), keep_members = TRUE), 
                traj.colors = c("gray","gray", "blue", "black"), lwd = 2,
                survey.labels = TRUE)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-46-1.png)
-
-``` r
-
-par(oldpar)
-```
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-52-1.png)
 
 ### 5.3 Averaging in a real example
 
@@ -910,19 +992,14 @@ Let’s take again the forest plot data:
 
 ``` r
 
-oldpar <- par(mar=c(4,4,1,1))
+par(mar=c(4,4,1,1))
 trajectoryPCoA(avoca_x,
                traj.colors = RColorBrewer::brewer.pal(8,"Accent"), 
                axes=c(1,2), length=0.1, lwd=2)
 legend("topright", bty="n", legend = 1:8, col = RColorBrewer::brewer.pal(8,"Accent"), lwd=2)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-47-1.png)
-
-``` r
-
-par(oldpar)
-```
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-53-1.png)
 
 We can first have the question of whether we could group the eight plots
 into a lower number of dynamic entities. For that we first calculate
@@ -960,12 +1037,7 @@ plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
 text(xret, labels=1:8, pos=1)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-49-1.png)
-
-``` r
-
-par(oldpar)
-```
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-55-1.png)
 
 At this point, we may decide to average the three groups of forest
 plots:
@@ -1000,9 +1072,88 @@ legend("topright", bty="n", legend = paste("group", 1:3),
        col = RColorBrewer::brewer.pal(3,"Accent"), lwd=2)
 ```
 
-![](TransformingTrajectories_files/figure-html/unnamed-chunk-52-1.png)
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-58-1.png)
+
+### 5.4 Averaging cycles
+
+When dealing with cyclical trajectories, it is possible to average
+cycles of a given trajectory. We will illustrate this possibility using
+a toy dataset containing **one cyclical trajectory** composed of **three
+cycles**:
 
 ``` r
 
-par(oldpar)
+#Let's define our toy sampling times:
+timesToy <- 0:30 #The sampling times of the time series
+cycleDurationToy <- 10 #The duration of the cycles (i.e. the periodicity of the time series)
+datesToy <- timesToy%%cycleDurationToy #The dates associated to each times
+
+#And state where the sampling occurred, for now let's only use one site "A"
+sitesToy <- rep(c("A"),length(timesToy))
+
+#Then prepare some toy data:
+#Prepare a noise term to make the data more interesting
+noise <- 0.1
+
+#Make cyclical data (note that we apply the trend only to x):
+x <- sin((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)
+y <- cos((timesToy*2*pi)/cycleDurationToy)+rnorm(length(timesToy),mean=0,sd=noise)
+matToy <- cbind(x,y)
+
+dToy <- dist(matToy)
+xToy <- defineTrajectories(dToy, sites = sitesToy, times = timesToy)
 ```
+
+We use function
+[`extractCycles()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclical.md)
+to identify individual cycles from the cyclical trajectory:
+
+``` r
+
+cycleToy <- extractCycles(xToy,
+                          cycleDuration = cycleDurationToy)
+```
+
+and visualize the result with function
+[`cyclePCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md),
+which will use a different color intensity for each cycle:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+cyclePCoA(cycleToy, sites.colors="orangered")
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-61-1.png)
+
+Averaging cycles is done in the same way as for non-cyclic trajectories.
+When function
+[`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
+identifies that the input object is an entity of class `cycles` then the
+trajectories to be averaged are cycles. Here we average the three
+cycles, while keeping them in the result to display them along with the
+average cycle:
+
+``` r
+
+cycleAver <- averageTrajectories(cycleToy, keep_members = TRUE)
+```
+
+Finally, we can use again
+[`cyclePCoA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryCyclicalPlots.md)
+to display the original cycles in orange and the average in black:
+
+``` r
+
+oldpar <- par(mar=c(4,4,1,1))
+cyclePCoA(cycleAver, sites.colors=c("orangered", "black"))
+```
+
+![](TransformingTrajectories_files/figure-html/unnamed-chunk-63-1.png)
+For objects of class `cycles` that contain multiple cyclical
+trajectories, one will usually be interesting in averaging the cycles of
+each trajectory separately. This is done performing several calls to
+[`averageTrajectories()`](https://emf-creaf.github.io/ecotraj/reference/transformTrajectories.md)
+using different sets of cycles for parameter `group` and using
+`output_name` to label differently each resulting average cycle, as we
+illustrated in the previous section for non-cyclical trajectories.

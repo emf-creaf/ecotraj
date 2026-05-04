@@ -546,6 +546,7 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
     times <- x$metadata$dates
+    warning("Cycles are trajectories coming back near their starting position: The notion of trajectory convergence may have little sense")
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
   } else {

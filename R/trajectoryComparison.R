@@ -542,8 +542,10 @@ trajectoryConvergence<-function(x, type = "pairwise.asymmetric", add = TRUE){
   # This allows treating fixed date trajectories as sites for plotting purposes
   if(inherits(x, "fd.trajectories")) {
     sites <- x$metadata$fdT
+    times <- times - x$metadata$dates
   } else if(inherits(x, "cycles")) {
     sites <- x$metadata$cycles
+    times <- x$metadata$dates
   } else if(inherits(x, "sections")) {
     sites <- x$metadata$sections
   } else {

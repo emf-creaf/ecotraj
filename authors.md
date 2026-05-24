@@ -48,15 +48,35 @@ analysis : New metrics and representation.” *Ecological Modelling*,
       doi = {10.1016/j.ecolmodel.2020.109400},
     }
 
+Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé
+A, Gauthier O, De Cáceres M (2026). “Going round in cycles but going
+somewhere: Deciphering cyclical dynamics using Ecological Trajectory
+Analysis.” *Ecological Monographs*, **96**, e70058.
+[doi:10.1002/ecm.70058](https://doi.org/10.1002/ecm.70058).
+
+    @Article{,
+      title = {Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis},
+      author = {Nicolas Djeghri and Anthony Sturbois and Pierre Hélaouët and Quentin Geissmann and Peggy Rimmelin-Maury and Aurélien Boyé and Olivier Gauthier and Miquel {De Cáceres}},
+      journal = {Ecological Monographs},
+      year = {2026},
+      volume = {96},
+      pages = {e70058},
+      doi = {10.1002/ecm.70058},
+    }
+
 Sturbois A, De Cáceres M, Bifolchi A, Bioret F, Grall J, Grémare A,
 Labrune C, Robert A, Schaal G, Desroy N (2023). “Ecological Quality
 Assessment: a general multivariate framework to report the quality of
 ecosystems and their dynamics with respect to reference conditions.”
-*Ecosphere*.
+*Ecosphere*, **14**, e4726.
+[doi:10.1002/ecs2.4726](https://doi.org/10.1002/ecs2.4726).
 
     @Article{,
       title = {Ecological Quality Assessment: a general multivariate framework to report the quality of ecosystems and their dynamics with respect to reference conditions},
       author = {Anthony Sturbois and Miquel {De Cáceres} and A. Bifolchi and F. Bioret and J. Grall and A. Grémare and C. Labrune and A. Robert and Gauthier Schaal and Nicholas Desroy},
       journal = {Ecosphere},
       year = {2023},
+      volume = {14},
+      pages = {e4726},
+      doi = {10.1002/ecs2.4726},
     }

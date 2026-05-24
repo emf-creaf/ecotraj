@@ -10,7 +10,9 @@ De Caceres et al., 2019
 al., 2021
 ([doi:10.1016/j.ecolmodel.2020.109400](https://doi.org/10.1016/j.ecolmodel.2020.109400)
 ), Sturbois et al., 2023
-([doi:10.1002/ecs2.4726](https://doi.org/10.1002/ecs2.4726) ).
+([doi:10.1002/ecs2.4726](https://doi.org/10.1002/ecs2.4726) ), Djeghri
+et al., 2026 ([doi:10.1002/ecm.70058](https://doi.org/10.1002/ecm.70058)
+).
 
 ## See also
 

@@ -60,7 +60,7 @@ c(
                     person("Nicholas","Desroy")),
          journal = "Ecosphere",
          year = "2023",
-         volume = "",
-         pages = "",
-         doi  = "")         
+         volume = "14",
+         pages = "e4726",
+         doi  = "10.1002/ecs2.4726")         
 )

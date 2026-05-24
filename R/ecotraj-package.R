@@ -22,7 +22,7 @@
 #' @seealso Useful links: \itemize{ \item{
 #' \url{https://emf-creaf.github.io/ecotraj/index.html}} }
 #'
-#' @references De Caceres et al., 2019 (\doi{10.1002/ecm.1350}), Sturbois et al., 2021 (\doi{10.1016/j.ecolmodel.2020.109400}), Sturbois et al., 2023 (\doi{10.1002/ecs2.4726}).
+#' @references De Caceres et al., 2019 (\doi{10.1002/ecm.1350}), Sturbois et al., 2021 (\doi{10.1016/j.ecolmodel.2020.109400}), Sturbois et al., 2023 (\doi{10.1002/ecs2.4726}), Djeghri et al., 2026 (\doi{10.1002/ecm.70058}).
 #' @keywords internal
 "_PACKAGE"
 

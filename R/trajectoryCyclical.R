@@ -99,7 +99,7 @@
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' @references
-#' Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé A, Gauthier O, De Cáceres M (2026). Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs.
+#' Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé A, Gauthier O, De Cáceres M (2026). Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs 96(2), e70058.
 #' 
 #' @seealso \code{\link{trajectoryCyclicalPlots}}, \code{\link{cycleShiftArrows}}, \code{\link{trajectoryMetrics}}, \code{\link{trajectoryComparison}}, \code{\link{trajectoryConvergencePlot}}
 #' 

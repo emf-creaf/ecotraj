@@ -2,7 +2,7 @@ Package: ecotraj
 Type: Package
 Title: Ecological Trajectory Analysis
 Version: 1.2.2
-Date: 2026-05-04
+Date: 2026-05-24
 Authors@R: c(
 	person('Miquel', 'De Cáceres', role=c('aut','cre'),
 	email='miquelcaceres@gmail.com', comment = c(ORCID = "0000-0001-7132-2080")),
@@ -11,7 +11,7 @@ Authors@R: c(
 	person('Javier', 'De la Casa', role = 'ctb'))
 Description: Analysis of temporal changes (i.e. dynamics) of ecological entities, defined as trajectories on a chosen multivariate space, by providing a set of 
     trajectory metrics and visual representations [De Caceres et al. (2019) <doi:10.1002/ecm.1350>; 
-    and Sturbois et al. (2021) <doi:10.1016/j.ecolmodel.2020.109400>]. Includes functions
+    and Sturbois et al. (2021) <doi:10.1016/j.ecolmodel.2020.109400>; Djeghri et al. (2026 <doi:10.1002/ecm.70058>)]. Includes functions
     to estimate metrics for individual trajectories (length, directionality, angles, ...) as well as
     metrics to relate pairs of trajectories (dissimilarity and convergence). Functions are also
     provided to estimate the ecological quality of ecosystem with respect to reference conditions 

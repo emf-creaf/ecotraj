@@ -26,14 +26,13 @@
 #'  } 
 #' To account for multiple testing, \code{trajectoryRMA} performs internally a \enc{Šidák}{Sidak} (1967) correction on the alpha level provided in parameter \code{alpha}.
 #' 
-#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 10 relationships, some existing in "weak" variations. 
-#' The following five dynamic relationships are \emph{symmetric}, i.e. applying to the two trajectories without distinction of roles:
+#' The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 9 relationships, some existing in "weak" variations. 
+#' The following four dynamic relationships are \emph{symmetric}, i.e. applying to the two trajectories without distinction of roles:
 #' \itemize{
 #'     \item{\code{"convergence"} - The two trajectories converge. Exists in a weak version.}
 #'     \item{\code{"divergence"} - The two trajectories diverge. Exists in a weak version.}
 #'     \item{\code{"parallel"} - The two trajectories travel side by side with broadly similar movements.}
 #'     \item{\code{"antiparallel"} - As in \code{"parallel"} but the two trajectories travel in opposite directions.}
-#'     \item{\code{"neutral"} - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).}
 #' }
 #' The following five dynamic relationships are \emph{asymmetric} (e.g. in \code{"pursuit"} there is a leading and a following trajectory). In these asymmetric relationships the output of function \code{trajectoryRMA} gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is \emph{oriented} (see below, relationship groups).
 #' \itemize{
@@ -43,6 +42,8 @@
 #'     \item{\code{"catch-up"} - As in \code{"pursuit"} but the following trajectory moves faster.}
 #'     \item{\code{"escape"} - As in \code{"pursuit"} but the leading trajectory is faster.}
 #' }
+#' If none of the tests are significant, \code{trajectoryRMA} returns \code{"non-significant"}, meaning that the relative movements of the two trajectories tested (if any) are not pronounced enough to be detected.
+#' 
 #' 
 #' In rare cases, unlikely relationships (labelled \code{"unknown"}, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.
 #' 
@@ -55,8 +56,8 @@
 #'    \item{The \code{"oriented group"}, includes relationships that have, broadly speaking, a trajectory \emph{in front} and a trajectory \emph{in the back} implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
 #'    \code{"approaching"} and \code{"departing"} and their weak versions, \code{"catch-up"}, \code{"escape"} and \code{"pursuit"}.}
 #' }
-#' Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that \code{"parallel"},\code{"antiparallel"} and \code{"neutral"} relationships stand on their own, not belonging to any groups.
-#' In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).
+#' Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that \code{"parallel"} and \code{"antiparallel"} relationships stand on their own, not belonging to any groups.
+#' In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when addressing many trajectory relationships (see Djeghri et al. in prep).
 #' 
 #' LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 #' We advise users to not only rely on RTMA but to also visualize trajectories using function \code{\link{trajectoryPCoA}} for ecological interpretations. See Djeghri et al. (in prep) for more details.
@@ -303,9 +304,9 @@ trajectoryRMA <- function(x,
               relationships[j,k] <- "antiparallel (symmetric)"
             }
           }else{
-            #this is the Neutral relationship (nothing significant)
-            relationships[k,j] <- "neutral (symmetric)"
-            relationships[j,k] <- "neutral (symmetric)"
+            #No relationship (nothing significant)
+            relationships[k,j] <- "non-significant (symmetric)"
+            relationships[j,k] <- "non-significant (symmetric)"
           }
         }else if ((asym$p.value[j,k]<=alpha)&(asym$p.value[k,j]<=alpha)){
           #this is the branch where the asymmetric tests both are significant
@@ -365,7 +366,7 @@ trajectoryRMA <- function(x,
   output$parameters <- c(alphaUncor,alpha,nperm)
   names(output$parameters) <- c("alpha","corrected_alpha","nperm")
   
-  output[["dynamic_relationships_taxonomy"]] <- data.frame(dynamic_relationship=c("neutral (symmetric)","parallel (symmetric)","antiparallel (symmetric)",
+  output[["dynamic_relationships_taxonomy"]] <- data.frame(dynamic_relationship=c("non-significant (symmetric)","parallel (symmetric)","antiparallel (symmetric)",
                                                                                 "convergence (symmetric)","weak convergence (symmetric)",
                                                                                 "divergence (symmetric)","weak divergence (symmetric)",
                                                                                 "weak approaching (approacher)","weak approaching (target)",

@@ -193,18 +193,22 @@ trajectoryRMAPlot <- function(x,
                                             function(x) which(x == "(")))-2))
     
     relationships.colors <- relationships.colors[unique(names(relationships.colors))]
-    relationships.colors <- relationships.colors[c("neutral","parallel","antiparallel",
+    relationships.colors <- relationships.colors[c("non-significant","parallel","antiparallel",
                                                    "convergence","weak convergence","approaching","weak approaching",
                                                    "catch-up","pursuit","escape",
                                                    "weak departing","departing","weak divergence","divergence")]
     relationships.colors[is.na(relationships.colors)] <- "black"
     
     leg <- legend(x=ncols,y=nrows,xpd=NA,bty="n",cex=0.7,title="Relative movement\nrelationships",title.font=2,text.font=1,
-                  fill=relationships.colors[1:3],names(relationships.colors)[1:3])
+                  fill=relationships.colors[2:3],names(relationships.colors)[2:3])
     
     leg <- legend(x=ncols,y=leg$rect$top-leg$rect$h,title="Relative movement",title.font=2,text.font=1,title.col="white",
                   xpd=NA,bty="n",cex=0.7,
                   fill=relationships.colors[-(1:3)],names(relationships.colors)[-(1:3)])
+    legend(x=ncols,y=leg$rect$top-leg$rect$h,title="Relative movement",title.font=2,text.font=1,title.col="white",
+           xpd=NA,bty="n",cex=0.7,
+           fill=relationships.colors[1],names(relationships.colors)[1])
+    
     ydist <- (leg$text$y[1]-leg$text$y[2])/2
     rect(xleft=leg$rect$left+ncols/100,xright=leg$rect$left+leg$rect$w,
          ytop=c(leg$text$y[1]+ydist,leg$text$y[7]+ydist),

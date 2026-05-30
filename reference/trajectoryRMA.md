@@ -110,8 +110,8 @@ To account for multiple testing, `trajectoryRMA` performs internally a
 
 The results of the four tests (p-values and sign of statistic) are used
 to assign to each trajectory pair a relationship describing their
-relative movements. RTMA recognizes a total of 10 relationships, some
-existing in "weak" variations. The following five dynamic relationships
+relative movements. RTMA recognizes a total of 9 relationships, some
+existing in "weak" variations. The following four dynamic relationships
 are *symmetric*, i.e. applying to the two trajectories without
 distinction of roles:
 
@@ -126,9 +126,6 @@ distinction of roles:
 
 - `"antiparallel"` - As in `"parallel"` but the two trajectories travel
   in opposite directions.
-
-- `"neutral"` - The two trajectories have no particular movements
-  relative to each other (effectively the null hypothesis for RTMA).
 
 The following five dynamic relationships are *asymmetric* (e.g. in
 `"pursuit"` there is a leading and a following trajectory). In these
@@ -149,6 +146,10 @@ interpretation of asymmetry is to consider that the relationship is
   faster.
 
 - `"escape"` - As in `"pursuit"` but the leading trajectory is faster.
+
+If none of the tests are significant, `trajectoryRMA` returns
+`"non-significant"`, meaning that the relative movements of the two
+trajectories tested (if any) are not pronounced enough to be detected.
 
 In rare cases, unlikely relationships (labelled `"unknown"`, with a
 short description in brackets) may occur. These involve contradictory
@@ -177,12 +178,11 @@ exclusive). Three such groups are recognized in RTMA:
   and their weak versions, `"catch-up"`, `"escape"` and `"pursuit"`.
 
 Note that a given relationship may belong to two groups (either
-convergence or divergence group + oriented group) and that
-`"parallel"`,`"antiparallel"` and `"neutral"` relationships stand on
-their own, not belonging to any groups. In our experience, relationship
-groups have proven a useful conceptual tool to reveal large scale
-patterns particularly when adressing many trajectory relationships (see
-Djeghri et al. in prep).
+convergence or divergence group + oriented group) and that `"parallel"`
+and `"antiparallel"` relationships stand on their own, not belonging to
+any groups. In our experience, relationship groups have proven a useful
+conceptual tool to reveal large scale patterns particularly when
+addressing many trajectory relationships (see Djeghri et al. in prep).
 
 LIMITATIONS: RTMA has some limitations, in particular it uses trend
 tests not well suited to study trajectories pairs with changing relative
@@ -270,8 +270,8 @@ trajectoryRMA(avoca_x)
 #> 4 "weak approaching (target)"     NA                             
 #> 5 "weak approaching (approacher)" "pursuit (follower)"           
 #> 6 "convergence (symmetric)"       "weak approaching (approacher)"
-#> 7 "parallel (symmetric)"          "neutral (symmetric)"          
-#> 8 "approaching (target)"          "neutral (symmetric)"          
+#> 7 "parallel (symmetric)"          "non-significant (symmetric)"  
+#> 8 "approaching (target)"          "non-significant (symmetric)"  
 #>   5                           6                              
 #> 1 "parallel (symmetric)"      "weak approaching (approacher)"
 #> 2 "parallel (symmetric)"      "weak approaching (approacher)"
@@ -285,7 +285,7 @@ trajectoryRMA(avoca_x)
 #> 1 "weak departing (origin)"       "approaching (approacher)"     
 #> 2 "weak approaching (approacher)" "approaching (approacher)"     
 #> 3 "parallel (symmetric)"          "approaching (approacher)"     
-#> 4 "neutral (symmetric)"           "neutral (symmetric)"          
+#> 4 "non-significant (symmetric)"   "non-significant (symmetric)"  
 #> 5 "weak departing (origin)"       "weak approaching (approacher)"
 #> 6 "approaching (approacher)"      "weak approaching (approacher)"
 #> 7 NA                              "weak approaching (approacher)"
@@ -392,7 +392,7 @@ trajectoryRMA(avoca_x)
 #> 
 #> $dynamic_relationships_taxonomy
 #>                                        dynamic_relationship    conv_div_group
-#> neutral (symmetric)                     neutral (symmetric)              <NA>
+#> non-significant (symmetric)     non-significant (symmetric)              <NA>
 #> parallel (symmetric)                   parallel (symmetric)              <NA>
 #> antiparallel (symmetric)           antiparallel (symmetric)              <NA>
 #> convergence (symmetric)             convergence (symmetric) convergence group
@@ -414,7 +414,7 @@ trajectoryRMA(avoca_x)
 #> escape (leader)                             escape (leader)  divergence group
 #> escape (follower)                         escape (follower)  divergence group
 #>                                       oriented_group
-#> neutral (symmetric)                             <NA>
+#> non-significant (symmetric)                     <NA>
 #> parallel (symmetric)                            <NA>
 #> antiparallel (symmetric)                        <NA>
 #> convergence (symmetric)                         <NA>

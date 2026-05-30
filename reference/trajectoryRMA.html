@@ -104,26 +104,26 @@ In symmetric relationships, the wording <code>(symmetric)</code> is added to ind
 </ul></li>
 <li><p>One dynamic correspondence test performed through internal callings to function <code><a href="trajectoryComparison.html">trajectoryCorrespondence</a></code>.</p></li>
 </ul><p>To account for multiple testing, <code>trajectoryRMA</code> performs internally a Šidák (1967) correction on the alpha level provided in parameter <code>alpha</code>.</p>
-<p>The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 10 relationships, some existing in "weak" variations.
-The following five dynamic relationships are <em>symmetric</em>, i.e. applying to the two trajectories without distinction of roles:</p><ul><li><p><code>"convergence"</code> - The two trajectories converge. Exists in a weak version.</p></li>
+<p>The results of the four tests (p-values and sign of statistic) are used to assign to each trajectory pair a relationship describing their relative movements. RTMA recognizes a total of 9 relationships, some existing in "weak" variations.
+The following four dynamic relationships are <em>symmetric</em>, i.e. applying to the two trajectories without distinction of roles:</p><ul><li><p><code>"convergence"</code> - The two trajectories converge. Exists in a weak version.</p></li>
 <li><p><code>"divergence"</code> - The two trajectories diverge. Exists in a weak version.</p></li>
 <li><p><code>"parallel"</code> - The two trajectories travel side by side with broadly similar movements.</p></li>
 <li><p><code>"antiparallel"</code> - As in <code>"parallel"</code> but the two trajectories travel in opposite directions.</p></li>
-<li><p><code>"neutral"</code> - The two trajectories have no particular movements relative to each other (effectively the null hypothesis for RTMA).</p></li>
 </ul><p>The following five dynamic relationships are <em>asymmetric</em> (e.g. in <code>"pursuit"</code> there is a leading and a following trajectory). In these asymmetric relationships the output of function <code>trajectoryRMA</code> gives the role of each trajectory (see Value section). A more general interpretation of asymmetry is to consider that the relationship is <em>oriented</em> (see below, relationship groups).</p><ul><li><p><code>"approaching"</code> - One trajectory approaches the other. Exists in a weak version.</p></li>
 <li><p><code>"departing"</code> - One trajectory moves away from the other. Exists in a weak version.</p></li>
 <li><p><code>"pursuit"</code> - The two trajectories follow each other.</p></li>
 <li><p><code>"catch-up"</code> - As in <code>"pursuit"</code> but the following trajectory moves faster.</p></li>
 <li><p><code>"escape"</code> - As in <code>"pursuit"</code> but the leading trajectory is faster.</p></li>
-</ul><p>In rare cases, unlikely relationships (labelled <code>"unknown"</code>, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.</p>
+</ul><p>If none of the tests are significant, <code>trajectoryRMA</code> returns <code>"non-significant"</code>, meaning that the relative movements of the two trajectories tested (if any) are not pronounced enough to be detected.</p>
+<p>In rare cases, unlikely relationships (labelled <code>"unknown"</code>, with a short description in brackets) may occur. These involve contradictory patterns hard to interpret.</p>
 <p>RELATIONSHIP GROUPS: It is possible to further sort trajectory relationships in broad <em>relationship groups</em> (not always mutually exclusive). Three such groups are recognized in RTMA:</p><ul><li><p>The <code>"convergence group"</code>, includes relationships that display convergence in the broadest sense with a trend of diminishing distance between the two trajectories. Formally this group includes relationships of
 <code>"convergence"</code> and <code>"approaching"</code> and their weak versions, as well as <code>"catch-up"</code>.</p></li>
 <li><p>The <code>"divergence group"</code>, includes relationships that display divergence in the broadest sense with a trend of increasing distance between the two trajectories. Formally this group includes relationships of
 <code>"divergence"</code> and  <code>"departing"</code> and their weak versions, as well as <code>"escape"</code>.</p></li>
 <li><p>The <code>"oriented group"</code>, includes relationships that have, broadly speaking, a trajectory <em>in front</em> and a trajectory <em>in the back</em> implying an orientation to their relationship. This group includes all asymmetric relationships, formally:
 <code>"approaching"</code> and <code>"departing"</code> and their weak versions, <code>"catch-up"</code>, <code>"escape"</code> and <code>"pursuit"</code>.</p></li>
-</ul><p>Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that <code>"parallel"</code>,<code>"antiparallel"</code> and <code>"neutral"</code> relationships stand on their own, not belonging to any groups.
-In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when adressing many trajectory relationships (see Djeghri et al. in prep).</p>
+</ul><p>Note that a given relationship may belong to two groups (either convergence or divergence group + oriented group) and that <code>"parallel"</code> and <code>"antiparallel"</code> relationships stand on their own, not belonging to any groups.
+In our experience, relationship groups have proven a useful conceptual tool to reveal large scale patterns particularly when addressing many trajectory relationships (see Djeghri et al. in prep).</p>
 <p>LIMITATIONS: RTMA has some limitations, in particular it uses trend tests not well suited to study trajectories pairs with changing relative movements (e.g. if two trajectories cross each other, they are first converging then diverging).
 We advise users to not only rely on RTMA but to also visualize trajectories using function <code><a href="trajectoryPlot.html">trajectoryPCoA</a></code> for ecological interpretations. See Djeghri et al. (in prep) for more details.
 Note also that, because RTMA incorporates a correction for multiple testing, it needs somewhat long trajectories to operate (minimum number of survey = 6 at alpha = 0.05).</p>
@@ -184,8 +184,8 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 "weak approaching (target)"     NA                             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 "weak approaching (approacher)" "pursuit (follower)"           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 "convergence (symmetric)"       "weak approaching (approacher)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "parallel (symmetric)"          "neutral (symmetric)"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"          "neutral (symmetric)"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 "parallel (symmetric)"          "non-significant (symmetric)"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 "approaching (target)"          "non-significant (symmetric)"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5                           6                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 "parallel (symmetric)"      "weak approaching (approacher)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 "parallel (symmetric)"      "weak approaching (approacher)"</span>
@@ -199,7 +199,7 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 "weak departing (origin)"       "approaching (approacher)"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 "weak approaching (approacher)" "approaching (approacher)"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 "parallel (symmetric)"          "approaching (approacher)"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "neutral (symmetric)"           "neutral (symmetric)"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 "non-significant (symmetric)"   "non-significant (symmetric)"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 "weak departing (origin)"       "weak approaching (approacher)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 "approaching (approacher)"      "weak approaching (approacher)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 NA                              "weak approaching (approacher)"</span>
@@ -306,7 +306,7 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dynamic_relationships_taxonomy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                        dynamic_relationship    conv_div_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> neutral (symmetric)                     neutral (symmetric)              &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> non-significant (symmetric)     non-significant (symmetric)              &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parallel (symmetric)                   parallel (symmetric)              &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> antiparallel (symmetric)           antiparallel (symmetric)              &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> convergence (symmetric)             convergence (symmetric) convergence group</span>
@@ -328,7 +328,7 @@ This will reduce computation time but the details of the output of RTMA will not
 <span class="r-out co"><span class="r-pr">#&gt;</span> escape (leader)                             escape (leader)  divergence group</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> escape (follower)                         escape (follower)  divergence group</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                       oriented_group</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> neutral (symmetric)                             &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> non-significant (symmetric)                     &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parallel (symmetric)                            &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> antiparallel (symmetric)                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> convergence (symmetric)                         &lt;NA&gt;</span>

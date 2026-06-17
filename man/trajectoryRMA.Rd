@@ -115,7 +115,7 @@ trajectoryRMA(avoca_x)
 
 }
 \references{
-Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
+Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres M (2026) Uncovering the relative movements of ecological trajectories. Peer Community Journal 6: e54.
 
 \enc{Šidák}{Sidak}, Z. (1967) Rectangular confidence regions for the means of multivariate normal distributions. Journal of the American Statistical Association 62:648-633.
 }

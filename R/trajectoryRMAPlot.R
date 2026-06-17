@@ -36,7 +36,7 @@
 #' @author Miquel De \enc{Cáceres}{Caceres}, CREAF
 #' 
 #' @references
-#' Djeghri et al. (under review) Uncovering the relative movements of ecological trajectories.
+#' Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres M (2026) Uncovering the relative movements of ecological trajectories. Peer Community Journal 6: e54.
 #'
 #' @seealso \code{\link{trajectoryRMA}}, \code{\link{trajectoryConvergencePlot}} 
 #'

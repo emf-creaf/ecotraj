@@ -117,7 +117,7 @@ The R package [**ecoregime**](https://mspinillos.github.io/ecoregime/), by Marti
 
 + Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé A, Gauthier O, De Cáceres M (2026a). Going round in cycles but going somewhere: Deciphering cyclical dynamics using Ecological Trajectory Analysis. Ecological Monographs, 96(2), e70058 (https://doi.org/10.1002/ecm.70058).
 
-+ Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres M (2026) Uncovering the relative movements of ecological trajectories. Peer Community Journal 6: e54 (https://doi.org/10.24072/pcjournal.736).
++ Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres M (2026b) Uncovering the relative movements of ecological trajectories. Peer Community Journal 6: e54 (https://doi.org/10.24072/pcjournal.736).
 
 + Sturbois A, De Cáceres M, Sánchez-Pinillos M, Schaal G, Gauthier O, Le Mao P, Ponsero A, & Desroy N (2021a). Extending community trajectory analysis : New metrics and representation. Ecological Modelling, 440, 109400 (https://doi.org/10.1016/j.ecolmodel.2020.109400).
 

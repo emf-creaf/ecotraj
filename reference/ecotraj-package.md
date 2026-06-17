@@ -11,8 +11,10 @@ al., 2021
 ([doi:10.1016/j.ecolmodel.2020.109400](https://doi.org/10.1016/j.ecolmodel.2020.109400)
 ), Sturbois et al., 2023
 ([doi:10.1002/ecs2.4726](https://doi.org/10.1002/ecs2.4726) ), Djeghri
-et al., 2026 ([doi:10.1002/ecm.70058](https://doi.org/10.1002/ecm.70058)
-).
+et al., 2026a
+([doi:10.1002/ecm.70058](https://doi.org/10.1002/ecm.70058) , Djeghri et
+al., 2026b
+([doi:10.24072/pcjournal.736](https://doi.org/10.24072/pcjournal.736) ).
 
 ## See also
 

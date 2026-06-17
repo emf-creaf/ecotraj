@@ -64,6 +64,21 @@ Analysis.” *Ecological Monographs*, **96**, e70058.
       doi = {10.1002/ecm.70058},
     }
 
+Djeghri N, Gauthier O, Sturbois A, Meiners S, Allen R, De Cáceres M
+(2026). “Uncovering the relative movements of ecological trajectories.”
+*Peer Community Journal*, **6**, e54.
+[doi:10.24072/pcjournal.736](https://doi.org/10.24072/pcjournal.736).
+
+    @Article{,
+      title = {Uncovering the relative movements of ecological trajectories},
+      author = {Nicolas Djeghri and Olivier Gauthier and Anthony Sturbois and Scott J. Meiners and Robert Allen and Miquel {De Cáceres}},
+      journal = {Peer Community Journal},
+      year = {2026},
+      volume = {6},
+      pages = {e54},
+      doi = {10.24072/pcjournal.736},
+    }
+
 Sturbois A, De Cáceres M, Bifolchi A, Bioret F, Grall J, Grémare A,
 Labrune C, Robert A, Schaal G, Desroy N (2023). “Ecological Quality
 Assessment: a general multivariate framework to report the quality of

@@ -19,10 +19,10 @@ ETA is related to the following publications:
 - ETA extension of **metrics** and **visualisation modes** (Sturbois et
   al. 2021a).
 
-- ETA extension to **cyclical** trajectory data (Djeghri et al. 2026).
+- ETA extension to **cyclical** trajectory data (Djeghri et al. 2026a).
 
 - Interpretation of trajectory **relative movements** (Djeghri et
-  al. under review).
+  al. 2026b).
 
 - Application to a multivariate space defined by **stable isotope** data
   (Sturbois et al. 2021b).
@@ -133,13 +133,15 @@ variables.
   176, 113630 (<https://doi.org/10.1016/j.ecolind.2025.113630>).
 
 - Djeghri N, Sturbois A, Hélaouët P, Geissmann Q, Rimmelin-Maury P, Boyé
-  A, Gauthier O, De Cáceres M (2026). Going round in cycles but going
+  A, Gauthier O, De Cáceres M (2026a). Going round in cycles but going
   somewhere: Deciphering cyclical dynamics using Ecological Trajectory
   Analysis. Ecological Monographs, 96(2), e70058
   (<https://doi.org/10.1002/ecm.70058>).
 
-- Djeghri et al. (under review) Uncovering the relative movements of
-  ecological trajectories.
+- Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres
+  M (2026) Uncovering the relative movements of ecological trajectories.
+  Peer Community Journal 6: e54
+  (<https://doi.org/10.24072/pcjournal.736>).
 
 - Sturbois A, De Cáceres M, Sánchez-Pinillos M, Schaal G, Gauthier O, Le
   Mao P, Ponsero A, & Desroy N (2021a). Extending community trajectory

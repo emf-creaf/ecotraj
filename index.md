@@ -138,8 +138,8 @@ variables.
   Analysis. Ecological Monographs, 96(2), e70058
   (<https://doi.org/10.1002/ecm.70058>).
 
-- Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres
-  M (2026) Uncovering the relative movements of ecological trajectories.
+- Djeghri N, Gauthier O, Sturbois A, Meiners SJ, Allen R, De Cáceres M
+  (2026b) Uncovering the relative movements of ecological trajectories.
   Peer Community Journal 6: e54
   (<https://doi.org/10.24072/pcjournal.736>).
 

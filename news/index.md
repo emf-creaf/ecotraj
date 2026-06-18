@@ -2,6 +2,8 @@
 
 ## ecotraj 1.2.2
 
+CRAN release: 2026-06-18
+
 - New function averageTrajectories() to average trajectories (or cycles)
 
 ## ecotraj 1.2.1

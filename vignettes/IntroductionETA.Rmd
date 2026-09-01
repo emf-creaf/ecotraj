@@ -348,7 +348,7 @@ When trajectories are synchronous, one can study their symmetric convergence or 
 trajectoryConvergence(x, type = "pairwise.symmetric")
 ```  
 
-The function performs the Mann-Whitney trend test. Values of the statistic ('tau') larger than 0 (i.e. positive) correspond to trajectories that are *diverging*, whereas values lower than 0 (i.e. negative) correspond to trajectories that are *converging*. By setting `type = "pairwise.asymmetric"` the convergence test becomes asymmetric (see Figs. 3b and 3c of De Cáceres et al. 2019). In this case, synchronicity is not required and the sequence of distances *between every point of one trajectory and the other* is analyzed:
+The function performs the Mann-Kendall trend test. Values of the statistic ('tau') larger than 0 (i.e. positive) correspond to trajectories that are *diverging*, whereas values lower than 0 (i.e. negative) correspond to trajectories that are *converging*. By setting `type = "pairwise.asymmetric"` the convergence test becomes asymmetric (see Figs. 3b and 3c of De Cáceres et al. 2019). In this case, synchronicity is not required and the sequence of distances *between every point of one trajectory and the other* is analyzed:
 
 ```{r} 
 trajectoryConvergence(x, type = "pairwise.asymmetric")

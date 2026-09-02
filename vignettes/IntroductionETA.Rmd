@@ -399,9 +399,10 @@ RTMA$dynamic_relationships
 Which is a square matrix containing the labels describing the trajectories dynamics relationships. For the provided example, we see relationships such as "divergence" and "departing" meaning that the two trajectories are generally moving away from each other, as expected.
 
 RTMA results can be visualized in details using the function `trajectoryConvergencePlot()` which represents the results of all the tests or with the dedicated plotting function `trajectoryRMAPlot()` for an heatmap-like representation:
-```{r, fig = TRUE, fig.height=4, fig.width=4, fig.align = "center"}
+```{r, fig = TRUE, fig.height=4, fig.width=7, fig.align = "center"}
 trajectoryRMAPlot(RTMA)
 ```
+In the real data example further below, we give more details about the interpretation of RTMA labels.
 
 ### 4.5 Distances between segments and between trajectories
 
@@ -693,7 +694,37 @@ trajectoryConvergencePlot(avoca_x, type = "pairwise.asymmetric",
 
 ```
 
-### 5.5 Distances between trajectories
+### 5.5 Relative Trajectory Movement Assessment (RTMA)
+
+RTMA can be applied to reveal more nuanced kind of relative trajectory movement beyond convergence or divergence:
+```{r}
+avoca_RTMA <- trajectoryRMA(avoca_x)
+avoca_RTMA$dynamic_relationships
+```
+RTMA results can be visualized by displaying all the significant tests results with function `trajectoryConvergencePlot()`
+```{r, fig.height=5, fig.width=5, fig.align = "center"}
+trajectoryConvergencePlot(avoca_RTMA,
+                          conv.color = "orangered",
+                          div.color = "dodgerblue",
+                          traj.colors = "black",border = "white",lwd = 2,
+                          traj.names.colors = "white")
+
+```
+In this plot, convergence and divergence tests are interpreted as above but the plot displays in addition the results from the dynamic correspondence test as two parallel lines. In case of antiparallelism (two trajectories with similar paths in opposed directions), the line would be doted.
+
+The alternative way of visualizing RTMA results is with function `trajectoryRMAPlot()`:
+```{r, fig = TRUE, fig.height=4, fig.width=7, fig.align = "center"}
+trajectoryRMAPlot(avoca_RTMA)
+```
+For instance, coming back to trajectories from plots '4' and '5', notice that RTMA finds a "pursuit" relationship. This corresponds to the combination of:
+  1. A non-significant symmetric convergence test (see below)
+  2. two significant asymmetric convergence tests but with opposed tau (i.e. one indicating convergence, the other divergence).
+A "pursuit" relationship indicates that the two trajectories go broadly in the same direction, one behind the other. Furthermore, the diagonal bar in one of the cell indicates which trajectory is in front and which is in the back: in this case, the graph tells us that trajectory from plot '4' is in front (and conversely, trajectory from plot '5' is in the back). This distinction of "front" versus "back" trajectories only exists for some relationships (the ones belonging to the "oriented" group). Where RTMA shines, is that the labels it gives quickly captures some key aspects of the relative movement of two ecological trajectories with potential for ecological interpretation.
+Looking back at the graphs representing tree size structures in these two plots it appears that in plot '5', the last time point available approaches the size structure in plot '4' at its first available time point. Meanwhile, the broad dynamic of the two plots is similar: trees are getting larger and less numerous, which is expected with forest growth. Plot '4' is further along this process of growth than plot '5' which is consistent with the "pursuit" pattern found by RTMA. 
+Note that the symmetric convergence test, significant in isolation (section above) and indicating divergence, is not significant anymore in RTMA (otherwise the relationship would be "escape"). This is because RTMA employs a correction for multiple testing (again, RTMA is a combination of four statistical tests) and therefore works on slightly different alpha levels for isolated tests.
+This is only one example, but RTMA recognizes 9 relationships. Seven in a continuum from convergence to divergence (convergence <-> approaching <-> catch-up <-> pursuit <-> escape <-> departing <-> divergence) and two to describe parallel relationships (parallel and antiparallel). Navigating all these labels can be complicated and we therefore recommend reading the associated publication (Djeghri et al. 2026) in detail before applying this method to your own analyses.
+
+### 5.6 Distances between trajectories
 
 We can calculate the resemblance between forest plot trajectories using `trajectoryDistances()`:
 ```{r}
@@ -715,7 +746,7 @@ text(x,y, labels=1:8, pos=1)
 
 
 
-### 5.6 Dynamic variation
+### 5.7 Dynamic variation
 
 To determine which forest plots have more unique structural dynamics, we can use function `dynamicVariation()`:
 

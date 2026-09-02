@@ -876,7 +876,7 @@ trajectoryConvergence(x, type = "pairwise.symmetric")
     ## 2 0.07095149         NA 0.07095149
     ## 3 0.07095149 0.07095149         NA
 
-The function performs the Mann-Whitney trend test. Values of the
+The function performs the Mann-Kendall trend test. Values of the
 statistic (‘tau’) larger than 0 (i.e. positive) correspond to
 trajectories that are *diverging*, whereas values lower than 0
 (i.e. negative) correspond to trajectories that are *converging*. By
@@ -943,7 +943,86 @@ increasing or decreasing with time. In all these tests trajectories are
 diverging (as indicated by the positive tau values) but the tests are
 not statistically significance due to the small number of surveys.
 
-### 4.4 Distances between segments and between trajectories
+### 4.4 Relative Trajectory Movement Assessment (RTMA)
+
+The general idea of convergence and divergence between trajectories can
+be expanded to more diverse movements between trajectory pairs
+(e.g. “parallel” or “pursuit”), a method we call “Relative Trajectory
+Movement Assessment” (RTMA, Djeghri et al. 2026). This method is only
+presented shortly here but is rather complex and its results may prove
+challenging to interpret. We strongly advise to read the publication by
+Djeghri et al. (2026) before using it.
+
+Briefly: for two trajectories A and B, RTMA works by combining the
+results of four statistical tests: 1. the symmetric convergence test 2.
+the asymmetric convergence test of A towards B 3. the asymmetric
+convergence test of B towards A 4. the dynamic correspondence test (not
+presented here but useful to assess cases of parallelism, see function
+[`trajectoryCorrespondence()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryComparison.md))
+RTMA assesses the different results of the tests (significativity and
+sign of the statistic) to gain more detailed information and propose a
+label for the trajectory relationship (e.g. convergence, parallell,
+pursuit). We will get in more details in the real data example below.
+
+RTMA is performed by the function
+[`trajectoryRMA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryRMA.md):
+
+``` r
+
+RTMA <- trajectoryRMA(x, alpha = 0.5)
+```
+
+Note that in the above code chunk, we increased the `alpha` parameter in
+order to reach “significance”. This is because the trajectories used
+here as examples are short. At the classic alpha = 0.05, RTMA starts to
+be doable with trajectories of size 6.
+
+[`trajectoryRMA()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryRMA.md)
+provides many outputs:
+
+``` r
+
+names(RTMA)
+```
+
+    ## [1] "dynamic_relationships"          "symmetric_convergence"         
+    ## [3] "asymmetric_convergence"         "correspondence"                
+    ## [5] "parameters"                     "dynamic_relationships_taxonomy"
+
+Its results are in:
+
+``` r
+
+RTMA$dynamic_relationships
+```
+
+    ##   1                        2                        3                       
+    ## 1 NA                       "divergence (symmetric)" "divergence (symmetric)"
+    ## 2 "divergence (symmetric)" NA                       "departing (departer)"  
+    ## 3 "divergence (symmetric)" "departing (origin)"     NA
+
+Which is a square matrix containing the labels describing the
+trajectories dynamics relationships. For the provided example, we see
+relationships such as “divergence” and “departing” meaning that the two
+trajectories are generally moving away from each other, as expected.
+
+RTMA results can be visualized in details using the function
+[`trajectoryConvergencePlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryConvergencePlot.md)
+which represents the results of all the tests or with the dedicated
+plotting function
+[`trajectoryRMAPlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryRMAPlot.md)
+for an heatmap-like representation:
+
+``` r
+
+trajectoryRMAPlot(RTMA)
+```
+
+![](IntroductionETA_files/figure-html/unnamed-chunk-42-1.png) In the
+real data example further below, we give more details about the
+interpretation of RTMA labels.
+
+### 4.5 Distances between segments and between trajectories
 
 The ETA framework allows quantifying the resemblance in the dynamics of
 target entities by assessing the dissimilarity of their corresponding
@@ -957,7 +1036,7 @@ the $`\Omega`$ space). This is done using function
 which returns a new dissimilarity matrix and is illustrated in article
 “Transforming trajectories”.
 
-#### 4.4.1 Distances between segments
+#### 4.5.1 Distances between segments
 
 For some trajectory dissimilarity coefficients, one intermediate step is
 the calculation of distances between directed segments (see Fig. 4 of De
@@ -1022,9 +1101,9 @@ text(xret, labels=rep(paste0("s",1:3),3), pos=1)
 legend("topleft", pt.bg=c("black","red","blue"), pch=21, bty="n", legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"))
 ```
 
-![](IntroductionETA_files/figure-html/unnamed-chunk-40-1.png)
+![](IntroductionETA_files/figure-html/unnamed-chunk-44-1.png)
 
-#### 4.4.2 Distances between trajectories
+#### 4.5.2 Distances between trajectories
 
 Distances between segments are internally calculated when comparing
 whole trajectories using function
@@ -1117,9 +1196,9 @@ plot(xret, xlab="axis 1", ylab = "axis 2", asp=1, pch=21,
 legend("topleft", pt.bg=c("black","red","blue"), pch=21, bty="n", legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"))
 ```
 
-![](IntroductionETA_files/figure-html/unnamed-chunk-43-1.png)
+![](IntroductionETA_files/figure-html/unnamed-chunk-47-1.png)
 
-### 4.5 Dynamic variation
+### 4.6 Dynamic variation
 
 One may be interested in knowing how much diverse are a set of
 trajectories, and which entities follow dynamics more distinct from
@@ -1446,7 +1525,7 @@ plot(avoca_rho, avoca_dir, xlab = "rho(T)", ylab = "dir(T)", type="n")
 text(avoca_rho, avoca_dir, as.character(1:8))
 ```
 
-![](IntroductionETA_files/figure-html/unnamed-chunk-50-1.png)
+![](IntroductionETA_files/figure-html/unnamed-chunk-54-1.png)
 
 ### 5.4 Convergence between trajectories
 
@@ -1570,7 +1649,7 @@ trajectoryConvergencePlot(avoca_x, type = "pairwise.symmetric",
                           traj.names.colors = "white")
 ```
 
-![](IntroductionETA_files/figure-html/unnamed-chunk-53-1.png) where we
+![](IntroductionETA_files/figure-html/unnamed-chunk-57-1.png) where we
 can easily see that all significant pairwise comparisons indicate
 convergence, except for the divergence between plots ‘4’ and ‘5’.
 
@@ -1588,9 +1667,120 @@ trajectoryConvergencePlot(avoca_x, type = "pairwise.asymmetric",
                           traj.names.colors = "white")
 ```
 
-![](IntroductionETA_files/figure-html/unnamed-chunk-54-1.png)
+![](IntroductionETA_files/figure-html/unnamed-chunk-58-1.png)
 
-### 5.5 Distances between trajectories
+### 5.5 Relative Trajectory Movement Assessment (RTMA)
+
+RTMA can be applied to reveal more nuanced kind of relative trajectory
+movement beyond convergence or divergence:
+
+``` r
+
+avoca_RTMA <- trajectoryRMA(avoca_x)
+avoca_RTMA$dynamic_relationships
+```
+
+    ##   1                           2                          
+    ## 1 NA                          "parallel (symmetric)"     
+    ## 2 "parallel (symmetric)"      NA                         
+    ## 3 "weak approaching (target)" "weak approaching (target)"
+    ## 4 "pursuit (leader)"          "pursuit (leader)"         
+    ## 5 "parallel (symmetric)"      "parallel (symmetric)"     
+    ## 6 "weak approaching (target)" "weak approaching (target)"
+    ## 7 "weak departing (departer)" "weak approaching (target)"
+    ## 8 "approaching (target)"      "approaching (target)"     
+    ##   3                               4                              
+    ## 1 "weak approaching (approacher)" "pursuit (follower)"           
+    ## 2 "weak approaching (approacher)" "pursuit (follower)"           
+    ## 3 NA                              "weak approaching (approacher)"
+    ## 4 "weak approaching (target)"     NA                             
+    ## 5 "weak approaching (approacher)" "pursuit (follower)"           
+    ## 6 "convergence (symmetric)"       "weak approaching (approacher)"
+    ## 7 "parallel (symmetric)"          "non-significant (symmetric)"  
+    ## 8 "approaching (target)"          "non-significant (symmetric)"  
+    ##   5                           6                              
+    ## 1 "parallel (symmetric)"      "weak approaching (approacher)"
+    ## 2 "parallel (symmetric)"      "weak approaching (approacher)"
+    ## 3 "weak approaching (target)" "convergence (symmetric)"      
+    ## 4 "pursuit (leader)"          "weak approaching (target)"    
+    ## 5 NA                          "weak approaching (approacher)"
+    ## 6 "weak approaching (target)" NA                             
+    ## 7 "weak departing (departer)" "approaching (target)"         
+    ## 8 "weak approaching (target)" "weak approaching (target)"    
+    ##   7                               8                              
+    ## 1 "weak departing (origin)"       "approaching (approacher)"     
+    ## 2 "weak approaching (approacher)" "approaching (approacher)"     
+    ## 3 "parallel (symmetric)"          "approaching (approacher)"     
+    ## 4 "non-significant (symmetric)"   "non-significant (symmetric)"  
+    ## 5 "weak departing (origin)"       "weak approaching (approacher)"
+    ## 6 "approaching (approacher)"      "weak approaching (approacher)"
+    ## 7 NA                              "weak approaching (approacher)"
+    ## 8 "weak approaching (target)"     NA
+
+RTMA results can be visualized by displaying all the significant tests
+results with function
+[`trajectoryConvergencePlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryConvergencePlot.md)
+
+``` r
+
+trajectoryConvergencePlot(avoca_RTMA,
+                          conv.color = "orangered",
+                          div.color = "dodgerblue",
+                          traj.colors = "black",border = "white",lwd = 2,
+                          traj.names.colors = "white")
+```
+
+![](IntroductionETA_files/figure-html/unnamed-chunk-60-1.png) In this
+plot, convergence and divergence tests are interpreted as above but the
+plot displays in addition the results from the dynamic correspondence
+test as two parallel lines. In case of antiparallelism (two trajectories
+with similar paths in opposed directions), the line would be doted.
+
+The alternative way of visualizing RTMA results is with function
+[`trajectoryRMAPlot()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryRMAPlot.md):
+
+``` r
+
+trajectoryRMAPlot(avoca_RTMA)
+```
+
+![](IntroductionETA_files/figure-html/unnamed-chunk-61-1.png) For
+instance, coming back to trajectories from plots ‘4’ and ‘5’, notice
+that RTMA finds a “pursuit” relationship. This corresponds to the
+combination of: 1. A non-significant symmetric convergence test (see
+below) 2. two significant asymmetric convergence tests but with opposed
+tau (i.e. one indicating convergence, the other divergence). A “pursuit”
+relationship indicates that the two trajectories go broadly in the same
+direction, one behind the other. Furthermore, the diagonal bar in one of
+the cell indicates which trajectory is in front and which is in the
+back: in this case, the graph tells us that trajectory from plot ‘4’ is
+in front (and conversely, trajectory from plot ‘5’ is in the back). This
+distinction of “front” versus “back” trajectories only exists for some
+relationships (the ones belonging to the “oriented” group). Where RTMA
+shines, is that the labels it gives quickly captures some key aspects of
+the relative movement of two ecological trajectories with potential for
+ecological interpretation. Looking back at the graphs representing tree
+size structures in these two plots it appears that in plot ‘5’, the last
+time point available approaches the size structure in plot ‘4’ at its
+first available time point. Meanwhile, the broad dynamic of the two
+plots is similar: trees are getting larger and less numerous, which is
+expected with forest growth. Plot ‘4’ is further along this process of
+growth than plot ‘5’ which is consistent with the “pursuit” pattern
+found by RTMA. Note that the symmetric convergence test, significant in
+isolation (section above) and indicating divergence, is not significant
+anymore in RTMA (otherwise the relationship would be “escape”). This is
+because RTMA employs a correction for multiple testing (again, RTMA is a
+combination of four statistical tests) and therefore works on slightly
+different alpha levels for isolated tests. This is only one example, but
+RTMA recognizes 9 relationships. Seven in a continuum from convergence
+to divergence (convergence \<-\> approaching \<-\> catch-up \<-\>
+pursuit \<-\> escape \<-\> departing \<-\> divergence) and two to
+describe parallel relationships (parallel and antiparallel). Navigating
+all these labels can be complicated and we therefore recommend reading
+the associated publication (Djeghri et al. 2026) in detail before
+applying this method to your own analyses.
+
+### 5.6 Distances between trajectories
 
 We can calculate the resemblance between forest plot trajectories using
 [`trajectoryDistances()`](https://emf-creaf.github.io/ecotraj/reference/trajectoryComparison.md):
@@ -1644,7 +1834,7 @@ text(x,y, labels=1:8, pos=1)
 
 ![](IntroductionETA_files/figure-html/avoca_DT_PCoA-1.png)
 
-### 5.6 Dynamic variation
+### 5.7 Dynamic variation
 
 To determine which forest plots have more unique structural dynamics, we
 can use function
@@ -1695,22 +1885,26 @@ amount of regeneration.
 
 ## 6. References
 
-Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review
-and perspective for distance based trajectory clustering. IEEE Trans.
-Intell. Transp. Syst., 17, 3306–3317.
+Besse P, Guillouet B, Loubes J-M, François R (2016). Review and
+perspective for distance based trajectory clustering. IEEE Transactions
+on Intelligent Transportation Systems 17: 3306–3317.
 
-De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit
+De Cáceres M., Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit
 R & Hubbell S. (2019). Trajectory analysis in community ecology.
-Ecological Monographs 89, e01350.
+Ecological Monographs 89: e01350.
 
-Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G.,
-Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021a). Extending
-community trajectory analysis : New metrics and representation.
-Ecological Modelling 440: 109400.
-<https://doi.org/10.1016/j.ecolmodel.2020.109400>.
+Djeghri N, Gauthier O, Sturbois A, Meiners SJ, AllenRB, De Cáceres M
+(2026). Uncovering the relative movements of ecological trajectories.
+Peer Community Journal 6: e54.
+<https://doi.org/10.24072/pci.ecology.100993>.
 
-Sturbois, A., Cucherousset, J., De Cáceres, M., Desroy, N., Riera, P.,
-Carpentier, A., Quillien, N., Grall, J., Espinasse, B., Cherel, Y.,
-Schaal, G. (2021b). Stable Isotope Trajectory Analysis (SITA) : A new
-approach to quantify and visualize dynamics in stable isotope studies.
-Ecological Monographs, 92, e1501. <https://doi.org/10.1002/ecm.1501>.
+Sturbois A, De Cáceres M, Sánchez-Pinillos M, Schaal G, Gauthier O, Le
+Mao P, Ponsero A, Desroy N (2021a). Extending community trajectory
+analysis : New metrics and representation. Ecological Modelling 440:
+109400. <https://doi.org/10.1016/j.ecolmodel.2020.109400>.
+
+Sturbois A, Cucherousset J, De Cáceres M, Desroy N, Riera P, Carpentier
+A, Quillien N, Grall J, Espinasse B, Cherel Y, Schaal G (2021b). Stable
+Isotope Trajectory Analysis (SITA) : A new approach to quantify and
+visualize dynamics in stable isotope studies. Ecological Monographs: 92,
+e1501. <https://doi.org/10.1002/ecm.1501>.

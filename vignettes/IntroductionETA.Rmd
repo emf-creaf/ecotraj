@@ -370,12 +370,44 @@ trajectoryConvergence(x, type = "multiple")
 
 In this case we are testing whether the average distance between ecological states corresponding to the same observation time is increasing or decreasing with time. In all these tests trajectories are diverging (as indicated by the positive tau values) but the tests are not statistically significance due to the small number of surveys.
 
+### 4.4 Relative Trajectory Movement Assessment (RTMA)
 
-### 4.4 Distances between segments and between trajectories
+The general idea of convergence and divergence between trajectories can be expanded to more diverse movements between trajectory pairs (e.g. "parallel" or "pursuit"), a method we call "Relative Trajectory Movement Assessment" (RTMA, Djeghri et al. 2026). This method is only presented shortly here but is rather complex and its results may prove challenging to interpret. We strongly advise to read the publication by Djeghri et al. (2026) before using it.
+
+Briefly: for two trajectories A and B, RTMA works by combining the results of four statistical tests:
+  1. the symmetric convergence test
+  2. the asymmetric convergence test of A towards B
+  3. the asymmetric convergence test of B towards A
+  4. the dynamic correspondence test (not presented here but useful to assess cases of parallelism, see function `trajectoryCorrespondence()`)
+RTMA assesses the different results of the tests (significativity and sign of the statistic) to gain more detailed information and propose a label for the trajectory relationship (e.g. convergence, parallell, pursuit). We will get in more details in the real data example below.
+
+RTMA is performed by the function `trajectoryRMA()`:
+```{r} 
+RTMA <- trajectoryRMA(x, alpha = 0.5)
+```
+
+Note that in the above code chunk, we increased the `alpha` parameter in order to reach "significance". This is because the trajectories used here as examples are short. At the classic alpha = 0.05, RTMA starts to be doable with trajectories of size 6.
+
+`trajectoryRMA()` provides many outputs:
+```{r}
+names(RTMA)
+```
+Its results are in:
+```{r}
+RTMA$dynamic_relationships
+```
+Which is a square matrix containing the labels describing the trajectories dynamics relationships. For the provided example, we see relationships such as "divergence" and "departing" meaning that the two trajectories are generally moving away from each other, as expected.
+
+RTMA results can be visualized in details using the function `trajectoryConvergencePlot()` which represents the results of all the tests or with the dedicated plotting function `trajectoryRMAPlot()` for an heatmap-like representation:
+```{r, fig = TRUE, fig.height=4, fig.width=4, fig.align = "center"}
+trajectoryRMAPlot(RTMA)
+```
+
+### 4.5 Distances between segments and between trajectories
 
 The ETA framework allows quantifying the resemblance in the dynamics of target entities by assessing the dissimilarity of their corresponding trajectories. Broadly speaking, dissimilarity between trajectories will be influenced both by differences in ecological states that are constant in time and differences that arise from temporal changes. To focus on the second, distances between trajectories can be calculated after centering them (i.e. after bringing all trajectories to the center of the $\Omega$ space). This is done using function `centerTrajectories()`, which returns a new dissimilarity matrix and is illustrated in article "Transforming trajectories". 
 
-#### 4.4.1 Distances between segments
+#### 4.5.1 Distances between segments
 
 For some trajectory dissimilarity coefficients, one intermediate step is the calculation of distances between directed segments (see Fig. 4 of De Cáceres et al. 2019), which can be obtained by calling function `segmentDistances`:
 ```{r} 
@@ -397,7 +429,7 @@ text(xret, labels=rep(paste0("s",1:3),3), pos=1)
 legend("topleft", pt.bg=c("black","red","blue"), pch=21, bty="n", legend=c("Trajectory 1", "Trajectory 2", "Trajectory 3"))
 ```
 
-#### 4.4.2 Distances between trajectories
+#### 4.5.2 Distances between trajectories
 
 Distances between segments are internally calculated when comparing whole trajectories using function `trajectoryDistances()`. Here we show the dissimilarity between the two trajectories as assessed using either the *Hausdorff* distance (equal to the maximum distance between directed segments; see eq. 8 in De Cáceres et al. 2019), the *segment path distance* (Besse et al, 2016), the *directed segment path distance* (see eq. 13 in De Cáceres et al. 2019) or the *time-sensitive path distance* (unpublished): 
 ```{r} 
@@ -426,7 +458,7 @@ legend("topleft", pt.bg=c("black","red","blue"), pch=21, bty="n", legend=c("Traj
 ```
 
 
-### 4.5 Dynamic variation
+### 4.6 Dynamic variation
 
 One may be interested in knowing how much diverse are a set of trajectories, and which entities follow dynamics more distinct from others. We refer to the diversity of trajectories as **dynamic variation**., and these questions can be addressed using function `dynamicVariation()`, for example:
 
@@ -705,10 +737,12 @@ Apparently, the distinctiveness of plot '8' from the remaining stems from its ve
 
 ## 6. References
 
-Besse, P., Guillouet, B., Loubes, J.-M. & François, R. (2016). Review and perspective for distance based trajectory clustering. IEEE Trans. Intell. Transp. Syst., 17, 3306–3317.
+Besse P, Guillouet B, Loubes J-M, François R (2016). Review and perspective for distance based trajectory clustering. IEEE Transactions on Intelligent Transportation Systems 17: 3306–3317.
 
-De Cáceres M, Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89, e01350.
+De Cáceres M., Coll L, Legendre P, Allen RB, Wiser SK, Fortin MJ, Condit R & Hubbell S. (2019). Trajectory analysis in community ecology. Ecological Monographs 89: e01350.
 
-Sturbois, A., De Cáceres, M., Sánchez-Pinillos, M., Schaal, G., Gauthier, O., Le Mao, P., Ponsero, A., & Desroy, N. (2021a). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400. https://doi.org/10.1016/j.ecolmodel.2020.109400.
+Djeghri N, Gauthier O, Sturbois A, Meiners SJ, AllenRB, De Cáceres M (2026). Uncovering the relative movements of ecological trajectories. Peer Community Journal 6: e54. https://doi.org/10.24072/pci.ecology.100993. 
 
-Sturbois, A., Cucherousset, J., De Cáceres, M., Desroy, N., Riera, P., Carpentier, A., Quillien, N., Grall, J., Espinasse, B., Cherel, Y., Schaal, G. (2021b). Stable Isotope Trajectory Analysis (SITA) : A new approach to quantify and visualize dynamics in stable isotope studies. Ecological Monographs, 92, e1501. https://doi.org/10.1002/ecm.1501. 
+Sturbois A, De Cáceres M, Sánchez-Pinillos M, Schaal G, Gauthier O, Le Mao P, Ponsero A, Desroy N (2021a). Extending community trajectory analysis : New metrics and representation. Ecological Modelling 440: 109400. https://doi.org/10.1016/j.ecolmodel.2020.109400.
+
+Sturbois A, Cucherousset J, De Cáceres M, Desroy N, Riera P, Carpentier A, Quillien N, Grall J, Espinasse B, Cherel Y, Schaal G (2021b). Stable Isotope Trajectory Analysis (SITA) : A new approach to quantify and visualize dynamics in stable isotope studies. Ecological Monographs: 92, e1501. https://doi.org/10.1002/ecm.1501. 
